@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Client Profile — Shape</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+  <nav class="signup-nav">
+    <a href="landing.html"><img src="logo.png" alt="Shape"></a>
+    <a href="login.html" class="nav-link">Already have an account?</a>
+  </nav>
+
+  <div class="signup-layout">
+    <div class="signup-sidebar">
+      <div class="sidebar-content">
+        <div class="sidebar-icon">01</div>
+        <h2>Start your<br>fitness journey</h2>
+        <p>Join 10,000+ members who train with the world's best coaches and nutritionists.</p>
+        <ul class="sidebar-perks">
+          <li><span class="perk-check">&#10003;</span> Access 200+ expert trainers</li>
+          <li><span class="perk-check">&#10003;</span> AI-powered workout generator</li>
+          <li><span class="perk-check">&#10003;</span> Personalized nutrition plans</li>
+          <li><span class="perk-check">&#10003;</span> 1-on-1 messaging with coaches</li>
+          <li><span class="perk-check">&#10003;</span> Cancel any subscription anytime</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="signup-form-side">
+      <div class="signup-form-container">
+        <div class="signup-step-indicator">
+          <div class="step-dot active"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+        </div>
+
+        <h1>Create your client profile</h1>
+        <p class="signup-subtitle">Step 1 of 3 — Personal information</p>
+
+        <form onsubmit="event.preventDefault(); goToStep(2);" id="step1">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" placeholder="John" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" placeholder="Doe" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="Min. 8 characters" required>
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); goToStep(3);" id="step2" style="display:none;">
+          <div class="form-group">
+            <label>What is your primary fitness goal?</label>
+            <select required>
+              <option value="">Select a goal</option>
+              <option>Lose weight</option>
+              <option>Build muscle</option>
+              <option>Improve endurance</option>
+              <option>Increase flexibility</option>
+              <option>General fitness</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Experience level</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="level" value="beginner" checked> <span>Beginner</span></label>
+              <label class="radio-option"><input type="radio" name="level" value="intermediate"> <span>Intermediate</span></label>
+              <label class="radio-option"><input type="radio" name="level" value="advanced"> <span>Advanced</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>How often do you work out?</label>
+            <select>
+              <option>1-2 times per week</option>
+              <option>3-4 times per week</option>
+              <option>5-6 times per week</option>
+              <option>Daily</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); completeSignup();" id="step3" style="display:none;">
+          <div class="form-group">
+            <label>What are you most interested in?</label>
+            <div class="checkbox-group">
+              <label class="checkbox-option"><input type="checkbox" checked> <span>Personal training</span></label>
+              <label class="checkbox-option"><input type="checkbox"> <span>Nutrition coaching</span></label>
+              <label class="checkbox-option"><input type="checkbox" checked> <span>AI workout generator</span></label>
+              <label class="checkbox-option"><input type="checkbox"> <span>Group classes</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Budget per month (optional)</label>
+            <select>
+              <option>Under $25/mo</option>
+              <option>$25 - $50/mo</option>
+              <option>$50 - $100/mo</option>
+              <option>$100+/mo</option>
+            </select>
+          </div>
+          <div class="form-group terms">
+            <label class="checkbox-option">
+              <input type="checkbox" required>
+              <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+            </label>
+          </div>
+          <button type="submit" class="btn-submit">Create Profile</button>
+        </form>
+
+        <p class="signup-footer-text">
+          <a href="landing.html">&#8592; Back to profile selection</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    function goToStep(step) {
+      document.getElementById('step' + currentStep).style.display = 'none';
+      document.getElementById('step' + step).style.display = 'block';
+      currentStep = step;
+      const dots = document.querySelectorAll('.step-dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i < step));
+      const lines = document.querySelectorAll('.step-line');
+      lines.forEach((l, i) => l.classList.toggle('active', i < step - 1));
+      const titles = ['Step 1 of 3 — Personal information', 'Step 2 of 3 — Fitness profile', 'Step 3 of 3 — Preferences'];
+      document.querySelector('.signup-subtitle').textContent = titles[step - 1];
+    }
+    function completeSignup() {
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

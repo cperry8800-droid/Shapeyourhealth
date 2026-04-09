@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shape — Workout Schedule & Progress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Shape" class="logo-img">
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="ai-trainer.html">AI Trainer</a>
+        <a href="trainers.html">Trainers</a>
+        <a href="nutritionists.html">Nutritionists</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
+        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="tag">Client Dashboard</span>
+      <h1>Your <span class="gradient-text">progress</span></h1>
+      <p class="page-hero-sub">Track your workouts, follow your schedule, and see how far you've come.</p>
+      <a href="nutrition-schedule.html" class="btn btn-outline" style="margin-top:24px;">Nutrition Schedule</a>
+    </div>
+  </section>
+
+  <!-- Monthly Overview -->
+  <section class="section">
+    <div class="container">
+      <div class="progress-dashboard">
+        <!-- Stats Row -->
+        <div class="progress-stats-row">
+          <div class="progress-stat-card">
+            <div class="progress-stat-number" id="statWorkouts">0</div>
+            <div class="progress-stat-label">Workouts This Month</div>
+          </div>
+          <div class="progress-stat-card">
+            <div class="progress-stat-number" id="statMinutes">0</div>
+            <div class="progress-stat-label">Total Minutes</div>
+          </div>
+          <div class="progress-stat-card">
+            <div class="progress-stat-number" id="statStreak">0</div>
+            <div class="progress-stat-label">Day Streak</div>
+          </div>
+          <div class="progress-stat-card">
+            <div class="progress-stat-number" id="statCalories">0</div>
+            <div class="progress-stat-label">Est. Calories Burned</div>
+          </div>
+        </div>
+
+        <!-- Weekly Schedule -->
+        <div class="schedule-section">
+          <div class="schedule-header">
+            <h2>Weekly Schedule</h2>
+            <div class="schedule-nav">
+              <button class="btn btn-sm btn-outline" onclick="changeWeek(-1)">&larr; Prev</button>
+              <span id="weekLabel" class="schedule-week-label"></span>
+              <button class="btn btn-sm btn-outline" onclick="changeWeek(1)">Next &rarr;</button>
+            </div>
+          </div>
+          <div class="schedule-grid" id="scheduleGrid">
+            <!-- Days populated by JS -->
+          </div>
+        </div>
+
+        <!-- Progress Chart (text-based) -->
+        <div class="progress-chart-section">
+          <h2>Monthly Progress</h2>
+          <div class="progress-bar-chart" id="progressChart">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Workout Log -->
+        <div class="workout-log-section">
+          <div class="workout-log-header">
+            <h2>Workout Log</h2>
+            <button class="btn btn-sm btn-primary" onclick="openLogWorkoutModal()">+ Log Workout</button>
+          </div>
+          <div class="workout-log-list" id="workoutLog">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Purchased Plans -->
+        <div class="purchased-section">
+          <h2>My Purchased Plans</h2>
+          <div class="purchased-list" id="purchasedList">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Need a new workout plan?</h2>
+      <p>Browse trainers and find your next challenge, or track your nutrition.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="trainers.html" class="btn btn-primary btn-lg">Browse Trainers</a>
+        <a href="nutrition-schedule.html" class="btn btn-outline btn-lg">Nutrition Tracker</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="logo.png" alt="Shape" class="logo-img">
+          </a>
+          <p class="footer-desc">Your body. Your Shape. Subscribe to expert trainers and nutritionists, on your terms.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="ai-trainer.html">AI Trainer</a>
+          <a href="trainers.html">Trainers</a>
+          <a href="nutritionists.html">Nutritionists</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get Started</h4>
+          <a href="signup-client.html">Sign Up as Client</a>
+          <a href="signup-trainer.html">Apply as Trainer</a>
+          <a href="signup-nutritionist.html">Apply as Nutritionist</a>
+          <a href="signup-gym.html">Partner as Gym</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Shape. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Log Workout Modal -->
+  <div class="modal-overlay" id="logWorkoutModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAllModals()">&times;</button>
+      <h2>Log a Workout</h2>
+      <p class="subtitle">Record your training session</p>
+      <div class="form-group">
+        <label>Workout Name</label>
+        <input type="text" id="logName" placeholder="e.g. Upper Body Strength">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="logType">
+          <option>Strength</option>
+          <option>HIIT</option>
+          <option>Cardio</option>
+          <option>Yoga</option>
+          <option>Boxing</option>
+          <option>CrossFit</option>
+          <option>Pilates</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Duration (minutes)</label>
+        <input type="number" id="logDuration" placeholder="45" min="1">
+      </div>
+      <div class="form-group">
+        <label>Difficulty</label>
+        <select id="logDifficulty">
+          <option>Easy</option>
+          <option>Moderate</option>
+          <option>Hard</option>
+          <option>Intense</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Notes (optional)</label>
+        <input type="text" id="logNotes" placeholder="How did it feel?">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="saveLoggedWorkout()">Save Workout</button>
+    </div>
+  </div>
+
+  <!-- Schedule Workout Modal -->
+  <div class="modal-overlay" id="scheduleWorkoutModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAllModals()">&times;</button>
+      <h2>Schedule Workout</h2>
+      <p class="subtitle" id="scheduleDayLabel"></p>
+      <div class="form-group">
+        <label>Workout Name</label>
+        <input type="text" id="scheduleName" placeholder="e.g. Leg Day">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="scheduleType">
+          <option>Strength</option>
+          <option>HIIT</option>
+          <option>Cardio</option>
+          <option>Yoga</option>
+          <option>Boxing</option>
+          <option>CrossFit</option>
+          <option>Pilates</option>
+          <option>Rest Day</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Time</label>
+        <input type="text" id="scheduleTime" placeholder="e.g. 7:00 AM">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="saveScheduledWorkout()">Add to Schedule</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <script src="progress.js"></script>
+</body>
+</html>

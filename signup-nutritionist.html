@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nutritionist Application — Shape</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+  <nav class="signup-nav">
+    <a href="landing.html"><img src="logo.png" alt="Shape"></a>
+    <a href="login.html" class="nav-link">Already have an account?</a>
+  </nav>
+
+  <div class="signup-layout">
+    <div class="signup-sidebar sidebar-accent">
+      <div class="sidebar-content">
+        <div class="sidebar-icon">03</div>
+        <h2>Share your<br>nutrition expertise</h2>
+        <p>Help clients eat better and earn recurring revenue from your meal plans and coaching.</p>
+        <ul class="sidebar-perks">
+          <li><span class="perk-check">&#10003;</span> Create custom meal plans</li>
+          <li><span class="perk-check">&#10003;</span> Offer macro coaching</li>
+          <li><span class="perk-check">&#10003;</span> Reach clients worldwide</li>
+          <li><span class="perk-check">&#10003;</span> Set your own subscription price</li>
+          <li><span class="perk-check">&#10003;</span> We handle payments & billing</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="signup-form-side">
+      <div class="signup-form-container">
+        <div class="signup-step-indicator">
+          <div class="step-dot active"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+        </div>
+
+        <h1>Apply as a nutritionist</h1>
+        <p class="signup-subtitle">Step 1 of 3 — Personal information</p>
+
+        <form onsubmit="event.preventDefault(); goToStep(2);" id="step1">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" placeholder="Sarah" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" placeholder="Mitchell" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="nutritionist@example.com" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="Min. 8 characters" required>
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); goToStep(3);" id="step2" style="display:none;">
+          <div class="form-group">
+            <label>Specialty</label>
+            <select required>
+              <option value="">Select your specialty</option>
+              <option>Sports Nutrition</option>
+              <option>Weight Management</option>
+              <option>Plant-Based Nutrition</option>
+              <option>Gut Health & Wellness</option>
+              <option>Prenatal & Postnatal</option>
+              <option>Meal Prep & Budget</option>
+              <option>Clinical Nutrition</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Credentials / Certifications</label>
+            <input type="text" placeholder="e.g. RD, CNS, PhD in Nutritional Science">
+          </div>
+          <div class="form-group">
+            <label>Years of experience</label>
+            <select>
+              <option>1-2 years</option>
+              <option>3-5 years</option>
+              <option>5-10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); completeSignup();" id="step3" style="display:none;">
+          <div class="form-group">
+            <label>Monthly subscription price</label>
+            <div class="price-input">
+              <span class="price-prefix">$</span>
+              <input type="number" placeholder="24.99" min="5" step="0.01">
+              <span class="price-suffix">/ mo</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Services you'll offer</label>
+            <div class="checkbox-group">
+              <label class="checkbox-option"><input type="checkbox" checked> <span>Custom meal plans</span></label>
+              <label class="checkbox-option"><input type="checkbox" checked> <span>Macro coaching</span></label>
+              <label class="checkbox-option"><input type="checkbox"> <span>Supplement guidance</span></label>
+              <label class="checkbox-option"><input type="checkbox"> <span>Grocery shopping lists</span></label>
+              <label class="checkbox-option"><input type="checkbox"> <span>Recipe library</span></label>
+            </div>
+          </div>
+          <div class="form-group terms">
+            <label class="checkbox-option">
+              <input type="checkbox" required>
+              <span>I agree to the <a href="#">Provider Agreement</a> and <a href="#">Terms of Service</a></span>
+            </label>
+          </div>
+          <button type="submit" class="btn-submit">Submit Application</button>
+        </form>
+
+        <p class="signup-footer-text">
+          <a href="landing.html">&#8592; Back to profile selection</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    function goToStep(step) {
+      document.getElementById('step' + currentStep).style.display = 'none';
+      document.getElementById('step' + step).style.display = 'block';
+      currentStep = step;
+      const dots = document.querySelectorAll('.step-dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i < step));
+      const lines = document.querySelectorAll('.step-line');
+      lines.forEach((l, i) => l.classList.toggle('active', i < step - 1));
+      const titles = ['Step 1 of 3 — Personal information', 'Step 2 of 3 — Professional background', 'Step 3 of 3 — Services & pricing'];
+      document.querySelector('.signup-subtitle').textContent = titles[step - 1];
+    }
+    function completeSignup() {
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

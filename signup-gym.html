@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gym & Studio Partnership — Shape</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+  <nav class="signup-nav">
+    <a href="landing.html"><img src="logo.png" alt="Shape"></a>
+    <a href="login.html" class="nav-link">Already have an account?</a>
+  </nav>
+
+  <div class="signup-layout">
+    <div class="signup-sidebar sidebar-warm">
+      <div class="sidebar-content">
+        <div class="sidebar-icon">04</div>
+        <h2>Partner your<br>gym with Shape</h2>
+        <p>List your facility, onboard trainers, and reach new members through our platform.</p>
+        <ul class="sidebar-perks">
+          <li><span class="perk-check">&#10003;</span> List your gym or studio</li>
+          <li><span class="perk-check">&#10003;</span> Onboard your trainer team</li>
+          <li><span class="perk-check">&#10003;</span> Offer digital memberships</li>
+          <li><span class="perk-check">&#10003;</span> Analytics & reporting dashboard</li>
+          <li><span class="perk-check">&#10003;</span> Dedicated partner support</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="signup-form-side">
+      <div class="signup-form-container">
+        <div class="signup-step-indicator">
+          <div class="step-dot active"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+        </div>
+
+        <h1>Register your gym</h1>
+        <p class="signup-subtitle">Step 1 of 3 — Contact information</p>
+
+        <form onsubmit="event.preventDefault(); goToStep(2);" id="step1">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+              <label>Role</label>
+              <select>
+                <option>Owner</option>
+                <option>Manager</option>
+                <option>Marketing Director</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Business Email</label>
+            <input type="email" placeholder="contact@yourgym.com" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="Min. 8 characters" required>
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); goToStep(3);" id="step2" style="display:none;">
+          <div class="form-group">
+            <label>Gym / Studio Name</label>
+            <input type="text" placeholder="e.g. Iron House Fitness" required>
+          </div>
+          <div class="form-group">
+            <label>Facility Type</label>
+            <select>
+              <option>Full-Service Gym</option>
+              <option>Boutique Studio</option>
+              <option>CrossFit Box</option>
+              <option>Yoga Studio</option>
+              <option>Boxing Gym</option>
+              <option>Pilates Studio</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" placeholder="City, State / Country">
+          </div>
+          <div class="form-group">
+            <label>Number of trainers on staff</label>
+            <select>
+              <option>1-5</option>
+              <option>6-15</option>
+              <option>16-30</option>
+              <option>30+</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); completeSignup();" id="step3" style="display:none;">
+          <div class="form-group">
+            <label>What are you looking to achieve with Shape?</label>
+            <div class="checkbox-group">
+              <label class="checkbox-option"><input type="checkbox" checked> <span>Attract new members online</span></label>
+              <label class="checkbox-option"><input type="checkbox" checked> <span>Offer digital training programs</span></label>
+              <label class="checkbox-option"><input type="checkbox"> <span>Monetize trainers' expertise</span></label>
+              <label class="checkbox-option"><input type="checkbox"> <span>Provide hybrid in-person + online</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Website (optional)</label>
+            <input type="url" placeholder="https://yourgym.com">
+          </div>
+          <div class="form-group terms">
+            <label class="checkbox-option">
+              <input type="checkbox" required>
+              <span>I agree to the <a href="#">Partner Agreement</a> and <a href="#">Terms of Service</a></span>
+            </label>
+          </div>
+          <button type="submit" class="btn-submit">Submit Partnership Request</button>
+        </form>
+
+        <p class="signup-footer-text">
+          <a href="landing.html">&#8592; Back to profile selection</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    function goToStep(step) {
+      document.getElementById('step' + currentStep).style.display = 'none';
+      document.getElementById('step' + step).style.display = 'block';
+      currentStep = step;
+      const dots = document.querySelectorAll('.step-dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i < step));
+      const lines = document.querySelectorAll('.step-line');
+      lines.forEach((l, i) => l.classList.toggle('active', i < step - 1));
+      const titles = ['Step 1 of 3 — Contact information', 'Step 2 of 3 — Facility details', 'Step 3 of 3 — Goals & submit'];
+      document.querySelector('.signup-subtitle').textContent = titles[step - 1];
+    }
+    function completeSignup() {
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

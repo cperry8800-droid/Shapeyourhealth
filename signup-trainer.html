@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trainer Application — Shape</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+  <nav class="signup-nav">
+    <a href="landing.html"><img src="logo.png" alt="Shape"></a>
+    <a href="login.html" class="nav-link">Already have an account?</a>
+  </nav>
+
+  <div class="signup-layout">
+    <div class="signup-sidebar sidebar-dark">
+      <div class="sidebar-content">
+        <div class="sidebar-icon">02</div>
+        <h2>Grow your<br>training business</h2>
+        <p>Join 200+ trainers earning recurring revenue on Shape's platform.</p>
+        <ul class="sidebar-perks">
+          <li><span class="perk-check">&#10003;</span> Set your own pricing</li>
+          <li><span class="perk-check">&#10003;</span> Publish workout programs</li>
+          <li><span class="perk-check">&#10003;</span> Get paid monthly</li>
+          <li><span class="perk-check">&#10003;</span> Built-in client management</li>
+          <li><span class="perk-check">&#10003;</span> Shape handles billing & marketing</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="signup-form-side">
+      <div class="signup-form-container">
+        <div class="signup-step-indicator">
+          <div class="step-dot active"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+          <div class="step-line"></div>
+          <div class="step-dot"></div>
+        </div>
+
+        <h1>Apply as a trainer</h1>
+        <p class="signup-subtitle">Step 1 of 3 — Personal information</p>
+
+        <form onsubmit="event.preventDefault(); goToStep(2);" id="step1">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" placeholder="Jane" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" placeholder="Smith" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="trainer@example.com" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="Min. 8 characters" required>
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); goToStep(3);" id="step2" style="display:none;">
+          <div class="form-group">
+            <label>Specialty</label>
+            <select required>
+              <option value="">Select your specialty</option>
+              <option>Strength & Powerlifting</option>
+              <option>HIIT & Fat Loss</option>
+              <option>Yoga & Mobility</option>
+              <option>Boxing & Combat</option>
+              <option>CrossFit & Functional</option>
+              <option>Pilates & Core</option>
+              <option>Bodybuilding</option>
+              <option>Sports Performance</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Years of experience</label>
+            <select>
+              <option>1-2 years</option>
+              <option>3-5 years</option>
+              <option>5-10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Certifications</label>
+            <input type="text" placeholder="e.g. NASM, ACE, ISSA, CrossFit L2">
+          </div>
+          <button type="submit" class="btn-submit">Continue</button>
+        </form>
+
+        <form onsubmit="event.preventDefault(); completeSignup();" id="step3" style="display:none;">
+          <div class="form-group">
+            <label>Monthly subscription price you'd like to charge</label>
+            <div class="price-input">
+              <span class="price-prefix">$</span>
+              <input type="number" placeholder="29.99" min="5" step="0.01">
+              <span class="price-suffix">/ mo</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Short bio (displayed on your profile)</label>
+            <textarea placeholder="Tell potential clients about your training style and what makes you unique..." rows="4"></textarea>
+          </div>
+          <div class="form-group terms">
+            <label class="checkbox-option">
+              <input type="checkbox" required>
+              <span>I agree to the <a href="#">Trainer Agreement</a> and <a href="#">Terms of Service</a></span>
+            </label>
+          </div>
+          <button type="submit" class="btn-submit">Submit Application</button>
+        </form>
+
+        <p class="signup-footer-text">
+          <a href="landing.html">&#8592; Back to profile selection</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    function goToStep(step) {
+      document.getElementById('step' + currentStep).style.display = 'none';
+      document.getElementById('step' + step).style.display = 'block';
+      currentStep = step;
+      const dots = document.querySelectorAll('.step-dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i < step));
+      const lines = document.querySelectorAll('.step-line');
+      lines.forEach((l, i) => l.classList.toggle('active', i < step - 1));
+      const titles = ['Step 1 of 3 — Personal information', 'Step 2 of 3 — Professional background', 'Step 3 of 3 — Pricing & bio'];
+      document.querySelector('.signup-subtitle').textContent = titles[step - 1];
+    }
+    function completeSignup() {
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shape — Trainer Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Shape" class="logo-img">
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="ai-trainer.html">AI Trainer</a>
+        <a href="trainers.html">Trainers</a>
+        <a href="nutritionists.html">Nutritionists</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
+        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="tag">Trainer Dashboard</span>
+      <h1>Your <span class="gradient-text">clients</span></h1>
+      <p class="page-hero-sub">Monitor client progress, track workout completion, and manage your training business.</p>
+      <a href="messages.html" class="btn btn-primary" style="margin-top:24px;">Messages</a>
+    </div>
+  </section>
+
+  <!-- Dashboard Overview -->
+  <section class="section">
+    <div class="container">
+      <!-- Trainer Stats -->
+      <div class="progress-stats-row">
+        <div class="progress-stat-card">
+          <div class="progress-stat-number">24</div>
+          <div class="progress-stat-label">Active Clients</div>
+        </div>
+        <div class="progress-stat-card">
+          <div class="progress-stat-number">$2,847</div>
+          <div class="progress-stat-label">Revenue This Month</div>
+        </div>
+        <div class="progress-stat-card">
+          <div class="progress-stat-number">87%</div>
+          <div class="progress-stat-label">Client Retention</div>
+        </div>
+        <div class="progress-stat-card">
+          <div class="progress-stat-number">142</div>
+          <div class="progress-stat-label">Plans Sold</div>
+        </div>
+      </div>
+
+      <!-- Client List -->
+      <div class="td-section">
+        <div class="td-section-header">
+          <h2>Client Overview</h2>
+          <div class="td-filters">
+            <button class="filter-btn active" onclick="filterClients('all', this)">All</button>
+            <button class="filter-btn" onclick="filterClients('active', this)">Active</button>
+            <button class="filter-btn" onclick="filterClients('inactive', this)">Needs Attention</button>
+          </div>
+        </div>
+        <div class="td-client-list" id="clientList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Expanded Client Detail -->
+      <div class="td-section" id="clientDetailSection" style="display:none;">
+        <div class="td-section-header">
+          <h2 id="clientDetailName"></h2>
+          <button class="btn btn-sm btn-outline" onclick="closeClientDetail()">Back to All Clients</button>
+        </div>
+        <div id="clientDetailContent"></div>
+      </div>
+
+      <!-- Plan Sales -->
+      <div class="td-section">
+        <div class="td-section-header">
+          <h2>Recent Plan Sales</h2>
+        </div>
+        <div class="td-sales-list" id="salesList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="logo.png" alt="Shape" class="logo-img">
+          </a>
+          <p class="footer-desc">Your body. Your Shape. Subscribe to expert trainers and nutritionists, on your terms.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="ai-trainer.html">AI Trainer</a>
+          <a href="trainers.html">Trainers</a>
+          <a href="nutritionists.html">Nutritionists</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get Started</h4>
+          <a href="signup-client.html">Sign Up as Client</a>
+          <a href="signup-trainer.html">Apply as Trainer</a>
+          <a href="signup-nutritionist.html">Apply as Nutritionist</a>
+          <a href="signup-gym.html">Partner as Gym</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Shape. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <script src="trainer-dashboard.js"></script>
+</body>
+</html>

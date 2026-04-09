@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shape — Personal Trainers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Shape" class="logo-img">
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="ai-trainer.html">AI Trainer</a>
+        <a href="trainers.html" class="nav-active">Trainers</a>
+        <a href="nutritionists.html">Nutritionists</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
+        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="tag">Personal Trainers</span>
+      <h1>Train with the <span class="gradient-text">best</span></h1>
+      <p class="page-hero-sub">Each trainer brings their own style, specialty, and pricing. Find the perfect fit for your goals.</p>
+    </div>
+  </section>
+
+  <!-- Trainer of the Month -->
+  <section class="section section-alt" id="trainerOfMonth">
+    <div class="container">
+      <span class="tag">Trainer of the Month</span>
+      <div class="totm-card" id="totmCard">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Trainers Section -->
+  <section class="section">
+    <div class="container">
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="strength">Strength</button>
+        <button class="filter-btn" data-filter="hiit">HIIT</button>
+        <button class="filter-btn" data-filter="yoga">Yoga</button>
+        <button class="filter-btn" data-filter="boxing">Boxing</button>
+        <button class="filter-btn" data-filter="crossfit">CrossFit</button>
+        <button class="filter-btn" data-filter="pilates">Pilates</button>
+      </div>
+
+      <div class="card-grid" id="trainerGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to start training?</h2>
+      <p>Create your free account and subscribe to any trainer.</p>
+      <a href="landing.html" class="btn btn-primary btn-lg">Get Started — It's Free</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="logo.png" alt="Shape" class="logo-img">
+          </a>
+          <p class="footer-desc">Your body. Your Shape. Subscribe to expert trainers and nutritionists, on your terms.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="ai-trainer.html">AI Trainer</a>
+          <a href="trainers.html">Trainers</a>
+          <a href="nutritionists.html">Nutritionists</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get Started</h4>
+          <a href="signup-client.html">Sign Up as Client</a>
+          <a href="signup-trainer.html">Apply as Trainer</a>
+          <a href="signup-nutritionist.html">Apply as Nutritionist</a>
+          <a href="signup-gym.html">Partner as Gym</a>
+          <a href="progress.html">My Progress</a>
+          <a href="trainer-dashboard.html">Trainer Dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Shape. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Trainer Detail Modal -->
+  <div class="modal-overlay" id="trainerModal">
+    <div class="modal modal-lg">
+      <button class="modal-close" onclick="closeAllModals()">&times;</button>
+      <div id="trainerModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

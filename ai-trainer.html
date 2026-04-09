@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shape — AI Trainers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .ai-select-section { padding: 0 0 80px; }
+    .ai-select-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 800px;
+      margin: 0 auto;
+    }
+    .ai-select-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 40px; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+    }
+    .ai-select-card:hover { border-color: var(--text); }
+    .ai-select-card.selected { border-color: var(--accent-dark); background: rgba(45, 212, 191, 0.03); }
+    .ai-select-avatar {
+      width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.6rem; color: #fff;
+    }
+    .ai-select-card h3 {
+      font-size: 1.3rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px;
+    }
+    .ai-select-role {
+      font-size: 0.78rem; color: var(--accent-dark); font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;
+    }
+    .ai-select-desc {
+      font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; font-weight: 300;
+    }
+    .ai-select-traits {
+      display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 16px;
+    }
+    .ai-select-traits span {
+      padding: 4px 12px; font-size: 0.7rem; background: var(--bg-alt);
+      color: var(--text-muted); font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .ai-trainer-section { display: none; }
+    .ai-trainer-section.active { display: block; }
+
+    @media (max-width: 768px) {
+      .ai-select-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Shape" class="logo-img">
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="ai-trainer.html" class="nav-active">AI Trainer</a>
+        <a href="trainers.html">Trainers</a>
+        <a href="nutritionists.html">Nutritionists</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
+        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="tag">AI-Powered</span>
+      <h1>Choose your <span class="gradient-text">AI Trainer</span></h1>
+      <p class="page-hero-sub">Two AI trainers, two coaching styles. Pick the one that matches your energy and start building your personalized workout.</p>
+    </div>
+  </section>
+
+  <!-- Trainer Selection -->
+  <section class="ai-select-section">
+    <div class="container">
+      <div class="ai-select-grid">
+        <div class="ai-select-card" id="selectNova" onclick="selectTrainer('nova')">
+          <div class="ai-select-avatar" style="background: var(--accent-dark);">N</div>
+          <h3>Nova</h3>
+          <p class="ai-select-desc">Encouraging and methodical. Nova focuses on form, recovery, and sustainable progress. Great for balanced training and flexibility.</p>
+          <div class="ai-select-traits">
+            <span>Supportive</span>
+            <span>Detail-Oriented</span>
+            <span>Recovery-Focused</span>
+          </div>
+        </div>
+        <div class="ai-select-card" id="selectSebastian" onclick="selectTrainer('atlas')">
+          <div class="ai-select-avatar" style="background: var(--text);">S</div>
+          <h3>Sebastian</h3>
+          <p class="ai-select-desc">Direct and high-energy. Sebastian pushes you to your limits with intense programming and no-nonsense coaching. Built for performance.</p>
+          <div class="ai-select-traits">
+            <span>Intense</span>
+            <span>Performance-Driven</span>
+            <span>No Excuses</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Trainer Session (shown after selection) -->
+  <section class="section ai-trainer-section" id="aiTrainerSession">
+    <div class="container">
+      <div class="ai-trainer-layout">
+
+        <!-- Features -->
+        <div class="ai-trainer-features">
+          <div class="ai-trainer-intro">
+            <div class="ai-trainer-name-card">
+              <div class="ai-trainer-name-avatar" id="trainerAvatar">N</div>
+              <div>
+                <h3 id="trainerNameDisplay">Nova</h3>
+                <span>Shape AI Trainer</span>
+              </div>
+            </div>
+            <p class="ai-trainer-bio" id="trainerBioDisplay">Nova is Shape's AI-powered personal trainer. Built on years of exercise science data, Nova creates personalized workout plans tailored to your fitness level, goals, and available equipment.</p>
+          </div>
+
+          <div class="ai-feature">
+            <div class="ai-feature-icon" style="font-size:0.85rem;font-weight:600;">01</div>
+            <div>
+              <h4>Instant Workouts</h4>
+              <p>Generate a full workout in seconds based on your goals, experience, and available equipment.</p>
+            </div>
+          </div>
+          <div class="ai-feature">
+            <div class="ai-feature-icon" style="font-size:0.85rem;font-weight:600;">02</div>
+            <div>
+              <h4>Goal-Specific</h4>
+              <p>Whether it's fat loss, muscle gain, endurance, or flexibility — your trainer adapts to your target.</p>
+            </div>
+          </div>
+          <div class="ai-feature">
+            <div class="ai-feature-icon" style="font-size:0.85rem;font-weight:600;">03</div>
+            <div>
+              <h4>Progressive Overload</h4>
+              <p>Workouts get harder over time. Intensity adjusts as you level up.</p>
+            </div>
+          </div>
+          <div class="ai-feature">
+            <div class="ai-feature-icon" style="font-size:0.85rem;font-weight:600;">04</div>
+            <div>
+              <h4>Any Duration</h4>
+              <p>From a quick 15-minute burner to a full 60-minute session — you choose the length.</p>
+            </div>
+          </div>
+
+          <button class="btn btn-outline" onclick="switchTrainer()" id="switchBtn">Switch to Sebastian</button>
+        </div>
+
+        <!-- Chat -->
+        <div class="ai-chat-container" id="aiChatContainer">
+          <div class="ai-chat-header" id="aiChatHeader">
+            <div class="ai-chat-avatar" style="background: var(--accent-dark);" id="chatAvatar">N</div>
+            <div>
+              <strong id="chatName">Nova</strong>
+              <span class="ai-status">Online</span>
+            </div>
+          </div>
+          <div class="ai-chat-messages" id="aiChatMessages">
+            <!-- Populated by JS on trainer selection -->
+          </div>
+          <div class="ai-chat-input">
+            <input type="text" id="aiInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')aiSendMessage()">
+            <button onclick="aiSendMessage()" class="ai-send-btn">&#10148;</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Want a human touch?</h2>
+      <p>Browse our expert personal trainers for custom programs and 1-on-1 coaching.</p>
+      <a href="trainers.html" class="btn btn-primary btn-lg">Browse Trainers</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo">
+            <img src="logo.png" alt="Shape" class="logo-img">
+          </a>
+          <p class="footer-desc">Your body. Your Shape. Subscribe to expert trainers and nutritionists, on your terms.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="ai-trainer.html">AI Trainer</a>
+          <a href="trainers.html">Trainers</a>
+          <a href="nutritionists.html">Nutritionists</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get Started</h4>
+          <a href="signup-client.html">Sign Up as Client</a>
+          <a href="signup-trainer.html">Apply as Trainer</a>
+          <a href="signup-nutritionist.html">Apply as Nutritionist</a>
+          <a href="signup-gym.html">Partner as Gym</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Shape. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <script>
+    const aiTrainers = {
+      nova: {
+        name: 'Nova',
+        initial: 'N',
+        color: 'var(--accent-dark)',
+        bio: "Nova is Shape's female AI trainer. Encouraging and methodical, she focuses on form, recovery, and sustainable progress. Nova creates balanced workout plans tailored to your fitness level and goals.",
+        greeting: "Hey! I'm <strong>Nova</strong>, your AI trainer. I'll build you a personalized workout right now. Let's start — what's your <strong>fitness goal</strong>?",
+        placeholder: "Type a message to Nova...",
+      },
+      atlas: {
+        name: 'Sebastian',
+        initial: 'S',
+        color: 'var(--text)',
+        bio: "Sebastian is Shape's male AI trainer. Direct and high-energy, he pushes you to your limits with intense programming. Sebastian builds performance-focused workouts designed to maximize results.",
+        greeting: "What's up. I'm <strong>Sebastian</strong>. Let's get to work — no fluff, just results. Tell me your <strong>fitness goal</strong> and I'll build you something serious.",
+        placeholder: "Type a message to Sebastian...",
+      }
+    };
+
+    let currentAiTrainer = null;
+
+    function selectTrainer(type) {
+      currentAiTrainer = type;
+      const t = aiTrainers[type];
+
+      // Highlight selected card
+      document.getElementById('selectNova').classList.toggle('selected', type === 'nova');
+      document.getElementById('selectSebastian').classList.toggle('selected', type === 'atlas');
+
+      // Show trainer session
+      document.getElementById('aiTrainerSession').classList.add('active');
+
+      // Update sidebar info
+      document.getElementById('trainerAvatar').textContent = t.initial;
+      document.getElementById('trainerAvatar').style.background = t.color;
+      document.getElementById('trainerNameDisplay').textContent = t.name;
+      document.getElementById('trainerBioDisplay').textContent = t.bio;
+
+      // Update switch button
+      const other = type === 'nova' ? 'Sebastian' : 'Nova';
+      document.getElementById('switchBtn').textContent = `Switch to ${other}`;
+
+      // Update chat header
+      document.getElementById('chatAvatar').textContent = t.initial;
+      document.getElementById('chatAvatar').style.background = t.color;
+      document.getElementById('chatName').textContent = t.name;
+
+      // Update input placeholder
+      document.getElementById('aiInput').placeholder = t.placeholder;
+
+      // Reset chat and AI state
+      aiState.step = 'goal';
+      aiState.goal = '';
+      aiState.level = '';
+      aiState.equipment = '';
+      aiState.duration = '';
+
+      const messages = document.getElementById('aiChatMessages');
+      messages.innerHTML = `
+        <div class="ai-msg ai-msg-bot">
+          <p>${t.greeting}</p>
+          <div class="ai-quick-replies">
+            <button onclick="aiSelectOption('goal', 'Muscle Gain')">Muscle Gain</button>
+            <button onclick="aiSelectOption('goal', 'Fat Loss')">Fat Loss</button>
+            <button onclick="aiSelectOption('goal', 'Endurance')">Endurance</button>
+            <button onclick="aiSelectOption('goal', 'Flexibility')">Flexibility</button>
+            <button onclick="aiSelectOption('goal', 'General Fitness')">General Fitness</button>
+          </div>
+        </div>
+      `;
+
+      // Scroll to chat
+      document.getElementById('aiTrainerSession').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function switchTrainer() {
+      const next = currentAiTrainer === 'nova' ? 'atlas' : 'nova';
+      selectTrainer(next);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,806 @@
+// ===== Data =====
+const trainers = [
+  {
+    id: 1, name: "Marcus Johnson", specialty: "Strength & Powerlifting",
+    category: "strength", price: 29.99, rating: 4.9, subscribers: 1240, experience: "12 yrs",
+    bio: "Former competitive powerlifter turned coach. Specializes in progressive overload programs for all levels.",
+    color: "#6C3AED", trainerOfMonth: true,
+    totmQuote: "Consistency beats intensity. Show up every day and the results will follow.",
+    workouts: [
+      { name: "5x5 Foundation", type: "Strength", duration: "55 min", difficulty: "Intermediate", price: 9.99, description: "The classic 5x5 program adapted for progressive overload. Perfect for building raw strength." },
+      { name: "Deadlift Domination", type: "Powerlifting", duration: "60 min", difficulty: "Advanced", price: 14.99, description: "A 6-week deadlift specialization program to break through plateaus." },
+      { name: "Upper Body Blast", type: "Hypertrophy", duration: "45 min", difficulty: "Beginner", price: 7.99, description: "High-volume upper body routine focused on chest, back, and shoulders." },
+      { name: "Leg Day Legends", type: "Strength", duration: "50 min", difficulty: "Intermediate", price: 9.99, description: "Squat-focused leg day with accessory work for complete lower body development." },
+    ],
+    tags: ["Powerlifting", "Hypertrophy", "Strength"]
+  },
+  {
+    id: 2, name: "Aisha Patel", specialty: "HIIT & Fat Loss",
+    category: "hiit", price: 19.99, rating: 4.8, subscribers: 2100, experience: "8 yrs",
+    bio: "High-energy coach known for efficient, no-equipment HIIT sessions that burn maximum calories in minimum time.",
+    color: "#EC4899",
+    workouts: [
+      { name: "20-Min Torch", type: "HIIT", duration: "20 min", difficulty: "Beginner", price: 4.99, description: "Quick full-body HIIT session perfect for busy mornings." },
+      { name: "Tabata Inferno", type: "HIIT", duration: "30 min", difficulty: "Advanced", price: 9.99, description: "Intense Tabata protocol with 8 rounds of 20/10 intervals." },
+      { name: "Full Body Burn", type: "Cardio", duration: "40 min", difficulty: "Intermediate", price: 7.99, description: "No-equipment cardio workout that torches calories head to toe." },
+      { name: "Core Crusher", type: "HIIT", duration: "15 min", difficulty: "Beginner", price: 4.99, description: "Targeted ab routine with HIIT-style pacing for maximum burn." },
+    ],
+    tags: ["HIIT", "Fat Loss", "No Equipment"]
+  },
+  {
+    id: 3, name: "Elena Vasquez", specialty: "Yoga & Mobility",
+    category: "yoga", price: 14.99, rating: 4.9, subscribers: 1870, experience: "15 yrs",
+    bio: "Certified yoga instructor blending traditional vinyasa with modern mobility work for athletes and desk workers.",
+    color: "#10B981",
+    workouts: [
+      { name: "Morning Flow", type: "Vinyasa", duration: "30 min", difficulty: "Beginner", price: 5.99, description: "Gentle vinyasa sequence to start your day with energy and focus." },
+      { name: "Deep Stretch Recovery", type: "Yin Yoga", duration: "45 min", difficulty: "Beginner", price: 5.99, description: "Slow-paced yin session targeting tight hips, hamstrings, and shoulders." },
+      { name: "Athlete's Mobility", type: "Mobility", duration: "35 min", difficulty: "Intermediate", price: 7.99, description: "Mobility drills designed for athletes to improve range of motion." },
+      { name: "Power Yoga Sculpt", type: "Power Yoga", duration: "50 min", difficulty: "Advanced", price: 9.99, description: "Challenging power yoga flow that builds strength and flexibility." },
+    ],
+    tags: ["Yoga", "Mobility", "Recovery"]
+  },
+  {
+    id: 4, name: "Damon Clarke", specialty: "Boxing & Combat",
+    category: "boxing", price: 24.99, rating: 4.7, subscribers: 890, experience: "10 yrs",
+    bio: "Pro boxing coach bringing ring-tested training to your home. Build speed, power, and unshakeable cardio.",
+    color: "#F59E0B",
+    workouts: [
+      { name: "Shadow Boxing Basics", type: "Boxing", duration: "25 min", difficulty: "Beginner", price: 6.99, description: "Learn the fundamentals of boxing footwork, jabs, and combinations." },
+      { name: "Heavy Bag Warfare", type: "Boxing", duration: "40 min", difficulty: "Advanced", price: 12.99, description: "High-intensity bag work with power combos and defensive drills." },
+      { name: "Fighter's Conditioning", type: "Cardio", duration: "45 min", difficulty: "Intermediate", price: 9.99, description: "Cardio conditioning based on real fighter training camp circuits." },
+      { name: "Speed & Reflexes", type: "Boxing", duration: "30 min", difficulty: "Intermediate", price: 7.99, description: "Reaction drills and speed work to sharpen your boxing instincts." },
+    ],
+    tags: ["Boxing", "Cardio", "Combat"]
+  },
+  {
+    id: 5, name: "Sophie Turner", specialty: "CrossFit & Functional",
+    category: "crossfit", price: 34.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
+    bio: "CrossFit L3 certified. Builds programs that make you stronger, faster, and ready for anything life throws at you.",
+    color: "#EF4444",
+    workouts: [
+      { name: "WOD: The Grinder", type: "CrossFit", duration: "35 min", difficulty: "Advanced", price: 11.99, description: "Brutal WOD combining heavy lifts with metabolic conditioning." },
+      { name: "Functional Foundations", type: "Functional", duration: "40 min", difficulty: "Beginner", price: 7.99, description: "Master the basic functional movements before scaling up." },
+      { name: "Olympic Lifting 101", type: "Weightlifting", duration: "50 min", difficulty: "Intermediate", price: 14.99, description: "Clean & jerk and snatch technique breakdown with progressions." },
+      { name: "MetCon Mayhem", type: "CrossFit", duration: "25 min", difficulty: "Advanced", price: 9.99, description: "Short, brutal metabolic conditioning workout. No rest for the wicked." },
+    ],
+    tags: ["CrossFit", "Functional", "Olympic Lifting"]
+  },
+  {
+    id: 6, name: "Liam Chen", specialty: "Pilates & Core",
+    category: "pilates", price: 17.99, rating: 4.9, subscribers: 1340, experience: "11 yrs",
+    bio: "Classical Pilates instructor with a modern twist. Focuses on core strength, posture correction, and body awareness.",
+    color: "#8B5CF6",
+    workouts: [
+      { name: "Mat Pilates Essentials", type: "Pilates", duration: "40 min", difficulty: "Beginner", price: 6.99, description: "Classical mat Pilates series for core stability and body control." },
+      { name: "Core Control", type: "Pilates", duration: "30 min", difficulty: "Intermediate", price: 7.99, description: "Focused core work using Pilates principles for deep stabilization." },
+      { name: "Posture Perfect", type: "Corrective", duration: "25 min", difficulty: "Beginner", price: 5.99, description: "Corrective exercises to fix common posture issues from desk work." },
+      { name: "Advanced Reformer Flow", type: "Pilates", duration: "50 min", difficulty: "Advanced", price: 12.99, description: "Advanced Pilates flow mimicking reformer movements on the mat." },
+    ],
+    tags: ["Pilates", "Core", "Posture"]
+  },
+];
+
+const nutritionists = [
+  {
+    id: 101, name: "Dr. Sarah Mitchell", specialty: "Sports Nutrition",
+    price: 39.99, rating: 4.9, subscribers: 980, experience: "14 yrs",
+    bio: "PhD in Nutritional Science. Specializes in performance nutrition for athletes — from amateur to Olympic level.",
+    color: "#10B981",
+    services: ["Custom meal plans", "Macro coaching", "Supplement guidance", "Competition prep"],
+    tags: ["Performance", "Athletes", "Macro Coaching"]
+  },
+  {
+    id: 102, name: "James Okafor", specialty: "Weight Management",
+    price: 24.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
+    bio: "Registered dietitian focused on sustainable weight loss. No fad diets — just science-backed strategies that stick.",
+    color: "#6C3AED",
+    services: ["Calorie-deficit plans", "Habit coaching", "Weekly check-ins", "Grocery guides"],
+    tags: ["Weight Loss", "Sustainable", "Habit Coaching"]
+  },
+  {
+    id: 103, name: "Maria Santos", specialty: "Plant-Based Nutrition",
+    price: 19.99, rating: 4.7, subscribers: 1120, experience: "7 yrs",
+    bio: "Certified plant-based nutritionist helping people thrive on vegan and vegetarian diets without missing nutrients.",
+    color: "#EC4899",
+    services: ["Vegan meal plans", "Nutrient optimization", "Recipe library", "Transition coaching"],
+    tags: ["Vegan", "Plant-Based", "Whole Foods"]
+  },
+  {
+    id: 104, name: "Dr. Kevin Park", specialty: "Gut Health & Wellness",
+    price: 34.99, rating: 4.9, subscribers: 760, experience: "16 yrs",
+    bio: "Functional medicine nutritionist specializing in gut health, food sensitivities, and anti-inflammatory protocols.",
+    color: "#F59E0B",
+    services: ["Elimination protocols", "Gut healing plans", "Food sensitivity guidance", "Anti-inflammatory diets"],
+    tags: ["Gut Health", "Functional", "Anti-Inflammatory"]
+  },
+  {
+    id: 105, name: "Rachel Kim", specialty: "Prenatal & Postnatal",
+    price: 29.99, rating: 4.8, subscribers: 540, experience: "10 yrs",
+    bio: "Specializes in nutrition for expecting and new mothers. Ensures optimal nutrition for both mom and baby.",
+    color: "#8B5CF6",
+    services: ["Trimester-specific plans", "Postnatal recovery nutrition", "Lactation support", "Iron & folate optimization"],
+    tags: ["Prenatal", "Postnatal", "Maternal Health"]
+  },
+  {
+    id: 106, name: "Alex Rivera", specialty: "Meal Prep & Budget",
+    price: 12.99, rating: 4.7, subscribers: 2200, experience: "6 yrs",
+    bio: "Makes healthy eating affordable and easy. Weekly meal prep plans that save time, money, and taste amazing.",
+    color: "#EF4444",
+    services: ["Budget meal plans", "Batch cooking guides", "Shopping lists", "Quick recipes under 20 min"],
+    tags: ["Budget-Friendly", "Meal Prep", "Quick Recipes"]
+  },
+];
+
+// ===== Render Functions =====
+function createTrainerCard(trainer) {
+  const initials = trainer.name.split(' ').map(n => n[0]).join('');
+  return `
+    <div class="card" onclick="openTrainerModal(${trainer.id})" data-category="${trainer.category}">
+      <div class="card-banner" style="background: linear-gradient(135deg, ${trainer.color}33, ${trainer.color}11);">
+        ${trainer.avatar
+          ? `<img class="card-avatar-img" src="${trainer.avatar}" alt="${trainer.name}">`
+          : `<div class="card-avatar" style="background: ${trainer.color};">${initials}</div>`
+        }
+      </div>
+      <div class="card-body">
+        <h3>${trainer.name}</h3>
+        <div class="card-specialty">${trainer.specialty}</div>
+        <p class="card-desc">${trainer.bio}</p>
+        <div class="workout-tags">
+          ${trainer.tags.map(t => `<span class="workout-tag">${t}</span>`).join('')}
+        </div>
+        <div class="card-meta">
+          <span class="card-rating">&#9733; ${trainer.rating}</span>
+          <span>${trainer.subscribers.toLocaleString()} subscribers</span>
+          <span>${trainer.experience}</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">$${trainer.price}<span>/mo</span></div>
+          <button class="btn btn-sm btn-primary">View Workouts</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function createNutritionistCard(nutritionist) {
+  const initials = nutritionist.name.split(' ').map(n => n[0]).join('');
+  return `
+    <div class="card" onclick="openNutritionistModal(${nutritionist.id})">
+      <div class="card-banner" style="background: linear-gradient(135deg, ${nutritionist.color}33, ${nutritionist.color}11);">
+        ${nutritionist.avatar
+          ? `<img class="card-avatar-img" src="${nutritionist.avatar}" alt="${nutritionist.name}">`
+          : `<div class="card-avatar" style="background: ${nutritionist.color};">${initials}</div>`
+        }
+      </div>
+      <div class="card-body">
+        <h3>${nutritionist.name}</h3>
+        <div class="card-specialty">${nutritionist.specialty}</div>
+        <p class="card-desc">${nutritionist.bio}</p>
+        <div class="workout-tags">
+          ${nutritionist.tags.map(t => `<span class="workout-tag">${t}</span>`).join('')}
+        </div>
+        <div class="card-meta">
+          <span class="card-rating">&#9733; ${nutritionist.rating}</span>
+          <span>${nutritionist.subscribers.toLocaleString()} subscribers</span>
+          <span>${nutritionist.experience}</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">$${nutritionist.price}<span>/mo</span></div>
+          <button class="btn btn-sm btn-accent">View Plans</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===== Trainer of the Month =====
+const totmCard = document.getElementById('totmCard');
+if (totmCard) {
+  const totm = trainers.find(t => t.trainerOfMonth);
+  if (totm) {
+    const initials = totm.name.split(' ').map(n => n[0]).join('');
+    totmCard.innerHTML = `
+      <div class="totm-layout">
+        <div class="totm-avatar-area">
+          <div class="totm-avatar" style="background: ${totm.color};">${initials}</div>
+          <div class="totm-badge">Trainer of the Month</div>
+        </div>
+        <div class="totm-info">
+          <h2>${totm.name}</h2>
+          <div class="card-specialty">${totm.specialty}</div>
+          <p class="totm-quote">"${totm.totmQuote}"</p>
+          <p class="card-desc">${totm.bio}</p>
+          <div class="trainer-detail-stats">
+            <span>&#9733; ${totm.rating} rating</span>
+            <span>${totm.subscribers.toLocaleString()} subscribers</span>
+            <span>${totm.experience} experience</span>
+          </div>
+          <div style="margin-top: 24px; display: flex; gap: 12px;">
+            <button class="btn btn-primary" onclick="openTrainerModal(${totm.id})">View Workouts</button>
+            <button class="btn btn-outline" onclick="subscribe('${totm.name}', ${totm.price})">Subscribe — $${totm.price}/mo</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// ===== Init Cards =====
+const trainerGrid = document.getElementById('trainerGrid');
+const nutritionistGrid = document.getElementById('nutritionistGrid');
+if (trainerGrid) trainerGrid.innerHTML = trainers.map(createTrainerCard).join('');
+if (nutritionistGrid) nutritionistGrid.innerHTML = nutritionists.map(createNutritionistCard).join('');
+
+// ===== Filter =====
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    const cards = document.querySelectorAll('#trainerGrid .card');
+    cards.forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+// ===== Navbar Scroll =====
+const navbar = document.getElementById('navbar');
+if (navbar) {
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+}
+
+// ===== Mobile Nav =====
+const navToggle = document.getElementById('navToggle');
+if (navToggle) {
+  navToggle.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+}
+
+// ===== Modals =====
+function closeAllModals() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+  document.body.style.overflow = '';
+}
+
+function openTrainerModal(id) {
+  const t = trainers.find(tr => tr.id === id);
+  if (!t) return;
+  const initials = t.name.split(' ').map(n => n[0]).join('');
+  document.getElementById('trainerModalContent').innerHTML = `
+    <div class="trainer-detail-header">
+      <div class="trainer-detail-avatar" style="background: ${t.color};">${initials}</div>
+      <div class="trainer-detail-info">
+        <h2>${t.name}</h2>
+        <div class="card-specialty">${t.specialty}</div>
+        <p class="card-desc">${t.bio}</p>
+        <div class="trainer-detail-stats">
+          <span>&#9733; ${t.rating} rating</span>
+          <span>${t.subscribers.toLocaleString()} subscribers</span>
+          <span>${t.experience} experience</span>
+        </div>
+      </div>
+    </div>
+    <div class="workout-list">
+      <h3>Workout Plans — Buy Individually</h3>
+      ${t.workouts.map(w => `
+        <div class="workout-item-purchase">
+          <div class="workout-item-info">
+            <h4>${w.name}</h4>
+            <p>${w.description || w.type}</p>
+            <div class="workout-item-tags">
+              <span class="workout-tag">${w.type}</span>
+              <span class="workout-tag">${w.duration}</span>
+              <span class="workout-tag">${w.difficulty}</span>
+            </div>
+          </div>
+          <div class="workout-item-buy">
+            <div class="workout-item-price">$${w.price.toFixed(2)}</div>
+            <button class="btn btn-sm btn-outline" onclick="purchaseWorkout('${w.name}', ${w.price}, event)">Buy Plan</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="consult-section">
+      <h3>Not sure yet?</h3>
+      <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:16px;">Book a free 15-minute 1-on-1 consultation with ${t.name} before subscribing.</p>
+      <button class="btn btn-sm btn-accent" onclick="bookConsultation('${t.name}', 'trainer')">Book Free Consultation</button>
+    </div>
+    <div class="subscribe-bar">
+      <div>
+        <div class="card-price">$${t.price}<span>/mo</span></div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">Subscribe for all workouts + new plans monthly</div>
+      </div>
+      <button class="btn btn-primary" onclick="subscribe('${t.name}', ${t.price})">Subscribe Now</button>
+    </div>
+  `;
+  document.getElementById('trainerModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function openNutritionistModal(id) {
+  const n = nutritionists.find(nu => nu.id === id);
+  if (!n) return;
+  const initials = n.name.split(' ').map(w => w[0]).join('');
+  document.getElementById('trainerModalContent').innerHTML = `
+    <div class="trainer-detail-header">
+      <div class="trainer-detail-avatar" style="background: ${n.color};">${initials}</div>
+      <div class="trainer-detail-info">
+        <h2>${n.name}</h2>
+        <div class="card-specialty">${n.specialty}</div>
+        <p class="card-desc">${n.bio}</p>
+        <div class="trainer-detail-stats">
+          <span>&#9733; ${n.rating} rating</span>
+          <span>${n.subscribers.toLocaleString()} subscribers</span>
+          <span>${n.experience} experience</span>
+        </div>
+      </div>
+    </div>
+    <div class="workout-list">
+      <h3>What You Get</h3>
+      ${n.services.map(s => `
+        <div class="workout-item">
+          <div class="workout-item-info">
+            <h4>${s}</h4>
+          </div>
+          <div class="workout-item-meta">
+            <strong>Included</strong>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="consult-section">
+      <h3>Not sure yet?</h3>
+      <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:16px;">Book a free 15-minute 1-on-1 consultation with ${n.name} before subscribing.</p>
+      <button class="btn btn-sm btn-accent" onclick="bookConsultation('${n.name}', 'nutritionist')">Book Free Consultation</button>
+    </div>
+    <div class="subscribe-bar">
+      <div>
+        <div class="card-price">$${n.price}<span>/mo</span></div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">Cancel anytime</div>
+      </div>
+      <button class="btn btn-accent" onclick="subscribe('${n.name}', ${n.price})">Subscribe Now</button>
+    </div>
+  `;
+  document.getElementById('trainerModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function subscribe(name, price) {
+  closeAllModals();
+  showToast(`Subscribed to ${name} — $${price}/mo`);
+}
+
+function bookConsultation(name, type) {
+  closeAllModals();
+  window.location.href = `consultation.html?name=${encodeURIComponent(name)}&type=${encodeURIComponent(type)}`;
+}
+
+function purchaseWorkout(name, price, event) {
+  event.stopPropagation();
+  const btn = event.target;
+  btn.textContent = 'Purchased!';
+  btn.disabled = true;
+  btn.classList.remove('btn-outline');
+  btn.classList.add('btn-primary');
+  showToast(`Purchased "${name}" — $${price.toFixed(2)} one-time`);
+
+  // Save to purchased workouts in localStorage
+  const purchased = JSON.parse(localStorage.getItem('shapePurchasedWorkouts') || '[]');
+  purchased.push({ name, price, purchasedAt: new Date().toISOString() });
+  localStorage.setItem('shapePurchasedWorkouts', JSON.stringify(purchased));
+}
+
+function openModal(type) {
+  const content = document.getElementById('authModalContent');
+  if (type === 'login') {
+    content.innerHTML = `
+      <h2>Welcome back</h2>
+      <p class="subtitle">Log in to your Shape account</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Enter your password">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="closeAllModals(); showToast('Welcome back!')">Log In</button>
+      <p style="text-align:center;margin-top:16px;font-size:0.88rem;color:var(--text-muted);">
+        Don't have an account? <a href="#" style="color:var(--primary-light)" onclick="event.preventDefault();openModal('signup')">Sign up</a>
+      </p>
+    `;
+  } else {
+    content.innerHTML = `
+      <h2>Get started</h2>
+      <p class="subtitle">Create your free Shape account</p>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Create a password">
+      </div>
+      <div class="form-group">
+        <label>I'm interested in</label>
+        <select>
+          <option>Personal Training</option>
+          <option>Nutrition</option>
+          <option>Both</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="closeAllModals(); showToast('Account created! Welcome to Shape.')">Create Account</button>
+      <p style="text-align:center;margin-top:16px;font-size:0.88rem;color:var(--text-muted);">
+        Already have an account? <a href="#" style="color:var(--primary-light)" onclick="event.preventDefault();openModal('login')">Log in</a>
+      </p>
+    `;
+  }
+  document.getElementById('authModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeAllModals();
+  });
+});
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeAllModals();
+});
+
+// ===== Toast =====
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('active');
+  setTimeout(() => toast.classList.remove('active'), 3000);
+}
+
+// ===== Close mobile nav on link click =====
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    const navLinks = document.getElementById('navLinks');
+    if (navLinks) navLinks.classList.remove('open');
+  });
+});
+
+// ===== AI Trainer =====
+const chatMessages = document.getElementById('aiChatMessages');
+const aiState = { step: 'goal', goal: '', level: '', equipment: '', duration: '' };
+
+const exerciseDB = {
+  'Muscle Gain': {
+    gym: [
+      { name: 'Barbell Bench Press', sets: '4', reps: '8-10' },
+      { name: 'Incline Dumbbell Press', sets: '3', reps: '10-12' },
+      { name: 'Barbell Rows', sets: '4', reps: '8-10' },
+      { name: 'Lat Pulldowns', sets: '3', reps: '10-12' },
+      { name: 'Overhead Press', sets: '4', reps: '8-10' },
+      { name: 'Barbell Squats', sets: '4', reps: '8-10' },
+      { name: 'Romanian Deadlifts', sets: '3', reps: '10-12' },
+      { name: 'Leg Press', sets: '3', reps: '12' },
+      { name: 'Cable Flyes', sets: '3', reps: '12-15' },
+      { name: 'Dumbbell Curls', sets: '3', reps: '12' },
+      { name: 'Tricep Dips', sets: '3', reps: '10-12' },
+      { name: 'Face Pulls', sets: '3', reps: '15' },
+    ],
+    home: [
+      { name: 'Push-Ups', sets: '4', reps: '15-20' },
+      { name: 'Diamond Push-Ups', sets: '3', reps: '12' },
+      { name: 'Pike Push-Ups', sets: '3', reps: '10-12' },
+      { name: 'Inverted Rows', sets: '4', reps: '12' },
+      { name: 'Bulgarian Split Squats', sets: '3', reps: '12 each' },
+      { name: 'Pistol Squat Progressions', sets: '3', reps: '8 each' },
+      { name: 'Glute Bridges', sets: '3', reps: '15' },
+      { name: 'Plank to Push-Up', sets: '3', reps: '10' },
+      { name: 'Chin-Ups (door frame bar)', sets: '4', reps: '8-10' },
+      { name: 'Dips (between chairs)', sets: '3', reps: '12' },
+    ],
+    minimal: [
+      { name: 'Dumbbell Goblet Squats', sets: '4', reps: '12' },
+      { name: 'Dumbbell Floor Press', sets: '4', reps: '10-12' },
+      { name: 'Dumbbell Rows', sets: '4', reps: '10 each' },
+      { name: 'Dumbbell Lunges', sets: '3', reps: '12 each' },
+      { name: 'Dumbbell Shoulder Press', sets: '3', reps: '10-12' },
+      { name: 'Dumbbell RDLs', sets: '3', reps: '12' },
+      { name: 'Resistance Band Pull-Aparts', sets: '3', reps: '15' },
+      { name: 'Dumbbell Curls', sets: '3', reps: '12' },
+    ],
+  },
+  'Fat Loss': {
+    gym: [
+      { name: 'Kettlebell Swings', sets: '4', reps: '20' },
+      { name: 'Battle Ropes', sets: '4', reps: '30 sec' },
+      { name: 'Box Jumps', sets: '3', reps: '12' },
+      { name: 'Rowing Machine Intervals', sets: '5', reps: '200m sprints' },
+      { name: 'Dumbbell Thrusters', sets: '4', reps: '12' },
+      { name: 'Medicine Ball Slams', sets: '3', reps: '15' },
+      { name: 'Sled Push', sets: '4', reps: '30 sec' },
+      { name: 'Cable Woodchops', sets: '3', reps: '12 each' },
+      { name: 'Treadmill Incline Walk', sets: '1', reps: '10 min' },
+    ],
+    home: [
+      { name: 'Burpees', sets: '4', reps: '12' },
+      { name: 'Mountain Climbers', sets: '4', reps: '30 sec' },
+      { name: 'Jump Squats', sets: '4', reps: '15' },
+      { name: 'High Knees', sets: '4', reps: '30 sec' },
+      { name: 'Plank Jacks', sets: '3', reps: '20' },
+      { name: 'Skater Jumps', sets: '3', reps: '12 each' },
+      { name: 'Bicycle Crunches', sets: '3', reps: '20' },
+      { name: 'Jumping Lunges', sets: '3', reps: '10 each' },
+      { name: 'Shadow Boxing', sets: '3', reps: '1 min' },
+    ],
+    minimal: [
+      { name: 'Dumbbell Snatch', sets: '4', reps: '10 each' },
+      { name: 'Dumbbell Squat to Press', sets: '4', reps: '12' },
+      { name: 'Renegade Rows', sets: '3', reps: '10 each' },
+      { name: 'Dumbbell Swings', sets: '4', reps: '15' },
+      { name: 'Band-Assisted Sprints', sets: '4', reps: '20 sec' },
+      { name: 'Dumbbell Burpees', sets: '3', reps: '10' },
+      { name: 'Plank Rows', sets: '3', reps: '12 each' },
+    ],
+  },
+  'Endurance': {
+    gym: [
+      { name: 'Treadmill Intervals', sets: '8', reps: '1 min on / 1 min off' },
+      { name: 'Rowing Machine', sets: '4', reps: '500m' },
+      { name: 'Stairmaster', sets: '1', reps: '10 min' },
+      { name: 'Assault Bike', sets: '5', reps: '30 sec sprints' },
+      { name: 'Bodyweight Circuit (squats, push-ups, lunges)', sets: '3', reps: '15 each' },
+      { name: 'Farmer Carries', sets: '4', reps: '40m' },
+      { name: 'Jump Rope', sets: '5', reps: '1 min' },
+    ],
+    home: [
+      { name: 'Jumping Jacks', sets: '4', reps: '1 min' },
+      { name: 'Running in Place (high knees)', sets: '4', reps: '45 sec' },
+      { name: 'Step-Ups (on stairs)', sets: '4', reps: '20 each' },
+      { name: 'Squat Holds', sets: '3', reps: '45 sec' },
+      { name: 'Push-Up to Plank Hold', sets: '3', reps: '10 + 20 sec' },
+      { name: 'Lateral Shuffles', sets: '4', reps: '30 sec' },
+      { name: 'Burpee Broad Jumps', sets: '3', reps: '8' },
+      { name: 'Bear Crawls', sets: '3', reps: '30 sec' },
+    ],
+    minimal: [
+      { name: 'Dumbbell Complex (clean, press, squat)', sets: '5', reps: '8 each' },
+      { name: 'Band Sprints', sets: '6', reps: '20 sec' },
+      { name: 'Dumbbell Walking Lunges', sets: '4', reps: '20 steps' },
+      { name: 'Band Pull-Aparts', sets: '3', reps: '20' },
+      { name: 'Dumbbell Step-Ups', sets: '3', reps: '12 each' },
+      { name: 'Plank with Dumbbell Drag', sets: '3', reps: '10 each' },
+    ],
+  },
+  'Flexibility': {
+    gym: [
+      { name: 'Foam Roll Full Body', sets: '1', reps: '5 min' },
+      { name: 'Hip Flexor Stretch', sets: '2', reps: '45 sec each' },
+      { name: 'Pigeon Pose', sets: '2', reps: '60 sec each' },
+      { name: 'Hanging Lat Stretch', sets: '2', reps: '30 sec' },
+      { name: 'Cat-Cow Stretch', sets: '2', reps: '10 reps' },
+      { name: 'World\'s Greatest Stretch', sets: '2', reps: '8 each' },
+      { name: 'Seated Hamstring Stretch', sets: '2', reps: '45 sec each' },
+      { name: 'Thoracic Spine Rotations', sets: '2', reps: '10 each' },
+    ],
+    home: [
+      { name: 'Sun Salutations', sets: '3', reps: '5 flows' },
+      { name: 'Deep Squat Hold', sets: '3', reps: '45 sec' },
+      { name: 'Standing Forward Fold', sets: '2', reps: '60 sec' },
+      { name: 'Supine Spinal Twist', sets: '2', reps: '45 sec each' },
+      { name: 'Butterfly Stretch', sets: '2', reps: '60 sec' },
+      { name: 'Downward Dog to Cobra Flow', sets: '3', reps: '8' },
+      { name: 'Neck & Shoulder Rolls', sets: '2', reps: '10 each' },
+      { name: 'Child\'s Pose', sets: '1', reps: '60 sec' },
+    ],
+    minimal: [
+      { name: 'Band-Assisted Hamstring Stretch', sets: '2', reps: '45 sec each' },
+      { name: 'Band Shoulder Dislocates', sets: '3', reps: '10' },
+      { name: 'Band-Assisted Hip Opener', sets: '2', reps: '45 sec each' },
+      { name: 'Foam Roll Quads & IT Band', sets: '1', reps: '3 min' },
+      { name: 'Doorway Chest Stretch', sets: '2', reps: '30 sec each' },
+      { name: 'Seated Spinal Twist', sets: '2', reps: '45 sec each' },
+    ],
+  },
+  'General Fitness': {
+    gym: [
+      { name: 'Dumbbell Bench Press', sets: '3', reps: '12' },
+      { name: 'Cable Rows', sets: '3', reps: '12' },
+      { name: 'Leg Press', sets: '3', reps: '12' },
+      { name: 'Dumbbell Shoulder Press', sets: '3', reps: '12' },
+      { name: 'Lat Pulldowns', sets: '3', reps: '12' },
+      { name: 'Plank', sets: '3', reps: '45 sec' },
+      { name: 'Treadmill Walk/Jog', sets: '1', reps: '10 min' },
+      { name: 'Bicycle Crunches', sets: '3', reps: '15' },
+    ],
+    home: [
+      { name: 'Push-Ups', sets: '3', reps: '12-15' },
+      { name: 'Bodyweight Squats', sets: '3', reps: '15' },
+      { name: 'Lunges', sets: '3', reps: '12 each' },
+      { name: 'Plank', sets: '3', reps: '30 sec' },
+      { name: 'Glute Bridges', sets: '3', reps: '15' },
+      { name: 'Superman Hold', sets: '3', reps: '20 sec' },
+      { name: 'Jumping Jacks', sets: '3', reps: '30 sec' },
+      { name: 'Mountain Climbers', sets: '3', reps: '20' },
+    ],
+    minimal: [
+      { name: 'Dumbbell Squats', sets: '3', reps: '12' },
+      { name: 'Dumbbell Press', sets: '3', reps: '12' },
+      { name: 'Dumbbell Rows', sets: '3', reps: '12 each' },
+      { name: 'Dumbbell Lunges', sets: '3', reps: '10 each' },
+      { name: 'Band Lateral Raises', sets: '3', reps: '15' },
+      { name: 'Plank', sets: '3', reps: '45 sec' },
+      { name: 'Band Face Pulls', sets: '3', reps: '15' },
+    ],
+  },
+};
+
+function scrollChat() {
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addBotMsg(html, delay) {
+  return new Promise(resolve => {
+    const typing = document.createElement('div');
+    typing.className = 'ai-msg ai-msg-bot';
+    typing.innerHTML = '<div class="ai-typing"><span></span><span></span><span></span></div>';
+    chatMessages.appendChild(typing);
+    scrollChat();
+    setTimeout(() => {
+      typing.innerHTML = `<p>${html}</p>`;
+      scrollChat();
+      resolve(typing);
+    }, delay || 800);
+  });
+}
+
+function addUserMsg(text) {
+  const div = document.createElement('div');
+  div.className = 'ai-msg ai-msg-user';
+  div.innerHTML = `<p>${text}</p>`;
+  chatMessages.appendChild(div);
+  scrollChat();
+}
+
+function addQuickReplies(container, options, step) {
+  const wrap = document.createElement('div');
+  wrap.className = 'ai-quick-replies';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.textContent = opt;
+    btn.onclick = () => aiSelectOption(step, opt);
+    wrap.appendChild(btn);
+  });
+  container.appendChild(wrap);
+  scrollChat();
+}
+
+function aiSelectOption(step, value) {
+  // Remove quick reply buttons
+  document.querySelectorAll('.ai-quick-replies').forEach(el => el.remove());
+  addUserMsg(value);
+  processStep(step, value);
+}
+
+function aiSendMessage() {
+  const input = document.getElementById('aiInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  document.querySelectorAll('.ai-quick-replies').forEach(el => el.remove());
+  addUserMsg(text);
+  processStep(aiState.step, text);
+}
+
+async function processStep(step, value) {
+  if (step === 'goal') {
+    aiState.goal = value;
+    aiState.step = 'level';
+    const msg = await addBotMsg(`Great choice — <strong>${value}</strong>! What's your <strong>experience level</strong>?`);
+    addQuickReplies(msg, ['Beginner', 'Intermediate', 'Advanced'], 'level');
+
+  } else if (step === 'level') {
+    aiState.level = value;
+    aiState.step = 'equipment';
+    const msg = await addBotMsg(`Got it, <strong>${value}</strong>. What <strong>equipment</strong> do you have access to?`);
+    addQuickReplies(msg, ['Full Gym', 'Minimal (Dumbbells/Bands)', 'No Equipment (Bodyweight)'], 'equipment');
+
+  } else if (step === 'equipment') {
+    aiState.equipment = value;
+    aiState.step = 'duration';
+    const msg = await addBotMsg(`Perfect. How long do you want your workout to be?`);
+    addQuickReplies(msg, ['15 minutes', '30 minutes', '45 minutes', '60 minutes'], 'duration');
+
+  } else if (step === 'duration') {
+    aiState.duration = value;
+    aiState.step = 'done';
+    await addBotMsg(`Building your personalized <strong>${aiState.goal}</strong> workout...`, 600);
+    await generateWorkout();
+
+  } else if (step === 'done') {
+    // Allow follow-up requests
+    const lower = value.toLowerCase();
+    if (lower.includes('another') || lower.includes('new') || lower.includes('again') || lower.includes('different')) {
+      aiState.step = 'goal';
+      const msg = await addBotMsg(`Let's build another one! What's your <strong>fitness goal</strong> this time?`);
+      addQuickReplies(msg, ['Muscle Gain', 'Fat Loss', 'Endurance', 'Flexibility', 'General Fitness'], 'goal');
+    } else if (lower.includes('harder') || lower.includes('intense')) {
+      await addBotMsg(`Ramping up the intensity...`, 600);
+      await generateWorkout(true);
+    } else if (lower.includes('easier') || lower.includes('lighter')) {
+      await addBotMsg(`Scaling it down...`, 600);
+      await generateWorkout(false, true);
+    } else {
+      const msg = await addBotMsg(`Want me to generate <strong>another workout</strong>, make this one <strong>harder</strong>, or <strong>easier</strong>?`);
+      addQuickReplies(msg, ['Another Workout', 'Make It Harder', 'Make It Easier'], 'done');
+    }
+  }
+}
+
+async function generateWorkout(harder, easier) {
+  let equipKey = 'home';
+  if (aiState.equipment.toLowerCase().includes('gym')) equipKey = 'gym';
+  else if (aiState.equipment.toLowerCase().includes('minimal') || aiState.equipment.toLowerCase().includes('dumbbell')) equipKey = 'minimal';
+
+  const goal = aiState.goal || 'General Fitness';
+  const pool = (exerciseDB[goal] && exerciseDB[goal][equipKey]) || exerciseDB['General Fitness']['home'];
+
+  // Determine exercise count based on duration
+  let durationMin = parseInt(aiState.duration) || 30;
+  let count = Math.min(pool.length, Math.max(4, Math.round(durationMin / 7)));
+
+  // Shuffle and pick exercises
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  let exercises = shuffled.slice(0, count).map(ex => {
+    let sets = parseInt(ex.sets);
+    let reps = ex.reps;
+    if (harder) { sets = Math.min(sets + 1, 6); }
+    if (easier) { sets = Math.max(sets - 1, 2); }
+    return { ...ex, sets: String(sets), reps };
+  });
+
+  const workoutName = `${aiState.goal} — ${durationMin} Min ${aiState.level} Blast`;
+  const totalSets = exercises.reduce((sum, e) => sum + parseInt(e.sets), 0);
+
+  const exerciseRows = exercises.map(e =>
+    `<div class="ai-exercise">
+      <span class="ai-exercise-name">${e.name}</span>
+      <span class="ai-exercise-detail">${e.sets} x ${e.reps}</span>
+    </div>`
+  ).join('');
+
+  const workoutHtml = `Here's your workout:
+    <div class="ai-workout-card">
+      <h4>${workoutName}</h4>
+      ${exerciseRows}
+      <div class="ai-workout-footer">
+        <span>${exercises.length} exercises &middot; ${totalSets} total sets &middot; ~${durationMin} min</span>
+        <button class="ai-save-btn" onclick="saveWorkout(this)">Save Workout</button>
+      </div>
+    </div>`;
+
+  const msg = await addBotMsg(workoutHtml, 1200);
+  const followUp = await addBotMsg(`How's that look? I can generate <strong>another workout</strong>, make this <strong>harder</strong> or <strong>easier</strong>, or you can type any request!`);
+  addQuickReplies(followUp, ['Another Workout', 'Make It Harder', 'Make It Easier'], 'done');
+}
+
+function saveWorkout(btn) {
+  btn.textContent = 'Saved!';
+  btn.style.background = 'var(--primary)';
+  btn.disabled = true;
+  showToast('Workout saved to your library!');
+}
