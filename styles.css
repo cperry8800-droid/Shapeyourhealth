@@ -141,7 +141,7 @@ ul { list-style: none; }
 .section-alt { background: var(--bg-alt); }
 .section-header { text-align: left; max-width: 700px; margin: 0 0 72px; }
 .section-header h2 {
-  font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; margin-bottom: 20px;
+  font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 300; margin-bottom: 20px;
   letter-spacing: -0.03em; line-height: 1.1;
 }
 .section-header p { color: var(--text-muted); font-size: 1.05rem; font-weight: 300; line-height: 1.8; }
