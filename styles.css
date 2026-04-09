@@ -564,7 +564,6 @@ ul { list-style: none; }
 .page-hero {
   padding: 200px 0 80px;
   position: relative;
-  text-align: center;
 }
 .page-hero .tag { margin-bottom: 16px; display: block; }
 .page-hero h1 {
@@ -578,7 +577,6 @@ ul { list-style: none; }
   font-size: clamp(1rem, 1.2vw, 1.15rem);
   color: var(--text-muted);
   max-width: 520px;
-  margin: 0 auto;
   font-weight: 300;
   line-height: 1.8;
 }
