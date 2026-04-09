@@ -7,13 +7,13 @@ const demoWorkoutLog = [
   { name: "Morning Flow", type: "Yoga", duration: 30, difficulty: "Easy", date: "2026-04-03", notes: "Great recovery day" },
   { name: "Deadlift Domination", type: "Strength", duration: 60, difficulty: "Intense", date: "2026-04-05", notes: "New PR on deadlift!" },
   { name: "Full Body Burn", type: "Cardio", duration: 40, difficulty: "Hard", date: "2026-04-06", notes: "" },
-  { name: "Shadow Boxing Basics", type: "Boxing", duration: 25, difficulty: "Moderate", date: "2026-04-07", notes: "Fun session" },
+  { name: "HIIT Burn", type: "Cardio", duration: 25, difficulty: "Moderate", date: "2026-04-07", notes: "Fun session" },
   { name: "Core Control", type: "Pilates", duration: 30, difficulty: "Moderate", date: "2026-04-08", notes: "" },
   { name: "Upper Body Blast", type: "Strength", duration: 45, difficulty: "Hard", date: "2026-04-09", notes: "Increased weight on bench" },
 ];
 
 const demoSchedule = {
-  "2026-04-07": { name: "Shadow Boxing", type: "Boxing", time: "7:00 AM" },
+  "2026-04-07": { name: "HIIT Burn", type: "Cardio", time: "7:00 AM" },
   "2026-04-08": { name: "Core Control", type: "Pilates", time: "6:30 AM" },
   "2026-04-09": { name: "Upper Body Blast", type: "Strength", time: "7:00 AM" },
   "2026-04-10": { name: "Tabata Inferno", type: "HIIT", time: "6:00 AM" },

@@ -41,30 +41,30 @@ const trainers = [
     tags: ["Yoga", "Mobility", "Recovery"]
   },
   {
-    id: 4, name: "Damon Clarke", specialty: "Boxing & Combat",
-    category: "boxing", price: 24.99, rating: 4.7, subscribers: 890, experience: "10 yrs",
-    bio: "Pro boxing coach bringing ring-tested training to your home. Build speed, power, and unshakeable cardio.",
+    id: 4, name: "Damon Clarke", specialty: "Cardio & Endurance",
+    category: "cardio", price: 24.99, rating: 4.7, subscribers: 890, experience: "10 yrs",
+    bio: "Endurance specialist who builds heart-pounding cardio programs. Improve stamina, burn fat, and boost your cardiovascular health.",
     color: "#F59E0B",
     workouts: [
-      { name: "Shadow Boxing Basics", type: "Boxing", duration: "25 min", difficulty: "Beginner", price: 6.99, description: "Learn the fundamentals of boxing footwork, jabs, and combinations." },
-      { name: "Heavy Bag Warfare", type: "Boxing", duration: "40 min", difficulty: "Advanced", price: 12.99, description: "High-intensity bag work with power combos and defensive drills." },
-      { name: "Fighter's Conditioning", type: "Cardio", duration: "45 min", difficulty: "Intermediate", price: 9.99, description: "Cardio conditioning based on real fighter training camp circuits." },
-      { name: "Speed & Reflexes", type: "Boxing", duration: "30 min", difficulty: "Intermediate", price: 7.99, description: "Reaction drills and speed work to sharpen your boxing instincts." },
+      { name: "HIIT Burn", type: "Cardio", duration: "25 min", difficulty: "Beginner", price: 6.99, description: "High-intensity intervals designed to torch calories and build endurance." },
+      { name: "Endurance Builder", type: "Cardio", duration: "40 min", difficulty: "Advanced", price: 12.99, description: "Long-form cardio circuits that push your aerobic and anaerobic limits." },
+      { name: "Metabolic Blast", type: "Cardio", duration: "45 min", difficulty: "Intermediate", price: 9.99, description: "Fast-paced metabolic conditioning to rev up your metabolism all day." },
+      { name: "Sprint Intervals", type: "Cardio", duration: "30 min", difficulty: "Intermediate", price: 7.99, description: "Run-based interval training to build speed and cardiovascular power." },
     ],
-    tags: ["Boxing", "Cardio", "Combat"]
+    tags: ["Cardio", "HIIT", "Endurance"]
   },
   {
-    id: 5, name: "Sophie Turner", specialty: "CrossFit & Functional",
-    category: "crossfit", price: 34.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
-    bio: "CrossFit L3 certified. Builds programs that make you stronger, faster, and ready for anything life throws at you.",
+    id: 5, name: "Sophie Turner", specialty: "Functional Fitness",
+    category: "functional", price: 34.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
+    bio: "Functional fitness expert who builds programs that make you stronger, faster, and ready for anything life throws at you.",
     color: "#EF4444",
     workouts: [
-      { name: "WOD: The Grinder", type: "CrossFit", duration: "35 min", difficulty: "Advanced", price: 11.99, description: "Brutal WOD combining heavy lifts with metabolic conditioning." },
+      { name: "Total Body Conditioning", type: "Functional", duration: "35 min", difficulty: "Advanced", price: 11.99, description: "Full-body workout combining compound lifts with metabolic conditioning." },
       { name: "Functional Foundations", type: "Functional", duration: "40 min", difficulty: "Beginner", price: 7.99, description: "Master the basic functional movements before scaling up." },
-      { name: "Olympic Lifting 101", type: "Weightlifting", duration: "50 min", difficulty: "Intermediate", price: 14.99, description: "Clean & jerk and snatch technique breakdown with progressions." },
-      { name: "MetCon Mayhem", type: "CrossFit", duration: "25 min", difficulty: "Advanced", price: 9.99, description: "Short, brutal metabolic conditioning workout. No rest for the wicked." },
+      { name: "Strength & Power", type: "Strength", duration: "50 min", difficulty: "Intermediate", price: 14.99, description: "Progressive overload training with compound movements for real-world strength." },
+      { name: "Athletic Circuit", type: "Functional", duration: "25 min", difficulty: "Advanced", price: 9.99, description: "Fast-paced athletic circuits that build coordination, power, and agility." },
     ],
-    tags: ["CrossFit", "Functional", "Olympic Lifting"]
+    tags: ["Functional", "Strength", "Athletic"]
   },
   {
     id: 6, name: "Liam Chen", specialty: "Pilates & Core",
@@ -545,7 +545,7 @@ const exerciseDB = {
       { name: 'Skater Jumps', sets: '3', reps: '12 each' },
       { name: 'Bicycle Crunches', sets: '3', reps: '20' },
       { name: 'Jumping Lunges', sets: '3', reps: '10 each' },
-      { name: 'Shadow Boxing', sets: '3', reps: '1 min' },
+      { name: 'High Knees Sprint', sets: '3', reps: '1 min' },
     ],
     minimal: [
       { name: 'Dumbbell Snatch', sets: '4', reps: '10 each' },
