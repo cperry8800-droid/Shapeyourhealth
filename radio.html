@@ -25,10 +25,20 @@
       text-align: center; padding: 80px 48px 60px;
     }
     .radio-logo {
-      font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-family: 'Inter', sans-serif; font-weight: 100; font-size: clamp(1.2rem, 2vw, 1.6rem);
       letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 16px; color: #fff;
     }
-    .radio-logo span { color: #2DD4BF; }
+    .radio-logo {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .radio-logo .shape-text {
+      display: inline-block; height: 26px; overflow: hidden; line-height: 0;
+    }
+    .radio-logo .shape-text img {
+      height: 76px; filter: brightness(0) invert(1);
+      margin-top: -46px;
+    }
+    .radio-logo .radio-label { color: #2DD4BF; }
     .radio-tagline {
       font-size: clamp(0.9rem, 1.2vw, 1.05rem); color: rgba(255,255,255,0.5);
       font-weight: 300; max-width: 500px; margin: 0 auto;
@@ -166,7 +176,7 @@
   </nav>
 
   <section class="radio-hero">
-    <div class="radio-logo">S H A P E &nbsp; <span>R A D I O</span></div>
+    <div class="radio-logo"><span class="shape-text"><img src="logo.png" alt="Shape"></span><span class="radio-label">R A D I O</span></div>
     <p class="radio-tagline">Live music to fuel your workout. Stream curated stations or just vibe.</p>
   </section>
 
