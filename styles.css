@@ -100,6 +100,20 @@ ul { list-style: none; }
   letter-spacing: 0.02em; text-transform: uppercase; opacity: 0.6;
 }
 .nav-links a:hover { opacity: 1; }
+.nav-dropdown { position: relative; }
+.nav-dropdown > a { cursor: pointer; }
+.nav-dropdown-menu {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 0; min-width: 200px; opacity: 0; visibility: hidden;
+  transition: all 0.3s; margin-top: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+.nav-dropdown:hover .nav-dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+.nav-dropdown-menu a {
+  display: block; padding: 10px 20px; font-size: 0.82rem; text-transform: none;
+  letter-spacing: 0; opacity: 0.7; white-space: nowrap;
+}
+.nav-dropdown-menu a:hover { opacity: 1; background: rgba(0,0,0,0.03); }
 .nav-links a.nav-active { opacity: 1; font-weight: 600; }
 .nav-links .btn { opacity: 1; text-transform: none; }
 
