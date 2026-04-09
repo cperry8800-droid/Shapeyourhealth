@@ -92,7 +92,7 @@ ul { list-style: none; }
   padding: 12px 0;
 }
 .nav-container { display: flex; align-items: center; justify-content: space-between; }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; margin-left: -12px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; }
 .logo-img { height: 64px; width: auto; }
 .nav-links { display: flex; align-items: center; gap: 40px; }
 .nav-links a {
