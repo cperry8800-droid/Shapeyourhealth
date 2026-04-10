@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shape — Clients</title>
+  <title>Shape — Shape Score</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -21,7 +21,7 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar scrolled" id="navbar">
+  <nav class="navbar" id="navbar">
     <div class="container nav-container">
       <a href="home.html" class="logo">
         <img src="logo.png" alt="Shape" class="logo-img">
@@ -52,128 +52,27 @@
   <!-- Page Hero -->
   <section class="page-hero">
     <div class="container">
-      <span class="tag">Client Dashboard</span>
-      <h1>Your <span class="gradient-text">progress</span></h1>
-      <p class="page-hero-sub">Track your sessions, follow your schedule, and earn your Shape Score with every workout you complete.</p>
-    </div>
-  </section>
-
-  <!-- Monthly Overview -->
-  <section class="section">
-    <div class="container">
-      <div class="progress-dashboard">
-        <!-- Stats Row -->
-        <div class="progress-stats-row">
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" id="statWorkouts">0</div>
-            <div class="progress-stat-label">Workouts This Month</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" id="statMinutes">0</div>
-            <div class="progress-stat-label">Total Minutes</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" id="statStreak">0</div>
-            <div class="progress-stat-label">Day Streak</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" id="statCalories">0</div>
-            <div class="progress-stat-label">Est. Calories Burned</div>
-          </div>
-        </div>
-
-        <!-- Weekly Schedule -->
-        <div class="schedule-section">
-          <div class="schedule-header">
-            <h2>Weekly Schedule</h2>
-            <div class="schedule-nav">
-              <button class="btn btn-sm btn-outline" onclick="changeWeek(-1)">&larr; Prev</button>
-              <span id="weekLabel" class="schedule-week-label"></span>
-              <button class="btn btn-sm btn-outline" onclick="changeWeek(1)">Next &rarr;</button>
-            </div>
-          </div>
-          <div class="schedule-grid" id="scheduleGrid">
-            <!-- Days populated by JS -->
-          </div>
-        </div>
-
-        <!-- Progress Chart (text-based) -->
-        <div class="progress-chart-section">
-          <h2>Monthly Progress</h2>
-          <div class="progress-bar-chart" id="progressChart">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- Workout Log -->
-        <div class="workout-log-section">
-          <div class="workout-log-header">
-            <h2>Workout Log</h2>
-            <button class="btn btn-sm btn-primary" onclick="openLogWorkoutModal()">+ Log Workout</button>
-          </div>
-          <div class="workout-log-list" id="workoutLog">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- Purchased Plans -->
-        <div class="purchased-section">
-          <h2>My Purchased Plans</h2>
-          <div class="purchased-list" id="purchasedList">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- My Library -->
-        <div class="purchased-section" style="margin-top: 40px;">
-          <div class="workout-log-header">
-            <h2>My Library</h2>
-          </div>
-          <p style="color: var(--text-muted); font-size: 0.92rem; font-weight: 300; margin-bottom: 24px;">Save any purchased workout to your personal library. Access your saved workouts anytime.</p>
-          <div class="library-grid" id="libraryGrid" style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-            <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">5x5 Strength Foundation</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">Marcus Johnson &middot; Strength &middot; Saved Apr 2</div>
-              </div>
-              <button class="btn btn-sm btn-outline">Start Workout</button>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Tabata Inferno</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">Aisha Patel &middot; HIIT &middot; Saved Mar 28</div>
-              </div>
-              <button class="btn btn-sm btn-outline">Start Workout</button>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Living Room HIIT</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">Nina Brooks &middot; At Home &middot; Saved Mar 15</div>
-              </div>
-              <button class="btn btn-sm btn-outline">Start Workout</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <span class="tag">Shape Score</span>
+      <h1>Earn rewards for every <span class="gradient-text">session</span></h1>
+      <p class="page-hero-sub">Every workout you finish earns you Shape Score. Stack them up and redeem for real rewards — discounts, free months, and exclusive gear.</p>
     </div>
   </section>
 
   <!-- Shape Score -->
-  <section class="section section-alt">
+  <section class="section">
     <div class="container">
       <div class="shape-score-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
 
         <!-- Left: Points Overview -->
         <div>
-          <span class="tag">Shape Score</span>
-          <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">Earn rewards for every session you complete.</h2>
-          <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;line-height:1.7;margin-bottom:28px;">Every workout you finish earns you Shape Score. Stack them up and redeem for real rewards — discounts, free months, and exclusive gear.</p>
+          <span class="tag">Your Score</span>
+          <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:24px;">Track your progress and climb the ranks.</h2>
 
           <!-- Points Balance -->
           <div style="background:var(--bg-card);border:1px solid var(--border);padding:28px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;">
             <div>
               <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:6px;">Your Balance</div>
-              <div style="font-size:1.8rem;font-weight:300;letter-spacing:-0.03em;" id="shapePointsBalance">2,450</div>
+              <div style="font-size:1.8rem;font-weight:300;letter-spacing:-0.03em;">2,450</div>
             </div>
             <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-dark);font-weight:500;">Shape Score</div>
           </div>
@@ -202,11 +101,15 @@
             <span style="font-size:0.82rem;font-weight:500;color:#CD7F32;text-transform:uppercase;letter-spacing:0.06em;">Bronze — 50 pts to Silver</span>
           </div>
           <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
-            <span style="font-size:1rem;">🔥</span>
+            <span style="font-size:1rem;">&#x1F525;</span>
             <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">You're in the top 15% this week</span>
           </div>
 
           <!-- How You Earn -->
+          <div style="margin-bottom:8px;">
+            <span class="tag">Earn</span>
+            <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">How you earn points</h2>
+          </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
               <span style="font-size:0.88rem;font-weight:400;">Complete a session</span>
@@ -234,7 +137,7 @@
         <!-- Right: Redeem & Leaderboard -->
         <div>
           <!-- Redeem -->
-          <div style="margin-bottom:32px;">
+          <div style="margin-bottom:16px;">
             <span class="tag">Redeem</span>
             <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">Spend your points</h2>
           </div>
@@ -286,7 +189,7 @@
             <span class="tag">Leaderboard</span>
             <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">Top earners this month</h2>
           </div>
-          <div style="background:var(--bg-card);border:1px solid var(--border);">
+          <div style="background:var(--bg-card);border:1px solid var(--border);margin-bottom:32px;">
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">1</span>
@@ -315,12 +218,62 @@
               </div>
               <span style="font-size:0.82rem;font-weight:500;">5,320 pts</span>
             </div>
+            <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">5</span>
+                <span style="font-size:0.88rem;font-weight:500;">Devon J.</span>
+              </div>
+              <span style="font-size:0.82rem;font-weight:500;">4,910 pts</span>
+            </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:rgba(45,212,191,0.04);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">12</span>
                 <span style="font-size:0.88rem;font-weight:500;">You</span>
               </div>
               <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">2,450 pts</span>
+            </div>
+          </div>
+
+          <!-- Friend Comparison -->
+          <div>
+            <span class="tag">Friends</span>
+            <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">How you stack up</h2>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border);">
+            <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <span style="font-size:0.88rem;font-weight:500;">Jake R.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#FFD700;text-transform:uppercase;letter-spacing:0.06em;">Gold</span>
+              </div>
+              <span style="font-size:0.82rem;font-weight:500;">8,420 pts</span>
+            </div>
+            <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <span style="font-size:0.88rem;font-weight:500;">Aisha L.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#FFD700;text-transform:uppercase;letter-spacing:0.06em;">Gold</span>
+              </div>
+              <span style="font-size:0.82rem;font-weight:500;">7,150 pts</span>
+            </div>
+            <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <span style="font-size:0.88rem;font-weight:500;">Carlos M.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#C0C0C0;text-transform:uppercase;letter-spacing:0.06em;">Silver</span>
+              </div>
+              <span style="font-size:0.82rem;font-weight:500;">4,200 pts</span>
+            </div>
+            <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:rgba(45,212,191,0.04);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <span style="font-size:0.88rem;font-weight:600;">You</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#CD7F32;text-transform:uppercase;letter-spacing:0.06em;">Bronze</span>
+              </div>
+              <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">2,450 pts</span>
+            </div>
+            <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <span style="font-size:0.88rem;font-weight:500;">Priya S.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#CD7F32;text-transform:uppercase;letter-spacing:0.06em;">Bronze</span>
+              </div>
+              <span style="font-size:0.82rem;font-weight:500;">1,850 pts</span>
             </div>
           </div>
         </div>
@@ -331,11 +284,11 @@
   <!-- CTA -->
   <section class="cta-section">
     <div class="container">
-      <h2>Need a new workout plan?</h2>
-      <p>Browse trainers and find your next challenge, or track your nutrition.</p>
+      <h2>Keep training. Keep earning.</h2>
+      <p>Every session gets you closer to the next tier.</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <a href="trainers.html" class="btn btn-primary btn-lg">Browse Trainer Marketplace</a>
-        <a href="nutrition-schedule.html" class="btn btn-outline btn-lg">Nutrition Tracker</a>
+        <a href="trainers.html" class="btn btn-primary btn-lg">Browse Trainers</a>
+        <a href="clients.html" class="btn btn-outline btn-lg">Back to Dashboard</a>
       </div>
     </div>
   </section>
@@ -353,10 +306,12 @@
         <div class="footer-col">
           <h4>Platform</h4>
           <a href="trainers.html">Trainer Marketplace</a>
+        <a href="for-trainers.html">For Trainers</a>
           <a href="nutritionists.html">Nutritionists</a>
           <a href="community.html">Community</a>
         <a href="pricing.html">Pricing</a>
           <a href="clients.html">Clients</a>
+          <a href="shape-score.html">Shape Score</a>
           <a href="nutrition-schedule.html">Nutrition Schedule</a>
           <a href="trainer-dashboard.html">Trainer Dashboard</a>
         </div>
@@ -382,82 +337,10 @@
     </div>
   </footer>
 
-  <!-- Log Workout Modal -->
-  <div class="modal-overlay" id="logWorkoutModal">
-    <div class="modal">
-      <button class="modal-close" onclick="closeAllModals()">&times;</button>
-      <h2>Log a Workout</h2>
-      <p class="subtitle">Record your training session</p>
-      <div class="form-group">
-        <label>Workout Name</label>
-        <input type="text" id="logName" placeholder="e.g. Upper Body Strength">
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select id="logType">
-          <option>Strength</option>
-          <option>HIIT</option>
-          <option>Cardio</option>
-          <option>Functional</option>
-          <option>At Home</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Duration (minutes)</label>
-        <input type="number" id="logDuration" placeholder="45" min="1">
-      </div>
-      <div class="form-group">
-        <label>Difficulty</label>
-        <select id="logDifficulty">
-          <option>Easy</option>
-          <option>Moderate</option>
-          <option>Hard</option>
-          <option>Intense</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Notes (optional)</label>
-        <input type="text" id="logNotes" placeholder="How did it feel?">
-      </div>
-      <button class="btn btn-primary btn-block" onclick="saveLoggedWorkout()">Save Workout</button>
-    </div>
-  </div>
-
-  <!-- Schedule Workout Modal -->
-  <div class="modal-overlay" id="scheduleWorkoutModal">
-    <div class="modal">
-      <button class="modal-close" onclick="closeAllModals()">&times;</button>
-      <h2>Schedule Workout</h2>
-      <p class="subtitle" id="scheduleDayLabel"></p>
-      <div class="form-group">
-        <label>Workout Name</label>
-        <input type="text" id="scheduleName" placeholder="e.g. Leg Day">
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select id="scheduleType">
-          <option>Strength</option>
-          <option>HIIT</option>
-          <option>Cardio</option>
-          <option>Functional</option>
-          <option>At Home</option>
-          <option>Rest Day</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Time</label>
-        <input type="text" id="scheduleTime" placeholder="e.g. 7:00 AM">
-      </div>
-      <button class="btn btn-primary btn-block" onclick="saveScheduledWorkout()">Add to Schedule</button>
-    </div>
-  </div>
-
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
-  <script src="progress.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
