@@ -8,20 +8,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
-    .about-mission {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
-      padding: 80px 0;
+    .about-mission-content {
+      max-width: 800px; margin: 0 auto;
     }
-    .about-mission-text h2 { font-size: 2rem; font-weight: 800; margin-bottom: 24px; line-height: 1.2; }
-    .about-mission-text p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; font-weight: 300; margin-bottom: 16px; }
-    .about-mission-visual {
-      background: var(--gradient); border-radius: var(--radius-lg); padding: 48px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; color: #fff; min-height: 360px;
+    .about-mission-content p {
+      color: var(--text-muted); font-size: 1rem; line-height: 1.8; font-weight: 300; margin-bottom: 20px;
     }
-    .about-mission-visual .logo-img { height: 80px; margin-bottom: 24px; filter: brightness(10); }
-    .about-mission-visual h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: 12px; }
-    .about-mission-visual p { font-size: 1rem; font-weight: 300; opacity: 0.8; line-height: 1.7; }
 
     .about-difference { padding: 80px 0; }
     .about-difference .section-header { margin-bottom: 48px; }
@@ -106,7 +98,6 @@
     .check-icon { color: var(--accent); font-weight: 700; font-size: 1rem; }
 
     @media (max-width: 900px) {
-      .about-mission { grid-template-columns: 1fr; gap: 32px; padding: 48px 0; }
       .difference-grid { grid-template-columns: 1fr; }
       .numbers-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
       .values-grid { grid-template-columns: 1fr; }
@@ -156,18 +147,14 @@
   <!-- Mission -->
   <section class="section">
     <div class="container">
-      <div class="about-mission">
-        <div class="about-mission-text">
-          <h2>We believe great training shouldn't be a luxury</h2>
-          <p>Traditional personal training costs $60-150 per session. That prices out most people from ever working with a qualified professional. Shape changes that by letting trainers and nutritionists set their own subscription prices, creating options for every budget.</p>
-          <p>Whether you want a $15/month bodyweight program you can do at home or a $100/month premium coaching experience with daily check-ins, Shape gives you the freedom to choose what works for your life, your goals, and your wallet.</p>
-          <p>No algorithms deciding what you see. No corporate workout templates. Just real professionals building real programs for real people.</p>
-        </div>
-        <div class="about-mission-visual">
-          <img src="logo.png" alt="Shape" class="logo-img">
-          <h3>Your body. Your Shape.</h3>
-          <p>Subscribe to the pros you trust. Train on your schedule. Get results that last.</p>
-        </div>
+      <div class="section-header">
+        <span class="tag">Our Mission</span>
+        <h2>We believe great training shouldn't be a luxury</h2>
+      </div>
+      <div class="about-mission-content">
+        <p>Traditional personal training costs $60-150 per session. That prices out most people from ever working with a qualified professional. Shape changes that by letting trainers and nutritionists set their own subscription prices, creating options for every budget.</p>
+        <p>Whether you want a $15/month bodyweight program you can do at home or a $100/month premium coaching experience with daily check-ins, Shape gives you the freedom to choose what works for your life, your goals, and your wallet.</p>
+        <p>No algorithms deciding what you see. No corporate workout templates. Just real professionals building real programs for real people.</p>
       </div>
     </div>
   </section>
