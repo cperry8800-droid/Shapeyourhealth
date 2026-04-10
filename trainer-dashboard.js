@@ -273,9 +273,29 @@ function closeClientDetail() {
 // ===== Sales List =====
 function renderSales() {
   const list = document.getElementById('salesList');
-  list.innerHTML = recentSales.map(s => {
+  const totalSales = recentSales.reduce((sum, s) => sum + s.price, 0);
+  const yourEarnings = totalSales * 0.8;
+  const shapeFee = totalSales * 0.2;
+
+  list.innerHTML = `
+    <div style="display:flex;gap:24px;margin-bottom:24px;padding:20px;background:var(--bg-alt);border-radius:8px;">
+      <div style="flex:1;text-align:center;">
+        <div style="font-size:1.2rem;font-weight:600;">$${totalSales.toFixed(2)}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Total Sales</div>
+      </div>
+      <div style="flex:1;text-align:center;">
+        <div style="font-size:1.2rem;font-weight:600;color:#10B981;">$${yourEarnings.toFixed(2)}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Your Earnings (80%)</div>
+      </div>
+      <div style="flex:1;text-align:center;">
+        <div style="font-size:1.2rem;font-weight:600;color:var(--text-muted);">$${shapeFee.toFixed(2)}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Shape Fee (20%)</div>
+      </div>
+    </div>
+  ` + recentSales.map(s => {
     const d = new Date(s.date + 'T00:00:00');
     const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const earned = (s.price * 0.8).toFixed(2);
     return `
       <div class="td-sale-row">
         <div class="td-sale-info">
@@ -286,8 +306,8 @@ function renderSales() {
           <span class="workout-tag">${s.type}</span>
         </div>
         <div class="td-sale-amount">
-          <strong>$${s.price.toFixed(2)}</strong>
-          <span>${dateStr}</span>
+          <strong style="color:#10B981;">$${earned}</strong>
+          <span>of $${s.price.toFixed(2)} &middot; ${dateStr}</span>
         </div>
       </div>
     `;
