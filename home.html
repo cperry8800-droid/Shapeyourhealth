@@ -11,7 +11,7 @@
     // Run immediately in <head> before first paint to avoid flash
     if (new URLSearchParams(location.search).get('from') === 'intro') {
       // Dark background peeks behind the rising page
-      document.documentElement.style.background = '#0a0a0a';
+      document.documentElement.style.background = '#0c0d0e';
       // Start page off-screen below
       document.addEventListener('DOMContentLoaded', () => {
         document.body.style.transform = 'translateY(100vh)';
