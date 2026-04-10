@@ -362,13 +362,13 @@
         // Variable speed — starts fast, slows in middle, accelerates at end
         let increment;
         if (progress < 30) {
-          increment = Math.random() * 3 + 1.5;
+          increment = Math.random() * 5 + 3;
         } else if (progress < 70) {
-          increment = Math.random() * 2 + 0.5;
+          increment = Math.random() * 4 + 2;
         } else if (progress < 90) {
-          increment = Math.random() * 1.5 + 0.8;
-        } else {
           increment = Math.random() * 3 + 2;
+        } else {
+          increment = Math.random() * 5 + 3;
         }
 
         progress = Math.min(progress + increment, 100);
@@ -378,8 +378,8 @@
 
         if (rounded < 100) {
           // Variable delay for organic feel
-          const delay = progress < 30 ? 60 : progress < 70 ? 120 : progress < 90 ? 80 : 40;
-          setTimeout(tick, delay + Math.random() * 60);
+          const delay = progress < 30 ? 30 : progress < 70 ? 50 : progress < 90 ? 40 : 20;
+          setTimeout(tick, delay + Math.random() * 30);
         } else {
           // Loading complete — transition out
           setTimeout(() => {
@@ -389,8 +389,8 @@
               document.getElementById('introLogo').classList.add('show');
               document.getElementById('introTagline').classList.add('show');
               document.getElementById('enterBtn').classList.add('show');
-            }, 400);
-          }, 500);
+            }, 300);
+          }, 300);
         }
       }
 
