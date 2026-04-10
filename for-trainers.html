@@ -8,21 +8,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
-    .ft-hero { padding: 120px 0 80px; text-align: center; }
-    .ft-hero h1 { font-size: 3rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 20px; }
-    .ft-hero p { font-size: 1.1rem; color: var(--text-muted); font-weight: 300; max-width: 640px; margin: 0 auto 32px; line-height: 1.7; }
+    .ft-hero { padding: 200px 0 80px; text-align: center; }
+    .ft-hero h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 300; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 20px; }
+    .ft-hero p { font-size: clamp(1rem, 1.2vw, 1.15rem); color: var(--text-muted); font-weight: 300; max-width: 640px; margin: 0 auto 32px; line-height: 1.8; }
 
     .ft-stats { padding: 60px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .ft-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
-    .ft-stat-value { font-size: 2.4rem; font-weight: 900; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+    .ft-stat-value { font-size: clamp(1.6rem, 2.5vw, 2rem); font-weight: 300; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
     .ft-stat-label { font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 400; }
 
     .ft-how { padding: 80px 0; }
     .ft-how .section-header { margin-bottom: 48px; }
     .ft-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
     .ft-step { text-align: center; }
-    .ft-step-num { width: 56px; height: 56px; background: rgba(45,212,191,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: var(--accent-dark); margin: 0 auto 20px; border-radius: 50%; }
-    .ft-step h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+    .ft-step-num { width: 56px; height: 56px; background: rgba(45,212,191,0.1); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 500; color: var(--accent-dark); margin: 0 auto 20px; border-radius: 50%; }
+    .ft-step h3 { font-size: 1rem; font-weight: 500; margin-bottom: 10px; }
     .ft-step p { font-size: 0.9rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
 
     .ft-features { padding: 80px 0; }
@@ -34,21 +34,21 @@
       transition: transform 0.3s, box-shadow 0.3s;
     }
     .ft-feature:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); }
-    .ft-feature-icon { font-size: 0.82rem; font-weight: 800; color: var(--accent-dark); flex-shrink: 0; margin-top: 4px; letter-spacing: 0.02em; }
-    .ft-feature h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+    .ft-feature-icon { font-size: 0.82rem; font-weight: 500; color: var(--accent-dark); flex-shrink: 0; margin-top: 4px; letter-spacing: 0.02em; }
+    .ft-feature h3 { font-size: 1rem; font-weight: 500; margin-bottom: 6px; }
     .ft-feature p { font-size: 0.88rem; color: var(--text-muted); font-weight: 300; line-height: 1.6; }
 
     .ft-earnings { padding: 80px 0; }
     .ft-earnings .section-header { margin-bottom: 48px; }
     .ft-earnings-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
     .ft-earnings-card { background: var(--bg-card); border: 1px solid var(--border); padding: 40px; }
-    .ft-earnings-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+    .ft-earnings-card h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 20px; }
     .ft-earning-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
     .ft-earning-row:last-child { border-bottom: none; }
     .ft-earning-label { color: var(--text-muted); font-weight: 300; }
     .ft-earning-value { font-weight: 600; }
     .ft-earning-highlight { color: var(--accent-dark); font-weight: 700; font-size: 1.1rem; }
-    .ft-earnings-info h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+    .ft-earnings-info h3 { font-size: clamp(1.2rem, 2vw, 1.4rem); font-weight: 300; margin-bottom: 16px; letter-spacing: -0.03em; }
     .ft-earnings-info p { font-size: 0.95rem; color: var(--text-muted); font-weight: 300; line-height: 1.8; margin-bottom: 16px; }
     .ft-earnings-info ul { list-style: none; padding: 0; }
     .ft-earnings-info li { padding: 8px 0; font-size: 0.92rem; display: flex; align-items: center; gap: 10px; }
@@ -56,11 +56,11 @@
 
     .ft-testimonial { padding: 80px 0; text-align: center; }
     .ft-quote { max-width: 700px; margin: 0 auto; font-size: 1.2rem; font-weight: 300; line-height: 1.8; color: var(--text-muted); font-style: italic; margin-bottom: 24px; }
-    .ft-quote-author { font-size: 0.92rem; font-weight: 600; }
+    .ft-quote-author { font-size: 0.92rem; font-weight: 500; }
     .ft-quote-role { font-size: 0.82rem; color: var(--text-muted); font-weight: 400; }
 
     @media (max-width: 900px) {
-      .ft-hero h1 { font-size: 2.2rem; }
+      .ft-hero h1 { font-size: clamp(1.4rem, 5vw, 2rem); }
       .ft-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
       .ft-steps { grid-template-columns: 1fr; gap: 32px; }
       .ft-features-grid { grid-template-columns: 1fr; }
