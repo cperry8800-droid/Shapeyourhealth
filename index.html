@@ -217,6 +217,145 @@
     }
   </script>
 
+  <!-- Ambient Sound Toggle -->
+  <div id="soundToggle" style="position:fixed;bottom:24px;right:24px;z-index:100;cursor:pointer;opacity:0.3;transition:opacity 0.3s;" onclick="toggleAmbient()">
+    <span id="soundIcon" style="font-size:0.65rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#666;">Sound Off</span>
+  </div>
+
+  <script>
+  // ===== Ambient Background Hum =====
+  let ambientCtx = null;
+  let ambientNodes = null;
+  let ambientPlaying = false;
+  const AMB_VOL = 0.45;
+
+  function createAmbient() {
+    ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const master = ambientCtx.createGain();
+    master.gain.value = 0;
+    master.connect(ambientCtx.destination);
+
+    // Sub bass — deep hum
+    const sub = ambientCtx.createOscillator();
+    const subGain = ambientCtx.createGain();
+    sub.type = 'sine';
+    sub.frequency.value = 55;
+    subGain.gain.value = 0.4;
+    sub.connect(subGain);
+    subGain.connect(master);
+    sub.start();
+
+    // Second harmonic — body
+    const h2 = ambientCtx.createOscillator();
+    const h2g = ambientCtx.createGain();
+    h2.type = 'sine';
+    h2.frequency.value = 110;
+    h2g.gain.value = 0.18;
+    h2.connect(h2g);
+    h2g.connect(master);
+    h2.start();
+
+    // Fifth — depth
+    const h3 = ambientCtx.createOscillator();
+    const h3g = ambientCtx.createGain();
+    h3.type = 'triangle';
+    h3.frequency.value = 82.5;
+    h3g.gain.value = 0.1;
+    h3.connect(h3g);
+    h3g.connect(master);
+    h3.start();
+
+    // High shimmer — distant tone
+    const h4 = ambientCtx.createOscillator();
+    const h4g = ambientCtx.createGain();
+    h4.type = 'sine';
+    h4.frequency.value = 220;
+    h4g.gain.value = 0.03;
+    h4.connect(h4g);
+    h4g.connect(master);
+    h4.start();
+
+    // Slow LFO — breathing movement
+    const lfo = ambientCtx.createOscillator();
+    const lfoG = ambientCtx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.06;
+    lfoG.gain.value = 2;
+    lfo.connect(lfoG);
+    lfoG.connect(sub.frequency);
+    lfo.start();
+
+    // Second LFO on volume — pulse
+    const lfo2 = ambientCtx.createOscillator();
+    const lfo2G = ambientCtx.createGain();
+    lfo2.type = 'sine';
+    lfo2.frequency.value = 0.12;
+    lfo2G.gain.value = 0.03;
+    lfo2.connect(lfo2G);
+    lfo2G.connect(master.gain);
+    lfo2.start();
+
+    // Filtered noise — rumble/air
+    const noiseLen = ambientCtx.sampleRate * 2;
+    const noiseBuf = ambientCtx.createBuffer(1, noiseLen, ambientCtx.sampleRate);
+    const nd = noiseBuf.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
+    const noise = ambientCtx.createBufferSource();
+    noise.buffer = noiseBuf;
+    noise.loop = true;
+    const nf = ambientCtx.createBiquadFilter();
+    nf.type = 'lowpass';
+    nf.frequency.value = 150;
+    nf.Q.value = 0.7;
+    const ng = ambientCtx.createGain();
+    ng.gain.value = 0.08;
+    noise.connect(nf);
+    nf.connect(ng);
+    ng.connect(master);
+    noise.start();
+
+    // Fade in
+    master.gain.setValueAtTime(0, ambientCtx.currentTime);
+    master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 4);
+
+    ambientNodes = { master };
+  }
+
+  function toggleAmbient() {
+    const label = document.getElementById('soundIcon');
+    const toggle = document.getElementById('soundToggle');
+    if (!ambientPlaying) {
+      if (!ambientCtx) createAmbient();
+      if (ambientCtx.state === 'suspended') ambientCtx.resume();
+      ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
+      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
+      ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 2);
+      label.textContent = 'Sound On';
+      toggle.style.opacity = '0.7';
+      ambientPlaying = true;
+    } else {
+      ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
+      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
+      ambientNodes.master.gain.linearRampToValueAtTime(0, ambientCtx.currentTime + 1);
+      label.textContent = 'Sound Off';
+      toggle.style.opacity = '0.3';
+      ambientPlaying = false;
+    }
+  }
+
+  // Auto-start on first user interaction
+  let ambientStarted = false;
+  function autoStartAmbient() {
+    if (ambientStarted) return;
+    ambientStarted = true;
+    toggleAmbient();
+    document.removeEventListener('click', autoStartAmbient);
+    document.removeEventListener('touchstart', autoStartAmbient);
+  }
+  document.addEventListener('click', autoStartAmbient);
+  document.addEventListener('touchstart', autoStartAmbient);
+  </script>
+
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
