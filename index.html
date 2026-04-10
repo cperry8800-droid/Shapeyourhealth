@@ -383,13 +383,6 @@
           // Loading complete — transition out
           setTimeout(() => {
             overlay.classList.add('done');
-            // Slightly swell the whoom now that loading is done
-            if (dialUpNodes && audioCtx) {
-              const t = audioCtx.currentTime;
-              dialUpNodes.master.gain.cancelScheduledValues(t);
-              dialUpNodes.master.gain.setValueAtTime(dialUpNodes.master.gain.value, t);
-              dialUpNodes.master.gain.linearRampToValueAtTime(DIALUP_VOL * 1.3, t + 2);
-            }
             // Reveal intro content
             setTimeout(() => {
               document.getElementById('introLogo').classList.add('show');
