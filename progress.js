@@ -54,12 +54,14 @@ function updateStats() {
   const totalMinutes = thisMonth.reduce((sum, w) => sum + (w.duration || 0), 0);
   const estCalories = Math.round(totalMinutes * 8.5);
 
-  // Calculate streak
-  let streak = 0;
+  // Build sorted unique date set
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const dates = log.map(w => new Date(w.date + 'T00:00:00').getTime()).sort((a, b) => b - a);
-  const uniqueDates = [...new Set(dates)];
+  const dateSet = new Set(log.map(w => new Date(w.date + 'T00:00:00').getTime()));
+  const uniqueDates = [...dateSet].sort((a, b) => b - a);
+
+  // Current streak
+  let streak = 0;
   for (let i = 0; i < uniqueDates.length; i++) {
     const expected = new Date(today);
     expected.setDate(expected.getDate() - i);
@@ -71,10 +73,70 @@ function updateStats() {
     }
   }
 
+  // Best streak (all-time)
+  const allSorted = [...uniqueDates].sort((a, b) => a - b);
+  let best = 0, run = 0;
+  for (let i = 0; i < allSorted.length; i++) {
+    if (i === 0) { run = 1; }
+    else {
+      const diff = (allSorted[i] - allSorted[i - 1]) / (1000 * 60 * 60 * 24);
+      run = diff === 1 ? run + 1 : 1;
+    }
+    if (run > best) best = run;
+  }
+
   document.getElementById('statWorkouts').textContent = totalWorkouts;
   document.getElementById('statMinutes').textContent = totalMinutes;
   document.getElementById('statStreak').textContent = streak;
   document.getElementById('statCalories').textContent = estCalories.toLocaleString();
+
+  // Streak card styling
+  const card = document.getElementById('streakCard');
+  if (streak >= 3) card.classList.add('on-fire');
+  else card.classList.remove('on-fire');
+
+  // Best streak sub-label
+  const bestEl = document.getElementById('statBestStreak');
+  if (bestEl) bestEl.textContent = best > 0 ? `Best: ${best} days` : '';
+
+  // 7-day activity strip
+  renderStreakStrip(dateSet);
+}
+
+function renderStreakStrip(dateSet) {
+  const container = document.getElementById('streakDots');
+  if (!container) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const dots = [];
+
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const ts = d.getTime();
+    const dayLabel = dayNames[d.getDay()];
+    const isToday = i === 0;
+    const isFuture = i < 0;
+    const done = dateSet.has(ts);
+
+    let cls, icon;
+    if (isToday && done)      { cls = 'today'; icon = '✓'; }
+    else if (isToday)         { cls = 'today'; icon = d.getDate(); }
+    else if (done)            { cls = 'done'; icon = '✓'; }
+    else if (isFuture)        { cls = 'future'; icon = '·'; }
+    else                      { cls = 'missed'; icon = '·'; }
+
+    dots.push(`
+      <div class="streak-dot">
+        <div class="streak-dot-circle ${cls}">${icon}</div>
+        <div class="streak-dot-day">${dayLabel}</div>
+      </div>
+    `);
+  }
+
+  container.innerHTML = dots.join('');
 }
 
 // ===== Weekly Schedule =====

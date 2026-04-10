@@ -182,6 +182,10 @@ function renderMealSchedule() {
     const meals = schedule[dateStr] || [];
     const isToday = d.getTime() === today.getTime();
 
+    const dayTotal = meals.reduce((sum, m) => sum + (m.calories || 0), 0);
+    const goalPct = Math.min(Math.round((dayTotal / macroGoals.calories) * 100), 100);
+    const totalColor = dayTotal === 0 ? 'var(--text-muted)' : dayTotal > macroGoals.calories ? '#EF4444' : '#10B981';
+
     return `
       <div class="meal-day ${isToday ? 'today' : ''}" onclick="openScheduleMealModal('${dateStr}')">
         <div class="meal-day-header">
@@ -197,6 +201,15 @@ function renderMealSchedule() {
         `).join('') : `
           <div class="meal-day-empty">No meals planned</div>
         `}
+        ${dayTotal > 0 ? `
+          <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);">
+            <div style="font-size:0.75rem;font-weight:600;color:${totalColor};">${dayTotal.toLocaleString()} cal</div>
+            <div style="height:3px;background:var(--border);margin-top:4px;border-radius:2px;">
+              <div style="height:100%;width:${goalPct}%;background:${totalColor};border-radius:2px;transition:width 0.4s;"></div>
+            </div>
+            <div style="font-size:0.62rem;color:var(--text-muted);margin-top:3px;">${goalPct}% of goal</div>
+          </div>
+        ` : ''}
         <div class="meal-day-add">+ Add meal</div>
       </div>
     `;
@@ -206,6 +219,55 @@ function renderMealSchedule() {
 function changeMealWeek(dir) {
   mealWeekOffset += dir;
   renderMealSchedule();
+}
+
+// ===== Weekly Calorie Chart =====
+function renderWeeklyCalChart() {
+  const schedule = getMealSchedule();
+  const log = getMealLog();
+  const chart = document.getElementById('weeklyCalChart');
+  if (!chart) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dayOfWeek = today.getDay();
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const dateStr = d.toISOString().split('T')[0];
+
+    // Sum from schedule
+    const scheduledCals = (schedule[dateStr] || []).reduce((s, m) => s + (m.calories || 0), 0);
+    // Sum from logged meals
+    const loggedCals = log.filter(m => m.date === dateStr).reduce((s, m) => s + (m.calories || 0), 0);
+    const cals = loggedCals || scheduledCals;
+
+    days.push({ label: dayNames[i], date: d.getDate(), cals, isToday: d.getTime() === today.getTime() });
+  }
+
+  const maxCals = Math.max(...days.map(d => d.cals), macroGoals.calories);
+
+  chart.innerHTML = days.map(d => {
+    const pct = d.cals > 0 ? Math.min((d.cals / maxCals) * 100, 100) : 0;
+    const overGoal = d.cals > macroGoals.calories;
+    const barColor = d.cals === 0 ? 'var(--border)' : overGoal ? '#EF4444' : '#10B981';
+    const goalLine = Math.min((macroGoals.calories / maxCals) * 100, 100);
+    return `
+      <div class="chart-row" style="position:relative;">
+        <div class="chart-label" style="${d.isToday ? 'color:var(--accent-dark);font-weight:600;' : ''}">${d.label} ${d.date}</div>
+        <div class="chart-bar-container" style="position:relative;">
+          <div class="chart-bar" style="width:${pct}%;background:${barColor};"></div>
+          <div style="position:absolute;top:0;bottom:0;left:${goalLine}%;width:1px;background:rgba(255,255,255,0.15);pointer-events:none;"></div>
+        </div>
+        <div class="chart-value">${d.cals > 0 ? d.cals.toLocaleString() + ' cal' : '—'}</div>
+      </div>
+    `;
+  }).join('') + `<div style="font-size:0.68rem;color:var(--text-muted);margin-top:8px;text-align:right;">Goal: ${macroGoals.calories.toLocaleString()} cal/day</div>`;
 }
 
 // ===== Meal Log =====
@@ -365,6 +427,7 @@ function saveScheduledMeal() {
 function renderAll() {
   updateMacros();
   renderWater();
+  renderWeeklyCalChart();
   renderMealSchedule();
   renderMealLog();
   renderAppointments();
