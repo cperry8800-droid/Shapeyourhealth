@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shape-v3';
+const CACHE_NAME = 'shape-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -25,7 +25,10 @@ const ASSETS = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    // Delete ALL old caches first, then cache fresh assets
+    caches.keys()
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)))
   );
   self.skipWaiting();
 });
@@ -40,6 +43,16 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // Always go network-first, never serve stale HTML pages from cache
+  const url = new URL(e.request.url);
+  const isHTML = url.pathname.endsWith('.html') || url.pathname === '/';
+
+  if (isHTML) {
+    // HTML pages: network only, no cache fallback
+    e.respondWith(fetch(e.request));
+    return;
+  }
+
   e.respondWith(
     fetch(e.request)
       .then(res => {
