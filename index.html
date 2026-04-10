@@ -503,36 +503,8 @@
   }
 
   // =============================================
-  // DIAL-UP MODEM SOUND — authentic V.90 style
-  // All sine waves, real modem frequencies
+  // LOADING PULSE — deep low-frequency whoom
   // =============================================
-  function tone(ctx, dest, freq, start, dur, vol) {
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    g.gain.setValueAtTime(0, start);
-    g.gain.linearRampToValueAtTime(vol, start + 0.012);
-    g.gain.setValueAtTime(vol, start + dur - 0.015);
-    g.gain.linearRampToValueAtTime(0, start + dur);
-    osc.connect(g); g.connect(dest);
-    osc.start(start); osc.stop(start + dur + 0.02);
-  }
-
-  function sweep(ctx, dest, f1, f2, start, dur, vol) {
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(f1, start);
-    osc.frequency.exponentialRampToValueAtTime(f2, start + dur);
-    g.gain.setValueAtTime(0, start);
-    g.gain.linearRampToValueAtTime(vol, start + 0.015);
-    g.gain.setValueAtTime(vol, start + dur - 0.02);
-    g.gain.linearRampToValueAtTime(0, start + dur);
-    osc.connect(g); g.connect(dest);
-    osc.start(start); osc.stop(start + dur + 0.02);
-  }
-
   function createDialUp() {
     const ctx = ensureAudioCtx();
     const t = ctx.currentTime;
@@ -540,85 +512,53 @@
     master.gain.value = 0;
     master.connect(ctx.destination);
 
-    // ── Phase 1: US dial tone (350Hz + 440Hz) ──
-    tone(ctx, master, 350, t + 0.1, 0.9, 0.13);
-    tone(ctx, master, 440, t + 0.1, 0.9, 0.13);
+    // Deep sub sine — 48Hz foundation
+    const sub = ctx.createOscillator();
+    const subG = ctx.createGain();
+    sub.type = 'sine';
+    sub.frequency.value = 48;
+    subG.gain.value = 0.7;
+    sub.connect(subG); subG.connect(master);
+    sub.start();
 
-    // ── Phase 2: DTMF dialing — 10 digits ──
-    const digits = [
-      [697,1209],[941,1336],[697,1477],[770,1209],[852,1336],
-      [697,1209],[770,1477],[941,1209],[697,1336],[852,1477]
-    ];
-    digits.forEach(([r,c], i) => {
-      const s = t + 1.15 + i * 0.17;
-      tone(ctx, master, r, s, 0.11, 0.12);
-      tone(ctx, master, c, s, 0.11, 0.12);
-    });
+    // Second layer — 72Hz, adds body
+    const mid = ctx.createOscillator();
+    const midG = ctx.createGain();
+    mid.type = 'sine';
+    mid.frequency.value = 72;
+    midG.gain.value = 0.3;
+    const midF = ctx.createBiquadFilter();
+    midF.type = 'lowpass'; midF.frequency.value = 100;
+    mid.connect(midF); midF.connect(midG); midG.connect(master);
+    mid.start();
 
-    // ── Phase 3: Phone ring (440Hz + 480Hz, 2 bursts) ──
-    [440, 480].forEach(f => {
-      tone(ctx, master, f, t + 3.0, 1.0, 0.09);
-      tone(ctx, master, f, t + 4.5, 1.0, 0.09);
-    });
+    // Slow pulse LFO — creates the "whoom whoom" rhythm (~0.6s cycle)
+    const pulseLfo = ctx.createOscillator();
+    const pulseLfoG = ctx.createGain();
+    pulseLfo.type = 'sine';
+    pulseLfo.frequency.value = 0.55;
+    pulseLfoG.gain.value = 0.45;
+    pulseLfo.connect(pulseLfoG);
+    pulseLfoG.connect(subG.gain);
+    pulseLfoG.connect(midG.gain);
+    pulseLfo.start();
 
-    // ── Phase 4: Remote modem answers — 2100Hz ANSam carrier ──
-    // 2100Hz sine with gentle 15Hz AM modulation (authentic V.90)
-    const ansOsc = ctx.createOscillator();
-    const ansG   = ctx.createGain();
-    ansOsc.type = 'sine'; ansOsc.frequency.value = 2100;
-    const amOsc  = ctx.createOscillator();
-    const amG    = ctx.createGain();
-    amOsc.type = 'sine'; amOsc.frequency.value = 15;
-    amG.gain.value = 0.04;
-    amOsc.connect(amG); amG.connect(ansG.gain);
-    ansG.gain.setValueAtTime(0, t + 5.7);
-    ansG.gain.linearRampToValueAtTime(0.14, t + 5.8);
-    ansG.gain.setValueAtTime(0.14, t + 6.5);
-    ansG.gain.linearRampToValueAtTime(0, t + 6.6);
-    ansOsc.connect(ansG); ansG.connect(master);
-    ansOsc.start(t + 5.7); ansOsc.stop(t + 6.7);
-    amOsc.start(t + 5.7);  amOsc.stop(t + 6.7);
+    // Slow pitch drift — makes it feel organic
+    const driftLfo = ctx.createOscillator();
+    const driftLfoG = ctx.createGain();
+    driftLfo.type = 'sine';
+    driftLfo.frequency.value = 0.08;
+    driftLfoG.gain.value = 3;
+    driftLfo.connect(driftLfoG);
+    driftLfoG.connect(sub.frequency);
+    driftLfoG.connect(mid.frequency);
+    driftLfo.start();
 
-    // Local modem responds with 1300Hz
-    tone(ctx, master, 1300, t + 6.6, 0.4, 0.11);
-
-    // ── Phase 5: V.34 Waterfall — the iconic cascading sweeps ──
-    // Rapid sine sweeps from ~3200Hz down to ~300Hz, overlapping
-    const wf = t + 7.1;
-    for (let i = 0; i < 12; i++) {
-      sweep(ctx, master, 3100 - i*30, 310 + i*10, wf + i*0.27, 0.24, 0.10);
-    }
-    // Counter-sweeps (quieter, ascending, overlapping) — gives the "two modems talking" feel
-    for (let i = 0; i < 10; i++) {
-      sweep(ctx, master, 350 + i*20, 2800 - i*40, wf + 0.13 + i*0.27, 0.22, 0.05);
-    }
-
-    // ── Phase 6: Training tones — "bong bong bong" alternating tones ──
-    const tr = t + 10.5;
-    for (let i = 0; i < 28; i++) {
-      tone(ctx, master, i % 2 === 0 ? 1200 : 2400, tr + i * 0.14, 0.11, 0.09);
-    }
-
-    // ── Phase 7: Soft phone-line hiss underneath (no robot static) ──
-    const noiseLen = ctx.sampleRate * 2;
-    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
-    const nd = noiseBuf.getChannelData(0);
-    for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
-    const hiss = ctx.createBufferSource();
-    hiss.buffer = noiseBuf; hiss.loop = true;
-    const hissF = ctx.createBiquadFilter();
-    hissF.type = 'highpass'; hissF.frequency.value = 1800;
-    const hissG = ctx.createGain();
-    hissG.gain.setValueAtTime(0, t + 7.0);
-    hissG.gain.linearRampToValueAtTime(0.018, t + 7.5);
-    hiss.connect(hissF); hissF.connect(hissG); hissG.connect(master);
-    hiss.start(t + 7.0);
-
-    // Fade master in
+    // Fade master in slowly
     master.gain.setValueAtTime(0, t);
-    master.gain.linearRampToValueAtTime(DIALUP_VOL, t + 0.2);
+    master.gain.linearRampToValueAtTime(DIALUP_VOL, t + 1.5);
 
-    dialUpNodes = { master, hiss };
+    dialUpNodes = { master, sub, mid, pulseLfo, driftLfo };
     dialUpPlaying = true;
   }
 
@@ -629,7 +569,12 @@
     dialUpNodes.master.gain.setValueAtTime(dialUpNodes.master.gain.value, t);
     dialUpNodes.master.gain.linearRampToValueAtTime(0, t + duration);
     setTimeout(() => {
-      try { dialUpNodes.hiss.stop(); } catch(e) {}
+      try {
+        dialUpNodes.sub.stop();
+        dialUpNodes.mid.stop();
+        dialUpNodes.pulseLfo.stop();
+        dialUpNodes.driftLfo.stop();
+      } catch(e) {}
       dialUpPlaying = false;
     }, duration * 1000 + 100);
   }
