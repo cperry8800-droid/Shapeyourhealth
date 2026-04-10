@@ -334,6 +334,108 @@
 
   </div>
 
+  <!-- Ambient Background Hum -->
+  <div id="soundToggle" style="position:fixed;bottom:24px;right:24px;z-index:100;display:flex;align-items:center;gap:8px;cursor:pointer;opacity:0.4;transition:opacity 0.3s;" onclick="toggleAmbient()">
+    <span id="soundIcon" style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Sound Off</span>
+  </div>
+
+  <script>
+  // ===== Ambient Background Hum =====
+  let ambientCtx = null;
+  let ambientNodes = [];
+  let ambientPlaying = false;
+
+  function createAmbient() {
+    ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const master = ambientCtx.createGain();
+    master.gain.value = 0;
+    master.connect(ambientCtx.destination);
+
+    // Sub bass — deep hum foundation
+    const sub = ambientCtx.createOscillator();
+    const subGain = ambientCtx.createGain();
+    sub.type = 'sine';
+    sub.frequency.value = 55; // A1 — low hum
+    subGain.gain.value = 0.35;
+    sub.connect(subGain);
+    subGain.connect(master);
+    sub.start();
+
+    // Second harmonic — warmth
+    const harm2 = ambientCtx.createOscillator();
+    const harm2Gain = ambientCtx.createGain();
+    harm2.type = 'sine';
+    harm2.frequency.value = 110; // A2
+    harm2Gain.gain.value = 0.12;
+    harm2.connect(harm2Gain);
+    harm2Gain.connect(master);
+    harm2.start();
+
+    // Third harmonic — subtle presence
+    const harm3 = ambientCtx.createOscillator();
+    const harm3Gain = ambientCtx.createGain();
+    harm3.type = 'triangle';
+    harm3.frequency.value = 82.5; // E2 — fifth interval
+    harm3Gain.gain.value = 0.06;
+    harm3.connect(harm3Gain);
+    harm3Gain.connect(master);
+    harm3.start();
+
+    // Very slow LFO on sub frequency for subtle movement
+    const lfo = ambientCtx.createOscillator();
+    const lfoGain = ambientCtx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.08; // Very slow wobble
+    lfoGain.gain.value = 1.5;
+    lfo.connect(lfoGain);
+    lfoGain.connect(sub.frequency);
+    lfo.start();
+
+    // Filtered noise layer — air/texture
+    const noiseSize = ambientCtx.sampleRate * 2;
+    const noiseBuffer = ambientCtx.createBuffer(1, noiseSize, ambientCtx.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseSize; i++) noiseData[i] = Math.random() * 2 - 1;
+    const noise = ambientCtx.createBufferSource();
+    noise.buffer = noiseBuffer;
+    noise.loop = true;
+    const noiseFilter = ambientCtx.createBiquadFilter();
+    noiseFilter.type = 'lowpass';
+    noiseFilter.frequency.value = 120;
+    noiseFilter.Q.value = 1;
+    const noiseGain = ambientCtx.createGain();
+    noiseGain.gain.value = 0.04;
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(master);
+    noise.start();
+
+    // Fade in over 3 seconds
+    master.gain.setValueAtTime(0, ambientCtx.currentTime);
+    master.gain.linearRampToValueAtTime(0.18, ambientCtx.currentTime + 3);
+
+    ambientNodes = { master, oscillators: [sub, harm2, harm3, lfo, noise] };
+  }
+
+  function toggleAmbient() {
+    const label = document.getElementById('soundIcon');
+    const toggle = document.getElementById('soundToggle');
+    if (!ambientPlaying) {
+      if (!ambientCtx) createAmbient();
+      if (ambientCtx.state === 'suspended') ambientCtx.resume();
+      ambientNodes.master.gain.linearRampToValueAtTime(0.18, ambientCtx.currentTime + 1.5);
+      label.textContent = 'Sound On';
+      toggle.style.opacity = '0.8';
+      ambientPlaying = true;
+    } else {
+      ambientNodes.master.gain.linearRampToValueAtTime(0, ambientCtx.currentTime + 1);
+      label.textContent = 'Sound Off';
+      toggle.style.opacity = '0.4';
+      ambientPlaying = false;
+    }
+  }
+  </script>
+
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
