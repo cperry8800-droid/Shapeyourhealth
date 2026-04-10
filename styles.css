@@ -711,6 +711,7 @@ ul { list-style: none; }
 .schedule-day.today .schedule-day-date { color: var(--accent-dark); }
 .schedule-day-workout { }
 .schedule-workout-name { font-size: 0.82rem; font-weight: 500; margin-bottom: 2px; }
+.schedule-workout-trainer { font-size: 0.7rem; color: var(--accent-dark); font-weight: 500; margin-bottom: 2px; }
 .schedule-workout-meta { font-size: 0.72rem; color: var(--text-muted); }
 .schedule-day-empty { display: flex; align-items: center; justify-content: center; height: 50px; }
 .schedule-day-empty span { font-size: 0.78rem; color: var(--text-muted); opacity: 0.5; }
@@ -741,6 +742,7 @@ ul { list-style: none; }
 .log-entry-date { font-size: 0.82rem; font-weight: 500; min-width: 80px; color: var(--text-muted); padding-top: 2px; }
 .log-entry-info { flex: 1; }
 .log-entry-info h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 6px; }
+.log-entry-trainer { font-size: 0.78rem; color: var(--accent-dark); font-weight: 500; margin-bottom: 4px; }
 .log-entry-meta { display: flex; gap: 12px; font-size: 0.78rem; color: var(--text-muted); align-items: center; }
 .log-entry-notes { font-size: 0.82rem; color: var(--text-muted); font-style: italic; margin-top: 6px; font-weight: 300; }
 .log-delete {

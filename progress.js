@@ -2,24 +2,24 @@
 
 // Demo data for a new user — simulates a month of workouts
 const demoWorkoutLog = [
-  { name: "5x5 Foundation", type: "Strength", duration: 55, difficulty: "Hard", date: "2026-04-01", notes: "Felt strong on squats" },
-  { name: "20-Min Torch", type: "HIIT", duration: 20, difficulty: "Moderate", date: "2026-04-02", notes: "Quick morning session" },
-  { name: "Morning Flow", type: "Yoga", duration: 30, difficulty: "Easy", date: "2026-04-03", notes: "Great recovery day" },
-  { name: "Deadlift Domination", type: "Strength", duration: 60, difficulty: "Intense", date: "2026-04-05", notes: "New PR on deadlift!" },
-  { name: "Full Body Burn", type: "Cardio", duration: 40, difficulty: "Hard", date: "2026-04-06", notes: "" },
-  { name: "HIIT Burn", type: "Cardio", duration: 25, difficulty: "Moderate", date: "2026-04-07", notes: "Fun session" },
-  { name: "Core Control", type: "Pilates", duration: 30, difficulty: "Moderate", date: "2026-04-08", notes: "" },
-  { name: "Upper Body Blast", type: "Strength", duration: 45, difficulty: "Hard", date: "2026-04-09", notes: "Increased weight on bench" },
+  { name: "5x5 Foundation", type: "Strength", trainer: "Marcus Johnson", duration: 55, difficulty: "Hard", date: "2026-04-01", notes: "Felt strong on squats" },
+  { name: "20-Min Torch", type: "HIIT", trainer: "Damon Clarke", duration: 20, difficulty: "Moderate", date: "2026-04-02", notes: "Quick morning session" },
+  { name: "Morning Flow", type: "Yoga", trainer: "Elena Vasquez", duration: 30, difficulty: "Easy", date: "2026-04-03", notes: "Great recovery day" },
+  { name: "Deadlift Domination", type: "Strength", trainer: "Marcus Johnson", duration: 60, difficulty: "Intense", date: "2026-04-05", notes: "New PR on deadlift!" },
+  { name: "Full Body Burn", type: "Cardio", trainer: "Damon Clarke", duration: 40, difficulty: "Hard", date: "2026-04-06", notes: "" },
+  { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", duration: 25, difficulty: "Moderate", date: "2026-04-07", notes: "Fun session" },
+  { name: "Core Control", type: "Pilates", trainer: "Elena Vasquez", duration: 30, difficulty: "Moderate", date: "2026-04-08", notes: "" },
+  { name: "Upper Body Blast", type: "Strength", trainer: "Marcus Johnson", duration: 45, difficulty: "Hard", date: "2026-04-09", notes: "Increased weight on bench" },
 ];
 
 const demoSchedule = {
-  "2026-04-07": { name: "HIIT Burn", type: "Cardio", time: "7:00 AM" },
-  "2026-04-08": { name: "Core Control", type: "Pilates", time: "6:30 AM" },
-  "2026-04-09": { name: "Upper Body Blast", type: "Strength", time: "7:00 AM" },
-  "2026-04-10": { name: "Tabata Inferno", type: "HIIT", time: "6:00 AM" },
-  "2026-04-11": { name: "Morning Flow", type: "Yoga", time: "8:00 AM" },
-  "2026-04-12": { name: "Rest Day", type: "Rest Day", time: "" },
-  "2026-04-13": { name: "Leg Day Legends", type: "Strength", time: "7:00 AM" },
+  "2026-04-07": { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", time: "7:00 AM" },
+  "2026-04-08": { name: "Core Control", type: "Pilates", trainer: "Elena Vasquez", time: "6:30 AM" },
+  "2026-04-09": { name: "Upper Body Blast", type: "Strength", trainer: "Marcus Johnson", time: "7:00 AM" },
+  "2026-04-10": { name: "Tabata Inferno", type: "HIIT", trainer: "Sophie Turner", time: "6:00 AM" },
+  "2026-04-11": { name: "Morning Flow", type: "Yoga", trainer: "Elena Vasquez", time: "8:00 AM" },
+  "2026-04-12": { name: "Rest Day", type: "Rest Day", trainer: "", time: "" },
+  "2026-04-13": { name: "Leg Day Legends", type: "Strength", trainer: "Marcus Johnson", time: "7:00 AM" },
 };
 
 // Load from localStorage or use demo data
@@ -138,6 +138,7 @@ function renderSchedule() {
         ${scheduled ? `
           <div class="schedule-day-workout">
             <div class="schedule-workout-name">${scheduled.name}</div>
+            ${scheduled.trainer ? `<div class="schedule-workout-trainer">${scheduled.trainer}</div>` : ''}
             <div class="schedule-workout-meta">${scheduled.type}${scheduled.time ? ' &middot; ' + scheduled.time : ''}</div>
           </div>
         ` : `
@@ -207,6 +208,7 @@ function renderWorkoutLog() {
         <div class="log-entry-date">${dateStr}</div>
         <div class="log-entry-info">
           <h4>${w.name}</h4>
+          ${w.trainer ? `<div class="log-entry-trainer">by ${w.trainer}</div>` : ''}
           <div class="log-entry-meta">
             <span class="workout-tag">${w.type}</span>
             <span>${w.duration} min</span>
