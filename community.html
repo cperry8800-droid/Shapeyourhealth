@@ -10,8 +10,8 @@
   <style>
     .community-layout {
       display: grid; grid-template-columns: 300px 1fr 320px;
-      height: calc(100vh - 80px); margin-top: 80px;
-      border-top: 1px solid var(--border);
+      height: 700px;
+      border: 1px solid var(--border);
     }
 
     /* === Left Panel: Friends & People === */
@@ -226,6 +226,75 @@
       font-weight: 500; margin-top: 4px;
     }
 
+    /* === Profile Edit Modal === */
+    .profile-modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5); z-index: 1000; align-items: center;
+      justify-content: center; padding: 24px;
+    }
+    .profile-modal-overlay.active { display: flex; }
+    .profile-modal {
+      background: var(--bg-card); max-width: 440px; width: 100%;
+      padding: 36px; position: relative;
+    }
+    .profile-modal h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; }
+    .profile-modal .close-modal {
+      position: absolute; top: 16px; right: 16px; background: none;
+      border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-muted);
+      transition: color 0.3s;
+    }
+    .profile-modal .close-modal:hover { color: var(--text); }
+    .profile-photo-upload {
+      display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;
+    }
+    .profile-photo-preview {
+      width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.4rem; color: #fff; margin-bottom: 12px;
+      cursor: pointer; position: relative; border: 3px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .profile-photo-preview:hover { border-color: var(--accent); }
+    .profile-photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-photo-preview .photo-overlay {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4); display: flex; align-items: center;
+      justify-content: center; opacity: 0; transition: opacity 0.3s;
+      font-size: 0.7rem; color: #fff; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .profile-photo-preview:hover .photo-overlay { opacity: 1; }
+    .profile-modal .form-group { margin-bottom: 20px; }
+    .profile-modal label {
+      display: block; font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-muted); margin-bottom: 8px;
+    }
+    .profile-modal input, .profile-modal textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: inherit;
+      font-size: 0.85rem; outline: none; transition: border-color 0.3s;
+    }
+    .profile-modal input:focus, .profile-modal textarea:focus { border-color: var(--accent); }
+    .profile-modal textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .profile-modal .btn-save-profile {
+      width: 100%; padding: 14px; background: var(--accent); color: #fff;
+      border: none; font-family: inherit; font-weight: 600; font-size: 0.82rem;
+      text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer;
+      transition: background 0.3s; margin-top: 4px;
+    }
+    .profile-modal .btn-save-profile:hover { background: var(--accent-dark); }
+    .btn-edit-profile {
+      margin-top: 16px; padding: 8px 20px; font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+    }
+    .btn-edit-profile:hover { border-color: var(--accent); color: var(--accent-dark); }
+    .activity-profile-avatar img,
+    .community-user-avatar img,
+    .chat-msg-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
     /* === Responsive === */
     @media (max-width: 1100px) {
       .community-layout { grid-template-columns: 280px 1fr; }
@@ -272,7 +341,18 @@
     </div>
   </nav>
 
+  <!-- Community Description -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="tag">Community</span>
+      <h1>Connect with fellow <span class="gradient-text">Shape</span> members</h1>
+      <p class="page-hero-sub">Chat with other clients, share your favorite workouts and trainers, build your profile, and make friends who keep you accountable.</p>
+    </div>
+  </section>
+
   <!-- Community Layout -->
+  <section class="section" style="padding-top:0;">
+  <div class="container">
   <div class="community-layout">
 
     <!-- Left: Friends & People -->
@@ -321,9 +401,9 @@
     <!-- Right: Profile & Activity Feed -->
     <div class="community-activity">
       <div class="activity-profile" id="activityProfile">
-        <div class="activity-profile-avatar" style="background:#2DD4BF;">You</div>
-        <h3>Your Profile</h3>
-        <p>Member since 2025</p>
+        <div class="activity-profile-avatar" id="myAvatar" style="background:#2DD4BF;"><span id="myInitials">You</span></div>
+        <h3 id="myName">Your Profile</h3>
+        <p id="myBio">Member since 2025</p>
         <div class="activity-stats">
           <div class="activity-stat">
             <div class="activity-stat-num" id="statFriends">4</div>
@@ -338,6 +418,7 @@
             <div class="activity-stat-label">Trainers</div>
           </div>
         </div>
+        <button class="btn-edit-profile" onclick="openProfileModal()">Edit Profile</button>
       </div>
       <div class="activity-section-title">Friend Activity</div>
       <div class="activity-feed" id="activityFeed">
@@ -345,6 +426,36 @@
       </div>
     </div>
 
+  </div>
+  </div>
+  </section>
+
+  <!-- Profile Edit Modal -->
+  <div class="profile-modal-overlay" id="profileModal">
+    <div class="profile-modal">
+      <button class="close-modal" onclick="closeProfileModal()">&times;</button>
+      <h2>Edit Profile</h2>
+      <div class="profile-photo-upload">
+        <div class="profile-photo-preview" id="photoPreview" onclick="document.getElementById('photoInput').click();" style="background:#2DD4BF;">
+          <span id="photoInitials">You</span>
+          <div class="photo-overlay">Change</div>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
+      </div>
+      <div class="form-group">
+        <label>Display Name</label>
+        <input type="text" id="profileName" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>Bio</label>
+        <textarea id="profileBio" placeholder="Tell the community about yourself, your goals, favorite workouts..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Favorite Trainer</label>
+        <input type="text" id="profileTrainer" placeholder="e.g. Marcus Johnson">
+      </div>
+      <button class="btn-save-profile" onclick="saveProfile()">Save Profile</button>
+    </div>
   </div>
 
   <!-- Toast -->
@@ -632,7 +743,119 @@
       input.value = '';
     }
 
+    // === Profile Functions ===
+    let myProfile = JSON.parse(localStorage.getItem('shapeProfile') || 'null') || {
+      name: 'Your Profile', bio: 'Member since 2025', photo: null, trainer: ''
+    };
+
+    function loadProfile() {
+      const avatar = document.getElementById('myAvatar');
+      const nameEl = document.getElementById('myName');
+      const bioEl = document.getElementById('myBio');
+      if (nameEl) nameEl.textContent = myProfile.name;
+      if (bioEl) bioEl.textContent = myProfile.bio;
+      if (myProfile.photo) {
+        avatar.innerHTML = `<img src="${myProfile.photo}" alt="You">`;
+        avatar.style.background = 'none';
+      } else {
+        const initials = myProfile.name === 'Your Profile' ? 'You' :
+          myProfile.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+        avatar.innerHTML = `<span>${initials}</span>`;
+        avatar.style.background = '#2DD4BF';
+      }
+    }
+
+    function openProfileModal() {
+      document.getElementById('profileModal').classList.add('active');
+      document.getElementById('profileName').value = myProfile.name === 'Your Profile' ? '' : myProfile.name;
+      document.getElementById('profileBio').value = myProfile.bio === 'Member since 2025' ? '' : myProfile.bio;
+      document.getElementById('profileTrainer').value = myProfile.trainer || '';
+      const preview = document.getElementById('photoPreview');
+      if (myProfile.photo) {
+        preview.innerHTML = `<img src="${myProfile.photo}" alt="You"><div class="photo-overlay">Change</div>`;
+        preview.style.background = 'none';
+      } else {
+        const initials = myProfile.name === 'Your Profile' ? 'You' :
+          myProfile.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+        preview.innerHTML = `<span>${initials}</span><div class="photo-overlay">Change</div>`;
+        preview.style.background = '#2DD4BF';
+      }
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileModal').classList.remove('active');
+    }
+
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = 200; canvas.height = 200;
+          const ctx = canvas.getContext('2d');
+          const size = Math.min(img.width, img.height);
+          ctx.drawImage(img, (img.width - size) / 2, (img.height - size) / 2, size, size, 0, 0, 200, 200);
+          myProfile.photo = canvas.toDataURL('image/jpeg', 0.8);
+          const preview = document.getElementById('photoPreview');
+          preview.innerHTML = `<img src="${myProfile.photo}" alt="You"><div class="photo-overlay">Change</div>`;
+          preview.style.background = 'none';
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveProfile() {
+      const name = document.getElementById('profileName').value.trim();
+      const bio = document.getElementById('profileBio').value.trim();
+      const trainer = document.getElementById('profileTrainer').value.trim();
+      if (name) myProfile.name = name;
+      if (bio) myProfile.bio = bio;
+      myProfile.trainer = trainer;
+      localStorage.setItem('shapeProfile', JSON.stringify(myProfile));
+      loadProfile();
+      closeProfileModal();
+      const toast = document.getElementById('toast');
+      toast.textContent = 'Profile updated!';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Use profile photo/name in sent messages
+    const _origSend = sendMessage;
+    sendMessage = function() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      const container = document.getElementById('chatMessages');
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const displayName = myProfile.name === 'Your Profile' ? 'You' : myProfile.name;
+      const avatarContent = myProfile.photo
+        ? `<img src="${myProfile.photo}" alt="You">`
+        : (myProfile.name === 'Your Profile' ? 'You' : myProfile.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2));
+      container.insertAdjacentHTML('beforeend', `
+        <div class="chat-msg own">
+          <div class="chat-msg-avatar" style="background:${myProfile.photo ? 'none' : '#2DD4BF'};">${avatarContent}</div>
+          <div class="chat-msg-body">
+            <div class="chat-msg-name">${displayName}</div>
+            <div class="chat-msg-text">${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+            <div class="chat-msg-time">${time}</div>
+          </div>
+        </div>
+      `);
+      container.scrollTop = container.scrollHeight;
+      input.value = '';
+    };
+
+    document.getElementById('profileModal').addEventListener('click', function(e) {
+      if (e.target === this) closeProfileModal();
+    });
+
     // === Init ===
+    loadProfile();
     renderUserList();
     renderChat();
     renderActivity();
