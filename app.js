@@ -86,7 +86,8 @@ const nutritionists = [
     id: 101, name: "Dr. Sarah Mitchell", specialty: "Sports Nutrition",
     price: 59.99, rating: 4.9, subscribers: 980, experience: "14 yrs",
     bio: "PhD in Nutritional Science. Specializes in performance nutrition for athletes — from amateur to Olympic level.",
-    color: "#10B981",
+    color: "#10B981", nutritionistOfMonth: true,
+    notmQuote: "Food is fuel, but the right food is a superpower. Let's unlock yours.",
     services: ["Custom meal plans", "Macro coaching", "Supplement guidance", "Competition prep"],
     tags: ["Performance", "Athletes", "Macro Coaching"]
   },
@@ -232,6 +233,38 @@ const trainerGrid = document.getElementById('trainerGrid');
 const nutritionistGrid = document.getElementById('nutritionistGrid');
 if (trainerGrid) trainerGrid.innerHTML = trainers.map(createTrainerCard).join('');
 if (nutritionistGrid) nutritionistGrid.innerHTML = nutritionists.map(createNutritionistCard).join('');
+
+// Nutritionist of the Month
+const notmCard = document.getElementById('notmCard');
+if (notmCard) {
+  const notm = nutritionists.find(n => n.nutritionistOfMonth);
+  if (notm) {
+    const initials = notm.name.split(' ').map(n => n[0]).join('');
+    notmCard.innerHTML = `
+      <div class="totm-layout">
+        <div class="totm-avatar-area">
+          <div class="totm-avatar" style="background: ${notm.color};">${initials}</div>
+          <div class="totm-badge">Nutritionist of the Month</div>
+        </div>
+        <div class="totm-info">
+          <h2>${notm.name}</h2>
+          <div class="card-specialty">${notm.specialty}</div>
+          <p class="totm-quote">"${notm.notmQuote}"</p>
+          <p class="card-desc">${notm.bio}</p>
+          <div class="card-meta">
+            <span>&#9733; ${notm.rating} rating</span>
+            <span>${notm.subscribers.toLocaleString()} subscribers</span>
+            <span>${notm.experience} experience</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="openTrainerModal(${notm.id})">View Plans</button>
+            <button class="btn btn-outline" onclick="subscribe('${notm.name}', ${notm.price})">Subscribe — $${notm.price}/mo</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
 
 // ===== Filter =====
 document.querySelectorAll('.filter-btn').forEach(btn => {
