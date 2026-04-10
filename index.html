@@ -383,8 +383,13 @@
           // Loading complete — transition out
           setTimeout(() => {
             overlay.classList.add('done');
-            // Crossfade: dial-up → deep rumble
-            if (typeof crossfadeToRumble === 'function') crossfadeToRumble();
+            // Slightly swell the whoom now that loading is done
+            if (dialUpNodes && audioCtx) {
+              const t = audioCtx.currentTime;
+              dialUpNodes.master.gain.cancelScheduledValues(t);
+              dialUpNodes.master.gain.setValueAtTime(dialUpNodes.master.gain.value, t);
+              dialUpNodes.master.gain.linearRampToValueAtTime(DIALUP_VOL * 1.3, t + 2);
+            }
             // Reveal intro content
             setTimeout(() => {
               document.getElementById('introLogo').classList.add('show');
@@ -415,12 +420,12 @@
         document.getElementById('dissolveOverlay').classList.add('active');
       }, 200);
 
-      // 4. Fade out sound
-      if (audioCtx && ambientNodes) {
+      // 4. Fade out whoom pulse
+      if (audioCtx && dialUpNodes) {
         const t = audioCtx.currentTime;
-        ambientNodes.master.gain.cancelScheduledValues(t);
-        ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
-        ambientNodes.master.gain.linearRampToValueAtTime(0, t + 1.4);
+        dialUpNodes.master.gain.cancelScheduledValues(t);
+        dialUpNodes.master.gain.setValueAtTime(dialUpNodes.master.gain.value, t);
+        dialUpNodes.master.gain.linearRampToValueAtTime(0, t + 1.4);
       }
 
       // 5. Navigate after dissolve completes (black overlay fully covering)
