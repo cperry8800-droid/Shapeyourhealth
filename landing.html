@@ -10,10 +10,10 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --text: #1A1A1A;
-      --text-muted: #888;
-      --bg: #FAFAFA;
-      --border: #E0E0E0;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.42);
+      --bg: #0a0a0a;
+      --border: rgba(255,255,255,0.09);
       --accent: #2DD4BF;
       --accent-dark: #14B8A6;
     }
@@ -45,7 +45,7 @@
       align-items: center;
       justify-content: space-between;
     }
-    .landing-nav img { height: 64px; }
+    .landing-nav img { height: 64px; filter: brightness(0) invert(1); }
     .landing-nav a {
       font-size: 0.82rem;
       color: var(--text-muted);
@@ -106,7 +106,7 @@
     }
 
     .profile-card {
-      background: var(--bg);
+      background: #111111;
       padding: 48px 36px;
       text-align: center;
       cursor: pointer;
@@ -132,7 +132,7 @@
     }
 
     .profile-card:hover {
-      background: #fff;
+      background: #1a1a1a;
     }
     .profile-card:hover::after {
       transform: scaleX(1);
