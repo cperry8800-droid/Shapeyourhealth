@@ -8,7 +8,6 @@ const ASSETS = [
   '/logo.png',
   '/trainers.html',
   '/nutritionists.html',
-  '/ai-trainer.html',
   '/pricing.html',
   '/contact.html',
   '/landing.html',
