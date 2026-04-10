@@ -444,6 +444,16 @@ if (navToggle) {
   });
 }
 
+// ===== Mobile Nav Dropdown =====
+document.querySelectorAll('.nav-dropdown > a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      this.parentElement.classList.toggle('open');
+    }
+  });
+});
+
 // ===== Modals =====
 function closeAllModals() {
   document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
