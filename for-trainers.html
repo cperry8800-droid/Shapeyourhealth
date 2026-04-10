@@ -8,9 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
-    .ft-hero { padding: 200px 0 80px; text-align: center; }
+    .ft-hero { padding: 160px 0 40px; text-align: center; }
     .ft-hero h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 300; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 20px; }
-    .ft-hero p { font-size: clamp(1rem, 1.2vw, 1.15rem); color: var(--text-muted); font-weight: 300; max-width: 640px; margin: 0 auto 32px; line-height: 1.8; }
+    .ft-hero p { font-size: clamp(1rem, 1.2vw, 1.15rem); color: var(--text-muted); font-weight: 300; max-width: 520px; margin: 0 auto; line-height: 1.8; }
 
     .ft-stats { padding: 60px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .ft-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
@@ -60,6 +60,7 @@
     .ft-quote-role { font-size: 0.82rem; color: var(--text-muted); font-weight: 400; }
 
     @media (max-width: 900px) {
+      .ft-hero { padding: 120px 0 30px; }
       .ft-hero h1 { font-size: clamp(1.4rem, 5vw, 2rem); }
       .ft-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
       .ft-steps { grid-template-columns: 1fr; gap: 32px; }
