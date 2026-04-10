@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     .split-hero {
-      padding: 160px 0 40px;
+      padding: 160px 0 40px; text-align: center;
       position: relative;
     }
     .split-hero .tag { display: block; margin-bottom: 16px; }
@@ -19,7 +19,7 @@
     }
     .split-hero-sub {
       font-size: clamp(0.85rem, 1vw, 0.95rem); color: var(--text-muted);
-      max-width: 520px; font-weight: 300; line-height: 1.8; margin-bottom: 48px;
+      max-width: 520px; font-weight: 300; line-height: 1.8; margin-bottom: 48px; margin-left: auto; margin-right: auto;
     }
 
     .split-grid {
@@ -107,7 +107,13 @@
         </div>
         <a href="trainers.html">Trainer Marketplace</a>
         <a href="for-trainers.html">For Trainers</a>
-        <a href="nutritionists.html">Nutritionists</a>
+        <div class="nav-dropdown">
+          <a href="nutritionists.html">Nutritionists</a>
+          <div class="nav-dropdown-menu">
+            <a href="nutritionists.html">Browse Nutritionists</a>
+            <a href="nutrition-schedule.html">Nutrition Schedule</a>
+          </div>
+        </div>
         <a href="community.html">Community</a>
         <a href="pricing.html">Pricing</a>
         <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
@@ -192,18 +198,6 @@
             <div><strong>Marcus J.</strong><span>Trainer — 1,240 subscribers</span></div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="container">
-      <h2>Ready to get in <span class="gradient-text">Shape</span>?</h2>
-      <p>Thousands of members already train with Shape. You're next.</p>
-      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <a href="landing.html" class="btn btn-primary btn-lg">Start Training</a>
-        <a href="for-trainers.html" class="btn btn-outline btn-lg" style="border-color:#fff;color:#fff;">I'm a Trainer</a>
       </div>
     </div>
   </section>
