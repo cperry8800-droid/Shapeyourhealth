@@ -552,6 +552,50 @@
     scifiF.type = 'bandpass'; scifiF.frequency.value = 320; scifiF.Q.value = 30;
     scifi.connect(scifiF); scifiF.connect(scifiG); scifiG.connect(master); scifi.start();
 
+    // LAYER: MID-RANGE (audible on mobile speakers)
+    // Warm mid hum — sits around 220Hz where phone speakers start responding
+    const midHum = ctx.createOscillator();
+    const midHumG = ctx.createGain();
+    midHum.type = 'sine'; midHum.frequency.value = 220; midHumG.gain.value = 0.15;
+    const midHumF = ctx.createBiquadFilter();
+    midHumF.type = 'bandpass'; midHumF.frequency.value = 220; midHumF.Q.value = 8;
+    midHum.connect(midHumF); midHumF.connect(midHumG); midHumG.connect(master); midHum.start();
+
+    // Atmospheric pad — filtered sawtooth in the 300-500Hz range
+    const pad1 = ctx.createOscillator();
+    const pad1G = ctx.createGain();
+    pad1.type = 'sawtooth'; pad1.frequency.value = 330; pad1G.gain.value = 0.06;
+    const pad1F = ctx.createBiquadFilter();
+    pad1F.type = 'bandpass'; pad1F.frequency.value = 380; pad1F.Q.value = 4;
+    pad1.connect(pad1F); pad1F.connect(pad1G); pad1G.connect(master); pad1.start();
+
+    const pad2 = ctx.createOscillator();
+    const pad2G = ctx.createGain();
+    pad2.type = 'sawtooth'; pad2.frequency.value = 331.2; pad2G.gain.value = 0.06;
+    const pad2F = ctx.createBiquadFilter();
+    pad2F.type = 'bandpass'; pad2F.frequency.value = 380; pad2F.Q.value = 4;
+    pad2.connect(pad2F); pad2F.connect(pad2G); pad2G.connect(master); pad2.start();
+
+    // Higher presence tone — gives body on tiny speakers
+    const presence = ctx.createOscillator();
+    const presenceG = ctx.createGain();
+    presence.type = 'sine'; presence.frequency.value = 480; presenceG.gain.value = 0.025;
+    const presenceF = ctx.createBiquadFilter();
+    presenceF.type = 'bandpass'; presenceF.frequency.value = 480; presenceF.Q.value = 15;
+    presence.connect(presenceF); presenceF.connect(presenceG); presenceG.connect(master); presence.start();
+
+    // Filtered noise — air/hiss texture audible on any speaker
+    const airNoiseLen = ctx.sampleRate * 4;
+    const airNoiseBuf = ctx.createBuffer(1, airNoiseLen, ctx.sampleRate);
+    const airData = airNoiseBuf.getChannelData(0);
+    for (let i = 0; i < airNoiseLen; i++) airData[i] = Math.random() * 2 - 1;
+    const airNoise = ctx.createBufferSource();
+    airNoise.buffer = airNoiseBuf; airNoise.loop = true;
+    const airNoiseF = ctx.createBiquadFilter();
+    airNoiseF.type = 'bandpass'; airNoiseF.frequency.value = 600; airNoiseF.Q.value = 1.5;
+    const airNoiseG = ctx.createGain(); airNoiseG.gain.value = 0.08;
+    airNoise.connect(airNoiseF); airNoiseF.connect(airNoiseG); airNoiseG.connect(master); airNoise.start();
+
     // LAYER 3: LFOs
     const driftLfo = ctx.createOscillator();
     const driftLfoG = ctx.createGain();
@@ -566,6 +610,20 @@
     sweepLfo.connect(sweepLfoG);
     sweepLfoG.connect(eng1F.frequency); sweepLfoG.connect(eng2F.frequency);
     sweepLfo.start();
+
+    // LFO for mid-range layers — slow drift on the pad filter
+    const midLfo = ctx.createOscillator();
+    const midLfoG = ctx.createGain();
+    midLfo.type = 'sine'; midLfo.frequency.value = 0.05; midLfoG.gain.value = 40;
+    midLfo.connect(midLfoG);
+    midLfoG.connect(pad1F.frequency); midLfoG.connect(pad2F.frequency);
+    midLfo.start();
+
+    // Gentle volume swell on mid hum
+    const midVolLfo = ctx.createOscillator();
+    const midVolLfoG = ctx.createGain();
+    midVolLfo.type = 'sine'; midVolLfo.frequency.value = 0.12; midVolLfoG.gain.value = 0.04;
+    midVolLfo.connect(midVolLfoG); midVolLfoG.connect(midHumG.gain); midVolLfo.start();
 
     const throbLfo = ctx.createOscillator();
     const throbLfoG = ctx.createGain();
