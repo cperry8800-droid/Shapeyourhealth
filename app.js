@@ -2,80 +2,80 @@
 const trainers = [
   {
     id: 1, name: "Marcus Johnson", specialty: "Strength & Powerlifting",
-    category: "strength", price: 29.99, rating: 4.9, subscribers: 1240, experience: "12 yrs",
+    category: "strength", price: 49.99, rating: 4.9, subscribers: 1240, experience: "12 yrs",
     bio: "Former competitive powerlifter turned coach. Specializes in progressive overload programs for all levels.",
     color: "#6C3AED", trainerOfMonth: true,
     totmQuote: "Consistency beats intensity. Show up every day and the results will follow.",
     workouts: [
-      { name: "5x5 Foundation", type: "Strength", duration: "55 min", difficulty: "Intermediate", price: 9.99, description: "The classic 5x5 program adapted for progressive overload. Perfect for building raw strength." },
-      { name: "Deadlift Domination", type: "Powerlifting", duration: "60 min", difficulty: "Advanced", price: 14.99, description: "A 6-week deadlift specialization program to break through plateaus." },
-      { name: "Upper Body Blast", type: "Hypertrophy", duration: "45 min", difficulty: "Beginner", price: 7.99, description: "High-volume upper body routine focused on chest, back, and shoulders." },
-      { name: "Leg Day Legends", type: "Strength", duration: "50 min", difficulty: "Intermediate", price: 9.99, description: "Squat-focused leg day with accessory work for complete lower body development." },
+      { name: "5x5 Foundation", type: "Strength", duration: "55 min", difficulty: "Intermediate", price: 29.99, description: "The classic 5x5 program adapted for progressive overload. Perfect for building raw strength." },
+      { name: "Deadlift Domination", type: "Powerlifting", duration: "60 min", difficulty: "Advanced", price: 34.99, description: "A 6-week deadlift specialization program to break through plateaus." },
+      { name: "Upper Body Blast", type: "Hypertrophy", duration: "45 min", difficulty: "Beginner", price: 27.99, description: "High-volume upper body routine focused on chest, back, and shoulders." },
+      { name: "Leg Day Legends", type: "Strength", duration: "50 min", difficulty: "Intermediate", price: 29.99, description: "Squat-focused leg day with accessory work for complete lower body development." },
     ],
     tags: ["Powerlifting", "Hypertrophy", "Strength"]
   },
   {
     id: 2, name: "Aisha Patel", specialty: "HIIT & Fat Loss",
-    category: "hiit", price: 19.99, rating: 4.8, subscribers: 2100, experience: "8 yrs",
+    category: "hiit", price: 39.99, rating: 4.8, subscribers: 2100, experience: "8 yrs",
     bio: "High-energy coach known for efficient, no-equipment HIIT sessions that burn maximum calories in minimum time.",
     color: "#EC4899",
     workouts: [
-      { name: "20-Min Torch", type: "HIIT", duration: "20 min", difficulty: "Beginner", price: 4.99, description: "Quick full-body HIIT session perfect for busy mornings." },
-      { name: "Tabata Inferno", type: "HIIT", duration: "30 min", difficulty: "Advanced", price: 9.99, description: "Intense Tabata protocol with 8 rounds of 20/10 intervals." },
-      { name: "Full Body Burn", type: "Cardio", duration: "40 min", difficulty: "Intermediate", price: 7.99, description: "No-equipment cardio workout that torches calories head to toe." },
-      { name: "Core Crusher", type: "HIIT", duration: "15 min", difficulty: "Beginner", price: 4.99, description: "Targeted ab routine with HIIT-style pacing for maximum burn." },
+      { name: "20-Min Torch", type: "HIIT", duration: "20 min", difficulty: "Beginner", price: 24.99, description: "Quick full-body HIIT session perfect for busy mornings." },
+      { name: "Tabata Inferno", type: "HIIT", duration: "30 min", difficulty: "Advanced", price: 29.99, description: "Intense Tabata protocol with 8 rounds of 20/10 intervals." },
+      { name: "Full Body Burn", type: "Cardio", duration: "40 min", difficulty: "Intermediate", price: 27.99, description: "No-equipment cardio workout that torches calories head to toe." },
+      { name: "Core Crusher", type: "HIIT", duration: "15 min", difficulty: "Beginner", price: 24.99, description: "Targeted ab routine with HIIT-style pacing for maximum burn." },
     ],
     tags: ["HIIT", "Fat Loss", "No Equipment"]
   },
   {
     id: 3, name: "Elena Vasquez", specialty: "Yoga & Mobility",
-    category: "yoga", price: 14.99, rating: 4.9, subscribers: 1870, experience: "15 yrs",
+    category: "yoga", price: 34.99, rating: 4.9, subscribers: 1870, experience: "15 yrs",
     bio: "Certified yoga instructor blending traditional vinyasa with modern mobility work for athletes and desk workers.",
     color: "#10B981",
     workouts: [
-      { name: "Morning Flow", type: "Vinyasa", duration: "30 min", difficulty: "Beginner", price: 5.99, description: "Gentle vinyasa sequence to start your day with energy and focus." },
-      { name: "Deep Stretch Recovery", type: "Yin Yoga", duration: "45 min", difficulty: "Beginner", price: 5.99, description: "Slow-paced yin session targeting tight hips, hamstrings, and shoulders." },
-      { name: "Athlete's Mobility", type: "Mobility", duration: "35 min", difficulty: "Intermediate", price: 7.99, description: "Mobility drills designed for athletes to improve range of motion." },
-      { name: "Power Yoga Sculpt", type: "Power Yoga", duration: "50 min", difficulty: "Advanced", price: 9.99, description: "Challenging power yoga flow that builds strength and flexibility." },
+      { name: "Morning Flow", type: "Vinyasa", duration: "30 min", difficulty: "Beginner", price: 25.99, description: "Gentle vinyasa sequence to start your day with energy and focus." },
+      { name: "Deep Stretch Recovery", type: "Yin Yoga", duration: "45 min", difficulty: "Beginner", price: 25.99, description: "Slow-paced yin session targeting tight hips, hamstrings, and shoulders." },
+      { name: "Athlete's Mobility", type: "Mobility", duration: "35 min", difficulty: "Intermediate", price: 27.99, description: "Mobility drills designed for athletes to improve range of motion." },
+      { name: "Power Yoga Sculpt", type: "Power Yoga", duration: "50 min", difficulty: "Advanced", price: 29.99, description: "Challenging power yoga flow that builds strength and flexibility." },
     ],
     tags: ["Yoga", "Mobility", "Recovery"]
   },
   {
     id: 4, name: "Damon Clarke", specialty: "Cardio & Endurance",
-    category: "cardio", price: 24.99, rating: 4.7, subscribers: 890, experience: "10 yrs",
+    category: "cardio", price: 44.99, rating: 4.7, subscribers: 890, experience: "10 yrs",
     bio: "Endurance specialist who builds heart-pounding cardio programs. Improve stamina, burn fat, and boost your cardiovascular health.",
     color: "#F59E0B",
     workouts: [
-      { name: "HIIT Burn", type: "Cardio", duration: "25 min", difficulty: "Beginner", price: 6.99, description: "High-intensity intervals designed to torch calories and build endurance." },
-      { name: "Endurance Builder", type: "Cardio", duration: "40 min", difficulty: "Advanced", price: 12.99, description: "Long-form cardio circuits that push your aerobic and anaerobic limits." },
-      { name: "Metabolic Blast", type: "Cardio", duration: "45 min", difficulty: "Intermediate", price: 9.99, description: "Fast-paced metabolic conditioning to rev up your metabolism all day." },
-      { name: "Sprint Intervals", type: "Cardio", duration: "30 min", difficulty: "Intermediate", price: 7.99, description: "Run-based interval training to build speed and cardiovascular power." },
+      { name: "HIIT Burn", type: "Cardio", duration: "25 min", difficulty: "Beginner", price: 26.99, description: "High-intensity intervals designed to torch calories and build endurance." },
+      { name: "Endurance Builder", type: "Cardio", duration: "40 min", difficulty: "Advanced", price: 32.99, description: "Long-form cardio circuits that push your aerobic and anaerobic limits." },
+      { name: "Metabolic Blast", type: "Cardio", duration: "45 min", difficulty: "Intermediate", price: 29.99, description: "Fast-paced metabolic conditioning to rev up your metabolism all day." },
+      { name: "Sprint Intervals", type: "Cardio", duration: "30 min", difficulty: "Intermediate", price: 27.99, description: "Run-based interval training to build speed and cardiovascular power." },
     ],
     tags: ["Cardio", "HIIT", "Endurance"]
   },
   {
     id: 5, name: "Sophie Turner", specialty: "Functional Fitness",
-    category: "functional", price: 34.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
+    category: "functional", price: 54.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
     bio: "Functional fitness expert who builds programs that make you stronger, faster, and ready for anything life throws at you.",
     color: "#EF4444",
     workouts: [
-      { name: "Total Body Conditioning", type: "Functional", duration: "35 min", difficulty: "Advanced", price: 11.99, description: "Full-body workout combining compound lifts with metabolic conditioning." },
-      { name: "Functional Foundations", type: "Functional", duration: "40 min", difficulty: "Beginner", price: 7.99, description: "Master the basic functional movements before scaling up." },
-      { name: "Strength & Power", type: "Strength", duration: "50 min", difficulty: "Intermediate", price: 14.99, description: "Progressive overload training with compound movements for real-world strength." },
-      { name: "Athletic Circuit", type: "Functional", duration: "25 min", difficulty: "Advanced", price: 9.99, description: "Fast-paced athletic circuits that build coordination, power, and agility." },
+      { name: "Total Body Conditioning", type: "Functional", duration: "35 min", difficulty: "Advanced", price: 31.99, description: "Full-body workout combining compound lifts with metabolic conditioning." },
+      { name: "Functional Foundations", type: "Functional", duration: "40 min", difficulty: "Beginner", price: 27.99, description: "Master the basic functional movements before scaling up." },
+      { name: "Strength & Power", type: "Strength", duration: "50 min", difficulty: "Intermediate", price: 34.99, description: "Progressive overload training with compound movements for real-world strength." },
+      { name: "Athletic Circuit", type: "Functional", duration: "25 min", difficulty: "Advanced", price: 29.99, description: "Fast-paced athletic circuits that build coordination, power, and agility." },
     ],
     tags: ["Functional", "Strength", "Athletic"]
   },
   {
     id: 6, name: "Liam Chen", specialty: "Pilates & Core",
-    category: "pilates", price: 17.99, rating: 4.9, subscribers: 1340, experience: "11 yrs",
+    category: "pilates", price: 37.99, rating: 4.9, subscribers: 1340, experience: "11 yrs",
     bio: "Classical Pilates instructor with a modern twist. Focuses on core strength, posture correction, and body awareness.",
     color: "#8B5CF6",
     workouts: [
-      { name: "Mat Pilates Essentials", type: "Pilates", duration: "40 min", difficulty: "Beginner", price: 6.99, description: "Classical mat Pilates series for core stability and body control." },
-      { name: "Core Control", type: "Pilates", duration: "30 min", difficulty: "Intermediate", price: 7.99, description: "Focused core work using Pilates principles for deep stabilization." },
-      { name: "Posture Perfect", type: "Corrective", duration: "25 min", difficulty: "Beginner", price: 5.99, description: "Corrective exercises to fix common posture issues from desk work." },
-      { name: "Advanced Reformer Flow", type: "Pilates", duration: "50 min", difficulty: "Advanced", price: 12.99, description: "Advanced Pilates flow mimicking reformer movements on the mat." },
+      { name: "Mat Pilates Essentials", type: "Pilates", duration: "40 min", difficulty: "Beginner", price: 26.99, description: "Classical mat Pilates series for core stability and body control." },
+      { name: "Core Control", type: "Pilates", duration: "30 min", difficulty: "Intermediate", price: 27.99, description: "Focused core work using Pilates principles for deep stabilization." },
+      { name: "Posture Perfect", type: "Corrective", duration: "25 min", difficulty: "Beginner", price: 25.99, description: "Corrective exercises to fix common posture issues from desk work." },
+      { name: "Advanced Reformer Flow", type: "Pilates", duration: "50 min", difficulty: "Advanced", price: 32.99, description: "Advanced Pilates flow mimicking reformer movements on the mat." },
     ],
     tags: ["Pilates", "Core", "Posture"]
   },
@@ -84,7 +84,7 @@ const trainers = [
 const nutritionists = [
   {
     id: 101, name: "Dr. Sarah Mitchell", specialty: "Sports Nutrition",
-    price: 39.99, rating: 4.9, subscribers: 980, experience: "14 yrs",
+    price: 59.99, rating: 4.9, subscribers: 980, experience: "14 yrs",
     bio: "PhD in Nutritional Science. Specializes in performance nutrition for athletes — from amateur to Olympic level.",
     color: "#10B981",
     services: ["Custom meal plans", "Macro coaching", "Supplement guidance", "Competition prep"],
@@ -92,7 +92,7 @@ const nutritionists = [
   },
   {
     id: 102, name: "James Okafor", specialty: "Weight Management",
-    price: 24.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
+    price: 44.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
     bio: "Registered dietitian focused on sustainable weight loss. No fad diets — just science-backed strategies that stick.",
     color: "#6C3AED",
     services: ["Calorie-deficit plans", "Habit coaching", "Weekly check-ins", "Grocery guides"],
@@ -100,7 +100,7 @@ const nutritionists = [
   },
   {
     id: 103, name: "Maria Santos", specialty: "Plant-Based Nutrition",
-    price: 19.99, rating: 4.7, subscribers: 1120, experience: "7 yrs",
+    price: 39.99, rating: 4.7, subscribers: 1120, experience: "7 yrs",
     bio: "Certified plant-based nutritionist helping people thrive on vegan and vegetarian diets without missing nutrients.",
     color: "#EC4899",
     services: ["Vegan meal plans", "Nutrient optimization", "Recipe library", "Transition coaching"],
@@ -108,7 +108,7 @@ const nutritionists = [
   },
   {
     id: 104, name: "Dr. Kevin Park", specialty: "Gut Health & Wellness",
-    price: 34.99, rating: 4.9, subscribers: 760, experience: "16 yrs",
+    price: 54.99, rating: 4.9, subscribers: 760, experience: "16 yrs",
     bio: "Functional medicine nutritionist specializing in gut health, food sensitivities, and anti-inflammatory protocols.",
     color: "#F59E0B",
     services: ["Elimination protocols", "Gut healing plans", "Food sensitivity guidance", "Anti-inflammatory diets"],
@@ -116,7 +116,7 @@ const nutritionists = [
   },
   {
     id: 105, name: "Rachel Kim", specialty: "Prenatal & Postnatal",
-    price: 29.99, rating: 4.8, subscribers: 540, experience: "10 yrs",
+    price: 49.99, rating: 4.8, subscribers: 540, experience: "10 yrs",
     bio: "Specializes in nutrition for expecting and new mothers. Ensures optimal nutrition for both mom and baby.",
     color: "#8B5CF6",
     services: ["Trimester-specific plans", "Postnatal recovery nutrition", "Lactation support", "Iron & folate optimization"],
@@ -124,7 +124,7 @@ const nutritionists = [
   },
   {
     id: 106, name: "Alex Rivera", specialty: "Meal Prep & Budget",
-    price: 12.99, rating: 4.7, subscribers: 2200, experience: "6 yrs",
+    price: 32.99, rating: 4.7, subscribers: 2200, experience: "6 yrs",
     bio: "Makes healthy eating affordable and easy. Weekly meal prep plans that save time, money, and taste amazing.",
     color: "#EF4444",
     services: ["Budget meal plans", "Batch cooking guides", "Shopping lists", "Quick recipes under 20 min"],

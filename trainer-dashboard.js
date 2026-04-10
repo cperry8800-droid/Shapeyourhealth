@@ -128,14 +128,14 @@ const clients = [
 ];
 
 const recentSales = [
-  { client: "Emma Chen", plan: "Deadlift Domination", price: 14.99, date: "2026-04-01", type: "One-time" },
-  { client: "Marcus Lee", plan: "5x5 Foundation", price: 9.99, date: "2026-03-20", type: "One-time" },
-  { client: "New User", plan: "Upper Body Blast", price: 7.99, date: "2026-04-05", type: "One-time" },
-  { client: "Sarah Kim", plan: "Monthly Subscription", price: 29.99, date: "2026-04-03", type: "Recurring" },
-  { client: "Priya Patel", plan: "Monthly Subscription", price: 29.99, date: "2026-04-01", type: "Recurring" },
-  { client: "Jake Roberts", plan: "Monthly Subscription", price: 29.99, date: "2026-04-01", type: "Recurring" },
-  { client: "Lisa Johnson", plan: "Monthly Subscription", price: 29.99, date: "2026-04-01", type: "Recurring" },
-  { client: "New User", plan: "Leg Day Legends", price: 9.99, date: "2026-04-07", type: "One-time" },
+  { client: "Emma Chen", plan: "Deadlift Domination", price: 34.99, date: "2026-04-01", type: "One-time" },
+  { client: "Marcus Lee", plan: "5x5 Foundation", price: 29.99, date: "2026-03-20", type: "One-time" },
+  { client: "New User", plan: "Upper Body Blast", price: 27.99, date: "2026-04-05", type: "One-time" },
+  { client: "Sarah Kim", plan: "Monthly Subscription", price: 49.99, date: "2026-04-03", type: "Recurring" },
+  { client: "Priya Patel", plan: "Monthly Subscription", price: 49.99, date: "2026-04-01", type: "Recurring" },
+  { client: "Jake Roberts", plan: "Monthly Subscription", price: 49.99, date: "2026-04-01", type: "Recurring" },
+  { client: "Lisa Johnson", plan: "Monthly Subscription", price: 49.99, date: "2026-04-01", type: "Recurring" },
+  { client: "New User", plan: "Leg Day Legends", price: 29.99, date: "2026-04-07", type: "One-time" },
 ];
 
 // ===== Render Client List =====
