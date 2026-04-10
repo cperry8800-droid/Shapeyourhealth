@@ -64,16 +64,9 @@
 
     .loader-logo {
       height: 80px; width: auto;
-    }
-
-    /* Triangles animate during loading too */
-    .loader-logo .tri-a {
+      filter: brightness(0) invert(1);
+      opacity: 0.4;
       animation: triFloatA 3.2s ease-in-out infinite;
-      transform-origin: 83px 60px;
-    }
-    .loader-logo .tri-b {
-      animation: triFloatB 2.8s ease-in-out 0.2s infinite;
-      transform-origin: 117px 40px;
     }
 
     .loader-track {
@@ -111,29 +104,17 @@
     .intro-logo {
       height: 140px; width: auto;
       margin-bottom: 48px;
+      filter: brightness(0) invert(1);
       opacity: 0;
     }
     .intro-logo.show {
-      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 logoPulse 2.5s ease-in-out 1.5s infinite;
     }
 
-    /* Individual triangle hover animations */
-    .intro-logo.show .tri-a {
-      animation: triFloatA 3.2s ease-in-out 1.4s infinite;
-      transform-origin: 83px 60px;
-    }
-    .intro-logo.show .tri-b {
-      animation: triFloatB 2.8s ease-in-out 1.6s infinite;
-      transform-origin: 117px 40px;
-    }
-
-    @keyframes triFloatA {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-9px); }
-    }
-    @keyframes triFloatB {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-6px); }
+    @keyframes logoPulse {
+      0%, 100% { opacity: 1; filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(45, 212, 191, 0.4)); }
+      50% { opacity: 0.15; filter: brightness(0) invert(1) drop-shadow(0 0 0px rgba(45, 212, 191, 0)); }
     }
 
     .intro-tagline {
@@ -275,13 +256,7 @@
   <!-- Loading Screen -->
   <div class="loader-overlay" id="loaderOverlay">
     <div class="loader-box">
-      <svg class="loader-logo" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-label="Shape" style="opacity:0.4">
-        <polygon class="tri-a" points="72,38 72,82 105,60" fill="white"/>
-        <polygon class="tri-b" points="128,18 128,62 95,40" fill="white"/>
-        <text x="100" y="110" text-anchor="middle"
-          font-family="Inter, Helvetica, Arial, sans-serif"
-          font-size="22" font-weight="300" letter-spacing="8" fill="white">SHAPE</text>
-      </svg>
+      <img src="logo.png" alt="Shape" class="loader-logo">
       <div class="loader-track">
         <div class="loader-fill" id="loaderFill"></div>
       </div>
@@ -297,13 +272,7 @@
   </div>
 
   <div class="intro-content" id="introContent">
-    <svg class="intro-logo" id="introLogo" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-label="Shape">
-      <polygon class="tri-a" points="72,38 72,82 105,60" fill="white"/>
-      <polygon class="tri-b" points="128,18 128,62 95,40" fill="white"/>
-      <text x="100" y="110" text-anchor="middle"
-        font-family="Inter, Helvetica, Arial, sans-serif"
-        font-size="22" font-weight="300" letter-spacing="8" fill="white">SHAPE</text>
-    </svg>
+    <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
     <p class="intro-tagline" id="introTagline">Your body. Your shape.</p>
     <a href="home.html" class="enter-btn" id="enterBtn" onclick="enterSite(event)">
       <span>Enter</span>
