@@ -79,6 +79,71 @@ const trainers = [
     ],
     tags: ["Weight Loss", "Fat Loss", "Cardio"]
   },
+  {
+    id: 7, name: "Reese Calloway", specialty: "Strength & Hypertrophy",
+    category: "strength", price: 42.99, rating: 4.7, subscribers: 1890, experience: "6 yrs",
+    bio: "Programs built around progressive overload and time under tension. If you want to get bigger and stronger — this is the playbook.",
+    color: "#8B5CF6",
+    workouts: [
+      { name: "Push Pull Legs — Week A", type: "Hypertrophy", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 32.99, description: "Classic PPL split designed for maximum muscle growth over 6 days." },
+      { name: "Upper Lower Split", type: "Strength", duration: "55 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "4-day upper/lower program focused on compound lifts and accessory work." },
+      { name: "Arm Day Special", type: "Hypertrophy", duration: "35 min", difficulty: "Beginner", location: "Gym", price: 24.99, description: "Dedicated arm session hitting biceps, triceps, and forearms from every angle." },
+      { name: "Back & Biceps", type: "Hypertrophy", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Heavy pulling session with rows, pull-ups, and curls for a thick, wide back." },
+    ],
+    tags: ["Strength", "Hypertrophy", "Muscle"]
+  },
+  {
+    id: 8, name: "Leah Kim", specialty: "HIIT & Weight Loss",
+    category: "hiit", price: 34.99, rating: 4.9, subscribers: 3200, experience: "5 yrs", featured: true,
+    bio: "Short sessions. Big results. Leah's HIIT programs are designed for people who don't have time to waste.",
+    color: "#EC4899",
+    workouts: [
+      { name: "15-Min Express", type: "HIIT", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 19.99, description: "No-excuses HIIT that fits into any schedule. Done in 15 minutes flat." },
+      { name: "Sweat & Shred", type: "HIIT", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Full-body HIIT combining plyometrics, core work, and cardio bursts." },
+      { name: "Lunch Break Burn", type: "HIIT", duration: "20 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Quick midday session to break up your workday and burn calories." },
+      { name: "HIIT & Strength Combo", type: "HIIT", duration: "40 min", difficulty: "Advanced", location: "Gym", price: 32.99, description: "Alternating HIIT intervals with strength sets for the best of both worlds." },
+    ],
+    tags: ["HIIT", "Weight Loss", "Quick Sessions"]
+  },
+  {
+    id: 9, name: "Carlos Mendez", specialty: "Cardio & Endurance",
+    category: "cardio", price: 39.99, rating: 4.6, subscribers: 760, experience: "11 yrs",
+    bio: "Marathon runner and endurance coach. Whether you're training for a 5K or an ultramarathon — Carlos has a plan for it.",
+    color: "#0EA5E9",
+    workouts: [
+      { name: "Couch to 5K", type: "Cardio", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "8-week run/walk program that takes you from zero to your first 5K." },
+      { name: "Half Marathon Prep", type: "Cardio", duration: "60 min", difficulty: "Intermediate", location: "Gym", price: 39.99, description: "12-week structured plan with tempo runs, long runs, and recovery days." },
+      { name: "Speed Work Sessions", type: "Cardio", duration: "35 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Interval-based speed training to shave minutes off your personal best." },
+      { name: "Low Impact Cardio", type: "Cardio", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Joint-friendly cardio for anyone who wants to build endurance without the pounding." },
+    ],
+    tags: ["Cardio", "Running", "Endurance"]
+  },
+  {
+    id: 10, name: "Tanya West", specialty: "At Home & Bodyweight",
+    category: "athome", price: 27.99, rating: 4.8, subscribers: 2850, experience: "6 yrs", featured: true,
+    bio: "You don't need a gym. Tanya's programs use nothing but your bodyweight and prove that simplicity works.",
+    color: "#14B8A6",
+    workouts: [
+      { name: "Zero Equipment Full Body", type: "Bodyweight", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Head-to-toe bodyweight session. All you need is a floor and some space." },
+      { name: "Pilates Strength", type: "Bodyweight", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Pilates-inspired strength work that builds core stability and lean muscle." },
+      { name: "Morning Wake-Up", type: "Bodyweight", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 17.99, description: "Quick morning routine to wake up your body and set the tone for the day." },
+      { name: "Bodyweight Strength", type: "Bodyweight", duration: "45 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Advanced calisthenics session — push-ups, pistol squats, and more." },
+    ],
+    tags: ["At Home", "Bodyweight", "No Equipment"]
+  },
+  {
+    id: 11, name: "Derek Osei", specialty: "Weight Loss & Strength",
+    category: "weightloss", price: 49.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
+    bio: "Fat loss through strength training. Derek's approach is simple — build muscle, burn more at rest, lose weight for good.",
+    color: "#D97706",
+    workouts: [
+      { name: "Strength-Based Fat Loss", type: "Weight Loss", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "Compound lifts with short rest periods. Build muscle and burn fat simultaneously." },
+      { name: "Metabolic Resistance", type: "Weight Loss", duration: "40 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Resistance circuits that keep your heart rate elevated the entire session." },
+      { name: "Beginner Fat Loss", type: "Weight Loss", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Entry-level program for anyone starting their weight loss process. Low impact, high results." },
+      { name: "Weekend Warrior", type: "Weight Loss", duration: "60 min", difficulty: "Advanced", location: "Gym", price: 37.99, description: "Intense full-body session for the days when you have extra time and energy." },
+    ],
+    tags: ["Weight Loss", "Strength", "Fat Loss"]
+  },
 ];
 
 const nutritionists = [

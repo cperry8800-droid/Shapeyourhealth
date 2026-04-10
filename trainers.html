@@ -42,7 +42,7 @@
   <section class="page-hero">
     <div class="container">
       <span class="tag">Personal Trainers</span>
-      <h1>Train with the <span class="gradient-text">best</span></h1>
+      <h1>Get in Shape — Your <span class="gradient-text">Way</span></h1>
       <p class="page-hero-sub">Each trainer brings their own style, specialty, and pricing. Find the perfect fit for your goals.</p>
     </div>
   </section>
@@ -57,7 +57,33 @@
     </div>
   </section>
 
-  <!-- Trainers Section -->
+  <!-- Top Coaches -->
+  <section class="section" id="topCoaches">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+        <div>
+          <span class="tag">Top Coaches</span>
+          <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;">Highest rated trainers on Shape</h2>
+        </div>
+      </div>
+      <div id="topCoachesGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;"></div>
+    </div>
+  </section>
+
+  <!-- Featured Coaches -->
+  <section class="section section-alt" id="featuredCoaches">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+        <div>
+          <span class="tag">Featured Coaches</span>
+          <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;">Hand-picked by Shape this month</h2>
+        </div>
+      </div>
+      <div id="featuredCoachesGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;"></div>
+    </div>
+  </section>
+
+  <!-- All Trainers -->
   <style>
     .filter-bar {
       background: var(--bg-card);
@@ -179,9 +205,17 @@
         padding: 44px 28px 28px;
       }
     }
+    @media (max-width: 768px) {
+      #topCoachesGrid { grid-template-columns: 1fr !important; }
+      #featuredCoachesGrid { grid-template-columns: 1fr !important; }
+    }
   </style>
   <section class="section">
     <div class="container">
+      <div style="margin-bottom:32px;">
+        <span class="tag">All Trainers</span>
+        <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;">Browse the full marketplace</h2>
+      </div>
       <div class="filter-bar">
         <div class="filter-bar-top">
           <input type="text" class="filter-search" id="trainerSearch" placeholder="Search by name..." oninput="filterTrainers()">
@@ -264,6 +298,26 @@
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
+  <script>
+    // Populate Top Coaches (top 3 by rating then subscribers)
+    (function() {
+      const topGrid = document.getElementById('topCoachesGrid');
+      const featuredGrid = document.getElementById('featuredCoachesGrid');
+      if (topGrid && typeof trainers !== 'undefined') {
+        const top = [...trainers].sort((a,b) => b.rating - a.rating || b.subscribers - a.subscribers).slice(0,3);
+        topGrid.innerHTML = top.map(t => createTrainerCard(t)).join('');
+      }
+      if (featuredGrid && typeof trainers !== 'undefined') {
+        const featured = trainers.filter(t => t.featured);
+        if (featured.length) {
+          featuredGrid.innerHTML = featured.map(t => createTrainerCard(t)).join('');
+        } else {
+          const picks = [...trainers].sort((a,b) => b.subscribers - a.subscribers).slice(0,2);
+          featuredGrid.innerHTML = picks.map(t => createTrainerCard(t)).join('');
+        }
+      }
+    })();
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
