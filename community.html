@@ -295,12 +295,6 @@
     .community-user-avatar img,
     .chat-msg-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
-    /* === Trainer Chat Box === */
-    .trainer-chat-box {
-      border: 1px solid var(--border); background: var(--bg-card);
-      display: flex; flex-direction: column;
-    }
-
     /* === Responsive === */
     @media (max-width: 1100px) {
       .community-layout { grid-template-columns: 280px 1fr; }
@@ -335,6 +329,7 @@
         <a href="trainers.html">Trainers</a>
         <a href="nutritionists.html">Nutritionists</a>
         <a href="community.html" class="nav-active">Community</a>
+        <a href="about.html">About</a>
         <a href="pricing.html">Pricing</a>
         <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
         <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
@@ -381,15 +376,16 @@
     <div class="community-chat">
       <div class="chat-header">
         <div class="chat-header-info">
-          <div class="chat-header-avatar" id="chatAvatar">GC</div>
+          <div class="chat-header-avatar" id="chatAvatar" style="background:var(--accent);">TC</div>
           <div>
-            <h3 id="chatTitle">General Chat</h3>
-            <p id="chatSubtitle">All members</p>
+            <h3 id="chatTitle">Trainer Chat</h3>
+            <p id="chatSubtitle">All trainers</p>
           </div>
         </div>
       </div>
       <div class="chat-channel-tabs">
-        <button class="chat-channel active" onclick="switchChannel('general')">General</button>
+        <button class="chat-channel active" onclick="switchChannel('trainer')">Trainer Chat</button>
+        <button class="chat-channel" onclick="switchChannel('general')">General</button>
         <button class="chat-channel" onclick="switchChannel('workouts')">Workouts</button>
         <button class="chat-channel" onclick="switchChannel('nutrition')">Nutrition</button>
         <button class="chat-channel" onclick="switchChannel('motivation')">Motivation</button>
@@ -432,35 +428,6 @@
     </div>
 
   </div>
-  </div>
-  </section>
-
-  <!-- Trainer Chat Section -->
-  <section class="section" style="padding-top:0;">
-  <div class="container">
-    <div class="section-header" style="margin-bottom:32px;">
-      <span class="tag">Trainers</span>
-      <h2>Trainer Chat</h2>
-      <p>A space for Shape trainers to connect, share tips, and support each other.</p>
-    </div>
-    <div class="trainer-chat-box">
-      <div class="chat-header">
-        <div class="chat-header-info">
-          <div class="chat-header-avatar" style="background:var(--accent);">TC</div>
-          <div>
-            <h3>Trainer Chat</h3>
-            <p>All trainers</p>
-          </div>
-        </div>
-      </div>
-      <div class="chat-messages" id="trainerChatMessages" style="height:400px;">
-        <!-- Populated by JS -->
-      </div>
-      <div class="chat-input-area">
-        <input type="text" placeholder="Type a message..." id="trainerChatInput" onkeydown="if(event.key==='Enter')sendTrainerMessage()">
-        <button class="chat-send-btn" onclick="sendTrainerMessage()">Send</button>
-      </div>
-    </div>
   </div>
   </section>
 
@@ -513,7 +480,27 @@
       { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Trying to get into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025" },
     ];
 
+    const trainerChatUsers = [
+      { name: "Marcus Johnson", initials: "MJ", color: "#6C3AED" },
+      { name: "Aisha Patel", initials: "AP", color: "#EC4899" },
+      { name: "Damon Clarke", initials: "DC", color: "#EF4444" },
+      { name: "Sophie Turner", initials: "ST", color: "#F59E0B" },
+      { name: "Nina Brooks", initials: "NB", color: "#10B981" },
+    ];
+
     const chatChannels = {
+      trainer: [
+        { user: trainerChatUsers[0], text: "Just dropped a new 5x5 variation for intermediate lifters. Let me know what you all think", time: "9:10 AM" },
+        { user: trainerChatUsers[4], text: "Nice Marcus! I've been experimenting with bodyweight progressions for my at-home clients. Seeing great results", time: "9:18 AM" },
+        { user: trainerChatUsers[1], text: "Anyone else noticing more clients asking for shorter sessions? I'm building a 15-min HIIT series", time: "9:25 AM" },
+        { user: trainerChatUsers[2], text: "Definitely. Attention spans are shorter but intensity can stay high. My Sprint Intervals are only 20 min", time: "9:30 AM" },
+        { user: trainerChatUsers[3], text: "I keep mine at 30-40 min for functional training. Clients need warm-up and mobility time", time: "9:35 AM" },
+        { user: trainerChatUsers[0], text: "Good point Sophie. I never skip warm-ups even in short sessions. Safety first", time: "9:40 AM" },
+        { user: trainerChatUsers[4], text: "For at-home clients I always include a 5 min cool-down. They tend to skip it otherwise", time: "9:44 AM" },
+        { user: trainerChatUsers[1], text: "Love this community. Great to bounce ideas off each other", time: "9:50 AM" },
+        { user: trainerChatUsers[2], text: "Agreed! Anyone going to the Shape trainer summit next month?", time: "9:55 AM" },
+        { user: trainerChatUsers[3], text: "Wouldn't miss it! Looking forward to meeting everyone in person", time: "10:00 AM" },
+      ],
       general: [
         { user: communityUsers[0], text: "Just finished a killer leg day. Marcus Johnson never disappoints!", time: "10:24 AM" },
         { user: communityUsers[1], text: "Anyone tried the new Tabata Inferno workout? It's insane", time: "10:31 AM" },
@@ -561,7 +548,7 @@
     ];
 
     let currentTab = 'friends';
-    let currentChannel = 'general';
+    let currentChannel = 'trainer';
     let selectedUser = null;
 
     // === Render Functions ===
@@ -663,8 +650,8 @@
       document.querySelectorAll('.chat-channel').forEach(c => c.classList.remove('active'));
       event.target.classList.add('active');
 
-      const titles = { general: 'General Chat', workouts: 'Workouts', nutrition: 'Nutrition', motivation: 'Motivation' };
-      const subs = { general: 'All members', workouts: 'Share & discover workouts', nutrition: 'Meal plans & tips', motivation: 'Hype each other up' };
+      const titles = { trainer: 'Trainer Chat', general: 'General Chat', workouts: 'Workouts', nutrition: 'Nutrition', motivation: 'Motivation' };
+      const subs = { trainer: 'All trainers', general: 'All members', workouts: 'Share & discover workouts', nutrition: 'Meal plans & tips', motivation: 'Hype each other up' };
       document.getElementById('chatTitle').textContent = titles[channel];
       document.getElementById('chatSubtitle').textContent = subs[channel];
 
@@ -895,73 +882,11 @@
       if (e.target === this) closeProfileModal();
     });
 
-    // === Trainer Chat ===
-    const trainerChatUsers = [
-      { name: "Marcus Johnson", initials: "MJ", color: "#6C3AED" },
-      { name: "Aisha Patel", initials: "AP", color: "#EC4899" },
-      { name: "Damon Clarke", initials: "DC", color: "#EF4444" },
-      { name: "Sophie Turner", initials: "ST", color: "#F59E0B" },
-      { name: "Nina Brooks", initials: "NB", color: "#10B981" },
-    ];
-
-    const trainerMessages = [
-      { user: trainerChatUsers[0], text: "Just dropped a new 5x5 variation for intermediate lifters. Let me know what you all think", time: "9:10 AM" },
-      { user: trainerChatUsers[4], text: "Nice Marcus! I've been experimenting with bodyweight progressions for my at-home clients. Seeing great results", time: "9:18 AM" },
-      { user: trainerChatUsers[1], text: "Anyone else noticing more clients asking for shorter sessions? I'm building a 15-min HIIT series", time: "9:25 AM" },
-      { user: trainerChatUsers[2], text: "Definitely. Attention spans are shorter but intensity can stay high. My Sprint Intervals are only 20 min", time: "9:30 AM" },
-      { user: trainerChatUsers[3], text: "I keep mine at 30-40 min for functional training. Clients need warm-up and mobility time", time: "9:35 AM" },
-      { user: trainerChatUsers[0], text: "Good point Sophie. I never skip warm-ups even in short sessions. Safety first", time: "9:40 AM" },
-      { user: trainerChatUsers[4], text: "For at-home clients I always include a 5 min cool-down. They tend to skip it otherwise", time: "9:44 AM" },
-      { user: trainerChatUsers[1], text: "Love this community. Great to bounce ideas off each other", time: "9:50 AM" },
-      { user: trainerChatUsers[2], text: "Agreed! Anyone going to the Shape trainer summit next month?", time: "9:55 AM" },
-      { user: trainerChatUsers[3], text: "Wouldn't miss it! Looking forward to meeting everyone in person", time: "10:00 AM" },
-    ];
-
-    function renderTrainerChat() {
-      const container = document.getElementById('trainerChatMessages');
-      container.innerHTML = trainerMessages.map(m => `
-        <div class="chat-msg">
-          <div class="chat-msg-avatar" style="background:${m.user.color};">${m.user.initials}</div>
-          <div class="chat-msg-body">
-            <div class="chat-msg-name">${m.user.name}</div>
-            <div class="chat-msg-text">${m.text}</div>
-            <div class="chat-msg-time">${m.time}</div>
-          </div>
-        </div>
-      `).join('');
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function sendTrainerMessage() {
-      const input = document.getElementById('trainerChatInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const container = document.getElementById('trainerChatMessages');
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const displayName = myProfile.name === 'Your Profile' ? 'You' : myProfile.name;
-      const avatarContent = myProfile.photo
-        ? `<img src="${myProfile.photo}" alt="You">`
-        : (myProfile.name === 'Your Profile' ? 'You' : myProfile.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2));
-      container.insertAdjacentHTML('beforeend', `
-        <div class="chat-msg own">
-          <div class="chat-msg-avatar" style="background:${myProfile.photo ? 'none' : '#2DD4BF'};">${avatarContent}</div>
-          <div class="chat-msg-body">
-            <div class="chat-msg-name">${displayName}</div>
-            <div class="chat-msg-text">${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-            <div class="chat-msg-time">${time}</div>
-          </div>
-        </div>
-      `);
-      container.scrollTop = container.scrollHeight;
-      input.value = '';
-    }
-
     // === Init ===
     loadProfile();
     renderUserList();
     renderChat();
     renderActivity();
-    renderTrainerChat();
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
