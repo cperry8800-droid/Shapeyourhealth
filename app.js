@@ -293,7 +293,7 @@ if (notmCard) {
             <span>${notm.experience} experience</span>
           </div>
           <div class="card-actions">
-            <button class="btn btn-primary" onclick="openTrainerModal(${notm.id})">View Plans</button>
+            <button class="btn btn-primary" onclick="openNutritionistModal(${notm.id})">View Plans</button>
             <button class="btn btn-outline" onclick="subscribe('${notm.name}', ${notm.price})">Subscribe — $${notm.price}/mo</button>
           </div>
         </div>
