@@ -232,6 +232,90 @@ const nutritionists = [
     ],
     tags: ["Budget-Friendly", "Meal Prep", "Quick Recipes"]
   },
+  {
+    id: 107, name: "Tanya Brooks", specialty: "Sports Nutrition",
+    category: "sports", price: 54.99, rating: 4.9, subscribers: 1340, experience: "11 yrs",
+    bio: "Former collegiate athlete turned sports dietitian. Builds fuel strategies for strength, endurance, and recovery.",
+    color: "#0EA5E9", featured: true,
+    services: ["Periodized nutrition", "Hydration protocols", "Recovery plans", "Race-day fueling"],
+    plans: [
+      { name: "Strength Fuel Plan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Calorie and macro targets built around your training splits for max strength gains." },
+      { name: "Endurance Nutrition System", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 42.99, description: "Carb loading, mid-race fueling, and recovery nutrition for distance athletes." },
+      { name: "Recovery Rebuild", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Post-training recovery meals rich in antioxidants and anti-inflammatory compounds." },
+      { name: "Game Day Protocol", type: "Performance", duration: "4 weeks", difficulty: "Intermediate", price: 27.99, description: "Pre-game, halftime, and post-game nutrition timing for competitive athletes." },
+    ],
+    tags: ["Sports", "Performance", "Recovery"]
+  },
+  {
+    id: 108, name: "Omar Hassan", specialty: "Weight Management",
+    category: "weightloss", price: 42.99, rating: 4.8, subscribers: 1890, experience: "8 yrs",
+    bio: "Evidence-based approach to body composition. Combines flexible dieting with behavioral strategies that last.",
+    color: "#D946EF", featured: true,
+    services: ["Body recomposition", "Reverse dieting", "Flexible dieting", "Progress tracking"],
+    plans: [
+      { name: "Flexible Cut", type: "Low Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 32.99, description: "Calorie deficit with no food restrictions. Hit your targets your way." },
+      { name: "Body Recomp Blueprint", type: "High Protein", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Simultaneous fat loss and muscle gain through precise nutrition cycling." },
+      { name: "Reverse Diet Recovery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Gradually increase calories post-diet to maintain results and restore metabolism." },
+      { name: "No-Track Intuitive Plan", type: "Flexible", duration: "6 weeks", difficulty: "Beginner", price: 26.99, description: "Learn to eat intuitively with portion guides and hunger cue training." },
+    ],
+    tags: ["Flexible Dieting", "Recomp", "Sustainable"]
+  },
+  {
+    id: 109, name: "Lisa Chen", specialty: "Gut Health & Wellness",
+    category: "guthealth", price: 49.99, rating: 4.7, subscribers: 920, experience: "12 yrs",
+    bio: "Integrative nutritionist combining Eastern and Western dietary science for whole-body gut wellness.",
+    color: "#F97316",
+    services: ["Microbiome support", "Fermentation guides", "Elimination diets", "Stress-gut protocols"],
+    plans: [
+      { name: "Microbiome Reset", type: "Gut Health", duration: "8 weeks", difficulty: "Intermediate", price: 37.99, description: "Rebuild your gut flora with prebiotic and probiotic-rich meal plans." },
+      { name: "Fermented Foods Journey", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 28.99, description: "Introduce fermented foods into your daily routine for better digestion and immunity." },
+      { name: "Stress-Gut Connection", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Address the gut-brain axis with calming foods and stress-reducing meal patterns." },
+      { name: "Seasonal Cleanse", type: "Elimination", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Quarterly reset plan using seasonal whole foods to support digestive health." },
+    ],
+    tags: ["Gut Health", "Integrative", "Fermentation"]
+  },
+  {
+    id: 110, name: "Derek Williams", specialty: "Meal Prep & Budget",
+    category: "mealprep", price: 29.99, rating: 4.6, subscribers: 2450, experience: "5 yrs",
+    bio: "College athlete who learned to eat well on nothing. Now teaches thousands to meal prep like a pro on any budget.",
+    color: "#14B8A6",
+    services: ["Student meal plans", "Bulk cooking", "Freezer prep", "Dorm-friendly recipes"],
+    plans: [
+      { name: "College Kitchen Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Healthy meals you can make in a dorm or small kitchen with basic equipment." },
+      { name: "Freezer Meal Mastery", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 24.99, description: "Batch cook and freeze 20+ meals in one session. Reheat and eat all week." },
+      { name: "Bulk on a Budget", type: "High Calorie", duration: "8 weeks", difficulty: "Intermediate", price: 29.99, description: "High-calorie meal plan for muscle building without expensive supplements." },
+      { name: "5-Ingredient Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Simple, nutritious meals using just 5 ingredients each. Perfect for beginners." },
+    ],
+    tags: ["Budget", "Students", "Freezer Prep"]
+  },
+  {
+    id: 111, name: "Priya Sharma", specialty: "Plant-Based Nutrition",
+    category: "plantbased", price: 44.99, rating: 4.8, subscribers: 1050, experience: "9 yrs",
+    bio: "Ayurvedic-inspired plant-based nutritionist. Blends traditional wisdom with modern nutrition science.",
+    color: "#84CC16",
+    services: ["Ayurvedic meal plans", "Plant protein optimization", "Spice therapy", "Seasonal eating"],
+    plans: [
+      { name: "Ayurvedic Balance", type: "Whole Foods", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Eat according to your dosha with balanced plant-based meals rooted in Ayurveda." },
+      { name: "Plant Protein Power", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Complete protein combinations from plant sources to fuel your training." },
+      { name: "Anti-Inflammatory Spice Plan", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Harness turmeric, ginger, and healing spices in daily anti-inflammatory meals." },
+      { name: "Seasonal Harvest Plan", type: "Whole Foods", duration: "12 weeks", difficulty: "Intermediate", price: 39.99, description: "Eat in sync with the seasons using local, plant-based whole foods." },
+    ],
+    tags: ["Ayurvedic", "Plant-Based", "Holistic"]
+  },
+  {
+    id: 112, name: "Marcus Johnson", specialty: "Sports Nutrition",
+    category: "sports", price: 59.99, rating: 4.9, subscribers: 1580, experience: "13 yrs",
+    bio: "NFL nutritionist for 8 seasons. Now bringing pro-level fuel strategies to everyday athletes on Shape.",
+    color: "#7C3AED",
+    services: ["Pro athlete protocols", "Weight class management", "Supplement stacks", "In-season nutrition"],
+    plans: [
+      { name: "Pro Athlete Fuel", type: "Performance", duration: "12 weeks", difficulty: "Advanced", price: 49.99, description: "The same periodized nutrition framework used by professional athletes." },
+      { name: "Weight Class Manager", type: "Low Calorie", duration: "8 weeks", difficulty: "Advanced", price: 42.99, description: "Safe, effective weight manipulation for combat sports and weight-class athletes." },
+      { name: "Off-Season Builder", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to build size and strength during the off-season." },
+      { name: "Travel Nutrition Guide", type: "Flexible", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Stay on track while traveling for games, tournaments, or work." },
+    ],
+    tags: ["Pro Sports", "Elite", "Performance"]
+  },
 ];
 
 // ===== Render Functions =====

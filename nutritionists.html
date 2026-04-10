@@ -81,6 +81,28 @@
     </div>
   </section>
 
+  <!-- Top Nutritionists -->
+  <section class="section" id="topNutritionists">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:32px;">
+        <span class="tag">Top Nutritionists</span>
+        <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;">Highest rated nutritionists on Shape</h2>
+      </div>
+      <div id="topNutritionistsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;"></div>
+    </div>
+  </section>
+
+  <!-- Featured Nutritionists -->
+  <section class="section section-alt" id="featuredNutritionists">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:32px;">
+        <span class="tag">Featured Nutritionists</span>
+        <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;">Hand-picked by Shape this month</h2>
+      </div>
+      <div id="featuredNutritionistsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;"></div>
+    </div>
+  </section>
+
   <!-- Nutritionists Section -->
   <style>
     .filter-bar {
@@ -155,6 +177,8 @@
         min-width: unset;
         width: 100%;
       }
+      #topNutritionistsGrid { grid-template-columns: 1fr !important; }
+      #featuredNutritionistsGrid { grid-template-columns: 1fr !important; }
     }
   </style>
   <section class="section">
@@ -240,6 +264,26 @@
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
+  <script>
+    // Populate Top Nutritionists (top 3 by rating then subscribers)
+    (function() {
+      const topGrid = document.getElementById('topNutritionistsGrid');
+      const featuredGrid = document.getElementById('featuredNutritionistsGrid');
+      if (topGrid && typeof nutritionists !== 'undefined') {
+        const top = [...nutritionists].sort((a,b) => b.rating - a.rating || b.subscribers - a.subscribers).slice(0,3);
+        topGrid.innerHTML = top.map(n => createNutritionistCard(n)).join('');
+      }
+      if (featuredGrid && typeof nutritionists !== 'undefined') {
+        const featured = nutritionists.filter(n => n.featured);
+        if (featured.length) {
+          featuredGrid.innerHTML = featured.map(n => createNutritionistCard(n)).join('');
+        } else {
+          const picks = [...nutritionists].sort((a,b) => b.subscribers - a.subscribers).slice(0,2);
+          featuredGrid.innerHTML = picks.map(n => createNutritionistCard(n)).join('');
+        }
+      }
+    })();
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
