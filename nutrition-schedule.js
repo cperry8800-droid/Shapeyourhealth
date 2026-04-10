@@ -2,6 +2,9 @@
 
 // Demo meal log data
 const demoMealLog = [
+  { name: "Smoothie Bowl", type: "Breakfast", calories: 340, protein: 18, carbs: 52, fat: 8, date: "2026-04-10", notes: "Acai base" },
+  { name: "Grilled Chicken & Rice", type: "Lunch", calories: 540, protein: 44, carbs: 50, fat: 14, date: "2026-04-10", notes: "" },
+  { name: "Protein Shake", type: "Post-Workout", calories: 210, protein: 30, carbs: 15, fat: 5, date: "2026-04-10", notes: "After Tabata" },
   { name: "Greek Yogurt & Berries", type: "Breakfast", calories: 280, protein: 20, carbs: 35, fat: 8, date: "2026-04-09", notes: "Added honey" },
   { name: "Grilled Chicken Salad", type: "Lunch", calories: 520, protein: 42, carbs: 28, fat: 22, date: "2026-04-09", notes: "" },
   { name: "Protein Shake", type: "Post-Workout", calories: 210, protein: 30, carbs: 15, fat: 5, date: "2026-04-09", notes: "With banana" },

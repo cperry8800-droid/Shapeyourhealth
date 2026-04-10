@@ -10,6 +10,7 @@ const demoWorkoutLog = [
   { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", duration: 25, difficulty: "Moderate", date: "2026-04-07", notes: "Fun session" },
   { name: "Band & Bodyweight Burn", type: "Resistance", trainer: "Nina Brooks", duration: 30, difficulty: "Moderate", date: "2026-04-08", notes: "" },
   { name: "Upper Body Blast", type: "Strength", trainer: "Marcus Johnson", duration: 45, difficulty: "Hard", date: "2026-04-09", notes: "Increased weight on bench" },
+  { name: "Tabata Inferno", type: "HIIT", trainer: "Sophie Turner", duration: 35, difficulty: "Hard", date: "2026-04-10", notes: "Morning session" },
 ];
 
 const demoSchedule = {
