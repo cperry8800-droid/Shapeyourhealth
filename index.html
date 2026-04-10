@@ -103,17 +103,29 @@
     .intro-logo {
       height: 140px; width: auto;
       margin-bottom: 48px;
-      filter: brightness(0) invert(1);
       opacity: 0;
     }
     .intro-logo.show {
-      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-                 logoPulse 2.5s ease-in-out 1.2s infinite;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes logoPulse {
-      0%, 100% { opacity: 1; filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(45, 212, 191, 0.4)); }
-      50% { opacity: 0.15; filter: brightness(0) invert(1) drop-shadow(0 0 0px rgba(45, 212, 191, 0)); }
+    /* Individual triangle hover animations */
+    .intro-logo.show .tri-a {
+      animation: triFloatA 3.2s ease-in-out 1.4s infinite;
+      transform-origin: 83px 60px;
+    }
+    .intro-logo.show .tri-b {
+      animation: triFloatB 2.8s ease-in-out 1.6s infinite;
+      transform-origin: 117px 40px;
+    }
+
+    @keyframes triFloatA {
+      0%, 100% { transform: translateY(0px); filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.3)); }
+      50%       { transform: translateY(-9px); filter: drop-shadow(0 0 14px rgba(45, 212, 191, 0.7)); }
+    }
+    @keyframes triFloatB {
+      0%, 100% { transform: translateY(0px); opacity: 0.85; }
+      50%       { transform: translateY(-6px); opacity: 1; }
     }
 
     .intro-tagline {
@@ -271,7 +283,16 @@
   </div>
 
   <div class="intro-content" id="introContent">
-    <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
+    <svg class="intro-logo" id="introLogo" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-label="Shape">
+      <!-- Teal triangle — points right, floats higher -->
+      <polygon class="tri-a" points="72,38 72,82 105,60" fill="#2DD4BF"/>
+      <!-- White triangle — points left, floats gently -->
+      <polygon class="tri-b" points="128,18 128,62 95,40" fill="rgba(255,255,255,0.9)"/>
+      <!-- Wordmark -->
+      <text x="100" y="110" text-anchor="middle"
+        font-family="Inter, Helvetica, Arial, sans-serif"
+        font-size="22" font-weight="300" letter-spacing="8" fill="rgba(255,255,255,0.85)">SHAPE</text>
+    </svg>
     <p class="intro-tagline" id="introTagline">Your body. Your shape.</p>
     <a href="home.html" class="enter-btn" id="enterBtn" onclick="enterSite(event)">
       <span>Enter</span>
