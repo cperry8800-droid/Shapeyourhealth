@@ -375,8 +375,8 @@
     <!-- Center: Chat -->
     <div class="community-chat">
       <div class="chat-channel-tabs" id="mainChatTabs">
-        <button class="chat-channel active" onclick="switchMainTab('trainer')">Trainer Chat</button>
-        <button class="chat-channel" onclick="switchMainTab('client')">Client Chat</button>
+        <button class="chat-channel active" onclick="switchMainTab('client')">Client Chat</button>
+        <button class="chat-channel" onclick="switchMainTab('trainer')">Trainer Chat</button>
         <button class="chat-channel" onclick="switchMainTab('nutritionist')">Nutritionist Chat</button>
       </div>
       <div class="chat-messages" id="chatMessages">
@@ -536,7 +536,7 @@
     ];
 
     let currentTab = 'friends';
-    let currentChannel = 'trainer';
+    let currentChannel = 'client';
     let selectedUser = null;
 
     // === Render Functions ===
@@ -633,7 +633,7 @@
 
     function filterUsers() { renderUserList(); }
 
-    let currentMainTab = 'trainer';
+    let currentMainTab = 'client';
 
     function switchMainTab(tab) {
       currentMainTab = tab;
