@@ -439,6 +439,8 @@ const navToggle = document.getElementById('navToggle');
 if (navToggle) {
   navToggle.addEventListener('click', () => {
     document.getElementById('navLinks').classList.toggle('open');
+    const navActions = document.querySelector('.nav-actions');
+    if (navActions) navActions.classList.toggle('open');
     navToggle.classList.toggle('active');
   });
 }
@@ -450,6 +452,8 @@ document.addEventListener('click', (e) => {
     if (navLinks && navLinks.classList.contains('open') &&
         !navLinks.contains(e.target) && !navToggle.contains(e.target)) {
       navLinks.classList.remove('open');
+      const navActions = document.querySelector('.nav-actions');
+      if (navActions) navActions.classList.remove('open');
       navToggle.classList.remove('active');
       document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
     }
@@ -708,6 +712,8 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     if (window.innerWidth <= 768 && this.parentElement.classList.contains('nav-dropdown')) return;
     const navLinks = document.getElementById('navLinks');
     if (navLinks) navLinks.classList.remove('open');
+    const navActions = document.querySelector('.nav-actions');
+    if (navActions) navActions.classList.remove('open');
     const toggle = document.getElementById('navToggle');
     if (toggle) toggle.classList.remove('active');
   });

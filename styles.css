@@ -92,10 +92,11 @@ ul { list-style: none; }
   border-bottom: 1px solid var(--border);
   padding: 12px 0;
 }
-.nav-container { display: flex; align-items: center; justify-content: space-between; }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; margin-right: 20px; }
+.nav-container { display: flex; align-items: center; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; flex-shrink: 0; }
 .logo-img { height: 64px; width: auto; filter: brightness(0) invert(1); }
-.nav-links { display: flex; align-items: center; gap: 16px; flex-wrap: nowrap; }
+.nav-links { display: flex; align-items: center; gap: 16px; flex-wrap: nowrap; flex: 1; justify-content: center; }
+.nav-actions { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
 .nav-links a {
   font-size: 0.78rem; font-weight: 400; transition: opacity 0.3s;
   letter-spacing: 0.02em; text-transform: uppercase; opacity: 0.6; white-space: nowrap;
@@ -118,7 +119,7 @@ ul { list-style: none; }
 }
 .nav-dropdown-menu a:hover { opacity: 1; background: rgba(255,255,255,0.05); }
 .nav-links a.nav-active { opacity: 1; font-weight: 600; }
-.nav-links .btn { opacity: 1; text-transform: none; white-space: nowrap; }
+.nav-actions .btn { opacity: 1; text-transform: none; white-space: nowrap; }
 
 .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 4px; position: relative; z-index: 1001; }
 .nav-toggle span {
@@ -574,6 +575,13 @@ img.card-avatar-inline { background: var(--border); }
     gap: 20px; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid var(--border);
   }
   .nav-links.open { right: 0; }
+  .nav-actions {
+    position: fixed; top: 0; right: -100%; width: 280px;
+    flex-direction: column; padding: 0 32px 32px;
+    gap: 20px; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1050;
+  }
+  .nav-actions.open { right: 0; }
   .nav-toggle { display: block; }
   .nav-dropdown { position: static; flex-direction: column; align-items: flex-start; }
   .nav-dropdown > a {
