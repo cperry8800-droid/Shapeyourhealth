@@ -5,7 +5,6 @@ const demoWorkoutLog = [
   { name: "5x5 Foundation", type: "Strength", trainer: "Marcus Johnson", duration: 55, difficulty: "Hard", date: "2026-04-01", notes: "Felt strong on squats" },
   { name: "20-Min Torch", type: "HIIT", trainer: "Damon Clarke", duration: 20, difficulty: "Moderate", date: "2026-04-02", notes: "Quick morning session" },
   { name: "Living Room HIIT", type: "HIIT", trainer: "Nina Brooks", duration: 25, difficulty: "Easy", date: "2026-04-03", notes: "Great at-home session" },
-  { name: "Deadlift Domination", type: "Strength", trainer: "Marcus Johnson", duration: 60, difficulty: "Intense", date: "2026-04-05", notes: "New PR on deadlift!" },
   { name: "Full Body Burn", type: "Cardio", trainer: "Damon Clarke", duration: 40, difficulty: "Hard", date: "2026-04-06", notes: "" },
   { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", duration: 25, difficulty: "Moderate", date: "2026-04-07", notes: "Fun session" },
   { name: "Band & Bodyweight Burn", type: "Resistance", trainer: "Nina Brooks", duration: 30, difficulty: "Moderate", date: "2026-04-08", notes: "" },
