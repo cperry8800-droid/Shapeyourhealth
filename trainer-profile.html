@@ -150,16 +150,20 @@
   <!-- Profile Banner -->
   <div style="padding-top:80px;">
     <div class="tp-banner">
-      <div class="tp-banner-label">Customizable Banner</div>
+      <div class="tp-banner-label">Upload Your Own Banner</div>
     </div>
   </div>
 
   <!-- Avatar & Name -->
   <div class="tp-avatar-area">
-    <div class="tp-avatar">YN</div>
+    <div class="tp-avatar" style="position: relative; cursor: pointer;">
+      YN
+      <div style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--text); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); font-size: 0.7rem; color: #fff;">+</div>
+    </div>
     <div class="tp-name-block">
       <h1>Your Name</h1>
       <div class="tp-specialty">Your Specialty</div>
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Upload your own profile photo</div>
     </div>
   </div>
 
@@ -269,17 +273,37 @@
       </ul>
     </div>
 
-    <!-- Photo Gallery -->
+    <!-- Photos & Videos -->
     <div class="tp-section">
       <div class="tp-section-header">
-        <h2>Photo Gallery</h2>
+        <h2>Photos & Videos</h2>
         <span class="tp-edit-badge">Customizable</span>
       </div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); font-weight: 300; margin-bottom: 16px;">Upload photos and videos to showcase your training style, client transformations, workout demos, and more.</p>
       <div class="tp-gallery-grid">
         <div class="tp-gallery-item">Photo 1</div>
         <div class="tp-gallery-item">Photo 2</div>
-        <div class="tp-gallery-item">Photo 3</div>
-        <div class="tp-gallery-item">+ Add Photo</div>
+        <div class="tp-gallery-item">+ Upload Photo</div>
+      </div>
+      <div class="tp-gallery-grid" style="margin-top: 12px;">
+        <div class="tp-gallery-item" style="height: 160px; background: linear-gradient(135deg, #1a1a1a11, #1a1a1a06); position: relative;">
+          <div style="text-align: center;">
+            <div style="font-size: 1.4rem; margin-bottom: 4px;">&#9654;</div>
+            <div>Video 1</div>
+          </div>
+        </div>
+        <div class="tp-gallery-item" style="height: 160px; background: linear-gradient(135deg, #1a1a1a11, #1a1a1a06); position: relative;">
+          <div style="text-align: center;">
+            <div style="font-size: 1.4rem; margin-bottom: 4px;">&#9654;</div>
+            <div>Video 2</div>
+          </div>
+        </div>
+        <div class="tp-gallery-item" style="height: 160px; background: linear-gradient(135deg, #1a1a1a11, #1a1a1a06);">
+          <div style="text-align: center;">
+            <div style="font-size: 1.4rem; margin-bottom: 4px;">&#9654;</div>
+            <div>+ Upload Video</div>
+          </div>
+        </div>
       </div>
     </div>
 
