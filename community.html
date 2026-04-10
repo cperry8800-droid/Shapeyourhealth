@@ -374,24 +374,10 @@
 
     <!-- Center: Chat -->
     <div class="community-chat">
-      <div class="chat-header">
-        <div class="chat-header-info">
-          <div class="chat-header-avatar" id="chatAvatar" style="background:var(--accent);">TC</div>
-          <div>
-            <h3 id="chatTitle">Trainer Chat</h3>
-            <p id="chatSubtitle">All trainers</p>
-          </div>
-        </div>
-      </div>
       <div class="chat-channel-tabs" id="mainChatTabs">
         <button class="chat-channel active" onclick="switchMainTab('trainer')">Trainer Chat</button>
         <button class="chat-channel" onclick="switchMainTab('client')">Client Chat</button>
-      </div>
-      <div class="chat-channel-tabs chat-sub-tabs" id="clientSubTabs" style="display:none; border-top:none; padding-top:0;">
-        <button class="chat-channel active" onclick="switchChannel('general')">General</button>
-        <button class="chat-channel" onclick="switchChannel('workouts')">Workouts</button>
-        <button class="chat-channel" onclick="switchChannel('nutrition')">Nutrition</button>
-        <button class="chat-channel" onclick="switchChannel('motivation')">Motivation</button>
+        <button class="chat-channel" onclick="switchMainTab('nutritionist')">Nutritionist Chat</button>
       </div>
       <div class="chat-messages" id="chatMessages">
         <!-- Populated by JS -->
@@ -491,6 +477,13 @@
       { name: "Nina Brooks", initials: "NB", color: "#10B981" },
     ];
 
+    const nutritionistChatUsers = [
+      { name: "Dr. Sarah Mitchell", initials: "SM", color: "#8B5CF6" },
+      { name: "Maria Santos", initials: "MS", color: "#EC4899" },
+      { name: "Alex Rivera", initials: "AR", color: "#F59E0B" },
+      { name: "James Okafor", initials: "JO", color: "#14B8A6" },
+    ];
+
     const chatChannels = {
       trainer: [
         { user: trainerChatUsers[0], text: "Just dropped a new 5x5 variation for intermediate lifters. Let me know what you all think", time: "9:10 AM" },
@@ -504,7 +497,7 @@
         { user: trainerChatUsers[2], text: "Agreed! Anyone going to the Shape trainer summit next month?", time: "9:55 AM" },
         { user: trainerChatUsers[3], text: "Wouldn't miss it! Looking forward to meeting everyone in person", time: "10:00 AM" },
       ],
-      general: [
+      client: [
         { user: communityUsers[0], text: "Just finished a killer leg day. Marcus Johnson never disappoints!", time: "10:24 AM" },
         { user: communityUsers[1], text: "Anyone tried the new Tabata Inferno workout? It's insane", time: "10:31 AM" },
         { user: communityUsers[3], text: "I did it yesterday! Couldn't walk after lol", time: "10:33 AM" },
@@ -512,31 +505,23 @@
         { user: null, text: "Has anyone tried Nina Brooks' at home programs? Thinking about switching", time: "10:42 AM" },
         { user: communityUsers[3], text: "Yes! Living Room HIIT is my go-to. No equipment needed and it still destroys me", time: "10:44 AM" },
         { user: communityUsers[2], text: "I'm doing Sprint Intervals with Damon today. Who's joining?", time: "10:50 AM" },
-        { user: communityUsers[1], text: "I might hop in later! Need to recover from yesterday first 😅", time: "10:52 AM" },
+        { user: communityUsers[1], text: "I might hop in later! Need to recover from yesterday first", time: "10:52 AM" },
+        { user: null, text: "Hit a new PR on deadlift today! This community keeps me going", time: "11:00 AM" },
+        { user: communityUsers[2], text: "Just signed up for a half marathon. Damon Clarke's programs are getting me there", time: "11:10 AM" },
+        { user: communityUsers[1], text: "You got this Carlos! We'll all be cheering you on", time: "11:13 AM" },
       ],
-      workouts: [
-        { user: communityUsers[0], text: "5x5 Foundation is the best strength program on the platform. 3 months and my squat went up 40lbs", time: "9:15 AM" },
-        { user: communityUsers[4], text: "Total Body Conditioning with Sophie Turner is no joke. Highly recommend", time: "9:22 AM" },
-        { user: null, text: "I've been doing Nina's Apartment-Friendly Strength. Great for home workouts", time: "9:30 AM" },
-        { user: communityUsers[3], text: "Band & Bodyweight Burn is also amazing from Nina. Just need a resistance band", time: "9:35 AM" },
-        { user: communityUsers[2], text: "For cardio people — Endurance Builder by Damon Clarke changed my running game", time: "9:41 AM" },
-        { user: communityUsers[1], text: "Anyone comparing HIIT Burn vs 20-Min Torch? Which one's better for beginners?", time: "9:48 AM" },
+      nutritionist: [
+        { user: nutritionistChatUsers[0], text: "Just updated my High Protein Performance plan with new breakfast options. Clients were asking for more variety", time: "8:00 AM" },
+        { user: nutritionistChatUsers[1], text: "Great idea Sarah! I've been adding more plant-based protein sources to my vegan plans too", time: "8:10 AM" },
+        { user: nutritionistChatUsers[2], text: "Anyone else dealing with clients who want results but won't meal prep? I created a no-prep plan and it's my best seller now", time: "8:18 AM" },
+        { user: nutritionistChatUsers[3], text: "That's smart Alex. I've been focusing on simple swaps instead of full overhauls. Less intimidating for beginners", time: "8:25 AM" },
+        { user: nutritionistChatUsers[0], text: "Totally agree James. Small changes stick better than drastic diet shifts", time: "8:30 AM" },
+        { user: nutritionistChatUsers[1], text: "Has anyone tried integrating macro tracking with the Shape nutrition schedule? My clients love the visual progress", time: "8:38 AM" },
+        { user: nutritionistChatUsers[2], text: "Yes! The nutrition schedule feature is a game changer. I build all my weekly plans around it", time: "8:42 AM" },
+        { user: nutritionistChatUsers[3], text: "Same here. Being able to share plans directly with clients through the platform saves so much time", time: "8:48 AM" },
+        { user: nutritionistChatUsers[0], text: "Love collaborating with you all. Having a nutritionist community makes such a difference", time: "8:55 AM" },
+        { user: nutritionistChatUsers[1], text: "Agreed! Looking forward to the next Shape nutritionist roundtable", time: "9:00 AM" },
       ],
-      nutrition: [
-        { user: communityUsers[3], text: "Started Dr. Sarah Mitchell's High Protein Performance plan. Meal prep Sunday was intense", time: "8:05 AM" },
-        { user: communityUsers[1], text: "Maria Santos has great vegan options if anyone's looking. Plant-Powered Starter is beginner friendly", time: "8:12 AM" },
-        { user: communityUsers[0], text: "How do you guys handle meal prep for the week? I always fall off by Wednesday", time: "8:20 AM" },
-        { user: null, text: "I use Alex Rivera's Sunday Prep Master plan. Game changer for staying consistent", time: "8:25 AM" },
-        { user: communityUsers[2], text: "Same! The $50/Week Meal Plan from Alex is also great if you're on a budget", time: "8:30 AM" },
-      ],
-      motivation: [
-        { user: communityUsers[0], text: "Day 90 of consistent training. Never going back to my old lifestyle", time: "7:00 AM" },
-        { user: communityUsers[1], text: "Let's go Jake!! That's amazing 💪", time: "7:05 AM" },
-        { user: communityUsers[3], text: "Reminder: even a 15-minute at home workout counts. Don't skip just because you can't get to the gym", time: "7:15 AM" },
-        { user: null, text: "Hit a new PR on deadlift today! This community keeps me going", time: "7:20 AM" },
-        { user: communityUsers[2], text: "Just signed up for a half marathon. Damon Clarke's programs are getting me there", time: "7:30 AM" },
-        { user: communityUsers[1], text: "You got this Carlos! We'll all be cheering you on", time: "7:33 AM" },
-      ]
     };
 
     const activityData = [
@@ -652,44 +637,9 @@
 
     function switchMainTab(tab) {
       currentMainTab = tab;
+      currentChannel = tab;
       document.querySelectorAll('#mainChatTabs .chat-channel').forEach(c => c.classList.remove('active'));
       event.target.classList.add('active');
-
-      const subTabs = document.getElementById('clientSubTabs');
-      if (tab === 'client') {
-        subTabs.style.display = 'flex';
-        currentChannel = 'general';
-        // Reset sub-tab active state
-        document.querySelectorAll('#clientSubTabs .chat-channel').forEach(c => c.classList.remove('active'));
-        document.querySelector('#clientSubTabs .chat-channel').classList.add('active');
-        document.getElementById('chatTitle').textContent = 'General Chat';
-        document.getElementById('chatSubtitle').textContent = 'All members';
-        document.getElementById('chatAvatar').textContent = 'GC';
-        document.getElementById('chatAvatar').style.background = 'var(--primary)';
-      } else {
-        subTabs.style.display = 'none';
-        currentChannel = 'trainer';
-        document.getElementById('chatTitle').textContent = 'Trainer Chat';
-        document.getElementById('chatSubtitle').textContent = 'All trainers';
-        document.getElementById('chatAvatar').textContent = 'TC';
-        document.getElementById('chatAvatar').style.background = 'var(--accent)';
-      }
-      selectedUser = null;
-      renderChat();
-    }
-
-    function switchChannel(channel) {
-      currentChannel = channel;
-      document.querySelectorAll('#clientSubTabs .chat-channel').forEach(c => c.classList.remove('active'));
-      event.target.classList.add('active');
-
-      const titles = { general: 'General Chat', workouts: 'Workouts', nutrition: 'Nutrition', motivation: 'Motivation' };
-      const subs = { general: 'All members', workouts: 'Share & discover workouts', nutrition: 'Meal plans & tips', motivation: 'Hype each other up' };
-      document.getElementById('chatTitle').textContent = titles[channel];
-      document.getElementById('chatSubtitle').textContent = subs[channel];
-      document.getElementById('chatAvatar').textContent = channel === 'general' ? 'GC' : channel[0].toUpperCase();
-      document.getElementById('chatAvatar').style.background = 'var(--primary)';
-
       selectedUser = null;
       renderChat();
     }
