@@ -447,6 +447,10 @@
         <input type="text" id="profileName" placeholder="Your name">
       </div>
       <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="profileLocation" placeholder="e.g. Los Angeles, CA">
+      </div>
+      <div class="form-group">
         <label>Bio</label>
         <textarea id="profileBio" placeholder="Tell the community about yourself, your goals, favorite workouts..."></textarea>
       </div>
@@ -745,7 +749,7 @@
 
     // === Profile Functions ===
     let myProfile = JSON.parse(localStorage.getItem('shapeProfile') || 'null') || {
-      name: 'Your Profile', bio: 'Member since 2025', photo: null, trainer: ''
+      name: 'Your Profile', bio: 'Member since 2025', photo: null, trainer: '', location: ''
     };
 
     function loadProfile() {
@@ -753,7 +757,7 @@
       const nameEl = document.getElementById('myName');
       const bioEl = document.getElementById('myBio');
       if (nameEl) nameEl.textContent = myProfile.name;
-      if (bioEl) bioEl.textContent = myProfile.bio;
+      if (bioEl) bioEl.textContent = (myProfile.location ? myProfile.location + ' · ' : '') + myProfile.bio;
       if (myProfile.photo) {
         avatar.innerHTML = `<img src="${myProfile.photo}" alt="You">`;
         avatar.style.background = 'none';
@@ -768,6 +772,7 @@
     function openProfileModal() {
       document.getElementById('profileModal').classList.add('active');
       document.getElementById('profileName').value = myProfile.name === 'Your Profile' ? '' : myProfile.name;
+      document.getElementById('profileLocation').value = myProfile.location || '';
       document.getElementById('profileBio').value = myProfile.bio === 'Member since 2025' ? '' : myProfile.bio;
       document.getElementById('profileTrainer').value = myProfile.trainer || '';
       const preview = document.getElementById('photoPreview');
@@ -810,10 +815,12 @@
 
     function saveProfile() {
       const name = document.getElementById('profileName').value.trim();
+      const location = document.getElementById('profileLocation').value.trim();
       const bio = document.getElementById('profileBio').value.trim();
       const trainer = document.getElementById('profileTrainer').value.trim();
       if (name) myProfile.name = name;
       if (bio) myProfile.bio = bio;
+      myProfile.location = location;
       myProfile.trainer = trainer;
       localStorage.setItem('shapeProfile', JSON.stringify(myProfile));
       loadProfile();
