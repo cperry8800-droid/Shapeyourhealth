@@ -689,7 +689,9 @@ function showToast(msg) {
 
 // ===== Close mobile nav on link click =====
 document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => {
+  link.addEventListener('click', function() {
+    // Don't close nav when tapping dropdown parent links on mobile
+    if (window.innerWidth <= 768 && this.parentElement.classList.contains('nav-dropdown')) return;
     const navLinks = document.getElementById('navLinks');
     if (navLinks) navLinks.classList.remove('open');
   });
