@@ -480,119 +480,27 @@
     }
   </script>
 
-  <!-- Ambient Sound Toggle -->
-  <div id="soundToggle" style="position:fixed;bottom:24px;right:24px;z-index:100;cursor:pointer;opacity:0.3;transition:opacity 0.3s;" onclick="toggleAmbient()">
-    <span id="soundIcon" style="font-size:0.65rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#666;">Sound Off</span>
-  </div>
 
   <script>
   // ===== AUDIO ENGINE =====
   let audioCtx = null;
-  let dialUpNodes = null;
   let ambientNodes = null;
-  let ambientPlaying = false;
-  let dialUpPlaying = false;
   const AMB_VOL = 1.0;
-  const DIALUP_VOL = 0.35;
 
   function ensureAudioCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     return audioCtx;
   }
 
-  // =============================================
-  // LOADING PULSE — deep low-frequency whoom
-  // =============================================
-  function createDialUp() {
-    const ctx = ensureAudioCtx();
-    const t = ctx.currentTime;
-    const master = ctx.createGain();
-    master.gain.value = 0;
-    master.connect(ctx.destination);
-
-    // Deep sub sine — 48Hz foundation
-    const sub = ctx.createOscillator();
-    const subG = ctx.createGain();
-    sub.type = 'sine';
-    sub.frequency.value = 48;
-    subG.gain.value = 0.7;
-    sub.connect(subG); subG.connect(master);
-    sub.start();
-
-    // Second layer — 72Hz, adds body
-    const mid = ctx.createOscillator();
-    const midG = ctx.createGain();
-    mid.type = 'sine';
-    mid.frequency.value = 72;
-    midG.gain.value = 0.3;
-    const midF = ctx.createBiquadFilter();
-    midF.type = 'lowpass'; midF.frequency.value = 100;
-    mid.connect(midF); midF.connect(midG); midG.connect(master);
-    mid.start();
-
-    // Slow pulse LFO — creates the "whoom whoom" rhythm (~0.6s cycle)
-    const pulseLfo = ctx.createOscillator();
-    const pulseLfoG = ctx.createGain();
-    pulseLfo.type = 'sine';
-    pulseLfo.frequency.value = 0.55;
-    pulseLfoG.gain.value = 0.45;
-    pulseLfo.connect(pulseLfoG);
-    pulseLfoG.connect(subG.gain);
-    pulseLfoG.connect(midG.gain);
-    pulseLfo.start();
-
-    // Slow pitch drift — makes it feel organic
-    const driftLfo = ctx.createOscillator();
-    const driftLfoG = ctx.createGain();
-    driftLfo.type = 'sine';
-    driftLfo.frequency.value = 0.08;
-    driftLfoG.gain.value = 3;
-    driftLfo.connect(driftLfoG);
-    driftLfoG.connect(sub.frequency);
-    driftLfoG.connect(mid.frequency);
-    driftLfo.start();
-
-    // Fade master in slowly
-    master.gain.setValueAtTime(0, t);
-    master.gain.linearRampToValueAtTime(DIALUP_VOL, t + 1.5);
-
-    dialUpNodes = { master, sub, mid, pulseLfo, driftLfo };
-    dialUpPlaying = true;
-  }
-
-  function fadeOutDialUp(duration) {
-    if (!dialUpNodes || !audioCtx) return;
-    const t = audioCtx.currentTime;
-    dialUpNodes.master.gain.cancelScheduledValues(t);
-    dialUpNodes.master.gain.setValueAtTime(dialUpNodes.master.gain.value, t);
-    dialUpNodes.master.gain.linearRampToValueAtTime(0, t + duration);
-    setTimeout(() => {
-      try {
-        dialUpNodes.sub.stop();
-        dialUpNodes.mid.stop();
-        dialUpNodes.pulseLfo.stop();
-        dialUpNodes.driftLfo.stop();
-      } catch(e) {}
-      dialUpPlaying = false;
-    }, duration * 1000 + 100);
-  }
-
-  // =============================================
-  // DEEP RUMBLE AMBIENT (plays after loading)
-  // =============================================
-  function createAmbient() {
+  function startRumble() {
     const ctx = ensureAudioCtx();
     const master = ctx.createGain();
     master.gain.value = 0;
 
     const comp = ctx.createDynamicsCompressor();
-    comp.threshold.value = -12;
-    comp.knee.value = 10;
-    comp.ratio.value = 4;
-    comp.attack.value = 0.05;
-    comp.release.value = 0.25;
-    master.connect(comp);
-    comp.connect(ctx.destination);
+    comp.threshold.value = -12; comp.knee.value = 10;
+    comp.ratio.value = 4; comp.attack.value = 0.05; comp.release.value = 0.25;
+    master.connect(comp); comp.connect(ctx.destination);
 
     // LAYER 1: DEEP BASS DRONE
     const drone1 = ctx.createOscillator();
@@ -693,79 +601,29 @@
     rumbleLfo.type = 'sine'; rumbleLfo.frequency.value = 0.1; rumbleLfoG.gain.value = 0.1;
     rumbleLfo.connect(rumbleLfoG); rumbleLfoG.connect(rumbleG.gain); rumbleLfo.start();
 
+    // Fade in over 3s
+    master.gain.setValueAtTime(0, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(AMB_VOL, ctx.currentTime + 3);
+
     ambientNodes = { master };
   }
 
-  // Crossfade: dial-up out, rumble in
-  function crossfadeToRumble() {
-    // Fade out dial-up over 1.5s
-    fadeOutDialUp(1.5);
-    // Create and fade in rumble
-    if (!ambientNodes) createAmbient();
-    const t = audioCtx.currentTime;
-    ambientNodes.master.gain.setValueAtTime(0, t);
-    ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, t + 3);
-    document.getElementById('soundIcon').textContent = 'Sound On';
-    document.getElementById('soundToggle').style.opacity = '0.7';
-    ambientPlaying = true;
-  }
-
-  function toggleAmbient() {
-    if (!ambientPlaying) {
-      if (!audioCtx) ensureAudioCtx();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      if (!ambientNodes) createAmbient();
-      const t = audioCtx.currentTime;
-      ambientNodes.master.gain.cancelScheduledValues(t);
-      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
-      ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, t + 2);
-      document.getElementById('soundIcon').textContent = 'Sound On';
-      document.getElementById('soundToggle').style.opacity = '0.7';
-      ambientPlaying = true;
-    } else {
-      if (!audioCtx || !ambientNodes) return;
-      const t = audioCtx.currentTime;
-      ambientNodes.master.gain.cancelScheduledValues(t);
-      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
-      ambientNodes.master.gain.linearRampToValueAtTime(0, t + 1);
-      document.getElementById('soundIcon').textContent = 'Sound Off';
-      document.getElementById('soundToggle').style.opacity = '0.3';
-      ambientPlaying = false;
-    }
-  }
-
-  // Start dial-up on first user interaction
+  // Start deep rumble on very first interaction — fires once only
   let audioStarted = false;
   const AUDIO_EVENTS = ['click','touchstart','touchend','mousedown','keydown','pointerdown'];
 
   function initAudio() {
     if (audioStarted) return;
     audioStarted = true;
-
-    // Remove listeners immediately
-    AUDIO_EVENTS.forEach(evt => {
-      window.removeEventListener(evt, initAudio, true);
-    });
-
+    AUDIO_EVENTS.forEach(evt => window.removeEventListener(evt, initAudio, true));
     try {
       const ctx = ensureAudioCtx();
-      const start = () => {
-        try { createDialUp(); } catch(e) { console.warn('dial-up error:', e); }
-      };
-      if (ctx.state === 'suspended') {
-        ctx.resume().then(start).catch(start);
-      } else {
-        start();
-      }
-    } catch(e) {
-      console.warn('audio init error:', e);
-    }
+      const go = () => { try { startRumble(); } catch(e) { console.warn('audio error:', e); } };
+      ctx.state === 'suspended' ? ctx.resume().then(go).catch(go) : go();
+    } catch(e) { console.warn('audio init error:', e); }
   }
 
-  // Use capture phase on window — fires before anything else
-  AUDIO_EVENTS.forEach(evt => {
-    window.addEventListener(evt, initAudio, { capture: true, passive: true });
-  });
+  AUDIO_EVENTS.forEach(evt => window.addEventListener(evt, initAudio, { capture: true, passive: true }));
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
