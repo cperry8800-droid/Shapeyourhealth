@@ -27,7 +27,7 @@
     .integration-logo.strava { background: #FC4C02; }
     .integration-logo.garmin { background: #007CC3; }
     .integration-logo.apple { background: #000; }
-    .integration-logo.fitbit { background: #00B0B9; }
+    .integration-logo.whoop { background: #44D62C; }
     .integration-card-header h3 {
       font-size: 1.05rem; font-weight: 500; margin-bottom: 2px;
     }
@@ -343,38 +343,38 @@
           </div>
         </div>
 
-        <!-- Fitbit -->
-        <div class="integration-card" id="fitbitCard">
+        <!-- Whoop -->
+        <div class="integration-card" id="whoopCard">
           <div class="integration-card-header">
-            <div class="integration-logo fitbit">F</div>
+            <div class="integration-logo whoop">W</div>
             <div>
-              <h3>Fitbit</h3>
-              <p>Activity & sleep tracking</p>
+              <h3>Whoop</h3>
+              <p>Recovery & strain tracking</p>
             </div>
           </div>
           <div class="integration-card-body">
-            <p>Link your Fitbit to sync daily activity, sleep data, and workouts with Shape. See how your rest impacts your training performance.</p>
+            <p>Connect your Whoop to sync recovery scores, strain data, and sleep performance with Shape. Train smarter by knowing when to push and when to rest.</p>
             <div class="integration-features">
               <div class="integration-feature">
                 <div class="check">&#10003;</div>
-                <span>Sync daily steps and active minutes</span>
+                <span>Sync strain and recovery scores</span>
               </div>
               <div class="integration-feature">
                 <div class="check">&#10003;</div>
-                <span>Import sleep and recovery data</span>
+                <span>Import sleep performance data</span>
               </div>
               <div class="integration-feature">
                 <div class="check">&#10003;</div>
-                <span>Push Shape sessions to Fitbit</span>
+                <span>Push Shape sessions to Whoop</span>
               </div>
             </div>
           </div>
           <div class="integration-status">
-            <div class="status-badge" id="fitbitStatus">
+            <div class="status-badge" id="whoopStatus">
               <span class="status-dot disconnected"></span>
               <span style="color:var(--text-muted);">Not Connected</span>
             </div>
-            <button class="btn-connect" id="fitbitBtn" onclick="toggleIntegration('fitbit')">Connect</button>
+            <button class="btn-connect" id="whoopBtn" onclick="toggleIntegration('whoop')">Connect</button>
           </div>
         </div>
       </div>
@@ -563,7 +563,7 @@
       strava: { connected: true, name: 'Strava' },
       garmin: { connected: true, name: 'Garmin Connect' },
       apple: { connected: false, name: 'Apple Health' },
-      fitbit: { connected: false, name: 'Fitbit' }
+      whoop: { connected: false, name: 'Whoop' }
     };
 
     function toggleIntegration(id) {
