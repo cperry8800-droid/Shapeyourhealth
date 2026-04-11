@@ -318,6 +318,111 @@ const nutritionists = [
   },
 ];
 
+// ===== Gyms =====
+const gyms = [
+  {
+    id: 201, name: "Iron House Fitness", type: "Full-Service Gym",
+    category: "gym", location: "Austin, TX", rating: 4.9, members: 2400,
+    trainers: 18, price: 49.99, featured: true, gymOfMonth: true,
+    gotmQuote: "We built Iron House to be the gym people never want to leave.",
+    bio: "A 25,000 sq ft full-service facility with free weights, machines, turf area, and group fitness studios. Open 24/7 with personal training included in every membership.",
+    color: "#EF4444",
+    amenities: ["Free Weights", "Machines", "Turf Area", "Group Classes", "Sauna", "Locker Rooms", "24/7 Access"],
+    classes: ["Strength Training", "HIIT", "Yoga", "Spin"],
+    tags: ["Full-Service", "24/7", "Personal Training"]
+  },
+  {
+    id: 202, name: "Flow Studio", type: "Boutique Studio",
+    category: "studio", location: "Brooklyn, NY", rating: 4.8, members: 860,
+    trainers: 8, price: 89.99, featured: true,
+    bio: "A premium yoga and pilates studio in the heart of Williamsburg. Heated rooms, infrared saunas, and small class sizes for a personalized experience.",
+    color: "#8B5CF6",
+    amenities: ["Heated Studios", "Infrared Sauna", "Mat Rentals", "Showers", "Retail Shop"],
+    classes: ["Vinyasa Yoga", "Hot Yoga", "Pilates", "Barre"],
+    tags: ["Yoga", "Pilates", "Boutique"]
+  },
+  {
+    id: 203, name: "Grit Athletics", type: "CrossFit Box",
+    category: "crossfit", location: "Denver, CO", rating: 4.9, members: 520,
+    trainers: 6, price: 159.99,
+    bio: "A no-frills CrossFit affiliate focused on community, competition, and results. Programming updated daily with scalable options for every fitness level.",
+    color: "#F59E0B",
+    amenities: ["Olympic Lifting Platforms", "Rigs & Pull-Up Bars", "Rowers & Bikes", "Open Gym Hours", "Competition Team"],
+    classes: ["CrossFit WOD", "Olympic Lifting", "Endurance", "Gymnastics"],
+    tags: ["CrossFit", "Competition", "Community"]
+  },
+  {
+    id: 204, name: "Elevate Performance", type: "Full-Service Gym",
+    category: "gym", location: "Miami, FL", rating: 4.7, members: 3100,
+    trainers: 24, price: 59.99,
+    bio: "Miami's premier training facility with ocean views, rooftop recovery suites, and a team of nationally certified coaches. Two floors of equipment and dedicated functional training zones.",
+    color: "#0EA5E9",
+    amenities: ["Rooftop Recovery", "Pool", "Two Training Floors", "Juice Bar", "Childcare", "Parking"],
+    classes: ["Strength", "Boxing", "Spin", "Recovery Yoga"],
+    tags: ["Premium", "Full-Service", "Recovery"]
+  },
+  {
+    id: 205, name: "The Sweat Lab", type: "Boutique Studio",
+    category: "studio", location: "Nashville, TN", rating: 4.8, members: 640,
+    trainers: 5, price: 79.99,
+    bio: "A high-energy boutique studio specializing in HIIT, cycling, and strength circuits. Music-driven classes capped at 20 people for maximum coaching attention.",
+    color: "#EC4899",
+    amenities: ["Sound System", "Heart Rate Tracking", "Showers", "Towel Service", "Water Station"],
+    classes: ["HIIT", "Spin", "Strength Circuits", "Stretch & Recover"],
+    tags: ["HIIT", "Cycling", "Small Classes"]
+  },
+  {
+    id: 206, name: "Forge Barbell Club", type: "Specialty Gym",
+    category: "specialty", location: "Portland, OR", rating: 4.9, members: 280,
+    trainers: 4, price: 99.99,
+    bio: "A powerlifting and Olympic weightlifting gym built for serious lifters. Calibrated plates, competition benches, and a coaching staff with national-level experience.",
+    color: "#10B981",
+    amenities: ["Calibrated Plates", "Competition Platforms", "Chalk Stations", "Video Review Area", "Meet Prep"],
+    classes: ["Powerlifting", "Olympic Lifting", "Strongman", "Accessory Work"],
+    tags: ["Powerlifting", "Olympic Lifting", "Serious Lifters"]
+  },
+  {
+    id: 207, name: "Basecamp Fitness", type: "Full-Service Gym",
+    category: "gym", location: "Chicago, IL", rating: 4.6, members: 4200,
+    trainers: 32, price: 39.99,
+    bio: "Affordable, no-contract fitness for everyone. Three locations across Chicago with clean facilities, modern equipment, and free group classes for all members.",
+    color: "#6C3AED",
+    amenities: ["3 Locations", "Modern Equipment", "Free Group Classes", "No Contract", "App Check-In", "Locker Rooms"],
+    classes: ["Group Strength", "Cardio Blast", "Yoga", "Core & Abs"],
+    tags: ["Affordable", "No Contract", "Multi-Location"]
+  },
+  {
+    id: 208, name: "Apex MMA & Fitness", type: "Specialty Gym",
+    category: "specialty", location: "Las Vegas, NV", rating: 4.8, members: 750,
+    trainers: 12, price: 129.99,
+    bio: "A combat sports training center with world-class coaches in boxing, Muay Thai, Brazilian Jiu-Jitsu, and MMA. Open to all levels from beginners to fighters.",
+    color: "#DC2626",
+    amenities: ["Boxing Ring", "MMA Cage", "Mat Space", "Heavy Bags", "Strength Area", "Pro Shop"],
+    classes: ["Boxing", "Muay Thai", "Brazilian Jiu-Jitsu", "MMA", "Kickboxing"],
+    tags: ["MMA", "Boxing", "Combat Sports"]
+  },
+  {
+    id: 209, name: "Solstice Wellness", type: "Boutique Studio",
+    category: "studio", location: "San Diego, CA", rating: 4.7, members: 480,
+    trainers: 7, price: 69.99,
+    bio: "A holistic wellness studio combining yoga, meditation, and breathwork. Focused on mind-body connection with certified instructors and intimate class settings.",
+    color: "#14B8A6",
+    amenities: ["Meditation Room", "Essential Oils", "Sound Healing", "Private Sessions", "Workshop Space"],
+    classes: ["Yin Yoga", "Power Yoga", "Meditation", "Breathwork", "Sound Bath"],
+    tags: ["Wellness", "Meditation", "Mind-Body"]
+  },
+  {
+    id: 210, name: "Titan Strength Co.", type: "Full-Service Gym",
+    category: "gym", location: "Atlanta, GA", rating: 4.8, members: 1800,
+    trainers: 15, price: 54.99,
+    bio: "A strength-focused gym with dedicated zones for powerlifting, bodybuilding, and functional training. Known for its community and coaching culture.",
+    color: "#F97316",
+    amenities: ["Powerlifting Zone", "Bodybuilding Area", "Functional Zone", "Recovery Room", "Supplement Bar"],
+    classes: ["Strength Basics", "Hypertrophy", "Functional Fitness", "Mobility"],
+    tags: ["Strength", "Community", "Coaching"]
+  },
+];
+
 // ===== Render Functions =====
 function createTrainerCard(trainer) {
   const initials = trainer.name.split(' ').map(n => n[0]).join('');
@@ -377,6 +482,76 @@ function createNutritionistCard(nutritionist) {
       </div>
     </div>
   `;
+}
+
+function createGymCard(gym) {
+  const initials = gym.name.split(' ').map(n => n[0]).join('').slice(0, 2);
+  return `
+    <div class="card" onclick="openGymModal(${gym.id})" data-category="${gym.category}">
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-avatar-inline" style="background: ${gym.color};">${initials}</div>
+          <div class="card-header-info">
+            <h3>${gym.name}</h3>
+            <div class="card-specialty">${gym.type} — ${gym.location}</div>
+          </div>
+        </div>
+        <p class="card-desc">${gym.bio}</p>
+        <div class="card-meta">
+          <span class="card-rating">${gym.rating}</span>
+          <span>${gym.members.toLocaleString()} members</span>
+          <span>${gym.trainers} trainers</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-price">$${gym.price}<span>/mo</span></div>
+          <button class="btn btn-sm btn-primary">View Details</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function openGymModal(id) {
+  const gym = gyms.find(g => g.id === id);
+  if (!gym) return;
+  const initials = gym.name.split(' ').map(n => n[0]).join('').slice(0, 2);
+  const modal = document.getElementById('gymModal');
+  const content = document.getElementById('gymModalContent');
+  if (!modal || !content) return;
+  content.innerHTML = `
+    <div class="trainer-detail">
+      <div class="trainer-detail-header">
+        <div class="trainer-detail-avatar" style="background: ${gym.color};">${initials}</div>
+        <div>
+          <h2>${gym.name}</h2>
+          <div class="card-specialty">${gym.type} — ${gym.location}</div>
+          <div class="trainer-detail-stats">
+            <span>${gym.rating} rating</span>
+            <span>${gym.members.toLocaleString()} members</span>
+            <span>${gym.trainers} trainers on staff</span>
+          </div>
+        </div>
+      </div>
+      <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.8;margin-bottom:24px;">${gym.bio}</p>
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">Amenities</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          ${gym.amenities.map(a => `<span style="padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:0.82rem;color:var(--text-muted);">${a}</span>`).join('')}
+        </div>
+      </div>
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">Classes Offered</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          ${gym.classes.map(c => `<span style="padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:0.82rem;color:var(--text-muted);">${c}</span>`).join('')}
+        </div>
+      </div>
+      <div class="card-footer" style="border-top:1px solid var(--border);padding-top:20px;margin-top:8px;">
+        <div class="card-price" style="font-size:1.4rem;">$${gym.price}<span>/mo</span></div>
+        <button class="btn btn-sm btn-primary" onclick="showToast('Membership request sent!')">Join This Gym</button>
+      </div>
+    </div>
+  `;
+  modal.classList.add('active');
 }
 
 // ===== Trainer of the Month =====
@@ -452,6 +627,7 @@ if (notmCard) {
 // ===== Filter & Sort =====
 let activeTrainerFilter = 'all';
 let activeNutritionistFilter = 'all';
+let activeGymFilter = 'all';
 
 function setTrainerFilter(btn) {
   document.querySelectorAll('.filter-bar-buttons .filter-btn').forEach(b => b.classList.remove('active'));
@@ -467,13 +643,22 @@ function setNutritionistFilter(btn) {
   filterNutritionists();
 }
 
+function setGymFilter(btn) {
+  document.querySelectorAll('#gymFilterButtons .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeGymFilter = btn.dataset.filter;
+  filterGyms();
+}
+
 function sortData(data, sortBy) {
   const sorted = [...data];
   switch (sortBy) {
     case 'subscribers': sorted.sort((a, b) => b.subscribers - a.subscribers); break;
+    case 'members': sorted.sort((a, b) => b.members - a.members); break;
     case 'rating': sorted.sort((a, b) => b.rating - a.rating); break;
     case 'price': sorted.sort((a, b) => a.price - b.price); break;
     case 'experience': sorted.sort((a, b) => parseInt(b.experience) - parseInt(a.experience)); break;
+    case 'trainers': sorted.sort((a, b) => b.trainers - a.trainers); break;
   }
   return sorted;
 }
@@ -508,6 +693,22 @@ function filterNutritionists() {
   });
   filtered = sortData(filtered, sortBy);
   grid.innerHTML = filtered.map(createNutritionistCard).join('');
+}
+
+function filterGyms() {
+  const searchEl = document.getElementById('gymSearch');
+  const sortEl = document.getElementById('gymSort');
+  const grid = document.getElementById('gymGrid');
+  if (!grid) return;
+  const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  const sortBy = sortEl ? sortEl.value : 'members';
+  let filtered = gyms.filter(g => {
+    const matchesSearch = !search || g.name.toLowerCase().includes(search) || g.location.toLowerCase().includes(search);
+    const matchesCategory = activeGymFilter === 'all' || g.category === activeGymFilter;
+    return matchesSearch && matchesCategory;
+  });
+  filtered = sortData(filtered, sortBy);
+  grid.innerHTML = filtered.map(createGymCard).join('');
 }
 
 // ===== Navbar Scroll =====
