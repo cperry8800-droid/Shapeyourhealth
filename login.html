@@ -126,6 +126,7 @@
         <button class="login-tab active" onclick="switchTab('client')">Client</button>
         <button class="login-tab" onclick="switchTab('trainer')">Trainer</button>
         <button class="login-tab" onclick="switchTab('nutritionist')">Nutritionist</button>
+        <button class="login-tab" onclick="switchTab('gym')">Gym Partner</button>
       </div>
 
       <!-- Client Login -->
@@ -206,6 +207,32 @@
         </p>
       </div>
 
+      <!-- Gym Partner Login -->
+      <div class="login-panel" id="panel-gym">
+        <h2 class="login-heading">Gym partner portal</h2>
+        <p class="login-subtitle">Log in to view check-ins, revenue, and manage your facility</p>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="owner@gymname.com" id="gymEmail">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" placeholder="Enter your password" id="gymPassword">
+        </div>
+
+        <div class="form-options">
+          <label><input type="checkbox" checked> Remember me</label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button class="btn btn-primary btn-block" onclick="demoLogin('gym')">Log In</button>
+
+        <p class="login-footer-text">
+          Want to join the network? <a href="signup-gym.html">Partner with us</a>
+        </p>
+      </div>
+
     </div>
   </div>
 
@@ -221,6 +248,9 @@
       } else if (type === 'nutritionist') {
         tabs[2].classList.add('active');
         document.getElementById('panel-nutritionist').classList.add('active');
+      } else if (type === 'gym') {
+        tabs[3].classList.add('active');
+        document.getElementById('panel-gym').classList.add('active');
       } else {
         tabs[0].classList.add('active');
         document.getElementById('panel-client').classList.add('active');
@@ -228,7 +258,9 @@
     }
 
     function demoLogin(type) {
-      if (type === 'trainer' || type === 'nutritionist') {
+      if (type === 'gym') {
+        window.location.href = 'gym-dashboard.html';
+      } else if (type === 'trainer' || type === 'nutritionist') {
         window.location.href = 'trainer-dashboard.html';
       } else {
         window.location.href = 'clients.html';
