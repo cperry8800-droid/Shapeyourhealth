@@ -572,16 +572,16 @@ img.card-avatar-inline { background: var(--border); }
   .nav-links {
     position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
     left: auto; transform: none;
-    background: #0f0f0f; flex-direction: column; align-items: flex-start; padding: 80px 32px 32px;
+    background: #0f0f0f; flex-direction: column; align-items: center; padding: 80px 32px 32px;
     gap: 20px; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid var(--border);
-    z-index: 1050; overflow-y: auto;
+    z-index: 1050; overflow-y: auto; text-align: center;
   }
   .nav-links.open { right: 0; }
   .nav-actions {
     display: none;
   }
   .nav-toggle { display: block; position: fixed; top: 24px; right: 24px; z-index: 1060; }
-  .nav-dropdown { position: static; flex-direction: column; align-items: flex-start; }
+  .nav-dropdown { position: static; flex-direction: column; align-items: center; }
   .nav-dropdown > a {
     display: flex; align-items: center; gap: 6px;
   }
@@ -595,7 +595,7 @@ img.card-avatar-inline { background: var(--border); }
     position: static; transform: none; opacity: 0; visibility: hidden;
     max-height: 0; overflow: hidden;
     background: transparent; border: none; border-radius: 0; box-shadow: none;
-    padding: 0 0 0 16px; margin-top: 0; min-width: unset;
+    padding: 0; margin-top: 0; min-width: unset; text-align: center;
     transition: max-height 0.3s ease, opacity 0.3s ease;
   }
   .nav-dropdown.open .nav-dropdown-menu {
@@ -604,16 +604,24 @@ img.card-avatar-inline { background: var(--border); }
   .nav-dropdown-menu a {
     padding: 6px 0; font-size: 0.75rem; opacity: 0.5;
   }
+  .container { padding: 0 24px; }
   .hero h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); }
-  .hero { padding: 140px 0 80px; }
-  .section { padding: 60px 0; }
-  .section-header { margin-bottom: 32px; }
+  .hero { padding: 120px 0 48px; }
+  .section { padding: 36px 0; }
+  .section-alt { padding: 36px 0; }
+  .section-header { margin-bottom: 24px; }
   .trainer-detail-header { flex-direction: column; align-items: center; text-align: center; }
   .trainer-detail-stats { justify-content: center; }
   .hero-stats { gap: 24px; }
-  .steps { gap: 32px; }
-  .page-hero { padding: 120px 0 30px; }
+  .steps { gap: 24px; }
+  .page-hero { padding: 100px 0 20px; }
   .page-hero h1 { font-size: clamp(1.4rem, 5vw, 2rem); }
+  .page-hero-sub { margin-bottom: 24px; }
+  .cta-section { padding: 36px 0; }
+  .footer { padding: 36px 0 24px; }
+  .footer-grid { gap: 32px; margin-bottom: 32px; }
+  .testimonials { gap: 24px; }
+  .pricing-grid { gap: 24px; }
 }
 
 /* ===== Page Hero (sub-pages) ===== */

@@ -790,10 +790,12 @@ function handleMobileNav() {
       navLinks.appendChild(navActions);
       navActions.style.display = 'flex';
       navActions.style.flexDirection = 'column';
+      navActions.style.alignItems = 'center';
       navActions.style.gap = '16px';
       navActions.style.marginTop = '20px';
       navActions.style.paddingTop = '20px';
       navActions.style.borderTop = '1px solid var(--border)';
+      navActions.style.width = '100%';
     }
   } else {
     // Move back to nav-container on desktop
@@ -803,10 +805,12 @@ function handleMobileNav() {
       navContainer.insertBefore(navActions, navToggleBtn);
       navActions.style.display = '';
       navActions.style.flexDirection = '';
+      navActions.style.alignItems = '';
       navActions.style.gap = '';
       navActions.style.marginTop = '';
       navActions.style.paddingTop = '';
       navActions.style.borderTop = '';
+      navActions.style.width = '';
     }
   }
 }
