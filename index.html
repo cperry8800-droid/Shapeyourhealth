@@ -414,7 +414,8 @@
         document.getElementById('dissolveOverlay').classList.add('active');
       }, 200);
 
-      // 4. Fade out whoom pulse
+      // 4. Fade out heartbeat
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
       if (audioCtx && ambientNodes) {
         const t = audioCtx.currentTime;
         ambientNodes.master.gain.cancelScheduledValues(t);
@@ -483,196 +484,125 @@
 
 
   <script>
-  // ===== AUDIO ENGINE =====
+  // ===== AUDIO ENGINE — HEARTBEAT PULSE =====
   let audioCtx = null;
   let ambientNodes = null;
-  const AMB_VOL = 1.0;
+  let heartbeatInterval = null;
 
   function ensureAudioCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     return audioCtx;
   }
 
-  function startRumble() {
+  function playBeat(ctx, master, offset) {
+    const now = ctx.currentTime + offset;
+
+    // "Lub" — deep thump
+    const lub = ctx.createOscillator();
+    const lubG = ctx.createGain();
+    lub.type = 'sine';
+    lub.frequency.setValueAtTime(55, now);
+    lub.frequency.exponentialRampToValueAtTime(30, now + 0.15);
+    lubG.gain.setValueAtTime(0, now);
+    lubG.gain.linearRampToValueAtTime(0.7, now + 0.01);
+    lubG.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    lub.connect(lubG); lubG.connect(master);
+    lub.start(now); lub.stop(now + 0.3);
+
+    // Lub body — mid-range knock audible on mobile
+    const lubMid = ctx.createOscillator();
+    const lubMidG = ctx.createGain();
+    lubMid.type = 'sine';
+    lubMid.frequency.setValueAtTime(120, now);
+    lubMid.frequency.exponentialRampToValueAtTime(60, now + 0.08);
+    lubMidG.gain.setValueAtTime(0, now);
+    lubMidG.gain.linearRampToValueAtTime(0.35, now + 0.008);
+    lubMidG.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    lubMid.connect(lubMidG); lubMidG.connect(master);
+    lubMid.start(now); lubMid.stop(now + 0.15);
+
+    // "Dub" — slightly higher, shorter follow-up
+    const dubTime = now + 0.18;
+    const dub = ctx.createOscillator();
+    const dubG = ctx.createGain();
+    dub.type = 'sine';
+    dub.frequency.setValueAtTime(45, dubTime);
+    dub.frequency.exponentialRampToValueAtTime(25, dubTime + 0.12);
+    dubG.gain.setValueAtTime(0, dubTime);
+    dubG.gain.linearRampToValueAtTime(0.45, dubTime + 0.01);
+    dubG.gain.exponentialRampToValueAtTime(0.001, dubTime + 0.18);
+    dub.connect(dubG); dubG.connect(master);
+    dub.start(dubTime); dub.stop(dubTime + 0.25);
+
+    // Dub body — mid knock
+    const dubMid = ctx.createOscillator();
+    const dubMidG = ctx.createGain();
+    dubMid.type = 'sine';
+    dubMid.frequency.setValueAtTime(100, dubTime);
+    dubMid.frequency.exponentialRampToValueAtTime(50, dubTime + 0.06);
+    dubMidG.gain.setValueAtTime(0, dubTime);
+    dubMidG.gain.linearRampToValueAtTime(0.2, dubTime + 0.008);
+    dubMidG.gain.exponentialRampToValueAtTime(0.001, dubTime + 0.1);
+    dubMid.connect(dubMidG); dubMidG.connect(master);
+    dubMid.start(dubTime); dubMid.stop(dubTime + 0.15);
+
+    // Subtle filtered noise thump — adds weight
+    const noiseLen = ctx.sampleRate * 0.15;
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
+    const nd = noiseBuf.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuf;
+    const noiseF = ctx.createBiquadFilter();
+    noiseF.type = 'lowpass'; noiseF.frequency.value = 80; noiseF.Q.value = 5;
+    const noiseG = ctx.createGain();
+    noiseG.gain.setValueAtTime(0, now);
+    noiseG.gain.linearRampToValueAtTime(0.15, now + 0.005);
+    noiseG.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    noise.connect(noiseF); noiseF.connect(noiseG); noiseG.connect(master);
+    noise.start(now); noise.stop(now + 0.15);
+  }
+
+  function startHeartbeat() {
     const ctx = ensureAudioCtx();
     const master = ctx.createGain();
     master.gain.value = 0;
 
     const comp = ctx.createDynamicsCompressor();
-    comp.threshold.value = -12; comp.knee.value = 10;
-    comp.ratio.value = 4; comp.attack.value = 0.05; comp.release.value = 0.25;
+    comp.threshold.value = -8; comp.knee.value = 6;
+    comp.ratio.value = 6; comp.attack.value = 0.003; comp.release.value = 0.15;
     master.connect(comp); comp.connect(ctx.destination);
 
-    // LAYER 1: DEEP BASS DRONE
-    const drone1 = ctx.createOscillator();
-    const drone1G = ctx.createGain();
-    drone1.type = 'sine'; drone1.frequency.value = 28; drone1G.gain.value = 0.9;
-    drone1.connect(drone1G); drone1G.connect(master); drone1.start();
+    // Subtle ambient bed — very quiet filtered noise for atmosphere between beats
+    const bedLen = ctx.sampleRate * 4;
+    const bedBuf = ctx.createBuffer(1, bedLen, ctx.sampleRate);
+    const bedData = bedBuf.getChannelData(0);
+    for (let i = 0; i < bedLen; i++) bedData[i] = Math.random() * 2 - 1;
+    const bed = ctx.createBufferSource();
+    bed.buffer = bedBuf; bed.loop = true;
+    const bedF = ctx.createBiquadFilter();
+    bedF.type = 'lowpass'; bedF.frequency.value = 150; bedF.Q.value = 2;
+    const bedG = ctx.createGain(); bedG.gain.value = 0.04;
+    bed.connect(bedF); bedF.connect(bedG); bedG.connect(master); bed.start();
 
-    const drone2 = ctx.createOscillator();
-    const drone2G = ctx.createGain();
-    drone2.type = 'sawtooth'; drone2.frequency.value = 42; drone2G.gain.value = 0.5;
-    const drone2F = ctx.createBiquadFilter();
-    drone2F.type = 'lowpass'; drone2F.frequency.value = 90; drone2F.Q.value = 6;
-    drone2.connect(drone2F); drone2F.connect(drone2G); drone2G.connect(master); drone2.start();
-
-    const drone3 = ctx.createOscillator();
-    const drone3G = ctx.createGain();
-    drone3.type = 'square'; drone3.frequency.value = 56; drone3G.gain.value = 0.3;
-    const drone3F = ctx.createBiquadFilter();
-    drone3F.type = 'lowpass'; drone3F.frequency.value = 70; drone3F.Q.value = 10;
-    drone3.connect(drone3F); drone3F.connect(drone3G); drone3G.connect(master); drone3.start();
-
-    // LAYER 2: SCI-FI ENGINE
-    const eng1 = ctx.createOscillator();
-    const eng1G = ctx.createGain();
-    eng1.type = 'sawtooth'; eng1.frequency.value = 36; eng1G.gain.value = 0.35;
-    const eng1F = ctx.createBiquadFilter();
-    eng1F.type = 'lowpass'; eng1F.frequency.value = 140; eng1F.Q.value = 12;
-    eng1.connect(eng1F); eng1F.connect(eng1G); eng1G.connect(master); eng1.start();
-
-    const eng2 = ctx.createOscillator();
-    const eng2G = ctx.createGain();
-    eng2.type = 'sawtooth'; eng2.frequency.value = 36.8; eng2G.gain.value = 0.35;
-    const eng2F = ctx.createBiquadFilter();
-    eng2F.type = 'lowpass'; eng2F.frequency.value = 140; eng2F.Q.value = 12;
-    eng2.connect(eng2F); eng2F.connect(eng2G); eng2G.connect(master); eng2.start();
-
-    const reactor = ctx.createOscillator();
-    const reactorG = ctx.createGain();
-    reactor.type = 'sawtooth'; reactor.frequency.value = 150; reactorG.gain.value = 0.12;
-    const reactorF = ctx.createBiquadFilter();
-    reactorF.type = 'bandpass'; reactorF.frequency.value = 150; reactorF.Q.value = 20;
-    reactor.connect(reactorF); reactorF.connect(reactorG); reactorG.connect(master); reactor.start();
-
-    const scifi = ctx.createOscillator();
-    const scifiG = ctx.createGain();
-    scifi.type = 'sine'; scifi.frequency.value = 320; scifiG.gain.value = 0.035;
-    const scifiF = ctx.createBiquadFilter();
-    scifiF.type = 'bandpass'; scifiF.frequency.value = 320; scifiF.Q.value = 30;
-    scifi.connect(scifiF); scifiF.connect(scifiG); scifiG.connect(master); scifi.start();
-
-    // LAYER: MID-RANGE (audible on mobile speakers)
-    // Warm mid hum — sits around 220Hz where phone speakers start responding
-    const midHum = ctx.createOscillator();
-    const midHumG = ctx.createGain();
-    midHum.type = 'sine'; midHum.frequency.value = 220; midHumG.gain.value = 0.15;
-    const midHumF = ctx.createBiquadFilter();
-    midHumF.type = 'bandpass'; midHumF.frequency.value = 220; midHumF.Q.value = 8;
-    midHum.connect(midHumF); midHumF.connect(midHumG); midHumG.connect(master); midHum.start();
-
-    // Atmospheric pad — filtered sawtooth in the 300-500Hz range
-    const pad1 = ctx.createOscillator();
-    const pad1G = ctx.createGain();
-    pad1.type = 'sawtooth'; pad1.frequency.value = 330; pad1G.gain.value = 0.06;
-    const pad1F = ctx.createBiquadFilter();
-    pad1F.type = 'bandpass'; pad1F.frequency.value = 380; pad1F.Q.value = 4;
-    pad1.connect(pad1F); pad1F.connect(pad1G); pad1G.connect(master); pad1.start();
-
-    const pad2 = ctx.createOscillator();
-    const pad2G = ctx.createGain();
-    pad2.type = 'sawtooth'; pad2.frequency.value = 331.2; pad2G.gain.value = 0.06;
-    const pad2F = ctx.createBiquadFilter();
-    pad2F.type = 'bandpass'; pad2F.frequency.value = 380; pad2F.Q.value = 4;
-    pad2.connect(pad2F); pad2F.connect(pad2G); pad2G.connect(master); pad2.start();
-
-    // Higher presence tone — gives body on tiny speakers
-    const presence = ctx.createOscillator();
-    const presenceG = ctx.createGain();
-    presence.type = 'sine'; presence.frequency.value = 480; presenceG.gain.value = 0.025;
-    const presenceF = ctx.createBiquadFilter();
-    presenceF.type = 'bandpass'; presenceF.frequency.value = 480; presenceF.Q.value = 15;
-    presence.connect(presenceF); presenceF.connect(presenceG); presenceG.connect(master); presence.start();
-
-    // Filtered noise — air/hiss texture audible on any speaker
-    const airNoiseLen = ctx.sampleRate * 4;
-    const airNoiseBuf = ctx.createBuffer(1, airNoiseLen, ctx.sampleRate);
-    const airData = airNoiseBuf.getChannelData(0);
-    for (let i = 0; i < airNoiseLen; i++) airData[i] = Math.random() * 2 - 1;
-    const airNoise = ctx.createBufferSource();
-    airNoise.buffer = airNoiseBuf; airNoise.loop = true;
-    const airNoiseF = ctx.createBiquadFilter();
-    airNoiseF.type = 'bandpass'; airNoiseF.frequency.value = 600; airNoiseF.Q.value = 1.5;
-    const airNoiseG = ctx.createGain(); airNoiseG.gain.value = 0.08;
-    airNoise.connect(airNoiseF); airNoiseF.connect(airNoiseG); airNoiseG.connect(master); airNoise.start();
-
-    // LAYER 3: LFOs
-    const driftLfo = ctx.createOscillator();
-    const driftLfoG = ctx.createGain();
-    driftLfo.type = 'sine'; driftLfo.frequency.value = 0.03; driftLfoG.gain.value = 4;
-    driftLfo.connect(driftLfoG);
-    driftLfoG.connect(drone1.frequency); driftLfoG.connect(drone2.frequency);
-    driftLfo.start();
-
-    const sweepLfo = ctx.createOscillator();
-    const sweepLfoG = ctx.createGain();
-    sweepLfo.type = 'sine'; sweepLfo.frequency.value = 0.07; sweepLfoG.gain.value = 30;
-    sweepLfo.connect(sweepLfoG);
-    sweepLfoG.connect(eng1F.frequency); sweepLfoG.connect(eng2F.frequency);
-    sweepLfo.start();
-
-    // LFO for mid-range layers — slow drift on the pad filter
-    const midLfo = ctx.createOscillator();
-    const midLfoG = ctx.createGain();
-    midLfo.type = 'sine'; midLfo.frequency.value = 0.05; midLfoG.gain.value = 40;
-    midLfo.connect(midLfoG);
-    midLfoG.connect(pad1F.frequency); midLfoG.connect(pad2F.frequency);
-    midLfo.start();
-
-    // Gentle volume swell on mid hum
-    const midVolLfo = ctx.createOscillator();
-    const midVolLfoG = ctx.createGain();
-    midVolLfo.type = 'sine'; midVolLfo.frequency.value = 0.12; midVolLfoG.gain.value = 0.04;
-    midVolLfo.connect(midVolLfoG); midVolLfoG.connect(midHumG.gain); midVolLfo.start();
-
-    const throbLfo = ctx.createOscillator();
-    const throbLfoG = ctx.createGain();
-    throbLfo.type = 'sine'; throbLfo.frequency.value = 0.25; throbLfoG.gain.value = 0.1;
-    throbLfo.connect(throbLfoG); throbLfoG.connect(master.gain); throbLfo.start();
-
-    const warble = ctx.createOscillator();
-    const warbleG = ctx.createGain();
-    warble.type = 'sine'; warble.frequency.value = 0.5; warbleG.gain.value = 5;
-    warble.connect(warbleG); warbleG.connect(reactor.frequency); warble.start();
-
-    // LAYER 4: NOISE
-    const noiseLen = ctx.sampleRate * 4;
-    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
-    const nd = noiseBuf.getChannelData(0);
-    for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
-
-    const rumble = ctx.createBufferSource();
-    rumble.buffer = noiseBuf; rumble.loop = true;
-    const rumbleF = ctx.createBiquadFilter();
-    rumbleF.type = 'lowpass'; rumbleF.frequency.value = 100; rumbleF.Q.value = 3;
-    const rumbleG = ctx.createGain(); rumbleG.gain.value = 0.4;
-    rumble.connect(rumbleF); rumbleF.connect(rumbleG); rumbleG.connect(master); rumble.start();
-
-    const engineNoise = ctx.createBufferSource();
-    engineNoise.buffer = noiseBuf; engineNoise.loop = true;
-    const engineNoiseF = ctx.createBiquadFilter();
-    engineNoiseF.type = 'bandpass'; engineNoiseF.frequency.value = 250; engineNoiseF.Q.value = 2;
-    const engineNoiseG = ctx.createGain(); engineNoiseG.gain.value = 0.1;
-    engineNoise.connect(engineNoiseF); engineNoiseF.connect(engineNoiseG); engineNoiseG.connect(master); engineNoise.start();
-
-    const rumbleLfo = ctx.createOscillator();
-    const rumbleLfoG = ctx.createGain();
-    rumbleLfo.type = 'sine'; rumbleLfo.frequency.value = 0.1; rumbleLfoG.gain.value = 0.1;
-    rumbleLfo.connect(rumbleLfoG); rumbleLfoG.connect(rumbleG.gain); rumbleLfo.start();
-
-    // Fade in over 3s
+    // Fade in
     master.gain.setValueAtTime(0, ctx.currentTime);
-    master.gain.linearRampToValueAtTime(AMB_VOL, ctx.currentTime + 3);
+    master.gain.linearRampToValueAtTime(1.0, ctx.currentTime + 1.5);
+
+    // Start heartbeat loop — ~72 BPM (833ms between beats)
+    playBeat(ctx, master, 0.1);
+    heartbeatInterval = setInterval(() => {
+      playBeat(ctx, master, 0);
+    }, 833);
 
     ambientNodes = { master };
   }
 
-  // Start deep rumble on very first interaction — fires once only
+  // Start heartbeat on first interaction
   let audioStarted = false;
   const AUDIO_EVENTS = ['click','touchstart','touchend','mousedown','keydown','pointerdown'];
 
   function unlockAndPlay(ctx) {
-    // iOS/Safari requires playing a silent buffer to fully unlock audio
     try {
       const buf = ctx.createBuffer(1, 1, 22050);
       const src = ctx.createBufferSource();
@@ -680,8 +610,7 @@
       src.connect(ctx.destination);
       src.start(0);
     } catch(e) {}
-    // Now start the real sound
-    try { startRumble(); } catch(e) { console.warn('audio error:', e); }
+    try { startHeartbeat(); } catch(e) { console.warn('audio error:', e); }
   }
 
   function initAudio() {
@@ -698,7 +627,6 @@
     } catch(e) { console.warn('audio init error:', e); }
   }
 
-  // Use capture phase, non-passive for touchstart so we can unlock audio in the gesture callstack
   AUDIO_EVENTS.forEach(evt => {
     const opts = evt === 'touchstart' ? { capture: true, passive: false } : { capture: true, passive: true };
     window.addEventListener(evt, initAudio, opts);
