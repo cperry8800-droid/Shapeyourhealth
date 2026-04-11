@@ -362,13 +362,13 @@
         // Variable speed — starts fast, slows in middle, accelerates at end
         let increment;
         if (progress < 30) {
-          increment = Math.random() * 2 + 1.5;
-        } else if (progress < 70) {
           increment = Math.random() * 1.5 + 1;
+        } else if (progress < 70) {
+          increment = Math.random() * 1.2 + 0.8;
         } else if (progress < 90) {
-          increment = Math.random() * 1.5 + 0.8;
+          increment = Math.random() * 1 + 0.6;
         } else {
-          increment = Math.random() * 2 + 1.5;
+          increment = Math.random() * 1.5 + 1;
         }
 
         progress = Math.min(progress + increment, 100);
@@ -378,8 +378,8 @@
 
         if (rounded < 100) {
           // Variable delay for organic feel
-          const delay = progress < 30 ? 70 : progress < 70 ? 110 : progress < 90 ? 90 : 50;
-          setTimeout(tick, delay + Math.random() * 60);
+          const delay = progress < 30 ? 90 : progress < 70 ? 140 : progress < 90 ? 120 : 70;
+          setTimeout(tick, delay + Math.random() * 80);
         } else {
           // Loading complete — transition out
           setTimeout(() => {
@@ -496,39 +496,39 @@
     const ctx = ensureAudioCtx();
     const {
       intensity = 1.0,
-      duration = 6.5,
+      duration = 9.5,
       pitchRise = 1.0,
       hoverAmount = 1.0,
       brightness = 1.0
     } = opts;
 
     const now = ctx.currentTime;
-    const onsetEnd = 0.6;
-    const rampEnd = 2.8;
-    const peakEnd = 5.0;
+    const onsetEnd = 0.8;
+    const rampEnd = 3.5;
+    const peakEnd = 7.0;
     const tailEnd = duration;
 
     // Master output chain
     const master = ctx.createGain();
     master.gain.value = 0;
 
-    // Compressor for glue
+    // Compressor
     const comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -10; comp.knee.value = 8;
     comp.ratio.value = 4; comp.attack.value = 0.01; comp.release.value = 0.2;
 
-    // Warm low-pass on master for overall warmth
+    // Master warmth filter
     const masterLP = ctx.createBiquadFilter();
     masterLP.type = 'lowpass';
-    masterLP.frequency.value = 2000 + (brightness * 4000);
+    masterLP.frequency.value = 2500 + (brightness * 4500);
     masterLP.Q.value = 0.5;
 
-    // Mild saturation via waveshaper
+    // Saturation
     const saturator = ctx.createWaveShaper();
     const curve = new Float32Array(256);
     for (let i = 0; i < 256; i++) {
       const x = (i / 128) - 1;
-      curve[i] = Math.tanh(x * 1.4);
+      curve[i] = Math.tanh(x * 1.6);
     }
     saturator.curve = curve;
     saturator.oversample = '2x';
@@ -542,128 +542,126 @@
     const sub = ctx.createOscillator();
     const subG = ctx.createGain();
     sub.type = 'sine';
-    // Start at 40Hz, rise to ~60Hz
-    sub.frequency.setValueAtTime(40, now);
-    sub.frequency.linearRampToValueAtTime(40, now + onsetEnd);
+    sub.frequency.setValueAtTime(35, now);
+    sub.frequency.linearRampToValueAtTime(38, now + onsetEnd);
     sub.frequency.linearRampToValueAtTime(50 * pitchRise, now + rampEnd);
-    sub.frequency.linearRampToValueAtTime(55 * pitchRise, now + peakEnd);
+    sub.frequency.linearRampToValueAtTime(58 * pitchRise, now + peakEnd);
     sub.frequency.linearRampToValueAtTime(52 * pitchRise, now + tailEnd);
-    // Envelope
     subG.gain.setValueAtTime(0, now);
-    subG.gain.linearRampToValueAtTime(0.15 * intensity, now + onsetEnd);
-    subG.gain.linearRampToValueAtTime(0.6 * intensity, now + rampEnd);
-    subG.gain.linearRampToValueAtTime(0.55 * intensity, now + peakEnd);
+    subG.gain.linearRampToValueAtTime(0.12 * intensity, now + onsetEnd);
+    subG.gain.linearRampToValueAtTime(0.55 * intensity, now + rampEnd);
+    subG.gain.linearRampToValueAtTime(0.5 * intensity, now + peakEnd);
     subG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
     sub.connect(subG); subG.connect(master);
-    sub.start(now); sub.stop(now + tailEnd + 0.1);
+    sub.start(now); sub.stop(now + tailEnd + 0.2);
 
-    // Sub harmonic for warmth
+    // Sub harmonic
     const sub2 = ctx.createOscillator();
     const sub2G = ctx.createGain();
     sub2.type = 'triangle';
-    sub2.frequency.setValueAtTime(60, now);
+    sub2.frequency.setValueAtTime(55, now);
     sub2.frequency.linearRampToValueAtTime(70 * pitchRise, now + rampEnd);
-    sub2.frequency.linearRampToValueAtTime(75 * pitchRise, now + peakEnd);
+    sub2.frequency.linearRampToValueAtTime(78 * pitchRise, now + peakEnd);
     sub2G.gain.setValueAtTime(0, now);
-    sub2G.gain.linearRampToValueAtTime(0.08 * intensity, now + onsetEnd);
-    sub2G.gain.linearRampToValueAtTime(0.3 * intensity, now + rampEnd);
-    sub2G.gain.linearRampToValueAtTime(0.25 * intensity, now + peakEnd);
+    sub2G.gain.linearRampToValueAtTime(0.06 * intensity, now + onsetEnd);
+    sub2G.gain.linearRampToValueAtTime(0.28 * intensity, now + rampEnd);
+    sub2G.gain.linearRampToValueAtTime(0.22 * intensity, now + peakEnd);
     sub2G.gain.linearRampToValueAtTime(0.001, now + tailEnd);
     sub2.connect(sub2G); sub2G.connect(master);
-    sub2.start(now); sub2.stop(now + tailEnd + 0.1);
+    sub2.start(now); sub2.stop(now + tailEnd + 0.2);
 
     // ========== LAYER 2: ENGINE BODY ==========
-    // Detuned saw pair, low-passed
+    // Detuned saw trio for wider, richer engine
     const eng1 = ctx.createOscillator();
     const eng2 = ctx.createOscillator();
+    const eng3 = ctx.createOscillator();
     const engG = ctx.createGain();
     const engLP = ctx.createBiquadFilter();
-    eng1.type = 'sawtooth'; eng2.type = 'sawtooth';
-    // Slight detune for chorus/phasing
-    eng1.frequency.setValueAtTime(80, now);
-    eng1.frequency.linearRampToValueAtTime(110 * pitchRise, now + rampEnd);
-    eng1.frequency.linearRampToValueAtTime(120 * pitchRise, now + peakEnd);
-    eng1.frequency.linearRampToValueAtTime(115 * pitchRise, now + tailEnd);
-    eng2.frequency.setValueAtTime(81.5, now);
-    eng2.frequency.linearRampToValueAtTime(111.8 * pitchRise, now + rampEnd);
-    eng2.frequency.linearRampToValueAtTime(121.5 * pitchRise, now + peakEnd);
-    eng2.frequency.linearRampToValueAtTime(116.2 * pitchRise, now + tailEnd);
-    // Low-pass filter — opens up during ramp
+    eng1.type = 'sawtooth'; eng2.type = 'sawtooth'; eng3.type = 'sawtooth';
+    eng1.frequency.setValueAtTime(75, now);
+    eng1.frequency.linearRampToValueAtTime(105 * pitchRise, now + rampEnd);
+    eng1.frequency.linearRampToValueAtTime(118 * pitchRise, now + peakEnd);
+    eng1.frequency.linearRampToValueAtTime(110 * pitchRise, now + tailEnd);
+    eng2.frequency.setValueAtTime(76.2, now);
+    eng2.frequency.linearRampToValueAtTime(106.5 * pitchRise, now + rampEnd);
+    eng2.frequency.linearRampToValueAtTime(119.3 * pitchRise, now + peakEnd);
+    eng2.frequency.linearRampToValueAtTime(111.5 * pitchRise, now + tailEnd);
+    eng3.frequency.setValueAtTime(74.3, now);
+    eng3.frequency.linearRampToValueAtTime(104.2 * pitchRise, now + rampEnd);
+    eng3.frequency.linearRampToValueAtTime(117.1 * pitchRise, now + peakEnd);
+    eng3.frequency.linearRampToValueAtTime(109.2 * pitchRise, now + tailEnd);
     engLP.type = 'lowpass';
-    engLP.frequency.setValueAtTime(100, now);
-    engLP.frequency.linearRampToValueAtTime(120, now + onsetEnd);
-    engLP.frequency.linearRampToValueAtTime(280, now + rampEnd);
-    engLP.frequency.linearRampToValueAtTime(320, now + peakEnd);
+    engLP.frequency.setValueAtTime(90, now);
+    engLP.frequency.linearRampToValueAtTime(110, now + onsetEnd);
+    engLP.frequency.linearRampToValueAtTime(300, now + rampEnd);
+    engLP.frequency.linearRampToValueAtTime(380, now + peakEnd);
     engLP.frequency.linearRampToValueAtTime(200, now + tailEnd);
-    engLP.Q.value = 4;
-    // Envelope
+    engLP.Q.value = 5;
     engG.gain.setValueAtTime(0, now);
-    engG.gain.linearRampToValueAtTime(0.05 * intensity, now + onsetEnd);
-    engG.gain.linearRampToValueAtTime(0.35 * intensity, now + rampEnd);
-    engG.gain.linearRampToValueAtTime(0.3 * intensity, now + peakEnd);
+    engG.gain.linearRampToValueAtTime(0.04 * intensity, now + onsetEnd);
+    engG.gain.linearRampToValueAtTime(0.3 * intensity, now + rampEnd);
+    engG.gain.linearRampToValueAtTime(0.28 * intensity, now + peakEnd);
     engG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
-    eng1.connect(engLP); eng2.connect(engLP);
+    eng1.connect(engLP); eng2.connect(engLP); eng3.connect(engLP);
     engLP.connect(engG); engG.connect(master);
-    eng1.start(now); eng2.start(now);
-    eng1.stop(now + tailEnd + 0.1); eng2.stop(now + tailEnd + 0.1);
+    eng1.start(now); eng2.start(now); eng3.start(now);
+    eng1.stop(now + tailEnd + 0.2); eng2.stop(now + tailEnd + 0.2); eng3.stop(now + tailEnd + 0.2);
 
-    // Mid resonant layer — audible on mobile speakers
+    // Mid resonant layer
     const mid = ctx.createOscillator();
     const midG = ctx.createGain();
     const midBP = ctx.createBiquadFilter();
     mid.type = 'sawtooth';
-    mid.frequency.setValueAtTime(150, now);
-    mid.frequency.linearRampToValueAtTime(180 * pitchRise, now + rampEnd);
+    mid.frequency.setValueAtTime(140, now);
+    mid.frequency.linearRampToValueAtTime(175 * pitchRise, now + rampEnd);
     mid.frequency.linearRampToValueAtTime(200 * pitchRise, now + peakEnd);
     midBP.type = 'bandpass'; midBP.frequency.value = 220; midBP.Q.value = 3;
     midG.gain.setValueAtTime(0, now);
-    midG.gain.linearRampToValueAtTime(0.02 * intensity, now + onsetEnd);
-    midG.gain.linearRampToValueAtTime(0.12 * intensity, now + rampEnd);
-    midG.gain.linearRampToValueAtTime(0.1 * intensity, now + peakEnd);
+    midG.gain.linearRampToValueAtTime(0.015 * intensity, now + onsetEnd);
+    midG.gain.linearRampToValueAtTime(0.1 * intensity, now + rampEnd);
+    midG.gain.linearRampToValueAtTime(0.09 * intensity, now + peakEnd);
     midG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
     mid.connect(midBP); midBP.connect(midG); midG.connect(master);
-    mid.start(now); mid.stop(now + tailEnd + 0.1);
+    mid.start(now); mid.stop(now + tailEnd + 0.2);
 
     // ========== LAYER 3: HOVER MODULATION ==========
-    // Slow LFO on engine filter = hovering motion
     const hoverLFO = ctx.createOscillator();
     const hoverLFOG = ctx.createGain();
     hoverLFO.type = 'sine';
-    hoverLFO.frequency.value = 1.8;
+    hoverLFO.frequency.value = 1.4;
     hoverLFOG.gain.setValueAtTime(0, now);
-    hoverLFOG.gain.linearRampToValueAtTime(25 * hoverAmount, now + rampEnd);
-    hoverLFOG.gain.linearRampToValueAtTime(35 * hoverAmount, now + peakEnd);
+    hoverLFOG.gain.linearRampToValueAtTime(30 * hoverAmount, now + rampEnd);
+    hoverLFOG.gain.linearRampToValueAtTime(45 * hoverAmount, now + peakEnd);
     hoverLFOG.gain.linearRampToValueAtTime(15 * hoverAmount, now + tailEnd);
     hoverLFO.connect(hoverLFOG);
     hoverLFOG.connect(engLP.frequency);
-    hoverLFO.start(now); hoverLFO.stop(now + tailEnd + 0.1);
+    hoverLFO.start(now); hoverLFO.stop(now + tailEnd + 0.2);
 
-    // Tremolo on engine gain — subtle amplitude wobble
+    // Tremolo
     const tremLFO = ctx.createOscillator();
     const tremLFOG = ctx.createGain();
     tremLFO.type = 'sine';
-    tremLFO.frequency.value = 2.5;
+    tremLFO.frequency.value = 2.0;
     tremLFOG.gain.setValueAtTime(0, now);
-    tremLFOG.gain.linearRampToValueAtTime(0.03 * hoverAmount, now + rampEnd);
-    tremLFOG.gain.linearRampToValueAtTime(0.05 * hoverAmount, now + peakEnd);
+    tremLFOG.gain.linearRampToValueAtTime(0.025 * hoverAmount, now + rampEnd);
+    tremLFOG.gain.linearRampToValueAtTime(0.04 * hoverAmount, now + peakEnd);
     tremLFO.connect(tremLFOG);
     tremLFOG.connect(engG.gain);
-    tremLFO.start(now); tremLFO.stop(now + tailEnd + 0.1);
+    tremLFO.start(now); tremLFO.stop(now + tailEnd + 0.2);
 
-    // Sub frequency drift
+    // Sub drift
     const driftLFO = ctx.createOscillator();
     const driftLFOG = ctx.createGain();
     driftLFO.type = 'sine';
-    driftLFO.frequency.value = 0.4;
+    driftLFO.frequency.value = 0.3;
     driftLFOG.gain.setValueAtTime(0, now);
     driftLFOG.gain.linearRampToValueAtTime(3 * hoverAmount, now + rampEnd);
-    driftLFOG.gain.linearRampToValueAtTime(4 * hoverAmount, now + peakEnd);
+    driftLFOG.gain.linearRampToValueAtTime(5 * hoverAmount, now + peakEnd);
     driftLFO.connect(driftLFOG);
     driftLFOG.connect(sub.frequency);
-    driftLFO.start(now); driftLFO.stop(now + tailEnd + 0.1);
+    driftLFO.start(now); driftLFO.stop(now + tailEnd + 0.2);
 
     // ========== LAYER 4: HIGH ELECTRIC SHEEN ==========
-    // Filtered noise — air pressure / tech atmosphere
     const noiseLen = ctx.sampleRate * Math.ceil(tailEnd + 1);
     const noiseBuf = ctx.createBuffer(2, noiseLen, ctx.sampleRate);
     for (let ch = 0; ch < 2; ch++) {
@@ -676,53 +674,133 @@
     sheen.buffer = noiseBuf;
     const sheenBP = ctx.createBiquadFilter();
     sheenBP.type = 'bandpass';
-    sheenBP.frequency.setValueAtTime(2000, now);
+    sheenBP.frequency.setValueAtTime(1800, now);
     sheenBP.frequency.linearRampToValueAtTime(3500 * brightness, now + rampEnd);
-    sheenBP.frequency.linearRampToValueAtTime(4000 * brightness, now + peakEnd);
+    sheenBP.frequency.linearRampToValueAtTime(4500 * brightness, now + peakEnd);
     sheenBP.frequency.linearRampToValueAtTime(2500 * brightness, now + tailEnd);
-    sheenBP.Q.value = 1.5;
+    sheenBP.Q.value = 1.2;
     const sheenG = ctx.createGain();
     sheenG.gain.setValueAtTime(0, now);
-    sheenG.gain.linearRampToValueAtTime(0.005 * intensity * brightness, now + onsetEnd);
-    sheenG.gain.linearRampToValueAtTime(0.025 * intensity * brightness, now + rampEnd);
+    sheenG.gain.linearRampToValueAtTime(0.004 * intensity * brightness, now + onsetEnd);
+    sheenG.gain.linearRampToValueAtTime(0.022 * intensity * brightness, now + rampEnd);
     sheenG.gain.linearRampToValueAtTime(0.03 * intensity * brightness, now + peakEnd);
     sheenG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
     sheen.connect(sheenBP); sheenBP.connect(sheenG); sheenG.connect(master);
-    sheen.start(now); sheen.stop(now + tailEnd + 0.1);
+    sheen.start(now); sheen.stop(now + tailEnd + 0.2);
 
-    // Low air pressure rumble noise
+    // Air pressure rumble
     const airNoise = ctx.createBufferSource();
     airNoise.buffer = noiseBuf;
     const airLP = ctx.createBiquadFilter();
     airLP.type = 'lowpass'; airLP.frequency.value = 120; airLP.Q.value = 2;
     const airG = ctx.createGain();
     airG.gain.setValueAtTime(0, now);
-    airG.gain.linearRampToValueAtTime(0.06 * intensity, now + onsetEnd);
-    airG.gain.linearRampToValueAtTime(0.18 * intensity, now + rampEnd);
-    airG.gain.linearRampToValueAtTime(0.15 * intensity, now + peakEnd);
+    airG.gain.linearRampToValueAtTime(0.05 * intensity, now + onsetEnd);
+    airG.gain.linearRampToValueAtTime(0.16 * intensity, now + rampEnd);
+    airG.gain.linearRampToValueAtTime(0.14 * intensity, now + peakEnd);
     airG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
     airNoise.connect(airLP); airLP.connect(airG); airG.connect(master);
-    airNoise.start(now); airNoise.stop(now + tailEnd + 0.1);
+    airNoise.start(now); airNoise.stop(now + tailEnd + 0.2);
 
-    // Faint high electric whine — very subtle sine
+    // ========== LAYER 5: FUTURISTIC ELEMENTS ==========
+
+    // Resonant sweep — rising bandpass sweep for sci-fi character
+    const sweepNoise = ctx.createBufferSource();
+    sweepNoise.buffer = noiseBuf;
+    const sweepBP = ctx.createBiquadFilter();
+    sweepBP.type = 'bandpass';
+    sweepBP.frequency.setValueAtTime(200, now);
+    sweepBP.frequency.exponentialRampToValueAtTime(800, now + rampEnd);
+    sweepBP.frequency.exponentialRampToValueAtTime(1800, now + peakEnd);
+    sweepBP.frequency.exponentialRampToValueAtTime(600, now + tailEnd);
+    sweepBP.Q.value = 12;
+    const sweepG = ctx.createGain();
+    sweepG.gain.setValueAtTime(0, now);
+    sweepG.gain.linearRampToValueAtTime(0.01 * intensity, now + onsetEnd);
+    sweepG.gain.linearRampToValueAtTime(0.06 * intensity * brightness, now + rampEnd);
+    sweepG.gain.linearRampToValueAtTime(0.05 * intensity * brightness, now + peakEnd);
+    sweepG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
+    sweepNoise.connect(sweepBP); sweepBP.connect(sweepG); sweepG.connect(master);
+    sweepNoise.start(now); sweepNoise.stop(now + tailEnd + 0.2);
+
+    // Primary electric whine — slowly rising
     const whine = ctx.createOscillator();
     const whineG = ctx.createGain();
     whine.type = 'sine';
-    whine.frequency.setValueAtTime(3200, now);
-    whine.frequency.linearRampToValueAtTime(4800 * brightness, now + rampEnd);
-    whine.frequency.linearRampToValueAtTime(5200 * brightness, now + peakEnd);
-    whine.frequency.linearRampToValueAtTime(4500 * brightness, now + tailEnd);
+    whine.frequency.setValueAtTime(2800, now);
+    whine.frequency.linearRampToValueAtTime(3200, now + onsetEnd);
+    whine.frequency.linearRampToValueAtTime(4500 * brightness, now + rampEnd);
+    whine.frequency.linearRampToValueAtTime(5800 * brightness, now + peakEnd);
+    whine.frequency.linearRampToValueAtTime(4200 * brightness, now + tailEnd);
     whineG.gain.setValueAtTime(0, now);
-    whineG.gain.linearRampToValueAtTime(0.003 * intensity * brightness, now + rampEnd);
-    whineG.gain.linearRampToValueAtTime(0.006 * intensity * brightness, now + peakEnd);
+    whineG.gain.linearRampToValueAtTime(0.001 * intensity * brightness, now + onsetEnd);
+    whineG.gain.linearRampToValueAtTime(0.005 * intensity * brightness, now + rampEnd);
+    whineG.gain.linearRampToValueAtTime(0.008 * intensity * brightness, now + peakEnd);
     whineG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
     whine.connect(whineG); whineG.connect(master);
-    whine.start(now); whine.stop(now + tailEnd + 0.1);
+    whine.start(now); whine.stop(now + tailEnd + 0.2);
+
+    // Secondary whine — detuned for shimmer
+    const whine2 = ctx.createOscillator();
+    const whine2G = ctx.createGain();
+    whine2.type = 'sine';
+    whine2.frequency.setValueAtTime(2830, now);
+    whine2.frequency.linearRampToValueAtTime(3260, now + onsetEnd);
+    whine2.frequency.linearRampToValueAtTime(4580 * brightness, now + rampEnd);
+    whine2.frequency.linearRampToValueAtTime(5900 * brightness, now + peakEnd);
+    whine2.frequency.linearRampToValueAtTime(4280 * brightness, now + tailEnd);
+    whine2G.gain.setValueAtTime(0, now);
+    whine2G.gain.linearRampToValueAtTime(0.0008 * intensity * brightness, now + onsetEnd);
+    whine2G.gain.linearRampToValueAtTime(0.004 * intensity * brightness, now + rampEnd);
+    whine2G.gain.linearRampToValueAtTime(0.006 * intensity * brightness, now + peakEnd);
+    whine2G.gain.linearRampToValueAtTime(0.001, now + tailEnd);
+    whine2.connect(whine2G); whine2G.connect(master);
+    whine2.start(now); whine2.stop(now + tailEnd + 0.2);
+
+    // Harmonic shimmer — soft high harmonic that appears at peak
+    const shimmer = ctx.createOscillator();
+    const shimmerG = ctx.createGain();
+    const shimmerF = ctx.createBiquadFilter();
+    shimmer.type = 'sine';
+    shimmer.frequency.setValueAtTime(880, now);
+    shimmer.frequency.linearRampToValueAtTime(1100 * pitchRise, now + rampEnd);
+    shimmer.frequency.linearRampToValueAtTime(1320 * pitchRise, now + peakEnd);
+    shimmer.frequency.linearRampToValueAtTime(1100 * pitchRise, now + tailEnd);
+    shimmerF.type = 'bandpass'; shimmerF.frequency.value = 1200; shimmerF.Q.value = 8;
+    shimmerG.gain.setValueAtTime(0, now);
+    shimmerG.gain.linearRampToValueAtTime(0, now + rampEnd * 0.6);
+    shimmerG.gain.linearRampToValueAtTime(0.012 * intensity * brightness, now + rampEnd);
+    shimmerG.gain.linearRampToValueAtTime(0.018 * intensity * brightness, now + peakEnd);
+    shimmerG.gain.linearRampToValueAtTime(0.001, now + tailEnd);
+    shimmer.connect(shimmerF); shimmerF.connect(shimmerG); shimmerG.connect(master);
+    shimmer.start(now); shimmer.stop(now + tailEnd + 0.2);
+
+    // Shimmer LFO — gentle wobble on the harmonic
+    const shimLFO = ctx.createOscillator();
+    const shimLFOG = ctx.createGain();
+    shimLFO.type = 'sine';
+    shimLFO.frequency.value = 3.5;
+    shimLFOG.gain.value = 0.004;
+    shimLFO.connect(shimLFOG);
+    shimLFOG.connect(shimmerG.gain);
+    shimLFO.start(now); shimLFO.stop(now + tailEnd + 0.2);
+
+    // Reactor pulse — very low freq modulation on everything for "alive" feel
+    const reactorLFO = ctx.createOscillator();
+    const reactorLFOG = ctx.createGain();
+    reactorLFO.type = 'sine';
+    reactorLFO.frequency.value = 0.15;
+    reactorLFOG.gain.setValueAtTime(0, now);
+    reactorLFOG.gain.linearRampToValueAtTime(0.04 * intensity, now + rampEnd);
+    reactorLFOG.gain.linearRampToValueAtTime(0.06 * intensity, now + peakEnd);
+    reactorLFO.connect(reactorLFOG);
+    reactorLFOG.connect(master.gain);
+    reactorLFO.start(now); reactorLFO.stop(now + tailEnd + 0.2);
 
     // ========== MASTER ENVELOPE ==========
     master.gain.setValueAtTime(0, now);
-    master.gain.linearRampToValueAtTime(0.3 * intensity, now + onsetEnd);
-    master.gain.linearRampToValueAtTime(0.85 * intensity, now + rampEnd);
+    master.gain.linearRampToValueAtTime(0.25 * intensity, now + onsetEnd);
+    master.gain.linearRampToValueAtTime(0.8 * intensity, now + rampEnd);
     master.gain.linearRampToValueAtTime(1.0 * intensity, now + peakEnd);
     master.gain.linearRampToValueAtTime(0.001, now + tailEnd);
 
