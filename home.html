@@ -33,6 +33,18 @@
     }
   </script>
   <style>
+    .hero-logo-text {
+      display: inline-block;
+      height: clamp(36px, 6vw, 58px);
+      overflow: hidden;
+      line-height: 0;
+      margin-bottom: 20px;
+    }
+    .hero-logo-text img {
+      height: clamp(110px, 19vw, 175px);
+      margin-top: clamp(-68px, -12vw, -108px);
+      filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(130deg) brightness(0.9);
+    }
     .split-hero {
       padding: 160px 0 40px; text-align: center;
       position: relative;
@@ -176,7 +188,9 @@
   <!-- Hero -->
   <section class="split-hero">
     <div class="container">
-      <h1 style="font-size:clamp(3rem,6vw,5rem);font-weight:200;letter-spacing:0.35em;text-transform:uppercase;color:var(--accent);padding-left:0.35em;">Shape</h1>
+      <div class="hero-logo-text">
+            <img src="logo.png" alt="Shape">
+          </div>
       <p class="split-hero-sub">Real trainers. Real results. Your shape.<br>Welcome to the community.</p>
 
       <!-- Split Paths -->
