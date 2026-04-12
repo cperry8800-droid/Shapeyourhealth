@@ -588,7 +588,7 @@
         </div>
         <div class="activity-stats">
           <div class="activity-stat">
-            <div class="activity-stat-num" id="statFriends">4</div>
+            <div class="activity-stat-num" id="statFriends">8</div>
             <div class="activity-stat-label">Friends</div>
           </div>
           <div class="activity-stat">
@@ -634,6 +634,10 @@
       { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape. Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026", shapeScore: 620, tier: "Bronze", allowMessages: "everyone" },
       { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024", shapeScore: 11200, tier: "Platinum", allowMessages: "friends" },
       { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Getting into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025", shapeScore: 3100, tier: "Silver", allowMessages: "everyone" },
+      { id: 9, name: "Christopher P.", initials: "CP", color: "#3B82F6", online: true, friend: true, bio: "Full stack fitness. Lifting, running, and meal prepping", favoriteTrainer: "Marcus Johnson", recentWorkout: "Push Pull Legs", memberSince: "2024", shapeScore: 9800, tier: "Platinum", fullName: "Christopher Perry", allowMessages: "everyone" },
+      { id: 10, name: "Haleigh R.", initials: "HR", color: "#E879F9", online: true, friend: true, bio: "Yoga & strength combo. Balance is everything", favoriteTrainer: "Sophie Turner", recentWorkout: "Strength & Flow", memberSince: "2025", shapeScore: 6540, tier: "Gold", fullName: "Haleigh Rimland", allowMessages: "everyone" },
+      { id: 11, name: "Laurie P.", initials: "LP", color: "#F472B6", online: true, friend: true, bio: "Pilates and clean eating. Consistency over intensity", favoriteTrainer: "Nina Brooks", recentWorkout: "Core & Stretch", memberSince: "2025", shapeScore: 5100, tier: "Gold", fullName: "Laurie Perry", allowMessages: "everyone" },
+      { id: 12, name: "Charlie T.", initials: "CT", color: "#22D3EE", online: false, friend: true, bio: "Calisthenics and outdoor training. No gym needed", favoriteTrainer: "Damon Clarke", recentWorkout: "Bodyweight Beast", memberSince: "2024", shapeScore: 7320, tier: "Gold", fullName: "Charlie Trapani", allowMessages: "everyone" },
     ];
 
     // Pre-built DM conversation data for each user
@@ -686,6 +690,42 @@
         { from: 'you', text: "I need to try more cardio. I always skip it", time: "Today, 9:10 AM" },
         { from: 'them', text: "Damon makes it enjoyable honestly. Give it a shot!", time: "Today, 9:15 AM" },
       ],
+      9: [
+        { from: 'them', text: "Just crushed Push Pull Legs today. Marcus really knows how to program", time: "Today, 7:00 AM" },
+        { from: 'you', text: "Nice! How long have you been on that split?", time: "Today, 7:15 AM" },
+        { from: 'them', text: "About 3 months now. Seeing serious gains honestly", time: "Today, 7:20 AM" },
+        { from: 'you', text: "I've been thinking about switching to PPL. Worth it?", time: "Today, 7:30 AM" },
+        { from: 'them', text: "100%. The volume is perfect and recovery is manageable. Plus meal prepping on Sundays keeps the nutrition dialed in", time: "Today, 7:35 AM" },
+        { from: 'you', text: "What do you usually prep?", time: "Today, 7:40 AM" },
+        { from: 'them', text: "Chicken, rice, roasted veggies. Simple but it works. I follow one of the Shape meal plans too", time: "Today, 7:45 AM" },
+      ],
+      10: [
+        { from: 'them', text: "Have you tried Sophie Turner's Strength & Flow program? It's the perfect mix", time: "Yesterday, 3:00 PM" },
+        { from: 'you', text: "Not yet! What's the balance like between yoga and lifting?", time: "Yesterday, 3:10 PM" },
+        { from: 'them', text: "It's like 60/40 strength to yoga. You get the gains but stay flexible", time: "Yesterday, 3:15 PM" },
+        { from: 'you', text: "That sounds perfect actually. I'm so tight from just lifting", time: "Yesterday, 3:20 PM" },
+        { from: 'them', text: "That was me! My deadlift actually went up once I started doing mobility work consistently", time: "Yesterday, 3:25 PM" },
+        { from: 'you', text: "Really? That's wild. I'll check it out this week", time: "Yesterday, 3:30 PM" },
+        { from: 'them', text: "Do it! Let me know what you think. We can do a session together sometime too", time: "Yesterday, 3:35 PM" },
+      ],
+      11: [
+        { from: 'them', text: "Hey! Did you see Nina dropped a new Core & Stretch routine?", time: "Today, 8:00 AM" },
+        { from: 'you', text: "No I didn't! Is it good?", time: "Today, 8:10 AM" },
+        { from: 'them', text: "So good. It's only 25 min and my core is on fire", time: "Today, 8:12 AM" },
+        { from: 'you', text: "Adding it to my plan for tomorrow. Thanks for the heads up!", time: "Today, 8:15 AM" },
+        { from: 'them', text: "Of course! Also have you been meal prepping? I found this great clean eating schedule on Shape", time: "Today, 8:20 AM" },
+        { from: 'you', text: "I've been slacking on that honestly. Which plan?", time: "Today, 8:25 AM" },
+        { from: 'them', text: "The Clean & Simple one. Super easy recipes and everything is under 30 min to make", time: "Today, 8:30 AM" },
+      ],
+      12: [
+        { from: 'them', text: "Yo just did a full calisthenics session at the park. Pull ups, dips, muscle ups — the works", time: "2 days ago, 5:00 PM" },
+        { from: 'you', text: "That's sick! How long did it take you to get muscle ups?", time: "2 days ago, 5:15 PM" },
+        { from: 'them', text: "About 6 months of consistent training. Damon's bodyweight programs helped a lot", time: "2 days ago, 5:20 PM" },
+        { from: 'you', text: "I can barely do 10 pull ups right now. Any tips?", time: "2 days ago, 5:30 PM" },
+        { from: 'them', text: "Start with negatives and band-assisted reps. Volume is key. I do pull ups almost every day now", time: "2 days ago, 5:35 PM" },
+        { from: 'you', text: "Appreciate that. Going to start working on it", time: "2 days ago, 5:40 PM" },
+        { from: 'them', text: "Let's hit the park together sometime. Way more fun training with someone", time: "2 days ago, 5:45 PM" },
+      ],
     };
 
     const trainerChatUsers = [
@@ -728,6 +768,11 @@
         { user: null, text: "Hit a new PR on deadlift today! This community keeps me going", time: "11:00 AM" },
         { user: communityUsers[2], text: "Just signed up for a half marathon. Damon Clarke's programs are getting me there", time: "11:10 AM" },
         { user: communityUsers[1], text: "You got this Carlos! We'll all be cheering you on", time: "11:13 AM" },
+        { user: communityUsers[8], text: "PPL day 3 done. Push day was brutal but Marcus knows what he's doing", time: "11:20 AM" },
+        { user: communityUsers[9], text: "Just finished Strength & Flow with Sophie. Best way to start the morning", time: "11:25 AM" },
+        { user: communityUsers[10], text: "Core & Stretch with Nina is no joke. My abs are shaking", time: "11:30 AM" },
+        { user: communityUsers[11], text: "Park workout done. 100 pull ups, 200 dips. Calisthenics never gets old", time: "11:35 AM" },
+        { user: communityUsers[8], text: "Charlie you're a machine. I need to try outdoor training sometime", time: "11:38 AM" },
       ],
       nutritionist: [
         { user: nutritionistChatUsers[0], text: "Just updated my High Protein Performance plan with new breakfast options. Clients were asking for more variety", time: "8:00 AM" },
