@@ -284,10 +284,13 @@
       .community-activity { display: none; }
     }
     @media (max-width: 768px) {
-      /* Hide page hero on mobile — go straight to chat */
+      /* Hide page hero on mobile */
       .page-hero { display: none !important; }
 
-      /* Show mobile view switcher — sits right below navbar */
+      /* Force navbar always visible */
+      .navbar { position: fixed !important; top: 0 !important; z-index: 1000 !important; }
+
+      /* Mobile view switcher — positioned by JS */
       .mobile-view-switcher {
         display: flex;
         position: fixed;
@@ -317,7 +320,7 @@
         border-bottom-color: var(--accent);
       }
 
-      /* Remove section padding and container constraints */
+      /* Main content area — positioned by JS */
       .community-layout {
         display: flex; flex-direction: column;
         position: fixed;
@@ -333,46 +336,44 @@
       .community-sidebar { display: none; }
       .community-activity { display: none; }
 
-      /* When mobile view is 'friends' or 'discover', show sidebar full-screen */
+      /* === FRIENDS / DISCOVER VIEW === */
       .community-layout.mobile-friends .community-sidebar,
       .community-layout.mobile-discover .community-sidebar {
         display: flex;
         flex: 1;
         border-right: none;
         min-height: 0;
+        overflow: hidden;
       }
-      /* Hide chat when showing friends/discover */
       .community-layout.mobile-friends .community-chat,
       .community-layout.mobile-discover .community-chat {
-        display: none;
+        display: none !important;
       }
-      /* Hide the sidebar tabs on mobile — the view switcher replaces them */
       .community-layout.mobile-friends .community-tabs,
       .community-layout.mobile-discover .community-tabs {
         display: none;
       }
-      /* Make sidebar header simpler on mobile */
-      .community-layout.mobile-friends .community-sidebar-header h2::after,
-      .community-layout.mobile-discover .community-sidebar-header h2::after {
-        content: none;
+      /* Sidebar list must scroll */
+      .community-list {
+        flex: 1;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
       }
 
-      /* Full-screen chat */
+      /* === CHAT VIEW === */
       .community-chat {
         flex: 1; display: flex; flex-direction: column;
-        height: 100%; min-height: 0;
+        min-height: 0;
       }
-
-      /* Hide chat header on mobile — tabs replace it */
       .chat-header { display: none; }
 
-      /* iMessage-style channel toggle tabs */
+      /* Channel tabs */
       .chat-channel-tabs {
         display: flex; gap: 0; padding: 0;
         border-bottom: 1px solid var(--border);
         background: var(--bg-card);
         flex-shrink: 0; overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
       }
       .chat-channel {
         flex: 1; min-width: 0;
@@ -390,15 +391,16 @@
         border-color: transparent; color: var(--text);
       }
 
-      /* Messages fill available space */
+      /* Messages scroll area */
       .chat-messages {
         flex: 1; min-height: 0;
         padding: 12px 12px; gap: 10px;
-        overflow-y: auto;
+        overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
       }
 
-      /* iMessage-style bubbles */
+      /* iMessage bubbles */
       .chat-msg { max-width: 85%; align-items: flex-start; gap: 6px; }
       .chat-msg-avatar { width: 24px; height: 24px; font-size: 0.45rem; margin-top: 2px; }
       .chat-msg-body {
@@ -420,7 +422,7 @@
       }
       .chat-input-area input {
         border-radius: 20px; padding: 10px 16px;
-        font-size: 0.88rem;
+        font-size: 16px; /* prevents iOS zoom on focus */
       }
       .chat-send-btn {
         border-radius: 20px; padding: 10px 18px;
@@ -430,13 +432,12 @@
       /* Sidebar styling when shown on mobile */
       .community-user { padding: 12px 16px; }
       .community-search { padding: 12px 16px; }
-      .community-search input { border-radius: 20px; padding: 10px 16px; font-size: 0.88rem; }
+      .community-search input { border-radius: 20px; padding: 10px 16px; font-size: 16px; }
       .community-user-avatar { width: 44px; height: 44px; font-size: 0.78rem; }
       .community-user-name { font-size: 0.92rem; }
       .community-user-status { font-size: 0.78rem; }
       .btn-follow { padding: 6px 16px; font-size: 0.72rem; border-radius: 20px; }
       .btn-dm { padding: 6px 14px; font-size: 0.7rem; border-radius: 20px; }
-      .friend-btn { font-size: 0.65rem; padding: 4px 10px; }
 
       /* DM header on mobile */
       .dm-header { padding: 10px 12px; gap: 10px; }
@@ -444,9 +445,9 @@
       .dm-header-avatar { width: 28px; height: 28px; font-size: 0.5rem; }
       .dm-header-name { font-size: 0.85rem; }
 
-      /* Hide channel tabs when in DM mode */
+      /* DM mode */
       .community-layout.mobile-dm .chat-channel-tabs { display: none; }
-      .community-layout.mobile-dm .community-sidebar { display: none; }
+      .community-layout.mobile-dm .community-sidebar { display: none !important; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
