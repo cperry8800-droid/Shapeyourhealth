@@ -894,7 +894,7 @@ function openTrainerModal(id) {
             </div>
             ${w.exercises ? `<div class="exercise-preview" style="margin-top:8px;padding-left:2px;">
               <div style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Sample Exercises</div>
-              ${w.exercises.map(e => `<div style="font-size:0.78rem;color:var(--text-muted);padding:1px 0;font-weight:300;">&#127947;&#65039; ${e}</div>`).join('')}
+              ${w.exercises.map(e => `<div style="font-size:0.78rem;color:var(--text-muted);padding:1px 0;font-weight:300;">· ${e}</div>`).join('')}
             </div>` : ''}
           </div>
           <div class="workout-item-buy">
@@ -953,7 +953,7 @@ function openNutritionistModal(id) {
             </div>
             ${p.meals ? `<div class="meal-preview" style="margin-top:8px;padding-left:2px;">
               <div style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Sample Meals</div>
-              ${p.meals.map(m => `<div style="font-size:0.78rem;color:var(--text-muted);padding:1px 0;font-weight:300;">&#127860; ${m}</div>`).join('')}
+              ${p.meals.map(m => `<div style="font-size:0.78rem;color:var(--text-muted);padding:1px 0;font-weight:300;">· ${m}</div>`).join('')}
             </div>` : ''}
           </div>
           <div class="workout-item-buy">
