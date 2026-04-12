@@ -7,10 +7,10 @@ const trainers = [
     color: "#6C3AED", trainerOfMonth: true,
     totmQuote: "Consistency beats intensity. Show up every day and the results will follow.",
     workouts: [
-      { name: "5x5 Foundation", type: "Strength", duration: "55 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "The classic 5x5 program adapted for progressive overload. Perfect for building raw strength." },
-      { name: "Deadlift Domination", type: "Powerlifting", duration: "60 min", difficulty: "Advanced", location: "Gym", price: 34.99, description: "A 6-week deadlift specialization program to break through plateaus." },
-      { name: "Upper Body Blast", type: "Hypertrophy", duration: "45 min", difficulty: "Beginner", location: "Gym", price: 27.99, description: "High-volume upper body routine focused on chest, back, and shoulders." },
-      { name: "Leg Day Legends", type: "Strength", duration: "50 min", difficulty: "Intermediate", location: "At Home", price: 29.99, description: "Squat-focused leg day with accessory work for complete lower body development." },
+      { name: "5x5 Foundation", type: "Strength", duration: "55 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "The classic 5x5 program adapted for progressive overload. Perfect for building raw strength.", exercises: ["Barbell Back Squat 5x5", "Bench Press 5x5", "Barbell Row 5x5"] },
+      { name: "Deadlift Domination", type: "Powerlifting", duration: "60 min", difficulty: "Advanced", location: "Gym", price: 34.99, description: "A 6-week deadlift specialization program to break through plateaus.", exercises: ["Conventional Deadlift 5x3", "Deficit Deadlifts 3x5", "Barbell Hip Thrusts 4x8"] },
+      { name: "Upper Body Blast", type: "Hypertrophy", duration: "45 min", difficulty: "Beginner", location: "Gym", price: 27.99, description: "High-volume upper body routine focused on chest, back, and shoulders.", exercises: ["Dumbbell Bench Press 4x10", "Lat Pulldown 3x12", "Overhead Press 3x10"] },
+      { name: "Leg Day Legends", type: "Strength", duration: "50 min", difficulty: "Intermediate", location: "At Home", price: 29.99, description: "Squat-focused leg day with accessory work for complete lower body development.", exercises: ["Goblet Squats 4x12", "Romanian Deadlift 3x10", "Bulgarian Split Squats 3x10/side"] },
     ],
     tags: ["Powerlifting", "Hypertrophy", "Strength"]
   },
@@ -20,10 +20,10 @@ const trainers = [
     bio: "High-energy coach known for efficient, no-equipment HIIT sessions that burn maximum calories in minimum time.",
     color: "#EC4899",
     workouts: [
-      { name: "20-Min Torch", type: "HIIT", duration: "20 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Quick full-body HIIT session perfect for busy mornings." },
-      { name: "Tabata Inferno", type: "HIIT", duration: "30 min", difficulty: "Advanced", location: "Gym", price: 29.99, description: "Intense Tabata protocol with 8 rounds of 20/10 intervals." },
-      { name: "Full Body Burn", type: "Cardio", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "No-equipment cardio workout that torches calories head to toe." },
-      { name: "Core Crusher", type: "HIIT", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Targeted ab routine with HIIT-style pacing for maximum burn." },
+      { name: "20-Min Torch", type: "HIIT", duration: "20 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Quick full-body HIIT session perfect for busy mornings.", exercises: ["Burpee intervals 40s on/20s off", "Jump squats 3x15", "Mountain climbers 45s"] },
+      { name: "Tabata Inferno", type: "HIIT", duration: "30 min", difficulty: "Advanced", location: "Gym", price: 29.99, description: "Intense Tabata protocol with 8 rounds of 20/10 intervals.", exercises: ["Box jumps 20s on/10s off x8", "Battle rope slams 20s on/10s off x8", "Kettlebell swings 20s on/10s off x8"] },
+      { name: "Full Body Burn", type: "Cardio", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "No-equipment cardio workout that torches calories head to toe.", exercises: ["High knees 60s intervals", "Jumping lunges 3x12/side", "Burpee broad jumps 3x10"] },
+      { name: "Core Crusher", type: "HIIT", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Targeted ab routine with HIIT-style pacing for maximum burn.", exercises: ["Bicycle crunches 40s on/20s off", "Plank hold 45s intervals", "Flutter kicks 30s on/15s off"] },
     ],
     tags: ["HIIT", "Fat Loss", "No Equipment"]
   },
@@ -33,10 +33,10 @@ const trainers = [
     bio: "No gym? No problem. Nina designs effective bodyweight and minimal-equipment workouts you can do anywhere in your home.",
     color: "#10B981",
     workouts: [
-      { name: "Living Room HIIT", type: "HIIT", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "High-energy bodyweight HIIT you can do in your living room — no equipment needed." },
-      { name: "Apartment-Friendly Strength", type: "Strength", duration: "35 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Low-impact strength training designed for small spaces and shared floors." },
-      { name: "Band & Bodyweight Burn", type: "Resistance", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 25.99, description: "Full-body burn using just resistance bands and your own bodyweight." },
-      { name: "No Excuses Full Body", type: "Bodyweight", duration: "40 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Intense full-body session with zero equipment — just you and the floor." },
+      { name: "Living Room HIIT", type: "HIIT", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "High-energy bodyweight HIIT you can do in your living room — no equipment needed.", exercises: ["Squat jumps 30s on/15s off", "High knees 45s intervals", "Burpees 3x8"] },
+      { name: "Apartment-Friendly Strength", type: "Strength", duration: "35 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Low-impact strength training designed for small spaces and shared floors.", exercises: ["Slow-tempo squats 4x12", "Push-up variations 3x10", "Glute bridges 3x15"] },
+      { name: "Band & Bodyweight Burn", type: "Resistance", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 25.99, description: "Full-body burn using just resistance bands and your own bodyweight.", exercises: ["Banded squats 3x15", "Band pull-aparts 3x20", "Banded push-ups 3x12"] },
+      { name: "No Excuses Full Body", type: "Bodyweight", duration: "40 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Intense full-body session with zero equipment — just you and the floor.", exercises: ["Pistol squats 3x6/side", "Handstand push-up progressions 3x8", "L-sit hold 4x20s"] },
     ],
     tags: ["At Home", "Bodyweight", "No Equipment"]
   },
@@ -46,10 +46,10 @@ const trainers = [
     bio: "Endurance specialist who builds heart-pounding cardio programs. Improve stamina, burn fat, and boost your cardiovascular health.",
     color: "#F59E0B",
     workouts: [
-      { name: "HIIT Burn", type: "Cardio", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 26.99, description: "High-intensity intervals designed to torch calories and build endurance." },
-      { name: "Endurance Builder", type: "Cardio", duration: "40 min", difficulty: "Advanced", location: "Gym", price: 32.99, description: "Long-form cardio circuits that push your aerobic and anaerobic limits." },
-      { name: "Metabolic Blast", type: "Cardio", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Fast-paced metabolic conditioning to rev up your metabolism all day." },
-      { name: "Sprint Intervals", type: "Cardio", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Run-based interval training to build speed and cardiovascular power." },
+      { name: "HIIT Burn", type: "Cardio", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 26.99, description: "High-intensity intervals designed to torch calories and build endurance.", exercises: ["Jumping jacks 60s intervals", "High knees 45s intervals", "Skater hops 3x12/side"] },
+      { name: "Endurance Builder", type: "Cardio", duration: "40 min", difficulty: "Advanced", location: "Gym", price: 32.99, description: "Long-form cardio circuits that push your aerobic and anaerobic limits.", exercises: ["Rowing machine 2000m intervals", "Assault bike 5x2min", "Stairclimber 10min steady-state"] },
+      { name: "Metabolic Blast", type: "Cardio", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Fast-paced metabolic conditioning to rev up your metabolism all day.", exercises: ["Kettlebell swings 4x20", "Box step-ups 3x15/side", "Sled push 5x30m"] },
+      { name: "Sprint Intervals", type: "Cardio", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Run-based interval training to build speed and cardiovascular power.", exercises: ["Sprint 30s / walk 60s x10", "Hill sprints 8x20s", "Lateral shuffles 4x30s"] },
     ],
     tags: ["Cardio", "HIIT", "Endurance"]
   },
@@ -59,10 +59,10 @@ const trainers = [
     bio: "Mobility specialist who builds programs that keep you moving well — fewer injuries, better range, more years training.",
     color: "#EF4444",
     workouts: [
-      { name: "Full Body Mobility Flow", type: "Mobility", duration: "35 min", difficulty: "All Levels", location: "At Home", price: 31.99, description: "Head-to-toe mobility routine that opens up everything. No equipment needed." },
-      { name: "Mobility Foundations", type: "Mobility", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Learn the basics of joint health and movement quality before loading up." },
-      { name: "Pre-Workout Warm-Up", type: "Mobility", duration: "15 min", difficulty: "All Levels", location: "Gym", price: 19.99, description: "Quick activation routine to prime your joints and muscles before lifting." },
-      { name: "Recovery Day Protocol", type: "Mobility", duration: "30 min", difficulty: "All Levels", location: "At Home", price: 24.99, description: "Active recovery session combining stretching, foam rolling cues, and breathwork." },
+      { name: "Full Body Mobility Flow", type: "Mobility", duration: "35 min", difficulty: "All Levels", location: "At Home", price: 31.99, description: "Head-to-toe mobility routine that opens up everything. No equipment needed.", exercises: ["90/90 hip stretch 2min/side", "Thoracic spine rotation 3x8/side", "World's greatest stretch 5 reps/side"] },
+      { name: "Mobility Foundations", type: "Mobility", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Learn the basics of joint health and movement quality before loading up.", exercises: ["Cat-cow 3x10 breaths", "Hip circles 2min/side", "Ankle dorsiflexion stretch 3x30s"] },
+      { name: "Pre-Workout Warm-Up", type: "Mobility", duration: "15 min", difficulty: "All Levels", location: "Gym", price: 19.99, description: "Quick activation routine to prime your joints and muscles before lifting.", exercises: ["Banded shoulder dislocates 2x15", "Leg swings 15/side", "Deep squat hold 3x30s"] },
+      { name: "Recovery Day Protocol", type: "Mobility", duration: "30 min", difficulty: "All Levels", location: "At Home", price: 24.99, description: "Active recovery session combining stretching, foam rolling cues, and breathwork.", exercises: ["Foam roll quads & IT band 2min/side", "Couch stretch 2min/side", "Pigeon pose 90s/side"] },
     ],
     tags: ["Mobility", "Recovery", "Flexibility"]
   },
@@ -72,10 +72,10 @@ const trainers = [
     bio: "Straight-up fat loss programs that work. No gimmicks, no crash diets — just structured training and accountability.",
     color: "#F59E0B",
     workouts: [
-      { name: "Lean Out — Phase 1", type: "Weight Loss", duration: "40 min", difficulty: "Beginner", location: "Gym", price: 29.99, description: "Entry-level fat loss program combining resistance training with steady-state cardio." },
-      { name: "Lean Out — Phase 2", type: "Weight Loss", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "Progressive overload meets metabolic conditioning. For when Phase 1 gets easy." },
-      { name: "At Home Burn", type: "Weight Loss", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Bodyweight circuits designed to keep your heart rate up and burn calories at home." },
-      { name: "Accountability Check-In", type: "Weight Loss", duration: "20 min", difficulty: "All Levels", location: "At Home", price: 19.99, description: "Weekly check-in session with progress tracking, weigh-in protocol, and adjustments." },
+      { name: "Lean Out — Phase 1", type: "Weight Loss", duration: "40 min", difficulty: "Beginner", location: "Gym", price: 29.99, description: "Entry-level fat loss program combining resistance training with steady-state cardio.", exercises: ["Goblet squats 3x12", "Treadmill incline walk 15min", "Dumbbell lunges 3x10/side"] },
+      { name: "Lean Out — Phase 2", type: "Weight Loss", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "Progressive overload meets metabolic conditioning. For when Phase 1 gets easy.", exercises: ["Barbell front squats 4x8", "Dumbbell thrusters 3x12", "Rowing machine 5x500m intervals"] },
+      { name: "At Home Burn", type: "Weight Loss", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Bodyweight circuits designed to keep your heart rate up and burn calories at home.", exercises: ["Bodyweight squats 4x20", "Push-ups 3x15", "Mountain climbers 4x30s"] },
+      { name: "Accountability Check-In", type: "Weight Loss", duration: "20 min", difficulty: "All Levels", location: "At Home", price: 19.99, description: "Weekly check-in session with progress tracking, weigh-in protocol, and adjustments.", exercises: ["Progress photo protocol", "Measurement tracking routine", "Weekly goal-setting review"] },
     ],
     tags: ["Weight Loss", "Fat Loss", "Cardio"]
   },
@@ -85,10 +85,10 @@ const trainers = [
     bio: "Programs built around progressive overload and time under tension. If you want to get bigger and stronger — this is the playbook.",
     color: "#8B5CF6",
     workouts: [
-      { name: "Push Pull Legs — Week A", type: "Hypertrophy", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 32.99, description: "Classic PPL split designed for maximum muscle growth over 6 days." },
-      { name: "Upper Lower Split", type: "Strength", duration: "55 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "4-day upper/lower program focused on compound lifts and accessory work." },
-      { name: "Arm Day Special", type: "Hypertrophy", duration: "35 min", difficulty: "Beginner", location: "Gym", price: 24.99, description: "Dedicated arm session hitting biceps, triceps, and forearms from every angle." },
-      { name: "Back & Biceps", type: "Hypertrophy", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Heavy pulling session with rows, pull-ups, and curls for a thick, wide back." },
+      { name: "Push Pull Legs — Week A", type: "Hypertrophy", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 32.99, description: "Classic PPL split designed for maximum muscle growth over 6 days.", exercises: ["Incline Dumbbell Press 4x10", "Cable Rows 4x12", "Leg Press 4x12"] },
+      { name: "Upper Lower Split", type: "Strength", duration: "55 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "4-day upper/lower program focused on compound lifts and accessory work.", exercises: ["Bench Press 4x6", "Barbell Back Squat 4x6", "Weighted Pull-ups 3x8"] },
+      { name: "Arm Day Special", type: "Hypertrophy", duration: "35 min", difficulty: "Beginner", location: "Gym", price: 24.99, description: "Dedicated arm session hitting biceps, triceps, and forearms from every angle.", exercises: ["EZ-bar Curls 4x12", "Tricep Rope Pushdowns 4x15", "Hammer Curls 3x10"] },
+      { name: "Back & Biceps", type: "Hypertrophy", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Heavy pulling session with rows, pull-ups, and curls for a thick, wide back.", exercises: ["Barbell Rows 4x8", "Pull-ups 3xAMRAP", "Dumbbell Curls 3x12"] },
     ],
     tags: ["Strength", "Hypertrophy", "Muscle"]
   },
@@ -98,10 +98,10 @@ const trainers = [
     bio: "Short sessions. Big results. Leah's HIIT programs are designed for people who don't have time to waste.",
     color: "#EC4899",
     workouts: [
-      { name: "15-Min Express", type: "HIIT", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 19.99, description: "No-excuses HIIT that fits into any schedule. Done in 15 minutes flat." },
-      { name: "Sweat & Shred", type: "HIIT", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Full-body HIIT combining plyometrics, core work, and cardio bursts." },
-      { name: "Lunch Break Burn", type: "HIIT", duration: "20 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Quick midday session to break up your workday and burn calories." },
-      { name: "HIIT & Strength Combo", type: "HIIT", duration: "40 min", difficulty: "Advanced", location: "Gym", price: 32.99, description: "Alternating HIIT intervals with strength sets for the best of both worlds." },
+      { name: "15-Min Express", type: "HIIT", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 19.99, description: "No-excuses HIIT that fits into any schedule. Done in 15 minutes flat.", exercises: ["Star jumps 30s on/15s off", "Push-up to plank 3x8", "Speed skaters 3x12/side"] },
+      { name: "Sweat & Shred", type: "HIIT", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Full-body HIIT combining plyometrics, core work, and cardio bursts.", exercises: ["Plyo lunge jumps 4x10/side", "V-ups 3x15", "Tuck jumps 3x10"] },
+      { name: "Lunch Break Burn", type: "HIIT", duration: "20 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Quick midday session to break up your workday and burn calories.", exercises: ["March in place 60s intervals", "Chair squats 3x15", "Standing oblique crunches 3x12/side"] },
+      { name: "HIIT & Strength Combo", type: "HIIT", duration: "40 min", difficulty: "Advanced", location: "Gym", price: 32.99, description: "Alternating HIIT intervals with strength sets for the best of both worlds.", exercises: ["Dumbbell thrusters 4x10", "Box jumps 3x15", "Renegade rows 3x10/side"] },
     ],
     tags: ["HIIT", "Weight Loss", "Quick Sessions"]
   },
@@ -111,10 +111,10 @@ const trainers = [
     bio: "Marathon runner and endurance coach. Whether you're training for a 5K or an ultramarathon — Carlos has a plan for it.",
     color: "#0EA5E9",
     workouts: [
-      { name: "Couch to 5K", type: "Cardio", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "8-week run/walk program that takes you from zero to your first 5K." },
-      { name: "Half Marathon Prep", type: "Cardio", duration: "60 min", difficulty: "Intermediate", location: "Gym", price: 39.99, description: "12-week structured plan with tempo runs, long runs, and recovery days." },
-      { name: "Speed Work Sessions", type: "Cardio", duration: "35 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Interval-based speed training to shave minutes off your personal best." },
-      { name: "Low Impact Cardio", type: "Cardio", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Joint-friendly cardio for anyone who wants to build endurance without the pounding." },
+      { name: "Couch to 5K", type: "Cardio", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "8-week run/walk program that takes you from zero to your first 5K.", exercises: ["Walk 5min / jog 1min x5", "Light jog 10min steady", "Cool-down walk 5min"] },
+      { name: "Half Marathon Prep", type: "Cardio", duration: "60 min", difficulty: "Intermediate", location: "Gym", price: 39.99, description: "12-week structured plan with tempo runs, long runs, and recovery days.", exercises: ["Tempo run 20min at threshold", "Hill repeats 6x90s", "Long slow distance 45min"] },
+      { name: "Speed Work Sessions", type: "Cardio", duration: "35 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Interval-based speed training to shave minutes off your personal best.", exercises: ["400m repeats x8 at race pace", "Fartlek intervals 20min", "Sprint finishers 4x200m"] },
+      { name: "Low Impact Cardio", type: "Cardio", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Joint-friendly cardio for anyone who wants to build endurance without the pounding.", exercises: ["Marching in place 5min intervals", "Step-touch side slides 3x2min", "Seated punches 4x60s"] },
     ],
     tags: ["Cardio", "Running", "Endurance"]
   },
@@ -124,10 +124,10 @@ const trainers = [
     bio: "You don't need a gym. Tanya's programs use nothing but your bodyweight and prove that simplicity works.",
     color: "#14B8A6",
     workouts: [
-      { name: "Zero Equipment Full Body", type: "Bodyweight", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Head-to-toe bodyweight session. All you need is a floor and some space." },
-      { name: "Pilates Strength", type: "Bodyweight", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Pilates-inspired strength work that builds core stability and lean muscle." },
-      { name: "Morning Wake-Up", type: "Bodyweight", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 17.99, description: "Quick morning routine to wake up your body and set the tone for the day." },
-      { name: "Bodyweight Strength", type: "Bodyweight", duration: "45 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Advanced calisthenics session — push-ups, pistol squats, and more." },
+      { name: "Zero Equipment Full Body", type: "Bodyweight", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Head-to-toe bodyweight session. All you need is a floor and some space.", exercises: ["Air squats 4x15", "Push-ups 3x10", "Plank hold 3x30s"] },
+      { name: "Pilates Strength", type: "Bodyweight", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Pilates-inspired strength work that builds core stability and lean muscle.", exercises: ["Hundred 3x100 count", "Roll-ups 3x10", "Single-leg circles 10/side"] },
+      { name: "Morning Wake-Up", type: "Bodyweight", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 17.99, description: "Quick morning routine to wake up your body and set the tone for the day.", exercises: ["Sun salutation flow x5", "Bodyweight squats 2x10", "Arm circles & stretches 2min"] },
+      { name: "Bodyweight Strength", type: "Bodyweight", duration: "45 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Advanced calisthenics session — push-ups, pistol squats, and more.", exercises: ["Pistol squats 3x6/side", "Diamond push-ups 4x12", "Nordic curl negatives 3x5"] },
     ],
     tags: ["At Home", "Bodyweight", "No Equipment"]
   },
@@ -137,10 +137,10 @@ const trainers = [
     bio: "Fat loss through strength training. Derek's approach is simple — build muscle, burn more at rest, lose weight for good.",
     color: "#D97706",
     workouts: [
-      { name: "Strength-Based Fat Loss", type: "Weight Loss", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "Compound lifts with short rest periods. Build muscle and burn fat simultaneously." },
-      { name: "Metabolic Resistance", type: "Weight Loss", duration: "40 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Resistance circuits that keep your heart rate elevated the entire session." },
-      { name: "Beginner Fat Loss", type: "Weight Loss", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Entry-level program for anyone starting their weight loss process. Low impact, high results." },
-      { name: "Weekend Warrior", type: "Weight Loss", duration: "60 min", difficulty: "Advanced", location: "Gym", price: 37.99, description: "Intense full-body session for the days when you have extra time and energy." },
+      { name: "Strength-Based Fat Loss", type: "Weight Loss", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "Compound lifts with short rest periods. Build muscle and burn fat simultaneously.", exercises: ["Barbell Back Squat 4x8", "Bench Press 4x8", "Bent-over Row 4x10"] },
+      { name: "Metabolic Resistance", type: "Weight Loss", duration: "40 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Resistance circuits that keep your heart rate elevated the entire session.", exercises: ["Kettlebell goblet squats 3x15", "Dumbbell clean & press 3x10", "Cable woodchops 3x12/side"] },
+      { name: "Beginner Fat Loss", type: "Weight Loss", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Entry-level program for anyone starting their weight loss process. Low impact, high results.", exercises: ["Bodyweight lunges 3x10/side", "Wall push-ups 3x12", "Standing knee raises 3x15/side"] },
+      { name: "Weekend Warrior", type: "Weight Loss", duration: "60 min", difficulty: "Advanced", location: "Gym", price: 37.99, description: "Intense full-body session for the days when you have extra time and energy.", exercises: ["Trap bar deadlifts 5x5", "Dumbbell walking lunges 4x12/side", "Battle rope finisher 5x30s"] },
     ],
     tags: ["Weight Loss", "Strength", "Fat Loss"]
   },
@@ -892,6 +892,10 @@ function openTrainerModal(id) {
               <span class="workout-tag">${w.difficulty}</span>
               ${w.location ? `<span class="workout-tag">${w.location}</span>` : ''}
             </div>
+            ${w.exercises ? `<div class="exercise-preview" style="margin-top:8px;padding-left:2px;">
+              <div style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Sample Exercises</div>
+              ${w.exercises.map(e => `<div style="font-size:0.78rem;color:var(--text-muted);padding:1px 0;font-weight:300;">&#127947;&#65039; ${e}</div>`).join('')}
+            </div>` : ''}
           </div>
           <div class="workout-item-buy">
             <div class="workout-item-price">$${w.price.toFixed(2)}</div>
