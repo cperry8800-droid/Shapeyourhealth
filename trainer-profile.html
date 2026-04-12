@@ -346,37 +346,145 @@
       </div>
     </div>
 
+    <!-- Intro Video -->
+    <div class="tp-section" id="sectionIntroVideo">
+      <div class="tp-section-header">
+        <h2>Intro Video</h2>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionIntroVideo')">Edit</button>
+      </div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); font-weight: 300; margin-bottom: 16px;">Record or upload a short video introducing yourself to potential clients. This is the first thing people see on your profile.</p>
+      <div id="introVideoDisplay">
+        <div id="introVideoPlayer" style="display:none;margin-bottom:16px;">
+          <video id="introVid" controls style="width:100%;max-height:400px;background:#000;border:1px solid var(--border);"></video>
+        </div>
+        <div id="introVideoPlaceholder" style="background:linear-gradient(135deg,#1a1a1a11,#1a1a1a06);border:1px solid var(--border);height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" onclick="document.getElementById('introVideoUpload').click()">
+          <div style="font-size:2rem;margin-bottom:8px;">&#9654;</div>
+          <div style="font-size:0.85rem;font-weight:500;color:var(--text-muted);">Upload Your Intro Video</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">MP4, MOV, or WebM — up to 2 minutes recommended</div>
+        </div>
+        <input type="file" id="introVideoUpload" accept="video/*" style="display:none" onchange="handleIntroVideoUpload(event)">
+      </div>
+      <div id="introVideoUrlRow" style="display:none;margin-top:12px;">
+        <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Or paste a YouTube/Vimeo URL</label>
+        <div style="display:flex;gap:8px;margin-top:6px;">
+          <input class="tp-edit-input" id="introVideoUrl" placeholder="https://youtube.com/watch?v=..." style="margin-top:0;">
+          <button class="tp-save-btn" onclick="saveIntroVideoUrl()" style="padding:8px 16px;white-space:nowrap;">Embed</button>
+        </div>
+      </div>
+      <div id="introVideoEmbedDisplay" style="display:none;margin-top:12px;">
+        <iframe id="introVideoEmbed" style="width:100%;height:360px;border:1px solid var(--border);" allowfullscreen></iframe>
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="saveIntroVideo()">Save</button>
+        <button class="tp-cancel-btn" onclick="removeIntroVideo()">Remove Video</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionIntroVideo')">Cancel</button>
+      </div>
+    </div>
+
     <!-- Photos & Videos -->
-    <div class="tp-section">
+    <div class="tp-section" id="sectionMedia">
       <div class="tp-section-header">
         <h2>Photos & Videos</h2>
-        <span class="tp-edit-badge">Customizable</span>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionMedia')">Edit</button>
       </div>
       <p style="font-size: 0.88rem; color: var(--text-muted); font-weight: 300; margin-bottom: 16px;">Upload photos and videos to showcase your training style, client results, workout demos, and more.</p>
-      <div class="tp-gallery-grid">
-        <div class="tp-gallery-item">Photo 1</div>
-        <div class="tp-gallery-item">Photo 2</div>
-        <div class="tp-gallery-item">+ Upload Photo</div>
+      <div class="tp-gallery-grid" id="photoGallery">
+        <div class="tp-gallery-item" style="cursor:pointer;" onclick="document.getElementById('photoUpload').click()">+ Upload Photo</div>
       </div>
-      <div class="tp-gallery-grid" style="margin-top: 12px;">
-        <div class="tp-gallery-item" style="height: 160px; background: linear-gradient(135deg, #1a1a1a11, #1a1a1a06); position: relative;">
-          <div style="text-align: center;">
-            <div style="font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px;">Play</div>
-            <div>Video 1</div>
+      <input type="file" id="photoUpload" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)">
+      <div style="margin-top:16px;">
+        <div style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px;">Videos</div>
+        <div class="tp-gallery-grid" id="videoGallery">
+          <div class="tp-gallery-item" style="height:160px;cursor:pointer;background:linear-gradient(135deg,#1a1a1a11,#1a1a1a06);" onclick="addVideoUrl()">
+            <div style="text-align:center;">
+              <div style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:4px;">&#9654;</div>
+              <div>+ Add Video URL</div>
+            </div>
           </div>
         </div>
-        <div class="tp-gallery-item" style="height: 160px; background: linear-gradient(135deg, #1a1a1a11, #1a1a1a06); position: relative;">
-          <div style="text-align: center;">
-            <div style="font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px;">Play</div>
-            <div>Video 2</div>
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="saveMedia()">Save</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionMedia')">Cancel</button>
+      </div>
+    </div>
+
+    <!-- 1-on-1 Consultation Scheduling -->
+    <div class="tp-section" id="sectionConsult">
+      <div class="tp-section-header">
+        <h2>1-on-1 Consultations</h2>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionConsult')">Edit</button>
+      </div>
+      <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:20px;">Offer free or paid 1-on-1 consultations. Set your availability and let clients book directly from your profile.</p>
+      <div id="consultDisplay">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+            <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Session Length</div>
+            <div style="font-size:1.1rem;font-weight:600;" id="consultDurationDisplay">15 min</div>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+            <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Price</div>
+            <div style="font-size:1.1rem;font-weight:600;" id="consultPriceDisplay">Free</div>
           </div>
         </div>
-        <div class="tp-gallery-item" style="height: 160px; background: linear-gradient(135deg, #1a1a1a11, #1a1a1a06);">
-          <div style="text-align: center;">
-            <div style="font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px;">Play</div>
-            <div>+ Upload Video</div>
+        <div style="margin-bottom:20px;">
+          <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px;">Your Availability</div>
+          <div id="availabilityDisplay" style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="tp-tag" style="opacity:0.4;">No availability set</span>
           </div>
         </div>
+        <button class="btn btn-primary" onclick="openBookingModal()" style="width:100%;">Book a 1-on-1 Consultation</button>
+      </div>
+      <div style="display:none;" id="consultEditFields">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Session Length</label>
+            <select class="tp-edit-input" id="consultDuration" style="margin-top:4px;">
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Price</label>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+              <label style="font-size:0.82rem;display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="consultPriceType" value="free" checked onchange="toggleConsultPrice()"> Free</label>
+              <label style="font-size:0.82rem;display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="consultPriceType" value="paid" onchange="toggleConsultPrice()"> Paid</label>
+              <input class="tp-edit-input" id="consultPriceInput" type="number" placeholder="25.00" style="width:100px;margin-top:0;display:none;">
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:8px;">Available Days</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;" id="availDays">
+            <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Mon" style="margin-right:4px;"> Mon</label>
+            <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Tue" style="margin-right:4px;"> Tue</label>
+            <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Wed" style="margin-right:4px;"> Wed</label>
+            <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Thu" style="margin-right:4px;"> Thu</label>
+            <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Fri" style="margin-right:4px;"> Fri</label>
+            <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Sat" style="margin-right:4px;"> Sat</label>
+            <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Sun" style="margin-right:4px;"> Sun</label>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Available From</label>
+            <input class="tp-edit-input" id="consultTimeFrom" type="time" value="09:00" style="margin-top:4px;">
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Available Until</label>
+            <input class="tp-edit-input" id="consultTimeTo" type="time" value="17:00" style="margin-top:4px;">
+          </div>
+        </div>
+        <div>
+          <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Consultation Description</label>
+          <textarea class="tp-edit-textarea" id="consultDesc" style="min-height:60px;margin-top:4px;" placeholder="What will the consultation cover? E.g. goal setting, program review, form check...">Free 15-minute intro call to discuss your fitness goals and find the right program for you.</textarea>
+        </div>
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="saveConsult()">Save</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionConsult')">Cancel</button>
       </div>
     </div>
 
@@ -497,7 +605,12 @@ let trainerData = {
   ],
   certs: [],
   social: { ig: '', yt: '', tt: '', web: '' },
-  subPrice: ''
+  subPrice: '',
+  introVideo: null,
+  introVideoUrl: '',
+  photos: [],
+  videos: [],
+  consult: { duration: '15', priceType: 'free', price: '', days: [], timeFrom: '09:00', timeTo: '17:00', desc: 'Free 15-minute intro call to discuss your fitness goals and find the right program for you.' }
 };
 
 function showToast(msg) {
@@ -519,12 +632,24 @@ function toggleSection(id) {
   if (id === 'sectionTags' && s.classList.contains('editing')) { renderTagsEditable(); }
   if (id === 'sectionCerts' && s.classList.contains('editing')) { renderCertsEditable(); }
   if (id === 'sectionPrograms' && s.classList.contains('editing')) { renderProgramsEditable(); }
+  if (id === 'sectionIntroVideo') {
+    document.getElementById('introVideoUrlRow').style.display = s.classList.contains('editing') ? 'block' : 'none';
+  }
+  if (id === 'sectionMedia') {
+    // nothing extra needed
+  }
+  if (id === 'sectionConsult') {
+    document.getElementById('consultEditFields').style.display = s.classList.contains('editing') ? 'block' : 'none';
+    document.getElementById('consultDisplay').style.display = s.classList.contains('editing') ? 'none' : 'block';
+  }
 }
 
 function cancelSection(id) {
   document.getElementById(id).classList.remove('editing');
   if (id === 'sectionSocial') document.getElementById('socialEditFields').style.display = 'none';
   if (id === 'sectionPricing') { document.getElementById('subPriceInput').style.display = 'none'; document.getElementById('subPriceDisplay').style.display = 'block'; }
+  if (id === 'sectionIntroVideo') document.getElementById('introVideoUrlRow').style.display = 'none';
+  if (id === 'sectionConsult') { document.getElementById('consultEditFields').style.display = 'none'; document.getElementById('consultDisplay').style.display = 'block'; }
   loadFromStorage();
 }
 
@@ -771,6 +896,255 @@ function handleAvatarUpload(e) {
   reader.readAsDataURL(file);
 }
 
+// --- Intro Video ---
+function handleIntroVideoUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  document.getElementById('introVid').src = url;
+  document.getElementById('introVideoPlayer').style.display = 'block';
+  document.getElementById('introVideoPlaceholder').style.display = 'none';
+  document.getElementById('introVideoEmbedDisplay').style.display = 'none';
+  // Store as base64 for persistence (small videos only)
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    trainerData.introVideo = ev.target.result;
+    trainerData.introVideoUrl = '';
+    saveToStorage();
+    showToast('Intro video uploaded!');
+  };
+  if (file.size < 10 * 1024 * 1024) { reader.readAsDataURL(file); }
+  else { trainerData.introVideo = null; trainerData.introVideoUrl = ''; showToast('Video too large to save locally. It will display this session only.'); }
+}
+function saveIntroVideoUrl() {
+  const url = document.getElementById('introVideoUrl').value.trim();
+  if (!url) return;
+  let embedUrl = '';
+  if (url.includes('youtube.com/watch')) {
+    const vid = new URL(url).searchParams.get('v');
+    if (vid) embedUrl = 'https://www.youtube.com/embed/' + vid;
+  } else if (url.includes('youtu.be/')) {
+    embedUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1].split('?')[0];
+  } else if (url.includes('vimeo.com/')) {
+    const vid = url.split('vimeo.com/')[1].split('?')[0];
+    embedUrl = 'https://player.vimeo.com/video/' + vid;
+  } else {
+    embedUrl = url;
+  }
+  if (embedUrl) {
+    document.getElementById('introVideoEmbed').src = embedUrl;
+    document.getElementById('introVideoEmbedDisplay').style.display = 'block';
+    document.getElementById('introVideoPlayer').style.display = 'none';
+    document.getElementById('introVideoPlaceholder').style.display = 'none';
+    trainerData.introVideoUrl = embedUrl;
+    trainerData.introVideo = null;
+    saveToStorage();
+    showToast('Video embedded!');
+  }
+}
+function removeIntroVideo() {
+  trainerData.introVideo = null;
+  trainerData.introVideoUrl = '';
+  document.getElementById('introVideoPlayer').style.display = 'none';
+  document.getElementById('introVideoEmbedDisplay').style.display = 'none';
+  document.getElementById('introVideoPlaceholder').style.display = 'flex';
+  document.getElementById('introVid').src = '';
+  document.getElementById('introVideoEmbed').src = '';
+  document.getElementById('introVideoUrl').value = '';
+  saveToStorage();
+  showToast('Intro video removed');
+}
+function saveIntroVideo() {
+  document.getElementById('sectionIntroVideo').classList.remove('editing');
+  document.getElementById('introVideoUrlRow').style.display = 'none';
+  saveToStorage();
+  showToast('Intro video saved!');
+}
+
+// --- Photos & Videos ---
+function handlePhotoUpload(e) {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      trainerData.photos.push(ev.target.result);
+      renderPhotoGallery();
+      saveToStorage();
+    };
+    if (file.size < 5 * 1024 * 1024) reader.readAsDataURL(file);
+    else showToast('Photo too large (max 5MB)');
+  });
+  showToast('Photos uploaded!');
+}
+function renderPhotoGallery() {
+  const g = document.getElementById('photoGallery');
+  const isEditing = document.getElementById('sectionMedia').classList.contains('editing');
+  let html = trainerData.photos.map((p, i) =>
+    '<div class="tp-gallery-item" style="position:relative;overflow:hidden;">' +
+    '<img src="' + p + '" style="width:100%;height:100%;object-fit:cover;">' +
+    (isEditing ? '<button onclick="removePhoto(' + i + ')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;width:22px;height:22px;font-size:0.7rem;cursor:pointer;">&times;</button>' : '') +
+    '</div>'
+  ).join('');
+  html += '<div class="tp-gallery-item" style="cursor:pointer;" onclick="document.getElementById(\'photoUpload\').click()">+ Upload Photo</div>';
+  g.innerHTML = html;
+}
+function removePhoto(i) {
+  trainerData.photos.splice(i, 1);
+  renderPhotoGallery();
+  saveToStorage();
+}
+function addVideoUrl() {
+  const url = prompt('Enter a YouTube or Vimeo URL:');
+  if (!url || !url.trim()) return;
+  let embedUrl = '';
+  if (url.includes('youtube.com/watch')) {
+    const vid = new URL(url).searchParams.get('v');
+    if (vid) embedUrl = 'https://www.youtube.com/embed/' + vid;
+  } else if (url.includes('youtu.be/')) {
+    embedUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1].split('?')[0];
+  } else if (url.includes('vimeo.com/')) {
+    const vid = url.split('vimeo.com/')[1].split('?')[0];
+    embedUrl = 'https://player.vimeo.com/video/' + vid;
+  } else {
+    embedUrl = url;
+  }
+  if (embedUrl) {
+    trainerData.videos.push(embedUrl);
+    renderVideoGallery();
+    saveToStorage();
+    showToast('Video added!');
+  }
+}
+function renderVideoGallery() {
+  const g = document.getElementById('videoGallery');
+  const isEditing = document.getElementById('sectionMedia').classList.contains('editing');
+  let html = trainerData.videos.map((v, i) =>
+    '<div class="tp-gallery-item" style="height:160px;position:relative;overflow:hidden;padding:0;">' +
+    '<iframe src="' + v + '" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>' +
+    (isEditing ? '<button onclick="removeVideo(' + i + ')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;width:22px;height:22px;font-size:0.7rem;cursor:pointer;z-index:2;">&times;</button>' : '') +
+    '</div>'
+  ).join('');
+  html += '<div class="tp-gallery-item" style="height:160px;cursor:pointer;background:linear-gradient(135deg,#1a1a1a11,#1a1a1a06);" onclick="addVideoUrl()"><div style="text-align:center;"><div style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:4px;">&#9654;</div><div>+ Add Video URL</div></div></div>';
+  g.innerHTML = html;
+}
+function removeVideo(i) {
+  trainerData.videos.splice(i, 1);
+  renderVideoGallery();
+  saveToStorage();
+}
+function saveMedia() {
+  document.getElementById('sectionMedia').classList.remove('editing');
+  renderPhotoGallery();
+  renderVideoGallery();
+  saveToStorage();
+  showToast('Media saved!');
+}
+
+// --- Consultations ---
+function toggleConsultPrice() {
+  const paid = document.querySelector('input[name="consultPriceType"][value="paid"]').checked;
+  document.getElementById('consultPriceInput').style.display = paid ? 'block' : 'none';
+}
+function saveConsult() {
+  const dur = document.getElementById('consultDuration').value;
+  const priceType = document.querySelector('input[name="consultPriceType"]:checked').value;
+  const price = document.getElementById('consultPriceInput').value;
+  const days = Array.from(document.querySelectorAll('#availDays input:checked')).map(cb => cb.value);
+  const timeFrom = document.getElementById('consultTimeFrom').value;
+  const timeTo = document.getElementById('consultTimeTo').value;
+  const desc = document.getElementById('consultDesc').value;
+  trainerData.consult = { duration: dur, priceType: priceType, price: price, days: days, timeFrom: timeFrom, timeTo: timeTo, desc: desc };
+  // Update display
+  document.getElementById('consultDurationDisplay').textContent = dur + ' min';
+  document.getElementById('consultPriceDisplay').textContent = priceType === 'free' ? 'Free' : '$' + price;
+  const availDisp = document.getElementById('availabilityDisplay');
+  if (days.length === 0) {
+    availDisp.innerHTML = '<span class="tp-tag" style="opacity:0.4;">No availability set</span>';
+  } else {
+    availDisp.innerHTML = days.map(d => '<span class="tp-tag">' + d + '</span>').join('') + '<span style="font-size:0.82rem;color:var(--text-muted);margin-left:8px;">' + formatTime(timeFrom) + ' – ' + formatTime(timeTo) + '</span>';
+  }
+  document.getElementById('sectionConsult').classList.remove('editing');
+  document.getElementById('consultEditFields').style.display = 'none';
+  document.getElementById('consultDisplay').style.display = 'block';
+  saveToStorage();
+  showToast('Consultation settings saved!');
+}
+function formatTime(t) {
+  if (!t) return '';
+  const [h, m] = t.split(':');
+  const hr = parseInt(h);
+  const ampm = hr >= 12 ? 'PM' : 'AM';
+  const hr12 = hr % 12 || 12;
+  return hr12 + ':' + m + ' ' + ampm;
+}
+function openBookingModal() {
+  const c = trainerData.consult;
+  if (!c.days || c.days.length === 0) {
+    showToast('No availability set yet');
+    return;
+  }
+  // Build a simple booking overlay
+  let existing = document.getElementById('bookingOverlay');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'bookingOverlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  const priceLabel = c.priceType === 'free' ? 'Free' : '$' + c.price;
+  overlay.innerHTML = '\
+    <div style="background:var(--bg-card,#fff);border:1px solid var(--border);max-width:480px;width:90%;padding:32px;position:relative;">\
+      <button onclick="document.getElementById(\'bookingOverlay\').remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;color:var(--text-muted);cursor:pointer;">&times;</button>\
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:4px;">Book a 1-on-1 Consultation</h3>\
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;">' + c.duration + ' min &middot; ' + priceLabel + '</p>\
+      <div style="margin-bottom:16px;">\
+        <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Select a Day</label>\
+        <div style="display:flex;flex-wrap:wrap;gap:8px;" id="bookingDays">' +
+          c.days.map(d => '<button class="filter-btn" onclick="selectBookingDay(this)" data-day="' + d + '">' + d + '</button>').join('') +
+        '</div>\
+      </div>\
+      <div style="margin-bottom:16px;">\
+        <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Select a Time</label>\
+        <select class="tp-edit-input" id="bookingTime" style="margin-top:0;">' + generateTimeSlots(c.timeFrom, c.timeTo, parseInt(c.duration)) + '</select>\
+      </div>\
+      <div style="margin-bottom:16px;">\
+        <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Your Name</label>\
+        <input class="tp-edit-input" id="bookingName" placeholder="Enter your name" style="margin-top:0;">\
+      </div>\
+      <div style="margin-bottom:20px;">\
+        <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Message (optional)</label>\
+        <textarea class="tp-edit-textarea" id="bookingMsg" style="min-height:50px;margin-top:0;" placeholder="What would you like to discuss?"></textarea>\
+      </div>\
+      <button class="btn btn-primary" style="width:100%;" onclick="confirmBooking()">Confirm Booking</button>\
+    </div>';
+  document.body.appendChild(overlay);
+}
+function generateTimeSlots(from, to, duration) {
+  let slots = '';
+  const [fh, fm] = from.split(':').map(Number);
+  const [th, tm] = to.split(':').map(Number);
+  let current = fh * 60 + fm;
+  const end = th * 60 + tm;
+  while (current + duration <= end) {
+    const h = Math.floor(current / 60);
+    const m = current % 60;
+    const label = formatTime(String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'));
+    slots += '<option value="' + h + ':' + String(m).padStart(2,'0') + '">' + label + '</option>';
+    current += duration;
+  }
+  return slots || '<option>No slots available</option>';
+}
+function selectBookingDay(btn) {
+  document.querySelectorAll('#bookingDays .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function confirmBooking() {
+  const dayBtn = document.querySelector('#bookingDays .filter-btn.active');
+  const name = document.getElementById('bookingName').value.trim();
+  if (!dayBtn) { showToast('Please select a day'); return; }
+  if (!name) { showToast('Please enter your name'); return; }
+  document.getElementById('bookingOverlay').remove();
+  showToast('Consultation booked! ' + dayBtn.dataset.day + ' at ' + document.getElementById('bookingTime').value);
+}
+
 // --- Storage ---
 function saveToStorage() {
   localStorage.setItem('shapeTrainerProfile', JSON.stringify(trainerData));
@@ -820,6 +1194,39 @@ function loadFromStorage() {
     renderTags();
     renderPrograms();
     renderCerts();
+    // Intro video
+    if (trainerData.introVideo) {
+      document.getElementById('introVid').src = trainerData.introVideo;
+      document.getElementById('introVideoPlayer').style.display = 'block';
+      document.getElementById('introVideoPlaceholder').style.display = 'none';
+    } else if (trainerData.introVideoUrl) {
+      document.getElementById('introVideoEmbed').src = trainerData.introVideoUrl;
+      document.getElementById('introVideoEmbedDisplay').style.display = 'block';
+      document.getElementById('introVideoPlaceholder').style.display = 'none';
+    }
+    // Photos & Videos
+    if (trainerData.photos && trainerData.photos.length) renderPhotoGallery();
+    if (trainerData.videos && trainerData.videos.length) renderVideoGallery();
+    // Consultation
+    if (trainerData.consult) {
+      const c = trainerData.consult;
+      document.getElementById('consultDurationDisplay').textContent = (c.duration || '15') + ' min';
+      document.getElementById('consultPriceDisplay').textContent = c.priceType === 'paid' ? '$' + c.price : 'Free';
+      document.getElementById('consultDuration').value = c.duration || '15';
+      document.getElementById('consultDesc').value = c.desc || '';
+      document.getElementById('consultTimeFrom').value = c.timeFrom || '09:00';
+      document.getElementById('consultTimeTo').value = c.timeTo || '17:00';
+      if (c.priceType === 'paid') {
+        document.querySelector('input[name="consultPriceType"][value="paid"]').checked = true;
+        document.getElementById('consultPriceInput').style.display = 'block';
+        document.getElementById('consultPriceInput').value = c.price || '';
+      }
+      if (c.days && c.days.length) {
+        c.days.forEach(d => { const cb = document.querySelector('#availDays input[value="' + d + '"]'); if (cb) cb.checked = true; });
+        const availDisp = document.getElementById('availabilityDisplay');
+        availDisp.innerHTML = c.days.map(d => '<span class="tp-tag">' + d + '</span>').join('') + '<span style="font-size:0.82rem;color:var(--text-muted);margin-left:8px;">' + formatTime(c.timeFrom) + ' – ' + formatTime(c.timeTo) + '</span>';
+      }
+    }
   } catch(e) {}
 }
 
@@ -829,6 +1236,8 @@ if (!localStorage.getItem('shapeTrainerProfile')) {
   renderTags();
   renderPrograms();
   renderCerts();
+  renderPhotoGallery();
+  renderVideoGallery();
 }
   </script>
 

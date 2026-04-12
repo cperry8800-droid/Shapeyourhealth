@@ -1034,6 +1034,8 @@
     function loadFromLocalStorage() {
       const raw = localStorage.getItem('shapeClientProfile');
       if (!raw) return;
+      // Clear stale profile data from previous default user
+      try { const d = JSON.parse(raw); if (d.displayName && d.displayName !== 'Christopher Perry') { localStorage.removeItem('shapeClientProfile'); return; } } catch(e) { return; }
       try {
         const data = JSON.parse(raw);
         // Restore inputs
@@ -1051,6 +1053,17 @@
               else if (['chest','waist','hips','arms','thighs'].includes(key)) val = val + ' in';
               else if (el.tagName === 'SELECT') val = el.options[el.selectedIndex].text;
               display.textContent = val;
+            }
+            // Sync header display
+            if (key === 'displayName') {
+              const h1 = document.querySelector('.cp-name-block h1');
+              const avatar = document.querySelector('.cp-avatar');
+              if (h1) h1.textContent = data[key];
+              if (avatar) { const initials = data[key].split(' ').map(w => w[0]).join(''); avatar.childNodes[0].textContent = initials; }
+            }
+            if (key === 'username') {
+              const handle = document.querySelector('.cp-handle');
+              if (handle) handle.textContent = '@' + data[key];
             }
           }
         });
