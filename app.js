@@ -155,10 +155,10 @@ const nutritionists = [
     notmQuote: "Food is fuel, but the right food is a superpower. Let's unlock yours.",
     services: ["Custom meal plans", "Macro coaching", "Supplement guidance", "Competition prep"],
     plans: [
-      { name: "High Protein Performance", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Optimized macro split for muscle growth and recovery. 40/30/30 protein-forward approach." },
-      { name: "Competition Prep Plan", type: "Low Carb", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Periodized nutrition plan for athletes peaking for competition. Precise carb cycling included." },
-      { name: "Clean Bulk Blueprint", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to gain lean mass without excess fat. Includes supplement timing." },
-      { name: "Race Day Fuel Guide", type: "Performance", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Pre, during, and post-race nutrition strategy for endurance athletes." },
+      { name: "High Protein Performance", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Optimized macro split for muscle growth and recovery. 40/30/30 protein-forward approach.", meals: ["Grilled chicken with quinoa & roasted vegetables", "Protein overnight oats with berries", "Salmon bowl with sweet potato & greens"] },
+      { name: "Competition Prep Plan", type: "Low Carb", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Periodized nutrition plan for athletes peaking for competition. Precise carb cycling included.", meals: ["Herb-crusted tilapia with asparagus & cauliflower rice", "Turkey lettuce wraps with avocado", "Egg white frittata with spinach & mushrooms"] },
+      { name: "Clean Bulk Blueprint", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to gain lean mass without excess fat. Includes supplement timing.", meals: ["Double chicken burrito bowl with rice & black beans", "Peanut butter banana protein smoothie bowl", "Beef stir-fry with noodles & mixed vegetables"] },
+      { name: "Race Day Fuel Guide", type: "Performance", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Pre, during, and post-race nutrition strategy for endurance athletes.", meals: ["Oatmeal with banana, honey & almond butter", "Pasta with lean turkey bolognese", "Energy date balls with coconut & chia seeds"] },
     ],
     tags: ["Performance", "Athletes", "Macro Coaching"]
   },
@@ -169,10 +169,10 @@ const nutritionists = [
     color: "#6C3AED",
     services: ["Calorie-deficit plans", "Habit coaching", "Weekly check-ins", "Grocery guides"],
     plans: [
-      { name: "Sustainable Deficit Plan", type: "Low Calorie", duration: "12 weeks", difficulty: "Beginner", price: 29.99, description: "Gradual calorie reduction with flexible food choices. No crash dieting — just steady results." },
-      { name: "Macro Counting Mastery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Learn to track and balance macros while hitting your weight loss goals." },
-      { name: "Metabolic Reset", type: "High Protein", duration: "6 weeks", difficulty: "Intermediate", price: 32.99, description: "Reverse diet protocol to restore metabolism after prolonged restriction." },
-      { name: "Weekend-Proof Plan", type: "Flexible", duration: "8 weeks", difficulty: "Beginner", price: 27.99, description: "A practical plan that accounts for social eating and weekends without derailing progress." },
+      { name: "Sustainable Deficit Plan", type: "Low Calorie", duration: "12 weeks", difficulty: "Beginner", price: 29.99, description: "Gradual calorie reduction with flexible food choices. No crash dieting — just steady results.", meals: ["Grilled chicken salad with light vinaigrette", "Zucchini noodles with shrimp & garlic", "Greek yogurt parfait with mixed berries"] },
+      { name: "Macro Counting Mastery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Learn to track and balance macros while hitting your weight loss goals.", meals: ["Turkey & avocado whole wheat wrap", "Salmon with brown rice & steamed broccoli", "Cottage cheese bowl with fruit & granola"] },
+      { name: "Metabolic Reset", type: "High Protein", duration: "6 weeks", difficulty: "Intermediate", price: 32.99, description: "Reverse diet protocol to restore metabolism after prolonged restriction.", meals: ["Steak with roasted sweet potato & green beans", "Protein pancakes with blueberries", "Tuna poke bowl with edamame & brown rice"] },
+      { name: "Weekend-Proof Plan", type: "Flexible", duration: "8 weeks", difficulty: "Beginner", price: 27.99, description: "A practical plan that accounts for social eating and weekends without derailing progress.", meals: ["Build-your-own grain bowl with lean protein", "Veggie omelette with whole wheat toast", "Chicken stir-fry with flexible carb options"] },
     ],
     tags: ["Weight Loss", "Sustainable", "Habit Coaching"]
   },
@@ -183,10 +183,10 @@ const nutritionists = [
     color: "#EC4899",
     services: ["Vegan meal plans", "Nutrient optimization", "Recipe library", "Transition coaching"],
     plans: [
-      { name: "Plant-Powered Starter", type: "Vegan", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Ease into plant-based eating with simple swaps and complete nutrition guidance." },
-      { name: "High Protein Vegan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Hit your protein goals without animal products. Includes 60+ recipes." },
-      { name: "Whole Foods Reset", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Eliminate processed foods and reset your palate with nutrient-dense whole foods." },
-      { name: "Vegan Athlete Fuel", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 39.99, description: "High-performance plant-based plan for serious athletes and active lifestyles." },
+      { name: "Plant-Powered Starter", type: "Vegan", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Ease into plant-based eating with simple swaps and complete nutrition guidance.", meals: ["Chickpea & vegetable curry with basmati rice", "Avocado toast with hemp seeds & cherry tomatoes", "Black bean tacos with mango salsa"] },
+      { name: "High Protein Vegan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Hit your protein goals without animal products. Includes 60+ recipes.", meals: ["Tempeh stir-fry with broccoli & peanut sauce", "Lentil bolognese with whole wheat pasta", "Tofu scramble with black beans & sweet potato"] },
+      { name: "Whole Foods Reset", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Eliminate processed foods and reset your palate with nutrient-dense whole foods.", meals: ["Quinoa Buddha bowl with roasted vegetables", "Fresh spring rolls with almond dipping sauce", "Sweet potato & lentil soup with crusty bread"] },
+      { name: "Vegan Athlete Fuel", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 39.99, description: "High-performance plant-based plan for serious athletes and active lifestyles.", meals: ["Power smoothie with banana, spirulina & oat milk", "Loaded veggie burrito with brown rice & beans", "Chickpea pasta with roasted red pepper sauce"] },
     ],
     tags: ["Vegan", "Plant-Based", "Whole Foods"]
   },
@@ -197,10 +197,10 @@ const nutritionists = [
     color: "#F59E0B",
     services: ["Elimination protocols", "Gut healing plans", "Food sensitivity guidance", "Anti-inflammatory diets"],
     plans: [
-      { name: "Gut Restore Protocol", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Step-by-step gut healing plan with probiotics, bone broth, and targeted elimination." },
-      { name: "Anti-Inflammatory Reset", type: "Low Carb", duration: "6 weeks", difficulty: "Beginner", price: 34.99, description: "Remove inflammatory triggers and rebuild with healing whole foods." },
-      { name: "Food Sensitivity Blueprint", type: "Elimination", duration: "10 weeks", difficulty: "Advanced", price: 44.99, description: "Structured elimination and reintroduction protocol to identify your triggers." },
-      { name: "Digestive Wellness Plan", type: "Balanced", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Daily meal plans designed to support healthy digestion and reduce bloating." },
+      { name: "Gut Restore Protocol", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Step-by-step gut healing plan with probiotics, bone broth, and targeted elimination.", meals: ["Bone broth with ginger, turmeric & collagen", "Baked salmon with sauerkraut & steamed greens", "Probiotic yogurt bowl with flaxseed & walnuts"] },
+      { name: "Anti-Inflammatory Reset", type: "Low Carb", duration: "6 weeks", difficulty: "Beginner", price: 34.99, description: "Remove inflammatory triggers and rebuild with healing whole foods.", meals: ["Turmeric-spiced chicken with roasted cauliflower", "Wild-caught cod with olive oil & leafy greens", "Berry smoothie with collagen & almond butter"] },
+      { name: "Food Sensitivity Blueprint", type: "Elimination", duration: "10 weeks", difficulty: "Advanced", price: 44.99, description: "Structured elimination and reintroduction protocol to identify your triggers.", meals: ["Simple rice bowl with steamed vegetables & olive oil", "Baked chicken breast with zucchini & carrots", "Pear & oat porridge with cinnamon"] },
+      { name: "Digestive Wellness Plan", type: "Balanced", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Daily meal plans designed to support healthy digestion and reduce bloating.", meals: ["Miso soup with tofu & seaweed", "Grilled chicken with roasted fennel & quinoa", "Banana oat pancakes with a drizzle of honey"] },
     ],
     tags: ["Gut Health", "Functional", "Anti-Inflammatory"]
   },
@@ -211,10 +211,10 @@ const nutritionists = [
     color: "#8B5CF6",
     services: ["Trimester-specific plans", "Postnatal recovery nutrition", "Lactation support", "Iron & folate optimization"],
     plans: [
-      { name: "First Trimester Foundations", type: "Prenatal", duration: "12 weeks", difficulty: "Beginner", price: 34.99, description: "Nausea-friendly meals packed with folate, iron, and essential nutrients for early pregnancy." },
-      { name: "Third Trimester Power Plan", type: "High Calorie", duration: "12 weeks", difficulty: "Intermediate", price: 37.99, description: "Calorie-dense nutrition to support baby's growth and prepare your body for delivery." },
-      { name: "Postnatal Recovery Plan", type: "Recovery", duration: "8 weeks", difficulty: "Beginner", price: 34.99, description: "Healing foods and balanced meals to support recovery and energy after birth." },
-      { name: "Lactation Boost Plan", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Nutrient-rich meals to support milk production and postpartum energy levels." },
+      { name: "First Trimester Foundations", type: "Prenatal", duration: "12 weeks", difficulty: "Beginner", price: 34.99, description: "Nausea-friendly meals packed with folate, iron, and essential nutrients for early pregnancy.", meals: ["Ginger lemon chicken with brown rice", "Spinach & cheese quesadilla with fruit", "Mild lentil soup with whole grain crackers"] },
+      { name: "Third Trimester Power Plan", type: "High Calorie", duration: "12 weeks", difficulty: "Intermediate", price: 37.99, description: "Calorie-dense nutrition to support baby's growth and prepare your body for delivery.", meals: ["Salmon with mashed sweet potato & kale", "Nut butter smoothie with oats & banana", "Chicken thighs with roasted root vegetables"] },
+      { name: "Postnatal Recovery Plan", type: "Recovery", duration: "8 weeks", difficulty: "Beginner", price: 34.99, description: "Healing foods and balanced meals to support recovery and energy after birth.", meals: ["Iron-rich beef stew with dark leafy greens", "Overnight oats with dates & pumpkin seeds", "Warm salmon & avocado rice bowl"] },
+      { name: "Lactation Boost Plan", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Nutrient-rich meals to support milk production and postpartum energy levels.", meals: ["Oatmeal lactation cookies with brewer's yeast", "Chicken & vegetable stir-fry with sesame", "Greek yogurt with granola, flax & berries"] },
     ],
     tags: ["Prenatal", "Postnatal", "Maternal Health"]
   },
@@ -225,10 +225,10 @@ const nutritionists = [
     color: "#EF4444",
     services: ["Budget meal plans", "Batch cooking guides", "Shopping lists", "Quick recipes under 20 min"],
     plans: [
-      { name: "$50/Week Meal Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 22.99, description: "Complete weekly meal plan for one person on a tight budget. Includes shopping lists." },
-      { name: "Sunday Prep Master", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Prep all your weekday meals in under 2 hours every Sunday. Step-by-step guide." },
-      { name: "Family of Four Plan", type: "Budget", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Healthy, kid-friendly meals for the whole family without breaking the bank." },
-      { name: "15-Minute Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "30 quick and healthy recipes that go from fridge to plate in 15 minutes or less." },
+      { name: "$50/Week Meal Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 22.99, description: "Complete weekly meal plan for one person on a tight budget. Includes shopping lists.", meals: ["Rice & beans with roasted frozen vegetables", "Egg fried rice with cabbage & soy sauce", "Pasta with canned tomatoes, garlic & chickpeas"] },
+      { name: "Sunday Prep Master", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Prep all your weekday meals in under 2 hours every Sunday. Step-by-step guide.", meals: ["Chicken thigh meal prep with rice & broccoli", "Turkey taco bowls with black beans & salsa", "Sheet pan sausage with peppers & sweet potato"] },
+      { name: "Family of Four Plan", type: "Budget", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Healthy, kid-friendly meals for the whole family without breaking the bank.", meals: ["One-pot chicken pasta with hidden veggies", "Homemade fish sticks with oven fries", "Slow cooker chili with cornbread"] },
+      { name: "15-Minute Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "30 quick and healthy recipes that go from fridge to plate in 15 minutes or less.", meals: ["Caprese chicken with balsamic glaze", "Shrimp & garlic butter with couscous", "Black bean quesadillas with quick guacamole"] },
     ],
     tags: ["Budget-Friendly", "Meal Prep", "Quick Recipes"]
   },
@@ -239,10 +239,10 @@ const nutritionists = [
     color: "#0EA5E9", featured: true,
     services: ["Periodized nutrition", "Hydration protocols", "Recovery plans", "Race-day fueling"],
     plans: [
-      { name: "Strength Fuel Plan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Calorie and macro targets built around your training splits for max strength gains." },
-      { name: "Endurance Nutrition System", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 42.99, description: "Carb loading, mid-race fueling, and recovery nutrition for distance athletes." },
-      { name: "Recovery Rebuild", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Post-training recovery meals rich in antioxidants and anti-inflammatory compounds." },
-      { name: "Game Day Protocol", type: "Performance", duration: "4 weeks", difficulty: "Intermediate", price: 27.99, description: "Pre-game, halftime, and post-game nutrition timing for competitive athletes." },
+      { name: "Strength Fuel Plan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Calorie and macro targets built around your training splits for max strength gains.", meals: ["Grilled steak with baked potato & asparagus", "Protein-packed chicken & rice meal prep", "Post-workout whey shake with oats & banana"] },
+      { name: "Endurance Nutrition System", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 42.99, description: "Carb loading, mid-race fueling, and recovery nutrition for distance athletes.", meals: ["Whole wheat pasta with chicken & marinara", "Pre-run energy bites with dates & cashews", "Recovery smoothie with tart cherry & protein"] },
+      { name: "Recovery Rebuild", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Post-training recovery meals rich in antioxidants and anti-inflammatory compounds.", meals: ["Tart cherry & beet recovery smoothie", "Turmeric salmon with wild rice & greens", "Blueberry almond overnight oats"] },
+      { name: "Game Day Protocol", type: "Performance", duration: "4 weeks", difficulty: "Intermediate", price: 27.99, description: "Pre-game, halftime, and post-game nutrition timing for competitive athletes.", meals: ["Pre-game oatmeal with banana & honey", "Halftime rice cakes with peanut butter", "Post-game chicken wrap with sweet potato fries"] },
     ],
     tags: ["Sports", "Performance", "Recovery"]
   },
@@ -253,10 +253,10 @@ const nutritionists = [
     color: "#D946EF", featured: true,
     services: ["Body recomposition", "Reverse dieting", "Flexible dieting", "Progress tracking"],
     plans: [
-      { name: "Flexible Cut", type: "Low Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 32.99, description: "Calorie deficit with no food restrictions. Hit your targets your way." },
-      { name: "Body Recomp Blueprint", type: "High Protein", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Simultaneous fat loss and muscle gain through precise nutrition cycling." },
-      { name: "Reverse Diet Recovery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Gradually increase calories post-diet to maintain results and restore metabolism." },
-      { name: "No-Track Intuitive Plan", type: "Flexible", duration: "6 weeks", difficulty: "Beginner", price: 26.99, description: "Learn to eat intuitively with portion guides and hunger cue training." },
+      { name: "Flexible Cut", type: "Low Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 32.99, description: "Calorie deficit with no food restrictions. Hit your targets your way.", meals: ["Choose-your-protein bowl with mixed greens", "Light chicken Caesar wrap", "Greek yogurt with honey & mixed nuts"] },
+      { name: "Body Recomp Blueprint", type: "High Protein", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Simultaneous fat loss and muscle gain through precise nutrition cycling.", meals: ["Lean ground turkey with jasmine rice & veggies", "Egg & cheese breakfast burrito with salsa", "Grilled chicken with quinoa & roasted peppers"] },
+      { name: "Reverse Diet Recovery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Gradually increase calories post-diet to maintain results and restore metabolism.", meals: ["Balanced plate: salmon, rice & steamed veggies", "Whole grain toast with avocado & poached eggs", "Chicken stir-fry with mixed vegetables & noodles"] },
+      { name: "No-Track Intuitive Plan", type: "Flexible", duration: "6 weeks", difficulty: "Beginner", price: 26.99, description: "Learn to eat intuitively with portion guides and hunger cue training.", meals: ["Portion-guided pasta with pesto & grilled chicken", "Mindful snack plate with cheese, fruit & nuts", "Simple fish tacos with slaw & lime"] },
     ],
     tags: ["Flexible Dieting", "Recomp", "Sustainable"]
   },
@@ -267,10 +267,10 @@ const nutritionists = [
     color: "#F97316",
     services: ["Microbiome support", "Fermentation guides", "Elimination diets", "Stress-gut protocols"],
     plans: [
-      { name: "Microbiome Reset", type: "Gut Health", duration: "8 weeks", difficulty: "Intermediate", price: 37.99, description: "Rebuild your gut flora with prebiotic and probiotic-rich meal plans." },
-      { name: "Fermented Foods Journey", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 28.99, description: "Introduce fermented foods into your daily routine for better digestion and immunity." },
-      { name: "Stress-Gut Connection", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Address the gut-brain axis with calming foods and stress-reducing meal patterns." },
-      { name: "Seasonal Cleanse", type: "Elimination", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Quarterly reset plan using seasonal whole foods to support digestive health." },
+      { name: "Microbiome Reset", type: "Gut Health", duration: "8 weeks", difficulty: "Intermediate", price: 37.99, description: "Rebuild your gut flora with prebiotic and probiotic-rich meal plans.", meals: ["Kefir smoothie with banana & prebiotic fiber", "Kimchi rice bowl with soft-boiled egg", "Jerusalem artichoke soup with sourdough"] },
+      { name: "Fermented Foods Journey", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 28.99, description: "Introduce fermented foods into your daily routine for better digestion and immunity.", meals: ["Miso-glazed salmon with pickled vegetables", "Kombucha overnight oats with sauerkraut toast", "Tempeh bowl with fermented hot sauce & greens"] },
+      { name: "Stress-Gut Connection", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Address the gut-brain axis with calming foods and stress-reducing meal patterns.", meals: ["Chamomile-poached chicken with steamed greens", "Magnesium-rich dark chocolate & nut trail mix", "Warm turmeric lentil soup with calming herbs"] },
+      { name: "Seasonal Cleanse", type: "Elimination", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Quarterly reset plan using seasonal whole foods to support digestive health.", meals: ["Seasonal roasted vegetable & grain bowl", "Simple poached fish with steamed squash", "Fresh fruit & seed breakfast bowl"] },
     ],
     tags: ["Gut Health", "Integrative", "Fermentation"]
   },
@@ -281,10 +281,10 @@ const nutritionists = [
     color: "#14B8A6",
     services: ["Student meal plans", "Bulk cooking", "Freezer prep", "Dorm-friendly recipes"],
     plans: [
-      { name: "College Kitchen Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Healthy meals you can make in a dorm or small kitchen with basic equipment." },
-      { name: "Freezer Meal Mastery", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 24.99, description: "Batch cook and freeze 20+ meals in one session. Reheat and eat all week." },
-      { name: "Bulk on a Budget", type: "High Calorie", duration: "8 weeks", difficulty: "Intermediate", price: 29.99, description: "High-calorie meal plan for muscle building without expensive supplements." },
-      { name: "5-Ingredient Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Simple, nutritious meals using just 5 ingredients each. Perfect for beginners." },
+      { name: "College Kitchen Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Healthy meals you can make in a dorm or small kitchen with basic equipment.", meals: ["Microwave scrambled eggs with cheese & toast", "Instant ramen upgrade with egg & frozen veggies", "Peanut butter banana wrap with honey"] },
+      { name: "Freezer Meal Mastery", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 24.99, description: "Batch cook and freeze 20+ meals in one session. Reheat and eat all week.", meals: ["Freezer-friendly chicken enchilada bake", "Pre-portioned beef & vegetable stew", "Frozen breakfast burritos with sausage & peppers"] },
+      { name: "Bulk on a Budget", type: "High Calorie", duration: "8 weeks", difficulty: "Intermediate", price: 29.99, description: "High-calorie meal plan for muscle building without expensive supplements.", meals: ["Peanut butter & oat mass gainer shake", "Chicken & rice with olive oil & mixed nuts", "Whole milk yogurt with granola & dried fruit"] },
+      { name: "5-Ingredient Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Simple, nutritious meals using just 5 ingredients each. Perfect for beginners.", meals: ["Baked chicken with lemon, garlic & olive oil", "Pasta with butter, parmesan & frozen peas", "Banana pancakes with eggs & oats"] },
     ],
     tags: ["Budget", "Students", "Freezer Prep"]
   },
@@ -295,10 +295,10 @@ const nutritionists = [
     color: "#84CC16",
     services: ["Ayurvedic meal plans", "Plant protein optimization", "Spice therapy", "Seasonal eating"],
     plans: [
-      { name: "Ayurvedic Balance", type: "Whole Foods", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Eat according to your dosha with balanced plant-based meals rooted in Ayurveda." },
-      { name: "Plant Protein Power", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Complete protein combinations from plant sources to fuel your training." },
-      { name: "Anti-Inflammatory Spice Plan", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Harness turmeric, ginger, and healing spices in daily anti-inflammatory meals." },
-      { name: "Seasonal Harvest Plan", type: "Whole Foods", duration: "12 weeks", difficulty: "Intermediate", price: 39.99, description: "Eat in sync with the seasons using local, plant-based whole foods." },
+      { name: "Ayurvedic Balance", type: "Whole Foods", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Eat according to your dosha with balanced plant-based meals rooted in Ayurveda.", meals: ["Kitchari with ghee, cumin & fresh cilantro", "Warming dal with turmeric rice & naan", "Spiced coconut vegetable stew"] },
+      { name: "Plant Protein Power", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Complete protein combinations from plant sources to fuel your training.", meals: ["Red lentil & chickpea power bowl with tahini", "Edamame & quinoa salad with sesame dressing", "Tofu tikka masala with brown rice"] },
+      { name: "Anti-Inflammatory Spice Plan", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Harness turmeric, ginger, and healing spices in daily anti-inflammatory meals.", meals: ["Golden milk turmeric smoothie bowl", "Ginger-spiced lentil soup with fresh herbs", "Cinnamon roasted sweet potato & chickpea bowl"] },
+      { name: "Seasonal Harvest Plan", type: "Whole Foods", duration: "12 weeks", difficulty: "Intermediate", price: 39.99, description: "Eat in sync with the seasons using local, plant-based whole foods.", meals: ["Farm-fresh vegetable & herb grain bowl", "Seasonal fruit & nut morning porridge", "Root vegetable tagine with couscous"] },
     ],
     tags: ["Ayurvedic", "Plant-Based", "Holistic"]
   },
@@ -309,10 +309,10 @@ const nutritionists = [
     color: "#7C3AED",
     services: ["Pro athlete protocols", "Weight class management", "Supplement stacks", "In-season nutrition"],
     plans: [
-      { name: "Pro Athlete Fuel", type: "Performance", duration: "12 weeks", difficulty: "Advanced", price: 49.99, description: "The same periodized nutrition framework used by professional athletes." },
-      { name: "Weight Class Manager", type: "Low Calorie", duration: "8 weeks", difficulty: "Advanced", price: 42.99, description: "Safe, effective weight manipulation for combat sports and weight-class athletes." },
-      { name: "Off-Season Builder", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to build size and strength during the off-season." },
-      { name: "Travel Nutrition Guide", type: "Flexible", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Stay on track while traveling for games, tournaments, or work." },
+      { name: "Pro Athlete Fuel", type: "Performance", duration: "12 weeks", difficulty: "Advanced", price: 49.99, description: "The same periodized nutrition framework used by professional athletes.", meals: ["Competition-day chicken & rice with electrolytes", "High-carb pasta with lean ground beef & veggies", "Recovery shake with casein, berries & oats"] },
+      { name: "Weight Class Manager", type: "Low Calorie", duration: "8 weeks", difficulty: "Advanced", price: 42.99, description: "Safe, effective weight manipulation for combat sports and weight-class athletes.", meals: ["Measured portion grilled fish with steamed greens", "Egg white omelette with spinach & tomato", "Light turkey meatballs with zucchini noodles"] },
+      { name: "Off-Season Builder", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to build size and strength during the off-season.", meals: ["Double burger patties with rice & avocado", "Mass-building shake with oats, PB & whole milk", "Loaded baked potato with pulled chicken & cheese"] },
+      { name: "Travel Nutrition Guide", type: "Flexible", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Stay on track while traveling for games, tournaments, or work.", meals: ["Portable protein box with nuts, jerky & fruit", "Hotel-room overnight oats with protein powder", "Airport-friendly chicken & veggie wrap"] },
     ],
     tags: ["Pro Sports", "Elite", "Performance"]
   },
@@ -947,6 +947,10 @@ function openNutritionistModal(id) {
               <span class="workout-tag">${p.duration}</span>
               <span class="workout-tag">${p.difficulty}</span>
             </div>
+            ${p.meals ? `<div class="meal-preview" style="margin-top:8px;padding-left:2px;">
+              <div style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Sample Meals</div>
+              ${p.meals.map(m => `<div style="font-size:0.78rem;color:var(--text-muted);padding:1px 0;font-weight:300;">&#127860; ${m}</div>`).join('')}
+            </div>` : ''}
           </div>
           <div class="workout-item-buy">
             <div class="workout-item-price">$${p.price.toFixed(2)}</div>
