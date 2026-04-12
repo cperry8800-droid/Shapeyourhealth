@@ -48,32 +48,34 @@
 
     .community-list { flex: 1; overflow-y: auto; }
     .community-user {
-      display: flex; align-items: center; gap: 12px; padding: 14px 20px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 16px;
       cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border);
     }
     .community-user:hover { background: var(--bg-alt); }
     .community-user.active { background: var(--bg-alt); }
     .community-user-avatar {
-      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 600; font-size: 0.72rem; color: #fff;
+      font-weight: 600; font-size: 0.68rem; color: #fff;
     }
     .community-user-info { flex: 1; min-width: 0; }
     .community-user-name {
-      font-size: 0.85rem; font-weight: 500; margin-bottom: 2px;
+      font-size: 0.82rem; font-weight: 500; margin-bottom: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .community-user-status {
-      font-size: 0.75rem; color: var(--text-muted); font-weight: 300;
+      font-size: 0.72rem; color: var(--text-muted); font-weight: 300;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .community-user-action {
-      flex-shrink: 0;
+      flex-shrink: 0; display: flex; gap: 4px; align-items: center;
+      width: 100%; padding-left: 46px; margin-top: -4px;
     }
     .btn-follow {
-      padding: 6px 14px; font-size: 0.7rem; font-weight: 600;
+      padding: 5px 12px; font-size: 0.65rem; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.06em; border: 1px solid var(--accent);
       background: transparent; color: var(--accent-dark); cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s; border-radius: 4px;
     }
     .btn-follow:hover { background: var(--accent); color: #fff; }
     .btn-follow.following {
@@ -239,11 +241,11 @@
 
     /* === DM Button in user list === */
     .btn-dm {
-      padding: 6px 12px; font-size: 0.68rem; font-weight: 600;
+      padding: 5px 12px; font-size: 0.65rem; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.06em;
       border: 1px solid var(--border); background: transparent;
       color: var(--text-muted); cursor: pointer; transition: all 0.3s;
-      margin-right: 6px;
+      border-radius: 4px;
     }
     .btn-dm:hover { border-color: var(--accent); color: var(--accent-dark); }
 
@@ -674,7 +676,7 @@
         </div>
         <div class="activity-stats">
           <div class="activity-stat">
-            <div class="activity-stat-num" id="statFriends">8</div>
+            <div class="activity-stat-num" id="statFriends">7</div>
             <div class="activity-stat-label">Friends</div>
           </div>
           <div class="activity-stat">
@@ -729,7 +731,7 @@
       { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024", shapeScore: 11200, tier: "Platinum", allowMessages: "friends", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: true, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "210 lbs", height: "6'2\"", bodyFat: "11%", workoutsCompleted: 340, streak: 45, calories: "3,200/day", protein: "240g/day", instagram: "@devon_strong", badges: ["Early Adopter", "300 Workouts", "Platinum Tier", "Streak Master", "Iron Will"] },
       { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Getting into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025", shapeScore: 3100, tier: "Silver", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: false, socialLinks: false, badges: true }, weight: "145 lbs", height: "5'7\"", bodyFat: "20%", workoutsCompleted: 67, streak: 9, calories: "1,900/day", protein: "110g/day", instagram: "@emma_cardio", badges: ["Silver Tier", "Cardio Queen"] },
       { id: 9, name: "Chris P.", initials: "CP", color: "#3B82F6", online: true, friend: true, bio: "Full stack fitness. Lifting, running, and meal prepping", favoriteTrainer: "Marcus Johnson", recentWorkout: "Push Pull Legs", memberSince: "2024", shapeScore: 9800, tier: "Platinum", fullName: "Chris Perry", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: true, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "190 lbs", height: "6'0\"", bodyFat: "13%", workoutsCompleted: 285, streak: 30, calories: "2,800/day", protein: "200g/day", instagram: "@chrisperry_fit", badges: ["Early Adopter", "200 Workouts", "Platinum Tier", "Streak Master", "Meal Prep Pro"] },
-      { id: 10, name: "Haleigh R.", initials: "HR", color: "#E879F9", online: true, friend: true, bio: "Yoga & strength combo. Balance is everything", favoriteTrainer: "Sophie Turner", recentWorkout: "Strength & Flow", memberSince: "2025", shapeScore: 6540, tier: "Gold", fullName: "Haleigh Rimland", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "130 lbs", height: "5'4\"", bodyFat: "18%", workoutsCompleted: 145, streak: 15, calories: "1,750/day", protein: "115g/day", instagram: "@haleigh_flow", badges: ["100 Workouts", "Gold Tier", "Balance Queen"] },
+
       { id: 11, name: "Laurie P.", initials: "LP", color: "#F472B6", online: true, friend: true, bio: "Pilates and clean eating. Consistency over intensity", favoriteTrainer: "Nina Brooks", recentWorkout: "Core & Stretch", memberSince: "2025", shapeScore: 5100, tier: "Gold", fullName: "Laurie Perry", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "128 lbs", height: "5'5\"", bodyFat: "20%", workoutsCompleted: 120, streak: 18, calories: "1,650/day", protein: "105g/day", instagram: "@laurie_pilates", badges: ["100 Workouts", "Gold Tier", "Clean Eater"] },
       { id: 12, name: "Charlie T.", initials: "CT", color: "#22D3EE", online: false, friend: true, bio: "Calisthenics and outdoor training. No gym needed", favoriteTrainer: "Damon Clarke", recentWorkout: "Bodyweight Beast", memberSince: "2024", shapeScore: 7320, tier: "Gold", fullName: "Charlie Trapani", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: true, workoutHistory: true, nutritionInfo: false, socialLinks: true, badges: true }, weight: "165 lbs", height: "5'9\"", bodyFat: "12%", workoutsCompleted: 198, streak: 22, calories: "2,300/day", protein: "160g/day", instagram: "@charlie_cali", badges: ["Early Adopter", "Gold Tier", "Bodyweight Boss", "Outdoor Warrior"] },
     ];
@@ -793,15 +795,6 @@
         { from: 'you', text: "What do you usually prep?", time: "Today, 7:40 AM" },
         { from: 'them', text: "Chicken, rice, roasted veggies. Simple but it works. I follow one of the Shape meal plans too", time: "Today, 7:45 AM" },
       ],
-      10: [
-        { from: 'them', text: "Have you tried Sophie Turner's Strength & Flow program? It's the perfect mix", time: "Yesterday, 3:00 PM" },
-        { from: 'you', text: "Not yet! What's the balance like between yoga and lifting?", time: "Yesterday, 3:10 PM" },
-        { from: 'them', text: "It's like 60/40 strength to yoga. You get the gains but stay flexible", time: "Yesterday, 3:15 PM" },
-        { from: 'you', text: "That sounds perfect actually. I'm so tight from just lifting", time: "Yesterday, 3:20 PM" },
-        { from: 'them', text: "That was me! My deadlift actually went up once I started doing mobility work consistently", time: "Yesterday, 3:25 PM" },
-        { from: 'you', text: "Really? That's wild. I'll check it out this week", time: "Yesterday, 3:30 PM" },
-        { from: 'them', text: "Do it! Let me know what you think. We can do a session together sometime too", time: "Yesterday, 3:35 PM" },
-      ],
       11: [
         { from: 'them', text: "Hey! Did you see Nina dropped a new Core & Stretch routine?", time: "Today, 8:00 AM" },
         { from: 'you', text: "No I didn't! Is it good?", time: "Today, 8:10 AM" },
@@ -863,9 +856,8 @@
         { user: communityUsers[2], text: "Just signed up for a half marathon. Damon Clarke's programs are getting me there", time: "11:10 AM" },
         { user: communityUsers[1], text: "You got this Carlos! We'll all be cheering you on", time: "11:13 AM" },
         { user: communityUsers[8], text: "PPL day 3 done. Push day was brutal but Marcus knows what he's doing", time: "11:20 AM" },
-        { user: communityUsers[9], text: "Just finished Strength & Flow with Sophie. Best way to start the morning", time: "11:25 AM" },
-        { user: communityUsers[10], text: "Core & Stretch with Nina is no joke. My abs are shaking", time: "11:30 AM" },
-        { user: communityUsers[11], text: "Park workout done. 100 pull ups, 200 dips. Calisthenics never gets old", time: "11:35 AM" },
+        { user: communityUsers[9], text: "Core & Stretch with Nina is no joke. My abs are shaking", time: "11:25 AM" },
+        { user: communityUsers[10], text: "Park workout done. 100 pull ups, 200 dips. Calisthenics never gets old", time: "11:30 AM" },
         { user: communityUsers[8], text: "Charlie you're a machine. I need to try outdoor training sometime", time: "11:38 AM" },
       ],
       nutritionist: [
@@ -946,7 +938,7 @@
               ${u.tier} · ${u.shapeScore.toLocaleString()} pts
             </div>
           </div>
-          <div class="community-user-action" style="display:flex;gap:6px;align-items:center;">
+          <div class="community-user-action">
             <button class="btn-dm" onclick="openDM(${u.id}, event)" title="${canMessage ? 'Send message' : u.name + ' only accepts messages from friends'}">
               ${canMessage ? 'Message' : '<span style="opacity:0.4;">Message</span>'}
             </button>
