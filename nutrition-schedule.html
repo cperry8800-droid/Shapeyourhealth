@@ -385,6 +385,32 @@
         <div id="ndClientDetailContent"></div>
       </div>
 
+      <!-- Meal Schedule & Logs -->
+      <div class="td-section">
+        <div class="td-section-header">
+          <h2>Meal Schedule</h2>
+          <div class="nd-view-toggle">
+            <button class="nd-view-btn active" onclick="ndSwitchDashView('weekly', this)">Weekly</button>
+            <button class="nd-view-btn" onclick="ndSwitchDashView('monthly', this)">Monthly</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
+          <div>
+            <div id="ndDashWeeklyView">
+              <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Client Adherence This Week</h3>
+              <div id="ndDashWeeklyContent"></div>
+            </div>
+            <div id="ndDashMonthlyView" style="display:none;">
+              <div id="ndDashCalContainer"></div>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Recent Client Meals</h3>
+            <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="ndDashMealLog"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Plan Sales -->
       <div class="td-section">
         <div class="td-section-header">

@@ -431,9 +431,152 @@ function renderNdSales() {
   }).join('');
 }
 
+// ===== Dashboard Meal Schedule & Logs =====
+let _ndDashMonth = new Date().getMonth();
+let _ndDashYear = new Date().getFullYear();
+
+function ndSwitchDashView(view, btn) {
+  document.querySelectorAll('.td-section-header .nd-view-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('ndDashWeeklyView').style.display = view === 'weekly' ? '' : 'none';
+  document.getElementById('ndDashMonthlyView').style.display = view === 'monthly' ? '' : 'none';
+}
+
+function renderDashWeekly() {
+  const container = document.getElementById('ndDashWeeklyContent');
+  const activeClients = ndClients.filter(c => c.status === 'active');
+  const maxAdherence = Math.max(...activeClients.map(c => c.adherence), 1);
+
+  container.innerHTML = '<div class="progress-bar-chart">' + activeClients.map(c => `
+    <div class="chart-row">
+      <div class="chart-label" style="min-width:100px;">${c.name.split(' ')[0]}</div>
+      <div class="chart-bar-container">
+        <div class="chart-bar" style="width:${(c.adherence / maxAdherence) * 100}%;background:${c.adherence >= 85 ? 'var(--accent)' : c.adherence >= 70 ? '#F59E0B' : '#EF4444'};"></div>
+      </div>
+      <div class="chart-value">${c.adherence}%</div>
+    </div>
+  `).join('') + '</div>';
+}
+
+function _ndBuildDashCalendar(month, year) {
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  const monthName = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  // Aggregate all client meals for this month
+  const mealMap = {};
+  ndClients.forEach(c => {
+    c.recentMeals.forEach(m => {
+      const d = new Date(m.date + 'T00:00:00');
+      if (d.getMonth() === month && d.getFullYear() === year) {
+        const day = d.getDate();
+        if (!mealMap[day]) mealMap[day] = { count: 0, onPlan: 0, offPlan: 0 };
+        mealMap[day].count++;
+        if (m.onPlan) mealMap[day].onPlan++; else mealMap[day].offPlan++;
+      }
+    });
+  });
+
+  // Simulate extra data for demo
+  for (let d = 1; d <= Math.min(daysInMonth, today.getDate()); d++) {
+    const checkDate = new Date(year, month, d);
+    if (checkDate > today) break;
+    if (!mealMap[d]) {
+      const count = Math.floor(Math.random() * 8) + 5;
+      const onPlan = Math.floor(count * (0.7 + Math.random() * 0.25));
+      mealMap[d] = { count, onPlan, offPlan: count - onPlan };
+    } else {
+      mealMap[d].count += Math.floor(Math.random() * 6) + 3;
+      mealMap[d].onPlan += Math.floor(Math.random() * 4) + 2;
+    }
+  }
+
+  let cells = '';
+  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  days.forEach(d => { cells += '<div class="nd-cal-head">' + d + '</div>'; });
+
+  for (let i = 0; i < firstDay; i++) cells += '<div class="nd-cal-day empty"></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+    const meal = mealMap[d];
+    let dotClass = '';
+    if (meal) {
+      if (meal.offPlan === 0) dotClass = 'on-plan';
+      else if (meal.onPlan === 0) dotClass = 'off-plan';
+      else dotClass = 'mixed';
+    }
+    cells += '<div class="nd-cal-day' + (isToday ? ' today' : '') + (meal ? ' has-meals' : '') + '">'
+      + '<div class="nd-cal-day-num">' + d + '</div>'
+      + (meal ? '<div class="nd-cal-day-dot ' + dotClass + '"></div><div class="nd-cal-day-meals">' + meal.count + 'm</div>' : '')
+      + '</div>';
+  }
+
+  return '<div class="nd-month-header">'
+    + '<h4>' + monthName + '</h4>'
+    + '<div class="nd-month-nav">'
+    + '<button onclick="ndDashCalPrev()">&#8249;</button>'
+    + '<button onclick="ndDashCalNext()">&#8250;</button>'
+    + '</div></div>'
+    + '<div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.68rem;color:var(--text-muted);">'
+    + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>On Plan</span>'
+    + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:4px;"></span>Mixed</span>'
+    + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#EF4444;margin-right:4px;"></span>Off Plan</span>'
+    + '</div>'
+    + '<div class="nd-cal-grid">' + cells + '</div>';
+}
+
+function ndDashCalPrev() {
+  _ndDashMonth--;
+  if (_ndDashMonth < 0) { _ndDashMonth = 11; _ndDashYear--; }
+  document.getElementById('ndDashCalContainer').innerHTML = _ndBuildDashCalendar(_ndDashMonth, _ndDashYear);
+}
+
+function ndDashCalNext() {
+  _ndDashMonth++;
+  if (_ndDashMonth > 11) { _ndDashMonth = 0; _ndDashYear++; }
+  document.getElementById('ndDashCalContainer').innerHTML = _ndBuildDashCalendar(_ndDashMonth, _ndDashYear);
+}
+
+function renderDashMealLog() {
+  const container = document.getElementById('ndDashMealLog');
+  // Collect all recent meals from all clients, sorted by date
+  const allMeals = [];
+  ndClients.forEach(c => {
+    c.recentMeals.forEach(m => {
+      allMeals.push({ ...m, client: c.name.split(' ')[0] });
+    });
+  });
+  allMeals.sort((a, b) => b.date.localeCompare(a.date));
+
+  container.innerHTML = allMeals.map(m => {
+    const d = new Date(m.date + 'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return `
+      <div class="nd-meal-row">
+        <div class="nd-meal-date">${dateStr}</div>
+        <div class="nd-meal-name" title="${m.name}">${m.client} — ${m.name}</div>
+        <div class="nd-meal-meta">
+          <span>${m.calories} cal</span>
+          <span class="nd-meal-type">${m.type}</span>
+          <span class="nd-meal-status ${m.onPlan ? 'on' : 'off'}">${m.onPlan ? '✓' : '✗'}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderDashMealSchedule() {
+  renderDashWeekly();
+  document.getElementById('ndDashCalContainer').innerHTML = _ndBuildDashCalendar(_ndDashMonth, _ndDashYear);
+  renderDashMealLog();
+}
+
 // Init
 renderNdClients('all');
 renderNdSales();
+renderDashMealSchedule();
 
 // ===== Direct Messages =====
 const ND_MSG_KEY = 'shapeNutritionistMessages';
