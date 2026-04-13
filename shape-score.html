@@ -24,7 +24,11 @@
     }
     .rewards-cat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
     .rewards-cat-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
-    .reward-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+    .reward-grid-wrap { max-height: 480px; overflow-y: auto; margin-bottom: 10px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+    .reward-grid-wrap::-webkit-scrollbar { width: 4px; }
+    .reward-grid-wrap::-webkit-scrollbar-track { background: transparent; }
+    .reward-grid-wrap::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    .reward-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
     .reward-item {
       background: var(--bg-card); border: 1px solid var(--border); padding: 10px;
       display: flex; flex-direction: column; transition: border-color 0.2s; position: relative;
@@ -226,7 +230,9 @@
           </div>
 
           <!-- Rewards Grid -->
-          <div class="reward-grid" id="rewardGrid"></div>
+          <div class="reward-grid-wrap">
+            <div class="reward-grid" id="rewardGrid"></div>
+          </div>
 
           <!-- Redeemed Coupons -->
           <div id="redeemedSection" style="display:none;margin-bottom:40px;">
