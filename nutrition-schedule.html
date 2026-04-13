@@ -752,6 +752,7 @@
     <button class="nd-tab-btn" data-tab="messages" onclick="ndSwitchTab('messages', this)">Messages</button>
     <button class="nd-tab-btn" data-tab="community" onclick="ndSwitchTab('community', this)">Community</button>
     <button class="nd-tab-btn" data-tab="profile" onclick="ndSwitchTab('profile', this)">Profile</button>
+    <button class="nd-tab-btn" data-tab="goalcalc" onclick="ndSwitchTab('goalcalc', this)">Goal Calculator</button>
   </div>
 
   <!-- ===================== TAB 1: HOME ===================== -->
@@ -1216,6 +1217,73 @@
     </section>
   </div>
 
+  <!-- ===================== TAB 7: GOAL CALCULATOR ===================== -->
+  <div class="nd-tab-content" id="ndTabGoalcalc">
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div style="max-width:800px;margin:0 auto;">
+
+          <h2 style="font-size:1.3rem;font-weight:300;letter-spacing:-0.03em;margin-bottom:6px;">Goal Calculator</h2>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:32px;">Set income targets and see exactly what it takes to reach them.</p>
+
+          <!-- Goal Type Toggle -->
+          <div style="display:flex;gap:8px;margin-bottom:28px;">
+            <button class="nd-gc-type-btn active" id="ndGcTypeMonthly" onclick="ndGcSetType('monthly',this)" style="padding:10px 24px;background:var(--accent);color:#fff;border:none;font-family:inherit;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;">Monthly</button>
+            <button class="nd-gc-type-btn" id="ndGcTypeAnnual" onclick="ndGcSetType('annual',this)" style="padding:10px 24px;background:none;color:var(--text-muted);border:1px solid var(--border);font-family:inherit;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;">Annual</button>
+          </div>
+
+          <!-- Goal Input -->
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:28px;margin-bottom:24px;">
+            <label style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:500;display:block;margin-bottom:12px;">Target Income</label>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <span style="font-size:1.5rem;color:var(--text-muted);">$</span>
+              <input type="number" id="ndGcGoalInput" placeholder="4000" min="0" step="100"
+                style="font-size:2rem;font-weight:300;letter-spacing:-0.03em;background:none;border:none;border-bottom:2px solid var(--border);color:var(--text);font-family:inherit;width:200px;outline:none;padding:4px 0;"
+                oninput="ndGcCalculate()" onfocus="this.style.borderBottomColor='var(--accent)'" onblur="this.style.borderBottomColor='var(--border)'">
+              <span style="font-size:0.85rem;color:var(--text-muted);" id="ndGcPeriodLabel">/ month</span>
+            </div>
+          </div>
+
+          <!-- Pricing Inputs -->
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:28px;margin-bottom:24px;">
+            <h3 style="font-size:0.85rem;font-weight:600;letter-spacing:0.04em;margin-bottom:20px;">Your Pricing</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div>
+                <label style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);display:block;margin-bottom:8px;">Monthly Plan Price ($)</label>
+                <input type="number" id="ndGcPlanPrice" value="129" min="0"
+                  style="width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:1rem;outline:none;"
+                  oninput="ndGcCalculate()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+              </div>
+              <div>
+                <label style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);display:block;margin-bottom:8px;">Current Active Clients</label>
+                <input type="number" id="ndGcCurrentClients" value="18" min="0"
+                  style="width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:1rem;outline:none;"
+                  oninput="ndGcCalculate()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div id="ndGcResults" style="background:var(--bg-card);border:1px solid var(--border);padding:28px;margin-bottom:24px;display:none;">
+            <h3 style="font-size:0.85rem;font-weight:600;letter-spacing:0.04em;margin-bottom:20px;">What You Need</h3>
+            <div id="ndGcResultsBody"></div>
+          </div>
+
+          <!-- Save Goal -->
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div>
+              <div style="font-size:0.85rem;font-weight:500;margin-bottom:4px;">Save as my goal</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);">This will appear on your Home dashboard progress tracker.</div>
+            </div>
+            <button onclick="ndGcSaveGoal()" style="padding:12px 28px;background:var(--accent);color:#fff;border:none;font-family:inherit;font-size:0.82rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;">Save Goal</button>
+          </div>
+          <div id="ndGcSaveConfirm" style="display:none;margin-top:12px;padding:12px 16px;background:rgba(45,212,191,0.1);border:1px solid var(--accent);font-size:0.82rem;color:var(--accent);">✓ Goal saved to your dashboard.</div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -1340,6 +1408,9 @@
         break;
       case 'profile':
         ndInitProfile();
+        break;
+      case 'goalcalc':
+        ndGcCalculate();
         break;
     }
   }
@@ -2157,6 +2228,79 @@
     ndRenderSalesChart('daily');
     ndRenderGoalProgress('daily');
   })();
+  </script>
+
+  <script>
+  // ===== GOAL CALCULATOR (Nutritionist) =====
+  var _ndGcType = 'monthly';
+
+  function ndGcSetType(type, btn) {
+    _ndGcType = type;
+    document.querySelectorAll('.nd-gc-type-btn').forEach(function(b) {
+      b.style.background = 'none';
+      b.style.color = 'var(--text-muted)';
+      b.style.border = '1px solid var(--border)';
+    });
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    btn.style.border = 'none';
+    document.getElementById('ndGcPeriodLabel').textContent = type === 'monthly' ? '/ month' : '/ year';
+    ndGcCalculate();
+  }
+
+  function ndGcCalculate() {
+    var goal = parseFloat(document.getElementById('ndGcGoalInput').value) || 0;
+    var planPrice = parseFloat(document.getElementById('ndGcPlanPrice').value) || 0;
+    var currentClients = parseInt(document.getElementById('ndGcCurrentClients').value) || 0;
+    if (goal <= 0 || planPrice <= 0) {
+      document.getElementById('ndGcResults').style.display = 'none';
+      return;
+    }
+    var monthlyGoal = _ndGcType === 'monthly' ? goal : goal / 12;
+    var monthlyRevenue = currentClients * planPrice;
+    var currentMonthly = monthlyRevenue * 0.85;
+    var needed = Math.ceil(monthlyGoal / (planPrice * 0.85));
+    var newClientsNeeded = Math.max(0, needed - currentClients);
+    var pct = Math.min(100, Math.round((currentMonthly / monthlyGoal) * 100));
+
+    var html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px;">'
+      + _ndGcStat('Clients Needed', needed, 'total')
+      + _ndGcStat('New Clients to Add', newClientsNeeded, '')
+      + _ndGcStat('Monthly at Goal', '$' + Math.round(monthlyGoal).toLocaleString(), '')
+      + _ndGcStat('Annual at Goal', '$' + Math.round(monthlyGoal * 12).toLocaleString(), '')
+      + '</div>'
+      + '<div style="margin-bottom:8px;font-size:0.78rem;color:var(--text-muted);">Current progress toward ' + (_ndGcType === 'monthly' ? 'monthly' : 'annual') + ' goal</div>'
+      + '<div style="height:8px;background:var(--bg-alt);border-radius:4px;overflow:hidden;margin-bottom:6px;">'
+      + '<div style="height:100%;width:' + pct + '%;background:' + (pct >= 100 ? '#10B981' : 'var(--accent)') + ';border-radius:4px;transition:width 0.6s;"></div>'
+      + '</div>'
+      + '<div style="font-size:0.78rem;color:var(--text-muted);">'
+      + '$' + Math.round(currentMonthly).toLocaleString() + ' / $' + Math.round(monthlyGoal).toLocaleString() + ' per month (' + pct + '%)'
+      + '</div>';
+    document.getElementById('ndGcResultsBody').innerHTML = html;
+    document.getElementById('ndGcResults').style.display = '';
+  }
+
+  function _ndGcStat(label, value, sub) {
+    return '<div style="background:var(--bg-alt);padding:20px;text-align:center;">'
+      + '<div style="font-size:1.6rem;font-weight:300;letter-spacing:-0.03em;color:var(--accent);">' + value + '</div>'
+      + '<div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-top:6px;">' + label + '</div>'
+      + (sub ? '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">' + sub + '</div>' : '')
+      + '</div>';
+  }
+
+  function ndGcSaveGoal() {
+    var goal = parseFloat(document.getElementById('ndGcGoalInput').value) || 0;
+    if (!goal) return;
+    if (_ndGcType === 'monthly') {
+      localStorage.setItem('nutritionistSalesGoalMonthly', goal);
+    } else {
+      localStorage.setItem('nutritionistSalesGoalAnnual', goal);
+    }
+    var confirm = document.getElementById('ndGcSaveConfirm');
+    confirm.style.display = '';
+    setTimeout(function() { confirm.style.display = 'none'; }, 3000);
+    if (typeof ndRenderGoalProgress === 'function') ndRenderGoalProgress('monthly');
+  }
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
