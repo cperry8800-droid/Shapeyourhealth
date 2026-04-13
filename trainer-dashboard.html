@@ -984,6 +984,202 @@
       <div class="pb-plan-list" id="pbPlanList">
         <div class="pb-empty">No programs yet. Create your first workout program above.</div>
       </div>
+
+      <!-- ===== WORKOUT BUILDER SECTION ===== -->
+      <div style="margin-top:48px; padding-top:32px; border-top:1px solid var(--border);">
+        <div class="pb-header">
+          <h2>Workout Builder</h2>
+          <button class="btn btn-primary" id="wbCreateBtn" onclick="wbToggleBuilder()">+ Create New Workout</button>
+        </div>
+
+        <!-- Workout Builder Area -->
+        <div class="pb-builder" id="wbBuilder">
+          <!-- Step 1: Choose Type -->
+          <div id="wbStep1">
+            <div class="pb-type-chooser">
+              <div class="pb-type-card" onclick="wbSelectType('template')">
+                <h3>Use Shape Template</h3>
+                <p>Build a structured single-session workout with exercises, sets, reps, rest periods, and coach notes.</p>
+              </div>
+              <div class="pb-type-card" onclick="wbSelectType('custom')">
+                <h3>Upload Custom Workout</h3>
+                <p>Upload your own workout session as a PDF, image, or document and assign it to a client.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workout Template Form -->
+          <div class="pb-form" id="wbTemplateForm">
+            <div class="pb-row">
+              <div class="pb-field">
+                <label class="pb-label">Workout Name</label>
+                <input type="text" class="pb-input" id="wbTplName" placeholder="e.g. Upper Body Power Session">
+              </div>
+              <div class="pb-field">
+                <label class="pb-label">Category</label>
+                <select class="pb-select" id="wbTplCategory">
+                  <option value="">Select...</option>
+                  <option>Strength</option><option>HIIT</option><option>Bodybuilding</option>
+                  <option>Full-Body</option><option>Cardio</option><option>Powerlifting</option>
+                  <option>Mobility</option><option>Functional</option><option>Sport-Specific</option>
+                </select>
+              </div>
+              <div class="pb-field">
+                <label class="pb-label">Difficulty</label>
+                <select class="pb-select" id="wbTplDifficulty">
+                  <option value="">Select...</option>
+                  <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+                </select>
+              </div>
+            </div>
+            <div class="pb-row">
+              <div class="pb-field">
+                <label class="pb-label">Est. Duration</label>
+                <select class="pb-select" id="wbTplDuration">
+                  <option value="">Select...</option>
+                  <option>15 min</option><option>20 min</option><option>30 min</option>
+                  <option>45 min</option><option>60 min</option><option>75 min</option><option>90 min</option>
+                </select>
+              </div>
+              <div class="pb-field">
+                <label class="pb-label">Target Muscles</label>
+                <input type="text" class="pb-input" id="wbTplMuscles" placeholder="e.g. Chest, Shoulders, Triceps">
+              </div>
+              <div class="pb-field">
+                <label class="pb-label">Equipment</label>
+                <select class="pb-select" id="wbTplEquipment">
+                  <option value="">Select...</option>
+                  <option>Barbell</option><option>Dumbbells</option><option>Kettlebells</option>
+                  <option>Bodyweight</option><option>Cables &amp; Machines</option>
+                  <option>Resistance Bands</option><option>Full Gym</option>
+                </select>
+              </div>
+            </div>
+            <div class="pb-field">
+              <label class="pb-label">Description / Coach Notes</label>
+              <textarea class="pb-textarea" id="wbTplDesc" placeholder="Describe session goals, coaching cues, intensity notes..."></textarea>
+            </div>
+
+            <!-- Warm-Up -->
+            <div class="pb-sub-section">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Warm-Up</div>
+              <div id="wbWarmup">
+                <div class="pb-warmup-row">
+                  <input type="text" class="pb-input" placeholder="Exercise / Activity">
+                  <input type="text" class="pb-input" placeholder="Duration">
+                  <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="wbAddWarmup()" style="margin-top:6px;font-size:0.7rem;">+ Add Warm-Up</button>
+            </div>
+
+            <!-- Exercises -->
+            <div class="pb-sub-section">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Exercises</div>
+              <div class="pb-actions-row" style="font-size:0.68rem;color:var(--text-muted);margin-bottom:4px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 2fr 28px;gap:8px;">
+                <span>Exercise</span><span>Sets</span><span>Reps</span><span>Rest</span><span>Weight / Notes</span><span></span>
+              </div>
+              <div id="wbExercises">
+                <div class="pb-exercise-row">
+                  <input type="text" class="pb-input" placeholder="e.g. Bench Press">
+                  <input type="text" class="pb-input" placeholder="4">
+                  <input type="text" class="pb-input" placeholder="8-10">
+                  <input type="text" class="pb-input" placeholder="90s">
+                  <input type="text" class="pb-input" placeholder="135 lbs">
+                  <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="wbAddExercise()" style="margin-top:6px;font-size:0.7rem;">+ Add Exercise</button>
+            </div>
+
+            <!-- Cool-Down -->
+            <div class="pb-sub-section">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Cool-Down</div>
+              <div id="wbCooldown">
+                <div class="pb-warmup-row">
+                  <input type="text" class="pb-input" placeholder="Exercise / Stretch">
+                  <input type="text" class="pb-input" placeholder="Duration">
+                  <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="wbAddCooldown()" style="margin-top:6px;font-size:0.7rem;">+ Add Cool-Down</button>
+            </div>
+
+            <!-- Assign & Actions Bar -->
+            <div class="pb-assign-bar">
+              <div class="pb-field">
+                <label class="pb-label">Assign to Client</label>
+                <select class="pb-select" id="wbTplClient">
+                  <option value="">None</option>
+                  <option>Christopher Perry</option><option>Emma Chen</option><option>David Kim</option>
+                  <option>Sofia Rodriguez</option><option>Marcus Thompson</option>
+                </select>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+                <button class="btn btn-outline" onclick="wbSaveDraft('template')" style="border-color:var(--accent);color:var(--accent);">Save Draft</button>
+                <button class="btn btn-accent" onclick="wbSaveWorkout('template')">Publish &amp; Send to Client</button>
+                <button class="btn btn-primary" onclick="wbPublishToProfile('template')">Publish to Profile</button>
+                <button class="btn btn-outline" onclick="wbToggleBuilder()">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload Custom Workout Form -->
+          <div class="pb-form" id="wbCustomForm">
+            <div class="pb-field">
+              <label class="pb-label">Workout Name</label>
+              <input type="text" class="pb-input" id="wbCustName" placeholder="e.g. Custom Workout Session">
+            </div>
+            <div class="pb-field">
+              <label class="pb-label">Description / Coach Notes</label>
+              <textarea class="pb-textarea" id="wbCustDesc" placeholder="Brief overview of the workout..."></textarea>
+            </div>
+
+            <!-- File Upload Area -->
+            <div class="pb-field">
+              <label class="pb-label">Upload Your Workout</label>
+              <div id="wbUploadZone" style="border:2px dashed var(--border);padding:40px 20px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--bg);border-radius:var(--radius-lg,12px);" onclick="document.getElementById('wbFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(45,212,191,0.04)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--bg)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';this.style.background='var(--bg)';wbHandleFiles(event.dataTransfer.files)">
+                <div style="font-size:1.6rem;margin-bottom:8px;color:var(--text-muted);">&#8593;</div>
+                <div style="font-size:0.88rem;font-weight:500;color:var(--text);margin-bottom:4px;">Drag &amp; drop your file here or click to browse</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);">Supports PDF, PNG, JPG, DOCX, or TXT — max 10MB</div>
+              </div>
+              <input type="file" id="wbFileInput" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.txt" style="display:none" onchange="wbHandleFiles(this.files)">
+            </div>
+
+            <!-- Uploaded File Preview -->
+            <div id="wbUploadedFilesZone" style="display:none;margin-top:12px;">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Uploaded Files</div>
+              <div id="wbFileList"></div>
+            </div>
+
+            <!-- Assign Bar -->
+            <div class="pb-assign-bar">
+              <div class="pb-field">
+                <label class="pb-label">Assign to Client</label>
+                <select class="pb-select" id="wbCustClient">
+                  <option value="">None</option>
+                  <option>Christopher Perry</option><option>Emma Chen</option><option>David Kim</option>
+                  <option>Sofia Rodriguez</option><option>Marcus Thompson</option>
+                </select>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+                <button class="btn btn-outline" onclick="wbSaveDraft('custom')" style="border-color:var(--accent);color:var(--accent);">Save Draft</button>
+                <button class="btn btn-accent" onclick="wbSaveWorkout('custom')">Publish &amp; Send to Client</button>
+                <button class="btn btn-primary" onclick="wbPublishToProfile('custom')">Publish to Profile</button>
+                <button class="btn btn-outline" onclick="wbToggleBuilder()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Workouts List -->
+        <div class="pb-header" style="margin-top:12px;">
+          <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">My Workouts</h3>
+        </div>
+        <div class="pb-plan-list" id="wbWorkoutList">
+          <div class="pb-empty">No workouts yet. Create your first single workout session above.</div>
+        </div>
+      </div>
     </div>
 
     <!-- ========== TAB: MESSAGES ========== -->
@@ -1559,6 +1755,7 @@
         break;
       case 'programs':
         initProgramsTab();
+        initWorkoutBuilder();
         break;
       case 'community':
         initCommunityTab();
@@ -2116,6 +2313,417 @@
       ]);
     }
     renderPbPlanList();
+  }
+
+  // ===== Workout Builder =====
+  const WB_KEY = 'shapeTrainerWorkouts';
+
+  function _getWbWorkouts() {
+    try { return JSON.parse(localStorage.getItem(WB_KEY)) || []; } catch(e) { return []; }
+  }
+  function _saveWbWorkouts(data) {
+    try { localStorage.setItem(WB_KEY, JSON.stringify(data)); } catch(e) {}
+  }
+
+  let _wbBuilderOpen = false;
+  let _wbUploadedFiles = [];
+  let _wbEditId = null;
+
+  function wbToggleBuilder() {
+    const builder = document.getElementById('wbBuilder');
+    const btn = document.getElementById('wbCreateBtn');
+    _wbBuilderOpen = !_wbBuilderOpen;
+    if (_wbBuilderOpen) {
+      builder.classList.add('active');
+      btn.textContent = 'Cancel';
+    } else {
+      builder.classList.remove('active');
+      btn.textContent = '+ Create New Workout';
+      _wbEditId = null;
+    }
+    wbResetForms();
+  }
+
+  function wbResetForms() {
+    ['wbTplName','wbTplMuscles'].forEach(function(id) {
+      var el = document.getElementById(id); if (el) el.value = '';
+    });
+    ['wbTplCategory','wbTplDifficulty','wbTplDuration','wbTplEquipment','wbTplClient','wbCustClient'].forEach(function(id) {
+      var el = document.getElementById(id); if (el) el.value = '';
+    });
+    ['wbTplDesc','wbCustDesc'].forEach(function(id) {
+      var el = document.getElementById(id); if (el) el.value = '';
+    });
+    var custName = document.getElementById('wbCustName'); if (custName) custName.value = '';
+    var warmup = document.getElementById('wbWarmup');
+    if (warmup) warmup.innerHTML = '<div class="pb-warmup-row"><input type="text" class="pb-input" placeholder="Exercise / Activity"><input type="text" class="pb-input" placeholder="Duration"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button></div>';
+    var exercises = document.getElementById('wbExercises');
+    if (exercises) exercises.innerHTML = '<div class="pb-exercise-row"><input type="text" class="pb-input" placeholder="e.g. Bench Press"><input type="text" class="pb-input" placeholder="4"><input type="text" class="pb-input" placeholder="8-10"><input type="text" class="pb-input" placeholder="90s"><input type="text" class="pb-input" placeholder="135 lbs"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button></div>';
+    var cooldown = document.getElementById('wbCooldown');
+    if (cooldown) cooldown.innerHTML = '<div class="pb-warmup-row"><input type="text" class="pb-input" placeholder="Exercise / Stretch"><input type="text" class="pb-input" placeholder="Duration"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button></div>';
+    var tplForm = document.getElementById('wbTemplateForm'); if (tplForm) tplForm.classList.remove('active');
+    var custForm = document.getElementById('wbCustomForm'); if (custForm) custForm.classList.remove('active');
+    var step1 = document.getElementById('wbStep1'); if (step1) step1.style.display = '';
+    _wbUploadedFiles = [];
+    var filesZone = document.getElementById('wbUploadedFilesZone'); if (filesZone) filesZone.style.display = 'none';
+    var fileList = document.getElementById('wbFileList'); if (fileList) fileList.innerHTML = '';
+  }
+
+  function wbSelectType(type) {
+    var step1 = document.getElementById('wbStep1');
+    var tplForm = document.getElementById('wbTemplateForm');
+    var custForm = document.getElementById('wbCustomForm');
+    if (step1) step1.style.display = 'none';
+    if (type === 'template') {
+      if (tplForm) tplForm.classList.add('active');
+      if (custForm) custForm.classList.remove('active');
+    } else {
+      if (custForm) custForm.classList.add('active');
+      if (tplForm) tplForm.classList.remove('active');
+    }
+  }
+
+  function wbAddExercise() {
+    var list = document.getElementById('wbExercises');
+    if (!list) return;
+    var row = document.createElement('div');
+    row.className = 'pb-exercise-row';
+    row.innerHTML = '<input type="text" class="pb-input" placeholder="e.g. Bench Press"><input type="text" class="pb-input" placeholder="4"><input type="text" class="pb-input" placeholder="8-10"><input type="text" class="pb-input" placeholder="90s"><input type="text" class="pb-input" placeholder="135 lbs"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+    list.appendChild(row);
+  }
+
+  function wbAddWarmup() {
+    var c = document.getElementById('wbWarmup');
+    if (!c) return;
+    var row = document.createElement('div');
+    row.className = 'pb-warmup-row';
+    row.innerHTML = '<input type="text" class="pb-input" placeholder="Exercise / Activity"><input type="text" class="pb-input" placeholder="Duration"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+    c.appendChild(row);
+  }
+
+  function wbAddCooldown() {
+    var c = document.getElementById('wbCooldown');
+    if (!c) return;
+    var row = document.createElement('div');
+    row.className = 'pb-warmup-row';
+    row.innerHTML = '<input type="text" class="pb-input" placeholder="Exercise / Stretch"><input type="text" class="pb-input" placeholder="Duration"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+    c.appendChild(row);
+  }
+
+  function wbCollectTemplate() {
+    var warmup = [];
+    document.querySelectorAll('#wbWarmup .pb-warmup-row').forEach(function(r) {
+      var inputs = r.querySelectorAll('.pb-input');
+      if (inputs[0] && inputs[0].value) warmup.push({ exercise: inputs[0].value, duration: inputs[1] ? inputs[1].value : '' });
+    });
+    var exercises = [];
+    document.querySelectorAll('#wbExercises .pb-exercise-row').forEach(function(r) {
+      var inputs = r.querySelectorAll('.pb-input');
+      if (inputs[0] && inputs[0].value) exercises.push({
+        name: inputs[0].value, sets: inputs[1] ? inputs[1].value : '',
+        reps: inputs[2] ? inputs[2].value : '', rest: inputs[3] ? inputs[3].value : '',
+        notes: inputs[4] ? inputs[4].value : ''
+      });
+    });
+    var cooldown = [];
+    document.querySelectorAll('#wbCooldown .pb-warmup-row').forEach(function(r) {
+      var inputs = r.querySelectorAll('.pb-input');
+      if (inputs[0] && inputs[0].value) cooldown.push({ exercise: inputs[0].value, duration: inputs[1] ? inputs[1].value : '' });
+    });
+    return {
+      type: 'template',
+      name: document.getElementById('wbTplName') ? document.getElementById('wbTplName').value : '',
+      category: document.getElementById('wbTplCategory') ? document.getElementById('wbTplCategory').value : '',
+      difficulty: document.getElementById('wbTplDifficulty') ? document.getElementById('wbTplDifficulty').value : '',
+      duration: document.getElementById('wbTplDuration') ? document.getElementById('wbTplDuration').value : '',
+      muscles: document.getElementById('wbTplMuscles') ? document.getElementById('wbTplMuscles').value : '',
+      equipment: document.getElementById('wbTplEquipment') ? document.getElementById('wbTplEquipment').value : '',
+      description: document.getElementById('wbTplDesc') ? document.getElementById('wbTplDesc').value : '',
+      warmup: warmup,
+      exercises: exercises,
+      cooldown: cooldown,
+      client: document.getElementById('wbTplClient') ? document.getElementById('wbTplClient').value : ''
+    };
+  }
+
+  function wbCollectCustom() {
+    return {
+      type: 'custom',
+      name: document.getElementById('wbCustName') ? document.getElementById('wbCustName').value : '',
+      description: document.getElementById('wbCustDesc') ? document.getElementById('wbCustDesc').value : '',
+      files: _wbUploadedFiles.map(function(f) { return { name: f.name, type: f.type, size: f.size, data: f.data }; }),
+      client: document.getElementById('wbCustClient') ? document.getElementById('wbCustClient').value : ''
+    };
+  }
+
+  function wbCoreSave(workout) {
+    workout.id = _wbEditId || Date.now().toString();
+    workout.createdAt = workout.createdAt || new Date().toISOString();
+    workout.updatedAt = new Date().toISOString();
+    var workouts = _getWbWorkouts();
+    var idx = workouts.findIndex(function(w) { return w.id === workout.id; });
+    if (idx >= 0) workouts[idx] = workout;
+    else workouts.push(workout);
+    _saveWbWorkouts(workouts);
+    return workout;
+  }
+
+  function wbSaveDraft(type) {
+    var workout = type === 'template' ? wbCollectTemplate() : wbCollectCustom();
+    if (!workout.name) { if (typeof showToast === 'function') showToast('Please enter a workout name.'); return; }
+    workout.status = 'Draft';
+    wbCoreSave(workout);
+    if (typeof showToast === 'function') showToast('Workout draft saved! You can continue editing anytime.');
+    _wbBuilderOpen = false;
+    _wbEditId = null;
+    var builder = document.getElementById('wbBuilder'); if (builder) builder.classList.remove('active');
+    var btn = document.getElementById('wbCreateBtn'); if (btn) btn.textContent = '+ Create New Workout';
+    wbResetForms();
+    renderWbWorkoutList();
+  }
+
+  function wbSaveWorkout(type) {
+    var workout = type === 'template' ? wbCollectTemplate() : wbCollectCustom();
+    if (!workout.name) { if (typeof showToast === 'function') showToast('Please enter a workout name.'); return; }
+    if (!workout.client) { if (typeof showToast === 'function') showToast('Please assign a client first.'); return; }
+    workout.status = 'Published';
+    wbCoreSave(workout);
+    if (typeof showToast === 'function') showToast('Workout published and sent to ' + workout.client + '!');
+    _wbBuilderOpen = false;
+    _wbEditId = null;
+    var builder = document.getElementById('wbBuilder'); if (builder) builder.classList.remove('active');
+    var btn = document.getElementById('wbCreateBtn'); if (btn) btn.textContent = '+ Create New Workout';
+    wbResetForms();
+    renderWbWorkoutList();
+  }
+
+  function wbPublishToProfile(type) {
+    var workout = type === 'template' ? wbCollectTemplate() : wbCollectCustom();
+    if (!workout.name) { if (typeof showToast === 'function') showToast('Please enter a workout name.'); return; }
+    workout.status = 'On Profile';
+    wbCoreSave(workout);
+    if (typeof showToast === 'function') showToast('Workout published to your profile!');
+    _wbBuilderOpen = false;
+    _wbEditId = null;
+    var builder = document.getElementById('wbBuilder'); if (builder) builder.classList.remove('active');
+    var btn = document.getElementById('wbCreateBtn'); if (btn) btn.textContent = '+ Create New Workout';
+    wbResetForms();
+    renderWbWorkoutList();
+  }
+
+  function renderWbWorkoutList() {
+    var workouts = _getWbWorkouts();
+    var list = document.getElementById('wbWorkoutList');
+    if (!list) return;
+    if (workouts.length === 0) {
+      list.innerHTML = '<div class="pb-empty">No workouts yet. Create your first single workout session above.</div>';
+      return;
+    }
+    list.innerHTML = workouts.map(function(w) {
+      var badgeClass = w.status === 'Published' ? 'pb-badge-published' : w.status === 'On Profile' ? 'pb-badge-profile' : 'pb-badge-draft';
+      var statusLabel = w.status || 'Draft';
+      var clientStr = w.client ? ' &middot; Assigned to ' + w.client : '';
+      var typeLabel = w.type === 'template' ? 'Shape Template' : 'Uploaded Workout';
+      var meta = [typeLabel, w.category, w.difficulty, w.duration, w.muscles].filter(Boolean).join(' &middot; ');
+      return '<div class="pb-plan-item">' +
+        '<div class="pb-plan-item-info"><h4>' + (w.name || 'Untitled') + '</h4><span>' + meta + clientStr + '</span></div>' +
+        '<span class="pb-badge ' + badgeClass + '">' + statusLabel + '</span>' +
+        '<div class="pb-plan-item-actions">' +
+        '<button class="btn btn-sm btn-outline" onclick="wbEditWorkout(\'' + w.id + '\')">Edit</button>' +
+        '<button class="btn btn-sm btn-outline" onclick="wbDeleteWorkout(\'' + w.id + '\')" style="border-color:rgba(239,68,68,0.3);color:#EF4444;">Delete</button>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  function wbEditWorkout(id) {
+    var workouts = _getWbWorkouts();
+    var workout = workouts.find(function(w) { return w.id === id; });
+    if (!workout) return;
+    _wbEditId = id;
+    wbResetForms();
+    var builder = document.getElementById('wbBuilder');
+    if (builder) builder.classList.add('active');
+    _wbBuilderOpen = true;
+    var btn = document.getElementById('wbCreateBtn'); if (btn) btn.textContent = 'Cancel';
+    var step1 = document.getElementById('wbStep1'); if (step1) step1.style.display = 'none';
+    if (workout.type === 'template') {
+      var tplForm = document.getElementById('wbTemplateForm'); if (tplForm) tplForm.classList.add('active');
+      var custForm = document.getElementById('wbCustomForm'); if (custForm) custForm.classList.remove('active');
+      var setVal = function(id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
+      setVal('wbTplName', workout.name);
+      setVal('wbTplCategory', workout.category);
+      setVal('wbTplDifficulty', workout.difficulty);
+      setVal('wbTplDuration', workout.duration);
+      setVal('wbTplMuscles', workout.muscles);
+      setVal('wbTplEquipment', workout.equipment);
+      setVal('wbTplDesc', workout.description);
+      setVal('wbTplClient', workout.client);
+      var warmupEl = document.getElementById('wbWarmup');
+      if (warmupEl && workout.warmup && workout.warmup.length > 0) {
+        warmupEl.innerHTML = '';
+        workout.warmup.forEach(function(w) {
+          var row = document.createElement('div'); row.className = 'pb-warmup-row';
+          row.innerHTML = '<input type="text" class="pb-input" placeholder="Exercise / Activity"><input type="text" class="pb-input" placeholder="Duration"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+          var inputs = row.querySelectorAll('.pb-input');
+          inputs[0].value = w.exercise || ''; inputs[1].value = w.duration || '';
+          warmupEl.appendChild(row);
+        });
+      }
+      var exEl = document.getElementById('wbExercises');
+      if (exEl && workout.exercises && workout.exercises.length > 0) {
+        exEl.innerHTML = '';
+        workout.exercises.forEach(function(ex) {
+          var row = document.createElement('div'); row.className = 'pb-exercise-row';
+          row.innerHTML = '<input type="text" class="pb-input" placeholder="e.g. Bench Press"><input type="text" class="pb-input" placeholder="4"><input type="text" class="pb-input" placeholder="8-10"><input type="text" class="pb-input" placeholder="90s"><input type="text" class="pb-input" placeholder="135 lbs"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+          var inputs = row.querySelectorAll('.pb-input');
+          inputs[0].value = ex.name || ''; inputs[1].value = ex.sets || '';
+          inputs[2].value = ex.reps || ''; inputs[3].value = ex.rest || '';
+          inputs[4].value = ex.notes || '';
+          exEl.appendChild(row);
+        });
+      }
+      var cdEl = document.getElementById('wbCooldown');
+      if (cdEl && workout.cooldown && workout.cooldown.length > 0) {
+        cdEl.innerHTML = '';
+        workout.cooldown.forEach(function(c) {
+          var row = document.createElement('div'); row.className = 'pb-warmup-row';
+          row.innerHTML = '<input type="text" class="pb-input" placeholder="Exercise / Stretch"><input type="text" class="pb-input" placeholder="Duration"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+          var inputs = row.querySelectorAll('.pb-input');
+          inputs[0].value = c.exercise || ''; inputs[1].value = c.duration || '';
+          cdEl.appendChild(row);
+        });
+      }
+    } else {
+      var custForm2 = document.getElementById('wbCustomForm'); if (custForm2) custForm2.classList.add('active');
+      var tplForm2 = document.getElementById('wbTemplateForm'); if (tplForm2) tplForm2.classList.remove('active');
+      var custName = document.getElementById('wbCustName'); if (custName) custName.value = workout.name || '';
+      var custDesc = document.getElementById('wbCustDesc'); if (custDesc) custDesc.value = workout.description || '';
+      var custClient = document.getElementById('wbCustClient'); if (custClient) custClient.value = workout.client || '';
+      _wbUploadedFiles = (workout.files || []).map(function(f) { return { name: f.name, type: f.type, size: f.size, data: f.data }; });
+      wbRenderFileList();
+    }
+    if (builder) builder.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function wbDeleteWorkout(id) {
+    if (!confirm('Delete this workout?')) return;
+    var workouts = _getWbWorkouts().filter(function(w) { return w.id !== id; });
+    _saveWbWorkouts(workouts);
+    if (typeof showToast === 'function') showToast('Workout deleted.');
+    renderWbWorkoutList();
+  }
+
+  function wbHandleFiles(files) {
+    if (!files || files.length === 0) return;
+    Array.from(files).forEach(function(file) {
+      if (file.size > 10 * 1024 * 1024) { if (typeof showToast === 'function') showToast('File too large. Max 10MB.'); return; }
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        _wbUploadedFiles.push({ name: file.name, type: file.type, size: file.size, data: ev.target.result });
+        wbRenderFileList();
+        if (typeof showToast === 'function') showToast(file.name + ' uploaded!');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function wbRenderFileList() {
+    var container = document.getElementById('wbUploadedFilesZone');
+    var list = document.getElementById('wbFileList');
+    if (!container || !list) return;
+    if (_wbUploadedFiles.length === 0) { container.style.display = 'none'; return; }
+    container.style.display = 'block';
+    list.innerHTML = _wbUploadedFiles.map(function(f, i) {
+      var sizeKB = (f.size / 1024).toFixed(1);
+      var isImage = f.type && f.type.startsWith('image/');
+      var icon = f.type === 'application/pdf' ? '&#128196;' : isImage ? '&#128247;' : '&#128196;';
+      return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:6px;">' +
+        (isImage ? '<img src="' + f.data + '" style="width:48px;height:48px;object-fit:cover;border:1px solid var(--border);">' : '<span style="font-size:1.6rem;">' + icon + '</span>') +
+        '<div style="flex:1;"><div style="font-size:0.88rem;font-weight:500;">' + f.name + '</div><div style="font-size:0.72rem;color:var(--text-muted);">' + sizeKB + ' KB</div></div>' +
+        '<button class="pb-remove-btn" onclick="wbRemoveFile(' + i + ')" style="font-size:1rem;">&times;</button></div>';
+    }).join('');
+  }
+
+  function wbRemoveFile(idx) {
+    _wbUploadedFiles.splice(idx, 1);
+    wbRenderFileList();
+  }
+
+  function initWorkoutBuilder() {
+    if (_getWbWorkouts().length === 0) {
+      var now = new Date().toISOString();
+      _saveWbWorkouts([
+        {
+          id: 'demo-wb-1', type: 'template', status: 'Published',
+          name: 'Upper Body Power Session', category: 'Strength',
+          difficulty: 'Intermediate', duration: '60 min',
+          muscles: 'Chest, Shoulders, Triceps', equipment: 'Full Gym',
+          client: 'Christopher Perry', createdAt: now, updatedAt: now,
+          description: 'A focused upper body strength session targeting chest, shoulders, and triceps with compound and isolation movements.',
+          warmup: [
+            { exercise: 'Band Pull-Aparts', duration: '2 min' },
+            { exercise: 'Arm Circles', duration: '1 min' }
+          ],
+          exercises: [
+            { name: 'Barbell Bench Press', sets: '4', reps: '8-10', rest: '90s', notes: '185 lbs' },
+            { name: 'Incline DB Press', sets: '3', reps: '10-12', rest: '60s', notes: '70 lbs' },
+            { name: 'Shoulder Press', sets: '3', reps: '10', rest: '75s', notes: '115 lbs' },
+            { name: 'Tricep Pushdowns', sets: '3', reps: '15', rest: '45s', notes: '' },
+            { name: 'Lateral Raises', sets: '3', reps: '15', rest: '45s', notes: '20 lbs' }
+          ],
+          cooldown: [
+            { exercise: 'Chest Doorway Stretch', duration: '2 min' },
+            { exercise: 'Shoulder Cross-Body', duration: '1 min' }
+          ]
+        },
+        {
+          id: 'demo-wb-2', type: 'template', status: 'Published',
+          name: '30-Min HIIT Burner', category: 'HIIT',
+          difficulty: 'Advanced', duration: '30 min',
+          muscles: 'Full Body', equipment: 'Bodyweight',
+          client: 'Emma Chen', createdAt: now, updatedAt: now,
+          description: 'High-intensity interval session using only bodyweight. Maximize calorie burn and cardiovascular output in 30 minutes.',
+          warmup: [
+            { exercise: 'Jump Rope', duration: '3 min' }
+          ],
+          exercises: [
+            { name: 'Burpees', sets: '4', reps: '12', rest: '20s', notes: '' },
+            { name: 'Jump Squats', sets: '4', reps: '15', rest: '20s', notes: '' },
+            { name: 'Push-Ups', sets: '4', reps: '20', rest: '20s', notes: '' },
+            { name: 'Mountain Climbers', sets: '4', reps: '30', rest: '15s', notes: '' },
+            { name: 'Plank Hold', sets: '3', reps: '45s hold', rest: '20s', notes: '' }
+          ],
+          cooldown: [
+            { exercise: 'Walking', duration: '2 min' },
+            { exercise: 'Static Stretch', duration: '3 min' }
+          ]
+        },
+        {
+          id: 'demo-wb-3', type: 'template', status: 'Draft',
+          name: 'Leg Day Fundamentals', category: 'Bodybuilding',
+          difficulty: 'Beginner', duration: '45 min',
+          muscles: 'Quads, Hamstrings, Glutes', equipment: 'Barbell',
+          client: '', createdAt: now, updatedAt: now,
+          description: 'A beginner-friendly leg day covering all major lower body muscle groups with fundamental movement patterns.',
+          warmup: [
+            { exercise: 'Bodyweight Squats', duration: '2 min' },
+            { exercise: 'Hip Circles', duration: '1 min' }
+          ],
+          exercises: [
+            { name: 'Goblet Squat', sets: '3', reps: '12', rest: '60s', notes: '45 lbs' },
+            { name: 'Leg Press', sets: '3', reps: '15', rest: '60s', notes: '' },
+            { name: 'Romanian Deadlift', sets: '3', reps: '10', rest: '75s', notes: '95 lbs' },
+            { name: 'Leg Curl', sets: '3', reps: '12', rest: '45s', notes: '' },
+            { name: 'Calf Raises', sets: '4', reps: '20', rest: '30s', notes: '' }
+          ],
+          cooldown: [
+            { exercise: 'Quad Stretch', duration: '1 min' },
+            { exercise: 'Hamstring Stretch', duration: '2 min' }
+          ]
+        }
+      ]);
+    }
+    renderWbWorkoutList();
   }
 
   // ===== Community Tab =====
