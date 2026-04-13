@@ -809,10 +809,18 @@
       <div class="td-section">
         <div class="td-section-header">
           <h2>Client Overview</h2>
-          <div class="td-filters">
-            <button class="filter-btn active" onclick="filterClients('all', this)">All</button>
-            <button class="filter-btn" onclick="filterClients('active', this)">Active</button>
-            <button class="filter-btn" onclick="filterClients('inactive', this)">Needs Attention</button>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div style="position:relative;flex:1;min-width:180px;max-width:300px;">
+              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.85rem;pointer-events:none;">&#128269;</span>
+              <input id="clientSearchInput" type="text" placeholder="Search clients…" oninput="searchClients(this.value)"
+                style="width:100%;background:var(--bg-card);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:0.82rem;padding:8px 12px 8px 32px;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <div class="td-filters">
+              <button class="filter-btn active" onclick="filterClients('all', this)">All</button>
+              <button class="filter-btn" onclick="filterClients('active', this)">Active</button>
+              <button class="filter-btn" onclick="filterClients('inactive', this)">Needs Attention</button>
+            </div>
           </div>
         </div>
         <div class="td-client-list" id="clientList">

@@ -163,7 +163,7 @@ function renderNdClients(filter) {
     const lastStr = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo} days ago`;
 
     return `
-      <div class="td-client-row ${isLow ? 'needs-attention' : ''}" onclick="showNdClientDetail(${c.id})">
+      <div class="td-client-row ${isLow ? 'needs-attention' : ''}" data-name="${c.name.toLowerCase()}" onclick="showNdClientDetail(${c.id})">
         <div class="td-client-avatar">
           <div class="avatar">${initials}</div>
         </div>
@@ -194,9 +194,39 @@ function renderNdClients(filter) {
 }
 
 function filterNdClients(filter, btn) {
-  document.querySelectorAll('.td-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#ndTabClients .td-filters .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderNdClients(filter);
+  // Re-apply search after filter change
+  const q = (document.getElementById('ndClientSearchInput') || {}).value || '';
+  searchNdClients(q);
+}
+
+function searchNdClients(q) {
+  const term = q.toLowerCase().trim();
+  document.querySelectorAll('#ndClientList .td-client-row').forEach(row => {
+    const name = row.dataset.name || '';
+    row.style.display = (!term || name.includes(term)) ? '' : 'none';
+  });
+  // Show empty state if no results
+  const list = document.getElementById('ndClientList');
+  if (list) {
+    let empty = list.querySelector('.client-search-empty');
+    const visible = list.querySelectorAll('.td-client-row:not([style*="none"])').length;
+    if (term && visible === 0) {
+      if (!empty) {
+        empty = document.createElement('div');
+        empty.className = 'client-search-empty';
+        empty.style.cssText = 'text-align:center;padding:40px 16px;color:var(--text-muted);font-size:0.85rem;';
+        empty.textContent = 'No clients match "' + q + '"';
+        list.appendChild(empty);
+      } else {
+        empty.textContent = 'No clients match "' + q + '"';
+      }
+    } else if (empty) {
+      empty.remove();
+    }
+  }
 }
 
 // ===== Client Detail =====

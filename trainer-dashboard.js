@@ -161,7 +161,7 @@ function renderClients(filter) {
     const lastStr = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo} days ago`;
 
     return `
-      <div class="td-client-row ${isLow ? 'needs-attention' : ''}" onclick="showClientDetail(${c.id})">
+      <div class="td-client-row ${isLow ? 'needs-attention' : ''}" data-name="${c.name.toLowerCase()}" onclick="showClientDetail(${c.id})">
         <div class="td-client-avatar">
           <div class="avatar">${initials}</div>
         </div>
@@ -192,9 +192,39 @@ function renderClients(filter) {
 }
 
 function filterClients(filter, btn) {
-  document.querySelectorAll('.td-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#tab-clients .td-filters .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderClients(filter);
+  // Re-apply search after filter change
+  const q = (document.getElementById('clientSearchInput') || {}).value || '';
+  searchClients(q);
+}
+
+function searchClients(q) {
+  const term = q.toLowerCase().trim();
+  document.querySelectorAll('#clientList .td-client-row').forEach(row => {
+    const name = row.dataset.name || '';
+    row.style.display = (!term || name.includes(term)) ? '' : 'none';
+  });
+  // Show empty state if no results
+  const list = document.getElementById('clientList');
+  if (list) {
+    let empty = list.querySelector('.client-search-empty');
+    const visible = list.querySelectorAll('.td-client-row:not([style*="none"])').length;
+    if (term && visible === 0) {
+      if (!empty) {
+        empty = document.createElement('div');
+        empty.className = 'client-search-empty';
+        empty.style.cssText = 'text-align:center;padding:40px 16px;color:var(--text-muted);font-size:0.85rem;';
+        empty.textContent = 'No clients match "' + q + '"';
+        list.appendChild(empty);
+      } else {
+        empty.textContent = 'No clients match "' + q + '"';
+      }
+    } else if (empty) {
+      empty.remove();
+    }
+  }
 }
 
 // ===== Client Detail =====
