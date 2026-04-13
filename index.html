@@ -161,6 +161,23 @@
     .intro-beam-svg.show {
       animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+    /* Triangle overlay on enter screen that pulses */
+    .intro-triangle-overlay {
+      position: absolute;
+      top: 11%;
+      left: 41.6%;
+      width: 17.1%;
+      height: 40.8%;
+      overflow: visible;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .intro-triangle-overlay.show {
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .intro-triangle-overlay polygon {
+      animation: trianglePulse 2s ease-in-out infinite;
+    }
     .intro-logo.show {
       animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       filter: brightness(0) invert(1);
@@ -333,6 +350,10 @@
   <div class="intro-content" id="introContent">
     <div class="intro-logo-wrap">
       <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
+      <svg class="intro-triangle-overlay" viewBox="0 0 95 110" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="5,113 5,43 55,78" fill="#fff"/>
+        <polygon points="90,-3 90,67 40,32" fill="#fff"/>
+      </svg>
       <svg class="intro-beam-svg" viewBox="0 0 95 110" xmlns="http://www.w3.org/2000/svg">
         <path d="M90,-3 L40,32 L90,67" class="s-beam-path s-beam-upper" />
         <path d="M5,43 L55,78 L5,113" class="s-beam-path s-beam-lower" />
@@ -457,6 +478,7 @@
               document.getElementById('introTagline').classList.add('show');
               document.getElementById('enterBtn').classList.add('show');
               document.querySelector('.intro-beam-svg').classList.add('show');
+              document.querySelector('.intro-triangle-overlay').classList.add('show');
             }, 300);
           }, 300);
         }
