@@ -585,17 +585,17 @@
     comp.threshold.value = -8; comp.knee.value = 6;
     comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.15;
 
-    // Bright high-pass to keep it airy
-    const masterHP = ctx.createBiquadFilter();
-    masterHP.type = 'highpass';
-    masterHP.frequency.value = 200;
-    masterHP.Q.value = 0.5;
+    // Low-pass to keep it deep and muffled
+    const masterLP = ctx.createBiquadFilter();
+    masterLP.type = 'lowpass';
+    masterLP.frequency.value = 800;
+    masterLP.Q.value = 0.7;
 
-    master.connect(masterHP);
-    masterHP.connect(comp);
+    master.connect(masterLP);
+    masterLP.connect(comp);
     comp.connect(ctx.destination);
 
-    // ========== LAYER 1: ELECTRIC HUM (60Hz mains) ==========
+    // ========== LAYER 1: LOW ELECTRIC BUZZ (60Hz mains) ==========
     const hum1 = ctx.createOscillator();
     const hum1G = ctx.createGain();
     hum1.type = 'sawtooth';
@@ -603,25 +603,39 @@
     hum1.frequency.linearRampToValueAtTime(62, now + t * 0.5);
     hum1.frequency.linearRampToValueAtTime(60, now + t);
     hum1G.gain.setValueAtTime(0, now);
-    hum1G.gain.linearRampToValueAtTime(0.12 * intensity, now + 0.3);
-    hum1G.gain.linearRampToValueAtTime(0.15 * intensity, now + t * 0.5);
+    hum1G.gain.linearRampToValueAtTime(0.25 * intensity, now + 0.5);
+    hum1G.gain.linearRampToValueAtTime(0.3 * intensity, now + t * 0.5);
     hum1G.gain.linearRampToValueAtTime(0.001, now + t);
-    const humBP = ctx.createBiquadFilter();
-    humBP.type = 'bandpass'; humBP.frequency.value = 120; humBP.Q.value = 3;
-    hum1.connect(humBP); humBP.connect(hum1G); hum1G.connect(master);
+    const humLP = ctx.createBiquadFilter();
+    humLP.type = 'lowpass'; humLP.frequency.value = 180; humLP.Q.value = 2;
+    hum1.connect(humLP); humLP.connect(hum1G); hum1G.connect(master);
     hum1.start(now); hum1.stop(now + t + 0.2);
 
-    // Second harmonic
+    // Second harmonic — deeper
     const hum2 = ctx.createOscillator();
     const hum2G = ctx.createGain();
     hum2.type = 'sine';
     hum2.frequency.setValueAtTime(120, now);
     hum2G.gain.setValueAtTime(0, now);
-    hum2G.gain.linearRampToValueAtTime(0.06 * intensity, now + 0.5);
-    hum2G.gain.linearRampToValueAtTime(0.08 * intensity, now + t * 0.5);
+    hum2G.gain.linearRampToValueAtTime(0.15 * intensity, now + 0.5);
+    hum2G.gain.linearRampToValueAtTime(0.18 * intensity, now + t * 0.5);
     hum2G.gain.linearRampToValueAtTime(0.001, now + t);
     hum2.connect(hum2G); hum2G.connect(master);
     hum2.start(now); hum2.stop(now + t + 0.2);
+
+    // Sub bass foundation
+    const sub = ctx.createOscillator();
+    const subG = ctx.createGain();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(40, now);
+    sub.frequency.linearRampToValueAtTime(45, now + t * 0.4);
+    sub.frequency.linearRampToValueAtTime(40, now + t);
+    subG.gain.setValueAtTime(0, now);
+    subG.gain.linearRampToValueAtTime(0.2 * intensity, now + 0.8);
+    subG.gain.linearRampToValueAtTime(0.25 * intensity, now + t * 0.5);
+    subG.gain.linearRampToValueAtTime(0.001, now + t);
+    sub.connect(subG); subG.connect(master);
+    sub.start(now); sub.stop(now + t + 0.2);
 
     // ========== LAYER 2: CRACKLING ARC NOISE ==========
     const noiseLen = ctx.sampleRate * Math.ceil(t + 1);
@@ -634,133 +648,71 @@
       }
     }
 
-    // High-frequency crackle
+    // Subtle low crackle
     const crackle = ctx.createBufferSource();
     crackle.buffer = noiseBuf;
-    const crackleHP = ctx.createBiquadFilter();
-    crackleHP.type = 'highpass';
-    crackleHP.frequency.setValueAtTime(2000, now);
-    crackleHP.frequency.linearRampToValueAtTime(4000, now + t * 0.3);
-    crackleHP.frequency.linearRampToValueAtTime(3000, now + t);
-    crackleHP.Q.value = 1;
+    const crackleLP = ctx.createBiquadFilter();
+    crackleLP.type = 'lowpass';
+    crackleLP.frequency.setValueAtTime(400, now);
+    crackleLP.frequency.linearRampToValueAtTime(600, now + t * 0.3);
+    crackleLP.frequency.linearRampToValueAtTime(400, now + t);
+    crackleLP.Q.value = 1;
     const crackleG = ctx.createGain();
     crackleG.gain.setValueAtTime(0, now);
-    crackleG.gain.linearRampToValueAtTime(0.35 * intensity, now + 0.2);
-    crackleG.gain.linearRampToValueAtTime(0.5 * intensity, now + t * 0.4);
-    crackleG.gain.linearRampToValueAtTime(0.3 * intensity, now + t * 0.8);
+    crackleG.gain.linearRampToValueAtTime(0.1 * intensity, now + 0.4);
+    crackleG.gain.linearRampToValueAtTime(0.15 * intensity, now + t * 0.4);
     crackleG.gain.linearRampToValueAtTime(0.001, now + t);
-    crackle.connect(crackleHP); crackleHP.connect(crackleG); crackleG.connect(master);
+    crackle.connect(crackleLP); crackleLP.connect(crackleG); crackleG.connect(master);
     crackle.start(now); crackle.stop(now + t + 0.2);
 
-    // Mid crackle for body
-    const midCrackle = ctx.createBufferSource();
-    midCrackle.buffer = noiseBuf;
-    const midBP = ctx.createBiquadFilter();
-    midBP.type = 'bandpass';
-    midBP.frequency.setValueAtTime(800, now);
-    midBP.frequency.linearRampToValueAtTime(1500, now + t * 0.3);
-    midBP.frequency.linearRampToValueAtTime(1000, now + t);
-    midBP.Q.value = 2;
-    const midCG = ctx.createGain();
-    midCG.gain.setValueAtTime(0, now);
-    midCG.gain.linearRampToValueAtTime(0.25 * intensity, now + 0.4);
-    midCG.gain.linearRampToValueAtTime(0.35 * intensity, now + t * 0.5);
-    midCG.gain.linearRampToValueAtTime(0.001, now + t);
-    midCrackle.connect(midBP); midBP.connect(midCG); midCG.connect(master);
-    midCrackle.start(now); midCrackle.stop(now + t + 0.2);
+    // ========== LAYER 3: LOW RESONANT BUZZ ==========
+    const buzz1 = ctx.createOscillator();
+    const buzz1G = ctx.createGain();
+    buzz1.type = 'square';
+    buzz1.frequency.setValueAtTime(90, now);
+    buzz1.frequency.linearRampToValueAtTime(95, now + t * 0.3);
+    buzz1.frequency.linearRampToValueAtTime(88, now + t * 0.7);
+    buzz1.frequency.linearRampToValueAtTime(90, now + t);
+    buzz1G.gain.setValueAtTime(0, now);
+    buzz1G.gain.linearRampToValueAtTime(0.04 * intensity, now + 1.0);
+    buzz1G.gain.linearRampToValueAtTime(0.06 * intensity, now + t * 0.5);
+    buzz1G.gain.linearRampToValueAtTime(0.001, now + t);
+    const buzzLP = ctx.createBiquadFilter();
+    buzzLP.type = 'lowpass'; buzzLP.frequency.value = 250; buzzLP.Q.value = 2;
+    buzz1.connect(buzzLP); buzzLP.connect(buzz1G); buzz1G.connect(master);
+    buzz1.start(now); buzz1.stop(now + t + 0.2);
 
-    // ========== LAYER 3: HIGH RESONANT WHINE (Tesla coil) ==========
-    const whine1 = ctx.createOscillator();
-    const whine1G = ctx.createGain();
-    whine1.type = 'sine';
-    whine1.frequency.setValueAtTime(2400, now);
-    whine1.frequency.linearRampToValueAtTime(2800, now + t * 0.3);
-    whine1.frequency.linearRampToValueAtTime(2200, now + t * 0.7);
-    whine1.frequency.linearRampToValueAtTime(2600, now + t);
-    whine1G.gain.setValueAtTime(0, now);
-    whine1G.gain.linearRampToValueAtTime(0.04 * intensity, now + 1.0);
-    whine1G.gain.linearRampToValueAtTime(0.06 * intensity, now + t * 0.5);
-    whine1G.gain.linearRampToValueAtTime(0.001, now + t);
-    whine1.connect(whine1G); whine1G.connect(master);
-    whine1.start(now); whine1.stop(now + t + 0.2);
-
-    // Detuned whine for shimmer
-    const whine2 = ctx.createOscillator();
-    const whine2G = ctx.createGain();
-    whine2.type = 'sine';
-    whine2.frequency.setValueAtTime(2420, now);
-    whine2.frequency.linearRampToValueAtTime(2830, now + t * 0.3);
-    whine2.frequency.linearRampToValueAtTime(2215, now + t * 0.7);
-    whine2.frequency.linearRampToValueAtTime(2625, now + t);
-    whine2G.gain.setValueAtTime(0, now);
-    whine2G.gain.linearRampToValueAtTime(0.03 * intensity, now + 1.2);
-    whine2G.gain.linearRampToValueAtTime(0.05 * intensity, now + t * 0.5);
-    whine2G.gain.linearRampToValueAtTime(0.001, now + t);
-    whine2.connect(whine2G); whine2G.connect(master);
-    whine2.start(now); whine2.stop(now + t + 0.2);
-
-    // ========== LAYER 4: SIZZLE (filtered noise shimmer) ==========
-    const sizzleBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
-    const sd = sizzleBuf.getChannelData(0);
-    for (let i = 0; i < noiseLen; i++) sd[i] = Math.random() * 2 - 1;
-
-    const sizzle = ctx.createBufferSource();
-    sizzle.buffer = sizzleBuf;
-    const sizzleBP = ctx.createBiquadFilter();
-    sizzleBP.type = 'bandpass';
-    sizzleBP.frequency.setValueAtTime(6000, now);
-    sizzleBP.frequency.linearRampToValueAtTime(8000, now + t * 0.3);
-    sizzleBP.frequency.linearRampToValueAtTime(5000, now + t);
-    sizzleBP.Q.value = 3;
-    const sizzleG = ctx.createGain();
-    sizzleG.gain.setValueAtTime(0, now);
-    sizzleG.gain.linearRampToValueAtTime(0.08 * intensity, now + 0.6);
-    sizzleG.gain.linearRampToValueAtTime(0.12 * intensity, now + t * 0.4);
-    sizzleG.gain.linearRampToValueAtTime(0.001, now + t);
-    sizzle.connect(sizzleBP); sizzleBP.connect(sizzleG); sizzleG.connect(master);
-    sizzle.start(now); sizzle.stop(now + t + 0.2);
-
-    // ========== LAYER 5: LFOs FOR MOVEMENT ==========
-    // Intensity wobble — irregular surges
+    // ========== LAYER 4: LFOs FOR MOVEMENT ==========
+    // Slow throb on master
     const surgeLFO = ctx.createOscillator();
     const surgeG = ctx.createGain();
     surgeLFO.type = 'sine';
-    surgeLFO.frequency.value = 0.4;
+    surgeLFO.frequency.value = 0.2;
     surgeG.gain.setValueAtTime(0, now);
-    surgeG.gain.linearRampToValueAtTime(0.06 * intensity, now + 0.5);
-    surgeG.gain.linearRampToValueAtTime(0.1 * intensity, now + t * 0.5);
+    surgeG.gain.linearRampToValueAtTime(0.03 * intensity, now + 0.5);
+    surgeG.gain.linearRampToValueAtTime(0.05 * intensity, now + t * 0.5);
     surgeG.gain.linearRampToValueAtTime(0.001, now + t);
     surgeLFO.connect(surgeG);
     surgeG.connect(master.gain);
     surgeLFO.start(now); surgeLFO.stop(now + t + 0.2);
 
-    // Crackle filter sweep
-    const sweepLFO = ctx.createOscillator();
-    const sweepG = ctx.createGain();
-    sweepLFO.type = 'triangle';
-    sweepLFO.frequency.value = 0.25;
-    sweepG.gain.value = 800;
-    sweepLFO.connect(sweepG);
-    sweepG.connect(crackleHP.frequency);
-    sweepLFO.start(now); sweepLFO.stop(now + t + 0.2);
-
-    // Whine drift
-    const whineLFO = ctx.createOscillator();
-    const whineD = ctx.createGain();
-    whineLFO.type = 'sine';
-    whineLFO.frequency.value = 0.12;
-    whineD.gain.value = 60;
-    whineLFO.connect(whineD);
-    whineD.connect(whine1.frequency);
-    whineD.connect(whine2.frequency);
-    whineLFO.start(now); whineLFO.stop(now + t + 0.2);
+    // Hum frequency drift
+    const driftLFO = ctx.createOscillator();
+    const driftG = ctx.createGain();
+    driftLFO.type = 'sine';
+    driftLFO.frequency.value = 0.08;
+    driftG.gain.value = 3;
+    driftLFO.connect(driftG);
+    driftG.connect(hum1.frequency);
+    driftG.connect(buzz1.frequency);
+    driftLFO.start(now); driftLFO.stop(now + t + 0.2);
 
     // ========== MASTER ENVELOPE ==========
     master.gain.setValueAtTime(0, now);
-    master.gain.linearRampToValueAtTime(0.5 * intensity, now + 0.3);
-    master.gain.linearRampToValueAtTime(0.9 * intensity, now + t * 0.2);
-    master.gain.linearRampToValueAtTime(1.0 * intensity, now + t * 0.5);
-    master.gain.linearRampToValueAtTime(0.8 * intensity, now + t * 0.85);
+    master.gain.linearRampToValueAtTime(0.15 * intensity, now + 0.5);
+    master.gain.linearRampToValueAtTime(0.25 * intensity, now + t * 0.3);
+    master.gain.linearRampToValueAtTime(0.3 * intensity, now + t * 0.5);
+    master.gain.linearRampToValueAtTime(0.25 * intensity, now + t * 0.85);
     master.gain.linearRampToValueAtTime(0.001, now + t);
 
     ambientNodes = { master };
