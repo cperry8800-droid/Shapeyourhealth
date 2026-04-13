@@ -723,6 +723,19 @@
   .nd-sales-goal-progress-fill {
     height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s;
   }
+
+  /* ===== Widget Drag-and-Drop ===== */
+  .widget-grid { display: flex; flex-direction: column; gap: 16px; }
+  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; }
+  .widget.dragging { opacity: 0.4; }
+  .widget.drag-over { border-top: 2px solid var(--accent); }
+  .widget-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg-alt); }
+  .widget-title { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+  .widget-drag-handle { font-size: 1.2rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 4px; }
+  .widget-drag-handle:active { cursor: grabbing; }
+  .widget-body { padding: 20px; }
+  .widget-body > *:first-child { margin-top: 0 !important; }
+  .widget-body > *:last-child { margin-bottom: 0 !important; }
 </style>
 </head>
 <body>
@@ -797,85 +810,121 @@
   <div class="nd-tab-content active" id="ndTabHome">
     <section class="section">
       <div class="container">
-        <!-- Nutritionist Stats -->
-        <div class="progress-stats-row" style="grid-template-columns:repeat(5,1fr)">
-          <div class="progress-stat-card">
-            <div class="progress-stat-number">18</div>
-            <div class="progress-stat-label">Active Clients</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number">$4,320</div>
-            <div class="progress-stat-label">Total Sales This Month</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" style="color:#10B981;">$3,672</div>
-            <div class="progress-stat-label">Your Earnings (85%)</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number">91%</div>
-            <div class="progress-stat-label">Client Retention</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number">96</div>
-            <div class="progress-stat-label">Plans Sold</div>
-          </div>
-        </div>
+        <div class="widget-grid" id="ndWidgetGrid">
 
-        <!-- Meal Schedule & Logs -->
-        <div class="td-section">
-          <div class="td-section-header">
-            <h2>Meal Schedule</h2>
-            <div class="nd-view-toggle">
-              <button class="nd-view-btn active" onclick="ndSwitchDashView('weekly', this)">Weekly</button>
-              <button class="nd-view-btn" onclick="ndSwitchDashView('monthly', this)">Monthly</button>
+          <!-- Widget: Nutritionist Stats -->
+          <div class="widget" data-widget-id="nd-stats" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Overview</span>
+              <span class="widget-drag-handle">&#10783;</span>
             </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
-            <div>
-              <div id="ndDashWeeklyView">
-                <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Client Adherence This Week</h3>
-                <div id="ndDashWeeklyContent"></div>
-              </div>
-              <div id="ndDashMonthlyView" style="display:none;">
-                <div id="ndDashCalContainer"></div>
+            <div class="widget-body">
+              <div class="progress-stats-row" style="grid-template-columns:repeat(5,1fr)">
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number">18</div>
+                  <div class="progress-stat-label">Active Clients</div>
+                </div>
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number">$4,320</div>
+                  <div class="progress-stat-label">Total Sales This Month</div>
+                </div>
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number" style="color:#10B981;">$3,672</div>
+                  <div class="progress-stat-label">Your Earnings (85%)</div>
+                </div>
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number">91%</div>
+                  <div class="progress-stat-label">Client Retention</div>
+                </div>
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number">96</div>
+                  <div class="progress-stat-label">Plans Sold</div>
+                </div>
               </div>
             </div>
-            <div>
-              <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Recent Client Meals</h3>
-              <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="ndDashMealLog"></div>
+          </div>
+
+          <!-- Widget: Meal Schedule -->
+          <div class="widget" data-widget-id="nd-mealschedule" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Meal Schedule</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="td-section" style="margin-bottom:0;">
+                <div class="td-section-header">
+                  <h2>Meal Schedule</h2>
+                  <div class="nd-view-toggle">
+                    <button class="nd-view-btn active" onclick="ndSwitchDashView('weekly', this)">Weekly</button>
+                    <button class="nd-view-btn" onclick="ndSwitchDashView('monthly', this)">Monthly</button>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
+                  <div>
+                    <div id="ndDashWeeklyView">
+                      <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Client Adherence This Week</h3>
+                      <div id="ndDashWeeklyContent"></div>
+                    </div>
+                    <div id="ndDashMonthlyView" style="display:none;">
+                      <div id="ndDashCalContainer"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Recent Client Meals</h3>
+                    <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="ndDashMealLog"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Monthly Client Calendar -->
-        <div class="td-section nd-home-cal-section">
-          <div id="ndHomeCalContainer" style="margin-top:4px;"></div>
-        </div>
+          <!-- Widget: Client Check-In Calendar -->
+          <div class="widget" data-widget-id="nd-calendar" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Client Check-In Calendar</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="td-section nd-home-cal-section" style="margin-bottom:0;">
+                <div id="ndHomeCalContainer" style="margin-top:4px;"></div>
+              </div>
+            </div>
+          </div>
 
-        <!-- Plan Sales Section -->
-        <div class="td-section nd-sales-section">
-          <div class="td-section-header">
-            <h2>Plan Sales</h2>
+          <!-- Widget: Plan Sales -->
+          <div class="widget" data-widget-id="nd-sales" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Plan Sales</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="td-section nd-sales-section" style="margin-bottom:0;">
+                <div class="td-section-header">
+                  <h2>Plan Sales</h2>
+                </div>
+                <div class="nd-sales-toggle">
+                  <button class="nd-sales-toggle-btn active" onclick="ndSalesToggle('daily',this)">Daily</button>
+                  <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('weekly',this)">Weekly</button>
+                  <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('monthly',this)">Monthly</button>
+                  <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('quarterly',this)">Quarterly</button>
+                  <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('annual',this)">Annual</button>
+                </div>
+                <div class="nd-sales-chart" id="ndSalesChart"></div>
+                <div class="nd-sales-goal-row">
+                  <span class="nd-sales-goal-label">Set Goal:</span>
+                  <button class="nd-sales-goal-type-btn active" id="ndGoalTypeMonthly" onclick="ndSetGoalType('monthly')">Monthly</button>
+                  <button class="nd-sales-goal-type-btn" id="ndGoalTypeAnnual" onclick="ndSetGoalType('annual')">Annual</button>
+                  <input type="number" class="nd-sales-goal-input" id="ndGoalInput" placeholder="$ amount">
+                  <button class="nd-sales-goal-save" onclick="ndSaveGoal()">Save</button>
+                </div>
+                <div class="nd-sales-goal-progress" id="ndGoalProgress" style="display:none;"></div>
+                <!-- Legacy element kept for JS compatibility -->
+                <div style="display:none;" id="ndSalesList"></div>
+              </div>
+            </div>
           </div>
-          <div class="nd-sales-toggle">
-            <button class="nd-sales-toggle-btn active" onclick="ndSalesToggle('daily',this)">Daily</button>
-            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('weekly',this)">Weekly</button>
-            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('monthly',this)">Monthly</button>
-            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('quarterly',this)">Quarterly</button>
-            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('annual',this)">Annual</button>
-          </div>
-          <div class="nd-sales-chart" id="ndSalesChart"></div>
-          <div class="nd-sales-goal-row">
-            <span class="nd-sales-goal-label">Set Goal:</span>
-            <button class="nd-sales-goal-type-btn active" id="ndGoalTypeMonthly" onclick="ndSetGoalType('monthly')">Monthly</button>
-            <button class="nd-sales-goal-type-btn" id="ndGoalTypeAnnual" onclick="ndSetGoalType('annual')">Annual</button>
-            <input type="number" class="nd-sales-goal-input" id="ndGoalInput" placeholder="$ amount">
-            <button class="nd-sales-goal-save" onclick="ndSaveGoal()">Save</button>
-          </div>
-          <div class="nd-sales-goal-progress" id="ndGoalProgress" style="display:none;"></div>
-          <!-- Legacy element kept for JS compatibility -->
-          <div style="display:none;" id="ndSalesList"></div>
-        </div>
+
+        </div><!-- /ndWidgetGrid -->
       </div>
     </section>
   </div>
@@ -2435,6 +2484,84 @@
     // Init on load
     var container = document.getElementById('ndHomeCalContainer');
     if (container) container.innerHTML = ndHomeBuildCal(_ndHCalMonth, _ndHCalYear);
+  })();
+  </script>
+
+  <script>
+  // Widget drag-and-drop — nutritionist dashboard
+  (function() {
+    var STORAGE_KEY = 'shapeWidgetOrder_nutritionist';
+    var gridId = 'ndWidgetGrid';
+
+    function saveOrder() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var order = Array.from(grid.children).map(function(w) { return w.dataset.widgetId; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+    }
+
+    function restoreOrder() {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      var order;
+      try { order = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      order.forEach(function(id) {
+        var el = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (el) grid.appendChild(el);
+      });
+    }
+
+    var _dragSrc = null;
+
+    function initDrag() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+
+      grid.addEventListener('dragstart', function(e) {
+        var widget = e.target.closest('.widget');
+        var handle = e.target.closest('.widget-drag-handle');
+        if (!widget || !handle) { e.preventDefault(); return; }
+        _dragSrc = widget;
+        widget.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      grid.addEventListener('dragend', function(e) {
+        var widget = e.target.closest('.widget');
+        if (widget) widget.classList.remove('dragging');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        saveOrder();
+      });
+
+      grid.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        var widget = e.target.closest('.widget');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        if (widget && widget !== _dragSrc) widget.classList.add('drag-over');
+      });
+
+      grid.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var target = e.target.closest('.widget');
+        if (!target || target === _dragSrc || !_dragSrc) return;
+        var rect = target.getBoundingClientRect();
+        var midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          grid.insertBefore(_dragSrc, target);
+        } else {
+          grid.insertBefore(_dragSrc, target.nextSibling);
+        }
+        _dragSrc = null;
+      });
+
+      restoreOrder();
+    }
+
+    document.addEventListener('DOMContentLoaded', initDrag);
+    setTimeout(initDrag, 500);
   })();
   </script>
 

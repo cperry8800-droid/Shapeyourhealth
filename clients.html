@@ -747,6 +747,20 @@
       .cp-visibility-option { border-right: none; border: 1px solid var(--border); }
     }
 
+
+  /* ===== Widget Drag-and-Drop ===== */
+  .widget-grid { display: flex; flex-direction: column; gap: 16px; }
+  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; }
+  .widget.dragging { opacity: 0.4; }
+  .widget.drag-over { border-top: 2px solid var(--accent); }
+  .widget-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg-alt); }
+  .widget-title { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+  .widget-drag-handle { font-size: 1.2rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 4px; }
+  .widget-drag-handle:active { cursor: grabbing; }
+  .widget-body { padding: 20px; }
+  .widget-body > *:first-child { margin-top: 0 !important; }
+  .widget-body > *:last-child { margin-bottom: 0 !important; }
+
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
@@ -822,142 +836,208 @@
       <!-- HOME TAB -->
       <div class="dash-tab-content active" id="tabHome">
         <div class="progress-dashboard">
-        <!-- Stats Row -->
-        <div class="progress-stats-row">
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" id="statWorkouts">0</div>
-            <div class="progress-stat-label">Workouts This Month</div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" id="statMinutes">0</div>
-            <div class="progress-stat-label">Total Minutes</div>
-          </div>
-          <div class="progress-stat-card streak-card" id="streakCard">
-            <div class="progress-stat-number" id="statStreak">0</div>
-            <div class="progress-stat-label">Day Streak</div>
-            <div class="streak-best" id="statBestStreak"></div>
-          </div>
-          <div class="progress-stat-card">
-            <div class="progress-stat-number" id="statCalories">0</div>
-            <div class="progress-stat-label">Est. Calories Burned</div>
-          </div>
-        </div>
+        <div class="widget-grid" id="clWidgetGrid">
 
-        <!-- 7-Day Streak Strip -->
-        <div class="streak-strip">
-          <div class="streak-strip-label">Last 7 Days</div>
-          <div class="streak-dots" id="streakDots"></div>
-        </div>
-
-        <!-- Workout Schedule -->
-        <div class="schedule-section">
-          <div class="schedule-header">
-            <h2>Calendar</h2>
-            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-              <div class="cl-view-toggle">
-                <button class="cl-view-btn active" onclick="clSwitchWorkoutView('weekly', this)">Weekly</button>
-                <button class="cl-view-btn" onclick="clSwitchWorkoutView('monthly', this)">Monthly</button>
+          <!-- Widget: Stats -->
+          <div class="widget" data-widget-id="cl-stats" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Overview</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="progress-stats-row">
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number" id="statWorkouts">0</div>
+                  <div class="progress-stat-label">Workouts This Month</div>
+                </div>
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number" id="statMinutes">0</div>
+                  <div class="progress-stat-label">Total Minutes</div>
+                </div>
+                <div class="progress-stat-card streak-card" id="streakCard">
+                  <div class="progress-stat-number" id="statStreak">0</div>
+                  <div class="progress-stat-label">Day Streak</div>
+                  <div class="streak-best" id="statBestStreak"></div>
+                </div>
+                <div class="progress-stat-card">
+                  <div class="progress-stat-number" id="statCalories">0</div>
+                  <div class="progress-stat-label">Est. Calories Burned</div>
+                </div>
               </div>
-              <div class="schedule-nav" id="workoutWeekNav">
-                <button class="btn btn-sm btn-outline" onclick="changeWeek(-1)">&larr; Prev</button>
-                <span id="weekLabel" class="schedule-week-label"></span>
-                <button class="btn btn-sm btn-outline" onclick="changeWeek(1)">Next &rarr;</button>
+              <!-- 7-Day Streak Strip -->
+              <div class="streak-strip" style="margin-top:16px;margin-bottom:0;">
+                <div class="streak-strip-label">Last 7 Days</div>
+                <div class="streak-dots" id="streakDots"></div>
               </div>
             </div>
           </div>
-          <div id="workoutWeeklyView">
-            <div class="schedule-grid" id="scheduleGrid">
-              <!-- Days populated by JS -->
+
+          <!-- Widget: Calendar -->
+          <div class="widget" data-widget-id="cl-calendar" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Calendar</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="schedule-section" style="margin-bottom:0;">
+                <div class="schedule-header">
+                  <h2>Calendar</h2>
+                  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                    <div class="cl-view-toggle">
+                      <button class="cl-view-btn active" onclick="clSwitchWorkoutView('weekly', this)">Weekly</button>
+                      <button class="cl-view-btn" onclick="clSwitchWorkoutView('monthly', this)">Monthly</button>
+                    </div>
+                    <div class="schedule-nav" id="workoutWeekNav">
+                      <button class="btn btn-sm btn-outline" onclick="changeWeek(-1)">&larr; Prev</button>
+                      <span id="weekLabel" class="schedule-week-label"></span>
+                      <button class="btn btn-sm btn-outline" onclick="changeWeek(1)">Next &rarr;</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="workoutWeeklyView">
+                  <div class="schedule-grid" id="scheduleGrid">
+                    <!-- Days populated by JS -->
+                  </div>
+                </div>
+                <div id="workoutMonthlyView" style="display:none;">
+                  <div id="workoutCalContainer"></div>
+                </div>
+              </div>
             </div>
           </div>
-          <div id="workoutMonthlyView" style="display:none;">
-            <div id="workoutCalContainer"></div>
-          </div>
-        </div>
 
-        <!-- Progress Chart (text-based) -->
-        <div class="progress-chart-section">
-          <h2>Monthly Progress</h2>
-          <div class="progress-bar-chart" id="progressChart">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- Connected Devices -->
-        <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border);padding:16px 24px;margin-bottom:24px;">
-          <div style="display:flex;align-items:center;gap:20px;">
-            <span style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Syncing to</span>
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;"></span>
-                <span style="font-size:0.82rem;font-weight:500;color:#FC4C02;">Strava</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;"></span>
-                <span style="font-size:0.82rem;font-weight:500;color:#007CC3;">Garmin</span>
+          <!-- Widget: Monthly Progress -->
+          <div class="widget" data-widget-id="cl-progress" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Monthly Progress</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="progress-chart-section" style="margin-bottom:0;">
+                <h2>Monthly Progress</h2>
+                <div class="progress-bar-chart" id="progressChart">
+                  <!-- Populated by JS -->
+                </div>
               </div>
             </div>
           </div>
-          <a href="integrations.html" style="font-size:0.75rem;font-weight:500;color:var(--accent-dark);text-transform:uppercase;letter-spacing:0.06em;">Manage</a>
-        </div>
 
-        <!-- Workout Log -->
-        <div class="workout-log-section">
-          <div class="workout-log-header">
-            <h2>Workout Log</h2>
-            <button class="btn btn-sm btn-primary" onclick="openLogWorkoutModal()">+ Log Workout</button>
-          </div>
-          <div class="workout-log-list" id="workoutLog">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- Purchased Plans -->
-        <div class="purchased-section">
-          <h2>My Purchased Plans</h2>
-          <div class="purchased-list" id="purchasedList">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- My Library -->
-        <div class="purchased-section" style="margin-top: 40px;">
-          <div class="workout-log-header">
-            <h2>My Library</h2>
-          </div>
-          <p style="color: var(--text-muted); font-size: 0.92rem; font-weight: 300; margin-bottom: 24px;">Save any purchased workout to your personal library. Access your saved workouts anytime.</p>
-          <div class="library-grid" id="libraryGrid" style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-            <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">5x5 Strength Foundation</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">Marcus Johnson &middot; Strength &middot; Saved Apr 2</div>
-              </div>
-              <button class="btn btn-sm btn-outline">Start Workout</button>
+          <!-- Widget: Connected Devices -->
+          <div class="widget" data-widget-id="cl-devices" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Connected Devices</span>
+              <span class="widget-drag-handle">&#10783;</span>
             </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Tabata Inferno</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">Aisha Patel &middot; HIIT &middot; Saved Mar 28</div>
+            <div class="widget-body" style="padding:16px 24px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:20px;">
+                  <span style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Syncing to</span>
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;"></span>
+                      <span style="font-size:0.82rem;font-weight:500;color:#FC4C02;">Strava</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;"></span>
+                      <span style="font-size:0.82rem;font-weight:500;color:#007CC3;">Garmin</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="integrations.html" style="font-size:0.75rem;font-weight:500;color:var(--accent-dark);text-transform:uppercase;letter-spacing:0.06em;">Manage</a>
               </div>
-              <button class="btn btn-sm btn-outline">Start Workout</button>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Living Room HIIT</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">Nina Brooks &middot; At Home &middot; Saved Mar 15</div>
-              </div>
-              <button class="btn btn-sm btn-outline">Start Workout</button>
             </div>
           </div>
-        </div>
 
-        <!-- Upcoming Check-Ins (Training) -->
-        <div class="checkin-section">
-          <h2>Upcoming Check-Ins</h2>
-          <div class="checkin-list" id="trainerCheckInList"></div>
-        </div>
+          <!-- Widget: Workout Log -->
+          <div class="widget" data-widget-id="cl-workoutlog" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Workout Log</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="workout-log-section" style="margin-bottom:0;">
+                <div class="workout-log-header">
+                  <h2>Workout Log</h2>
+                  <button class="btn btn-sm btn-primary" onclick="openLogWorkoutModal()">+ Log Workout</button>
+                </div>
+                <div class="workout-log-list" id="workoutLog">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
 
-      </div>
+          <!-- Widget: Purchased Plans -->
+          <div class="widget" data-widget-id="cl-plans" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">My Purchased Plans</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="purchased-section" style="margin-bottom:0;">
+                <h2>My Purchased Plans</h2>
+                <div class="purchased-list" id="purchasedList">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: My Library -->
+          <div class="widget" data-widget-id="cl-library" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">My Library</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="purchased-section" style="margin-bottom:0;">
+                <div class="workout-log-header">
+                  <h2>My Library</h2>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.92rem; font-weight: 300; margin-bottom: 24px;">Save any purchased workout to your personal library. Access your saved workouts anytime.</p>
+                <div class="library-grid" id="libraryGrid" style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+                  <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">5x5 Strength Foundation</div>
+                      <div style="font-size: 0.78rem; color: var(--text-muted);">Marcus Johnson &middot; Strength &middot; Saved Apr 2</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline">Start Workout</button>
+                  </div>
+                  <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Tabata Inferno</div>
+                      <div style="font-size: 0.78rem; color: var(--text-muted);">Aisha Patel &middot; HIIT &middot; Saved Mar 28</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline">Start Workout</button>
+                  </div>
+                  <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Living Room HIIT</div>
+                      <div style="font-size: 0.78rem; color: var(--text-muted);">Nina Brooks &middot; At Home &middot; Saved Mar 15</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline">Start Workout</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Upcoming Check-Ins -->
+          <div class="widget" data-widget-id="cl-checkins" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Upcoming Check-Ins</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="checkin-section" style="margin-bottom:0;">
+                <h2>Upcoming Check-Ins</h2>
+                <div class="checkin-list" id="trainerCheckInList"></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /clWidgetGrid -->
+        </div>
       </div>
 
       <!-- TRAINING TAB -->
@@ -3243,6 +3323,84 @@
       <div id="clCalPopupBody"></div>
     </div>
   </div>
+
+  <script>
+  // Widget drag-and-drop — client dashboard
+  (function() {
+    var STORAGE_KEY = 'shapeWidgetOrder_client';
+    var gridId = 'clWidgetGrid';
+
+    function saveOrder() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var order = Array.from(grid.children).map(function(w) { return w.dataset.widgetId; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+    }
+
+    function restoreOrder() {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      var order;
+      try { order = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      order.forEach(function(id) {
+        var el = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (el) grid.appendChild(el);
+      });
+    }
+
+    var _dragSrc = null;
+
+    function initDrag() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+
+      grid.addEventListener('dragstart', function(e) {
+        var widget = e.target.closest('.widget');
+        var handle = e.target.closest('.widget-drag-handle');
+        if (!widget || !handle) { e.preventDefault(); return; }
+        _dragSrc = widget;
+        widget.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      grid.addEventListener('dragend', function(e) {
+        var widget = e.target.closest('.widget');
+        if (widget) widget.classList.remove('dragging');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        saveOrder();
+      });
+
+      grid.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        var widget = e.target.closest('.widget');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        if (widget && widget !== _dragSrc) widget.classList.add('drag-over');
+      });
+
+      grid.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var target = e.target.closest('.widget');
+        if (!target || target === _dragSrc || !_dragSrc) return;
+        var rect = target.getBoundingClientRect();
+        var midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          grid.insertBefore(_dragSrc, target);
+        } else {
+          grid.insertBefore(_dragSrc, target.nextSibling);
+        }
+        _dragSrc = null;
+      });
+
+      restoreOrder();
+    }
+
+    document.addEventListener('DOMContentLoaded', initDrag);
+    setTimeout(initDrag, 500);
+  })();
+  </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>

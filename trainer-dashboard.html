@@ -633,6 +633,19 @@
     height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s;
   }
   .td-sales-goal-progress-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+
+  /* ===== Widget Drag-and-Drop ===== */
+  .widget-grid { display: flex; flex-direction: column; gap: 16px; }
+  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; }
+  .widget.dragging { opacity: 0.4; }
+  .widget.drag-over { border-top: 2px solid var(--accent); }
+  .widget-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg-alt); }
+  .widget-title { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+  .widget-drag-handle { font-size: 1.2rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 4px; }
+  .widget-drag-handle:active { cursor: grabbing; }
+  .widget-body { padding: 20px; }
+  .widget-body > *:first-child { margin-top: 0 !important; }
+  .widget-body > *:last-child { margin-bottom: 0 !important; }
 </style>
 </head>
 <body>
@@ -707,62 +720,90 @@
   <section class="section" style="padding-top:0;padding-bottom:48px;">
   <div class="container">
     <div class="td-tab-content active" id="tab-home">
-      <!-- Trainer Stats -->
-      <div class="progress-stats-row" style="grid-template-columns:repeat(5,1fr)">
-        <div class="progress-stat-card">
-          <div class="progress-stat-number">24</div>
-          <div class="progress-stat-label">Active Clients</div>
-        </div>
-        <div class="progress-stat-card">
-          <div class="progress-stat-number">$5,159</div>
-          <div class="progress-stat-label">Total Sales This Month</div>
-        </div>
-        <div class="progress-stat-card">
-          <div class="progress-stat-number" style="color:#10B981;">$4,385</div>
-          <div class="progress-stat-label">Your Earnings (85%)</div>
-        </div>
-        <div class="progress-stat-card">
-          <div class="progress-stat-number">87%</div>
-          <div class="progress-stat-label">Client Retention</div>
-        </div>
-        <div class="progress-stat-card">
-          <div class="progress-stat-number">142</div>
-          <div class="progress-stat-label">Plans Sold</div>
-        </div>
-      </div>
+      <div class="widget-grid" id="tdWidgetGrid">
 
-      <!-- Monthly Calendar -->
-      <div class="td-section td-cal-section">
-        <div class="td-section-header" style="margin-bottom:0;">
-          <h2>Session Calendar</h2>
+        <!-- Widget: Trainer Stats -->
+        <div class="widget" data-widget-id="td-stats" draggable="true">
+          <div class="widget-header">
+            <span class="widget-title">Overview</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="progress-stats-row" style="grid-template-columns:repeat(5,1fr)">
+              <div class="progress-stat-card">
+                <div class="progress-stat-number">24</div>
+                <div class="progress-stat-label">Active Clients</div>
+              </div>
+              <div class="progress-stat-card">
+                <div class="progress-stat-number">$5,159</div>
+                <div class="progress-stat-label">Total Sales This Month</div>
+              </div>
+              <div class="progress-stat-card">
+                <div class="progress-stat-number" style="color:#10B981;">$4,385</div>
+                <div class="progress-stat-label">Your Earnings (85%)</div>
+              </div>
+              <div class="progress-stat-card">
+                <div class="progress-stat-number">87%</div>
+                <div class="progress-stat-label">Client Retention</div>
+              </div>
+              <div class="progress-stat-card">
+                <div class="progress-stat-number">142</div>
+                <div class="progress-stat-label">Plans Sold</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="tdCalContainer" style="margin-top:16px;"></div>
-      </div>
 
-      <!-- Plan Sales Section -->
-      <div class="td-section td-sales-section">
-        <div class="td-section-header">
-          <h2>Plan Sales</h2>
+        <!-- Widget: Session Calendar -->
+        <div class="widget" data-widget-id="td-calendar" draggable="true">
+          <div class="widget-header">
+            <span class="widget-title">Session Calendar</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="td-section td-cal-section" style="margin-bottom:0;">
+              <div class="td-section-header" style="margin-bottom:0;">
+                <h2>Session Calendar</h2>
+              </div>
+              <div id="tdCalContainer" style="margin-top:16px;"></div>
+            </div>
+          </div>
         </div>
-        <div class="td-sales-toggle">
-          <button class="td-sales-toggle-btn active" onclick="tdSalesToggle('daily',this)">Daily</button>
-          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('weekly',this)">Weekly</button>
-          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('monthly',this)">Monthly</button>
-          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('quarterly',this)">Quarterly</button>
-          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('annual',this)">Annual</button>
+
+        <!-- Widget: Plan Sales -->
+        <div class="widget" data-widget-id="td-sales" draggable="true">
+          <div class="widget-header">
+            <span class="widget-title">Plan Sales</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="td-section td-sales-section" style="margin-bottom:0;">
+              <div class="td-section-header">
+                <h2>Plan Sales</h2>
+              </div>
+              <div class="td-sales-toggle">
+                <button class="td-sales-toggle-btn active" onclick="tdSalesToggle('daily',this)">Daily</button>
+                <button class="td-sales-toggle-btn" onclick="tdSalesToggle('weekly',this)">Weekly</button>
+                <button class="td-sales-toggle-btn" onclick="tdSalesToggle('monthly',this)">Monthly</button>
+                <button class="td-sales-toggle-btn" onclick="tdSalesToggle('quarterly',this)">Quarterly</button>
+                <button class="td-sales-toggle-btn" onclick="tdSalesToggle('annual',this)">Annual</button>
+              </div>
+              <div class="td-sales-chart" id="tdSalesChart"></div>
+              <div class="td-sales-goal-row">
+                <span class="td-sales-goal-label">Set Goal:</span>
+                <button class="td-sales-goal-type-btn active" id="tdGoalTypeMonthly" onclick="tdSetGoalType('monthly')">Monthly</button>
+                <button class="td-sales-goal-type-btn" id="tdGoalTypeAnnual" onclick="tdSetGoalType('annual')">Annual</button>
+                <input type="number" class="td-sales-goal-input" id="tdGoalInput" placeholder="$ amount">
+                <button class="td-sales-goal-save" onclick="tdSaveGoal()">Save</button>
+              </div>
+              <div class="td-sales-goal-progress" id="tdGoalProgress" style="display:none;"></div>
+              <!-- Legacy sales list (hidden, kept for JS compatibility) -->
+              <div style="display:none;" id="salesList"></div>
+            </div>
+          </div>
         </div>
-        <div class="td-sales-chart" id="tdSalesChart"></div>
-        <div class="td-sales-goal-row">
-          <span class="td-sales-goal-label">Set Goal:</span>
-          <button class="td-sales-goal-type-btn active" id="tdGoalTypeMonthly" onclick="tdSetGoalType('monthly')">Monthly</button>
-          <button class="td-sales-goal-type-btn" id="tdGoalTypeAnnual" onclick="tdSetGoalType('annual')">Annual</button>
-          <input type="number" class="td-sales-goal-input" id="tdGoalInput" placeholder="$ amount">
-          <button class="td-sales-goal-save" onclick="tdSaveGoal()">Save</button>
-        </div>
-        <div class="td-sales-goal-progress" id="tdGoalProgress" style="display:none;"></div>
-        <!-- Legacy sales list (hidden, kept for JS compatibility) -->
-        <div style="display:none;" id="salesList"></div>
-      </div>
+
+      </div><!-- /tdWidgetGrid -->
     </div>
 
     <!-- ========== TAB: CLIENTS ========== -->
@@ -2995,6 +3036,84 @@
     setTimeout(function() { confirm.style.display = 'none'; }, 3000);
     if (typeof tdRenderGoalProgress === 'function') tdRenderGoalProgress('monthly');
   }
+  </script>
+
+  <script>
+  // Widget drag-and-drop — trainer dashboard
+  (function() {
+    var STORAGE_KEY = 'shapeWidgetOrder_trainer';
+    var gridId = 'tdWidgetGrid';
+
+    function saveOrder() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var order = Array.from(grid.children).map(function(w) { return w.dataset.widgetId; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+    }
+
+    function restoreOrder() {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      var order;
+      try { order = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      order.forEach(function(id) {
+        var el = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (el) grid.appendChild(el);
+      });
+    }
+
+    var _dragSrc = null;
+
+    function initDrag() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+
+      grid.addEventListener('dragstart', function(e) {
+        var widget = e.target.closest('.widget');
+        var handle = e.target.closest('.widget-drag-handle');
+        if (!widget || !handle) { e.preventDefault(); return; }
+        _dragSrc = widget;
+        widget.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      grid.addEventListener('dragend', function(e) {
+        var widget = e.target.closest('.widget');
+        if (widget) widget.classList.remove('dragging');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        saveOrder();
+      });
+
+      grid.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        var widget = e.target.closest('.widget');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        if (widget && widget !== _dragSrc) widget.classList.add('drag-over');
+      });
+
+      grid.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var target = e.target.closest('.widget');
+        if (!target || target === _dragSrc || !_dragSrc) return;
+        var rect = target.getBoundingClientRect();
+        var midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          grid.insertBefore(_dragSrc, target);
+        } else {
+          grid.insertBefore(_dragSrc, target.nextSibling);
+        }
+        _dragSrc = null;
+      });
+
+      restoreOrder();
+    }
+
+    document.addEventListener('DOMContentLoaded', initDrag);
+    setTimeout(initDrag, 500);
+  })();
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
