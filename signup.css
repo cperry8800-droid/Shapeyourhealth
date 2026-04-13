@@ -27,7 +27,7 @@ a { color: inherit; text-decoration: none; }
   background: rgba(10,10,10,0.92);
   backdrop-filter: blur(16px);
 }
-.signup-nav img { height: 64px; filter: brightness(0) invert(1); }
+.signup-nav img { height: 64px; }
 .nav-link {
   font-size: 0.82rem; color: rgba(255,255,255,0.5);
   transition: color 0.3s;
