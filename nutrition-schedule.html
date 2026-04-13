@@ -455,39 +455,37 @@
     flex-direction: column; gap: 14px; max-height: 440px;
   }
   .nd-community-msg {
-    display: flex; gap: 10px; max-width: 85%;
+    display: flex; flex-direction: column; max-width: 70%;
   }
-  .nd-community-msg.own { margin-left: auto; flex-direction: row-reverse; }
-  .nd-community-msg-avatar {
-    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 0.55rem; color: #fff;
-  }
+  .nd-community-msg.own { margin-left: auto; align-items: flex-end; }
+  .nd-community-msg:not(.own) { align-items: flex-start; }
+  .nd-community-msg-avatar { display: none; }
   .nd-community-msg-body {
-    background: var(--bg-card); border: 1px solid var(--border);
-    padding: 10px 14px; border-radius: 12px; border-top-left-radius: 4px;
+    background: #1a1a1a; border: none;
+    padding: 10px 14px; border-radius: 18px; border-bottom-left-radius: 4px;
   }
   .nd-community-msg.own .nd-community-msg-body {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-    border-top-left-radius: 12px; border-top-right-radius: 4px;
+    background: #2DD4BF; color: #fff;
+    border-radius: 18px; border-bottom-right-radius: 4px; border-bottom-left-radius: 18px;
   }
-  .nd-community-msg-name { font-size: 0.68rem; font-weight: 600; margin-bottom: 4px; }
+  .nd-community-msg-name { display: none; }
   .nd-community-msg-text { font-size: 0.82rem; line-height: 1.5; font-weight: 300; }
-  .nd-community-msg-time { font-size: 0.62rem; color: var(--text-muted); margin-top: 4px; }
-  .nd-community-msg.own .nd-community-msg-time { color: rgba(255,255,255,0.5); }
+  .nd-community-msg-time { font-size: 0.6rem; color: var(--text-muted); margin-top: 4px; text-align: center; }
+  .nd-community-msg.own .nd-community-msg-time { color: rgba(255,255,255,0.5); text-align: center; }
   .nd-community-input {
     padding: 14px 20px; border-top: 1px solid var(--border);
     background: var(--bg-card); display: flex; gap: 10px;
   }
   .nd-community-input input {
-    flex: 1; padding: 10px 14px; border: 1px solid var(--border);
+    flex: 1; padding: 10px 16px; border: 1px solid var(--border);
     background: var(--bg); color: var(--text); font-family: inherit;
-    font-size: 0.82rem; outline: none;
+    font-size: 0.82rem; outline: none; border-radius: 24px;
   }
   .nd-community-input input:focus { border-color: var(--accent); }
   .nd-community-input button {
     padding: 10px 20px; background: var(--accent); color: #fff; border: none;
     font-family: inherit; font-weight: 600; font-size: 0.78rem; cursor: pointer;
+    border-radius: 24px;
   }
   .nd-community-activity {
     border-left: 1px solid var(--border); display: flex;
@@ -994,7 +992,6 @@
           <div class="nd-community-chat">
             <div class="nd-community-chat-tabs" id="ndCommChatTabs">
               <button class="nd-community-channel active" onclick="ndCommSwitchChannel('nutritionist', this)">Nutritionist Chat</button>
-              <button class="nd-community-channel" onclick="ndCommSwitchChannel('trainer', this)">Trainer Chat</button>
               <button class="nd-community-channel" onclick="ndCommSwitchChannel('shape', this)">Shape Chat</button>
             </div>
             <div class="nd-community-messages" id="ndCommMessages"></div>
