@@ -95,7 +95,7 @@ ul { list-style: none; }
 .nav-container { display: flex; align-items: center; justify-content: space-between; position: relative; }
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; flex-shrink: 0; }
 .logo-img { height: 64px; width: auto; filter: brightness(0) invert(1); }
-.nav-links { display: flex; align-items: center; gap: 16px; flex-wrap: nowrap; margin: 0 auto; }
+.nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: clamp(8px, 1.2vw, 16px); flex-wrap: nowrap; }
 .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-right: -16px; }
 .nav-links a {
   font-size: 0.78rem; font-weight: 400; transition: opacity 0.3s;
