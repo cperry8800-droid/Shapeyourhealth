@@ -43,6 +43,65 @@
     .streak-dot-circle.future { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
     .streak-dot-day { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 
+    /* ===== Training Month Calendar ===== */
+    .training-month-cal { margin-bottom: 32px; }
+    .training-month-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+    }
+    .training-month-header h4 { font-size: 1rem; font-weight: 600; margin: 0; }
+    .training-month-nav { display: flex; gap: 6px; }
+    .training-month-nav button {
+      width: 28px; height: 28px; border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); cursor: pointer; font-size: 0.85rem;
+      display: flex; align-items: center; justify-content: center; font-family: inherit; transition: all 0.2s;
+    }
+    .training-month-nav button:hover { border-color: var(--text); color: var(--text); }
+    .training-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .training-month-head {
+      text-align: center; font-size: 0.68rem; font-weight: 500;
+      color: var(--text-muted); text-transform: uppercase; padding: 8px 0; letter-spacing: 0.06em;
+    }
+    .training-month-day {
+      min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 0.82rem; background: var(--bg-alt); border-radius: 6px; position: relative;
+      transition: all 0.2s; cursor: default; border: 1px solid transparent; padding: 4px 2px; gap: 3px;
+    }
+    .training-month-day.empty { background: transparent; }
+    .training-month-day.has-workout { cursor: pointer; }
+    .training-month-day.has-workout:hover { border-color: var(--accent); }
+    .training-month-day.is-today { border-color: var(--text-muted); }
+    .training-month-day-num { font-weight: 600; font-size: 0.78rem; line-height: 1; }
+    .training-month-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .training-month-dot.completed { background: #10B981; }
+    .training-month-dot.scheduled { background: var(--accent); }
+    .training-month-check {
+      font-size: 0.6rem; color: #10B981; line-height: 1;
+    }
+    .training-month-label {
+      font-size: 0.58rem; color: var(--text-muted); white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; max-width: 100%; text-align: center; padding: 0 2px;
+    }
+    .training-month-legend {
+      display: flex; gap: 14px; margin-bottom: 10px; font-size: 0.68rem; color: var(--text-muted);
+    }
+    .training-month-legend span { display: flex; align-items: center; gap: 4px; }
+    @media (max-width: 768px) {
+      .training-month-day { min-height: 38px; font-size: 0.72rem; }
+      .training-month-day-num { font-size: 0.68rem; }
+      .training-month-label { font-size: 0.5rem; }
+      .training-month-dot { width: 5px; height: 5px; }
+      .training-month-header h4 { font-size: 0.85rem; }
+    }
+
+    /* ===== Combined Home Calendar ===== */
+    .home-cal-legend {
+      display: flex; gap: 14px; margin-bottom: 10px; font-size: 0.68rem; color: var(--text-muted);
+    }
+    .home-cal-legend span { display: flex; align-items: center; gap: 4px; }
+    .cl-cal-day-dots { display: flex; gap: 3px; align-items: center; justify-content: center; }
+
     /* ===== Workout Tracker ===== */
     .wk-day-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; cursor: pointer; transition: all 0.3s; }
     .wk-day-card:hover { border-color: var(--accent); }
@@ -776,7 +835,7 @@
         <!-- Workout Schedule -->
         <div class="schedule-section">
           <div class="schedule-header">
-            <h2>Workout Schedule</h2>
+            <h2>Calendar</h2>
             <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
               <div class="cl-view-toggle">
                 <button class="cl-view-btn active" onclick="clSwitchWorkoutView('weekly', this)">Weekly</button>
@@ -909,6 +968,9 @@
                 <div style="height:100%;width:50%;background:var(--accent);"></div>
               </div>
             </div>
+
+            <!-- Month Calendar View -->
+            <div class="training-month-cal" id="trainingMonthCal"></div>
 
             <!-- This Week's Schedule -->
             <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">This Week</h3>
@@ -1877,6 +1939,142 @@
         }
       }
     }
+
+    // ===== TRAINING MONTH CALENDAR =====
+    (function() {
+      var tmMonth = new Date().getMonth();
+      var tmYear = new Date().getFullYear();
+
+      function getTrainingDayData(month, year) {
+        // Map workoutData entries to days of the current week
+        var dayMap = {};
+        var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var today = new Date();
+        today.setHours(0,0,0,0);
+
+        // Find the Monday of this week
+        var currentDay = today.getDay();
+        var mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
+        var monday = new Date(today);
+        monday.setDate(today.getDate() + mondayOffset);
+
+        // Map each workoutData entry to its actual date this week
+        workoutData.forEach(function(w, idx) {
+          var rawDay = w.day.replace(/ — Today/, '').replace(/ —.*/, '');
+          var dayIdx = dayNames.indexOf(rawDay);
+          if (dayIdx === -1) return;
+          var diff = dayIdx - 1; // offset from Monday (Monday=1)
+          if (diff < 0) diff += 7;
+          var workoutDate = new Date(monday);
+          workoutDate.setDate(monday.getDate() + diff);
+          if (workoutDate.getMonth() === month && workoutDate.getFullYear() === year) {
+            dayMap[workoutDate.getDate()] = {
+              title: w.title,
+              completed: w.completed,
+              idx: idx,
+              isRest: w.title === 'Active Recovery'
+            };
+          }
+        });
+
+        // Also pull from the workout log and schedule (same sources as Home calendar)
+        if (typeof getWorkoutLog === 'function') {
+          var wLog = getWorkoutLog();
+          wLog.forEach(function(w) {
+            var wd = new Date(w.date);
+            if (wd.getMonth() === month && wd.getFullYear() === year) {
+              var d = wd.getDate();
+              if (!dayMap[d]) {
+                dayMap[d] = { title: w.name || 'Workout', completed: true, idx: -1, isRest: false };
+              }
+            }
+          });
+        }
+        if (typeof getSchedule === 'function') {
+          var sched = getSchedule();
+          Object.keys(sched).forEach(function(dateStr) {
+            var sd = new Date(dateStr);
+            if (sd.getMonth() === month && sd.getFullYear() === year) {
+              var d = sd.getDate();
+              if (!dayMap[d] && sched[dateStr].type !== 'Rest Day') {
+                dayMap[d] = { title: sched[dateStr].name || sched[dateStr].type || 'Scheduled', completed: false, idx: -1, isRest: false };
+              }
+            }
+          });
+        }
+        return dayMap;
+      }
+
+      function renderTrainingMonthCal() {
+        var container = document.getElementById('trainingMonthCal');
+        if (!container) return;
+        var firstDay = new Date(tmYear, tmMonth, 1).getDay();
+        var daysInMonth = new Date(tmYear, tmMonth + 1, 0).getDate();
+        var today = new Date();
+        var monthName = new Date(tmYear, tmMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        var dayData = getTrainingDayData(tmMonth, tmYear);
+
+        var html = '<div class="training-month-header">'
+          + '<h4>' + monthName + '</h4>'
+          + '<div class="training-month-nav">'
+          + '<button onclick="trainingMonthNav(-1)">&#8249;</button>'
+          + '<button onclick="trainingMonthNav(1)">&#8250;</button>'
+          + '</div></div>';
+
+        html += '<div class="training-month-legend">'
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);"></span> Scheduled</span>'
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;"></span> Completed</span>'
+          + '</div>';
+
+        html += '<div class="training-month-grid">';
+        ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(function(d) {
+          html += '<div class="training-month-head">' + d + '</div>';
+        });
+        for (var i = 0; i < firstDay; i++) html += '<div class="training-month-day empty"></div>';
+        for (var d = 1; d <= daysInMonth; d++) {
+          var isToday = d === today.getDate() && tmMonth === today.getMonth() && tmYear === today.getFullYear();
+          var data = dayData[d];
+          var classes = 'training-month-day';
+          if (!data) classes += '';
+          else classes += ' has-workout';
+          if (isToday) classes += ' is-today';
+          var clickAttr = '';
+          if (data && data.idx >= 0) {
+            clickAttr = ' onclick="openWorkoutDetail(' + data.idx + ')"';
+          }
+          html += '<div class="' + classes + '"' + clickAttr + '>';
+          html += '<div class="training-month-day-num">' + d + '</div>';
+          if (data && !data.isRest) {
+            if (data.completed) {
+              html += '<div class="training-month-check">&#10003;</div>';
+            } else {
+              html += '<div class="training-month-dot scheduled"></div>';
+            }
+            html += '<div class="training-month-label">' + data.title + '</div>';
+          } else if (data && data.isRest) {
+            html += '<div style="font-size:0.55rem;color:var(--text-muted);">Rest</div>';
+          }
+          html += '</div>';
+        }
+        html += '</div>';
+        container.innerHTML = html;
+      }
+
+      window.trainingMonthNav = function(dir) {
+        tmMonth += dir;
+        if (tmMonth > 11) { tmMonth = 0; tmYear++; }
+        if (tmMonth < 0) { tmMonth = 11; tmYear--; }
+        renderTrainingMonthCal();
+      };
+
+      // Render on load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderTrainingMonthCal);
+      } else {
+        setTimeout(renderTrainingMonthCal, 0);
+      }
+      window._renderTrainingMonthCal = renderTrainingMonthCal;
+    })();
   </script>
   <script>
     // ===== Upcoming Check-Ins =====
@@ -1970,6 +2168,8 @@
 
       // Build calendar data from actual logs
       const dayData = {};
+      // For workout type (Home tab), also collect nutrition data for combined view
+      const nutritionData = {};
       if (type === 'workout') {
         // Get actual workout log and schedule from progress.js
         const workoutLog = getWorkoutLog();
@@ -1992,6 +2192,36 @@
             }
           }
         });
+        // Also collect nutrition data for combined Home calendar
+        if (typeof getMealLog === 'function') {
+          const mealLog = getMealLog();
+          mealLog.forEach(function(m) {
+            const md = new Date(m.date);
+            if (md.getMonth() === month && md.getFullYear() === year) {
+              const d = md.getDate();
+              if (!nutritionData[d]) nutritionData[d] = { count: 0, cals: 0, meals: [], type: 'logged' };
+              nutritionData[d].count++;
+              nutritionData[d].cals += (m.calories || 0);
+              nutritionData[d].meals.push(m.name);
+            }
+          });
+        }
+        if (typeof getMealSchedule === 'function') {
+          const mealSchedule = getMealSchedule();
+          Object.keys(mealSchedule).forEach(function(dateStr) {
+            const sd = new Date(dateStr);
+            if (sd.getMonth() === month && sd.getFullYear() === year) {
+              const d = sd.getDate();
+              if (!nutritionData[d]) {
+                const planned = mealSchedule[dateStr];
+                const count = Array.isArray(planned) ? planned.length : 0;
+                if (count > 0) {
+                  nutritionData[d] = { count: count, meals: planned.map(function(p) { return p.name; }), type: 'planned' };
+                }
+              }
+            }
+          });
+        }
       } else {
         // Get actual meal log and schedule from nutrition-schedule.js
         const mealLog = getMealLog();
@@ -2033,6 +2263,10 @@
       const calKey = type + '_' + year + '_' + month;
       window._clCalData = window._clCalData || {};
       window._clCalData[calKey] = dayData;
+      // Store nutrition data for combined detail view
+      if (type === 'workout') {
+        window._clCalData['nutrition_' + year + '_' + month] = nutritionData;
+      }
 
       let cells = '';
       ['S','M','T','W','T','F','S'].forEach(d => { cells += '<div class="cl-cal-head">' + d + '</div>'; });
@@ -2040,14 +2274,32 @@
       for (let d = 1; d <= daysInMonth; d++) {
         const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
         const data = dayData[d];
+        const nutData = (type === 'workout') ? nutritionData[d] : null;
         let dot = '';
         let preview = '';
-        if (data) {
-          if (type === 'workout') {
+        const hasAny = data || nutData;
+        if (type === 'workout') {
+          // Combined view: show teal dot for training, green dot for nutrition
+          let dots = '';
+          if (data) {
             const cls = data.type === 'scheduled' ? 'scheduled' : 'workout';
-            dot = '<div class="cl-cal-day-dot ' + cls + '"></div>';
+            dots += '<div class="cl-cal-day-dot" style="background:var(--accent);"></div>';
+          }
+          if (nutData) {
+            dots += '<div class="cl-cal-day-dot" style="background:#10B981;"></div>';
+          }
+          if (dots) {
+            dot = '<div class="cl-cal-day-dots">' + dots + '</div>';
+          }
+          // Preview: show workout name if present, else nutrition summary
+          if (data) {
             preview = '<div class="cl-cal-day-info">' + (data.name || data.label) + '</div>';
-          } else {
+          } else if (nutData) {
+            let mealPreview = nutData.count + ' meal' + (nutData.count > 1 ? 's' : '');
+            preview = '<div class="cl-cal-day-info">' + mealPreview + '</div>';
+          }
+        } else {
+          if (data) {
             const mealCls = data.type === 'scheduled' ? 'planned' : 'logged';
             dot = '<div class="cl-cal-day-dot ' + mealCls + '"></div>';
             let mealPreview = data.label;
@@ -2059,18 +2311,21 @@
           }
         }
         const clickAttr = ' onclick="clSelectDay(this,\'' + type + '\',' + year + ',' + month + ',' + d + ')"';
-        cells += '<div class="cl-cal-day' + (isToday ? ' today' : '') + (data ? ' has-data' : '') + '"' + clickAttr + '>'
+        cells += '<div class="cl-cal-day' + (isToday ? ' today' : '') + (hasAny ? ' has-data' : '') + '"' + clickAttr + '>'
           + '<div class="cl-cal-day-num">' + d + '</div>'
           + dot
           + preview
           + '</div>';
       }
 
-      const legendHtml = type === 'workout'
-        ? '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Completed</span>'
-          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#6C3AED;margin-right:4px;"></span>Scheduled</span>'
-        : '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Logged</span>'
+      let legendHtml;
+      if (type === 'workout') {
+        legendHtml = '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:4px;"></span>Training</span>'
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Nutrition</span>';
+      } else {
+        legendHtml = '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Logged</span>'
           + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#6C3AED;margin-right:4px;"></span>Planned</span>';
+      }
 
       const detailId = type === 'workout' ? 'clWorkoutDetail' : 'clMealDetail';
       return '<div class="cl-cal-header"><h4>' + monthName + '</h4>'
@@ -2129,13 +2384,15 @@
       // Get data for this day
       const calKey = type + '_' + year + '_' + month;
       const data = (window._clCalData && window._clCalData[calKey]) ? window._clCalData[calKey][day] : null;
+      const nutKey = 'nutrition_' + year + '_' + month;
+      const nutData = (type === 'workout' && window._clCalData && window._clCalData[nutKey]) ? window._clCalData[nutKey][day] : null;
       const detailId = type === 'workout' ? 'clWorkoutDetail' : 'clMealDetail';
       const detailEl = document.getElementById(detailId);
 
-      if (!data) {
+      if (!data && !nutData) {
         const dateLabel = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         detailEl.innerHTML = '<div class="cl-cal-detail-title">' + dateLabel + '</div>'
-          + '<div style="font-size:0.78rem;color:var(--text-muted);">' + (type === 'workout' ? 'No workout recorded' : 'No meals recorded') + '</div>';
+          + '<div style="font-size:0.78rem;color:var(--text-muted);">' + (type === 'workout' ? 'No activity recorded' : 'No meals recorded') + '</div>';
         detailEl.classList.add('active');
         return;
       }
@@ -2144,26 +2401,43 @@
       let html = '<div class="cl-cal-detail-title">' + dateLabel + '</div>';
 
       if (type === 'workout') {
-        const statusLabel = data.type === 'scheduled' ? '📅 Scheduled' : '✅ Completed';
-        html += '<div class="cl-cal-detail-row"><span class="dl">Status</span><span class="dv">' + statusLabel + '</span></div>';
-        html += '<div class="cl-cal-detail-row"><span class="dl">Workout</span><span class="dv">' + (data.name || 'Workout') + '</span></div>';
-        if (data.workoutType) html += '<div class="cl-cal-detail-row"><span class="dl">Type</span><span class="dv">' + data.workoutType + '</span></div>';
-        if (data.type === 'scheduled' && data.label) {
-          html += '<div class="cl-cal-detail-row"><span class="dl">Time</span><span class="dv">' + data.label + '</span></div>';
-        } else if (data.type === 'workout') {
-          html += '<div class="cl-cal-detail-row"><span class="dl">Duration</span><span class="dv">' + data.label + '</span></div>';
-          if (data.difficulty) html += '<div class="cl-cal-detail-row"><span class="dl">Difficulty</span><span class="dv">' + data.difficulty + '</span></div>';
+        // Show training section
+        if (data) {
+          html += '<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:6px;margin-top:8px;">Training</div>';
+          const statusLabel = data.type === 'scheduled' ? 'Scheduled' : 'Completed';
+          html += '<div class="cl-cal-detail-row"><span class="dl">Status</span><span class="dv">' + statusLabel + '</span></div>';
+          html += '<div class="cl-cal-detail-row"><span class="dl">Workout</span><span class="dv">' + (data.name || 'Workout') + '</span></div>';
+          if (data.workoutType) html += '<div class="cl-cal-detail-row"><span class="dl">Type</span><span class="dv">' + data.workoutType + '</span></div>';
+          if (data.type === 'scheduled' && data.label) {
+            html += '<div class="cl-cal-detail-row"><span class="dl">Time</span><span class="dv">' + data.label + '</span></div>';
+          } else if (data.type === 'workout') {
+            html += '<div class="cl-cal-detail-row"><span class="dl">Duration</span><span class="dv">' + data.label + '</span></div>';
+            if (data.difficulty) html += '<div class="cl-cal-detail-row"><span class="dl">Difficulty</span><span class="dv">' + data.difficulty + '</span></div>';
+          }
+          if (data.trainer) html += '<div class="cl-cal-detail-row"><span class="dl">Trainer</span><span class="dv">' + data.trainer + '</span></div>';
         }
-        if (data.trainer) html += '<div class="cl-cal-detail-row"><span class="dl">Trainer</span><span class="dv">' + data.trainer + '</span></div>';
+        // Show nutrition section
+        if (nutData) {
+          html += '<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#10B981;margin-bottom:6px;margin-top:12px;">Nutrition</div>';
+          html += '<div class="cl-cal-detail-row"><span class="dl">Meals</span><span class="dv">' + nutData.count + ' meal' + (nutData.count > 1 ? 's' : '') + '</span></div>';
+          if (nutData.cals) html += '<div class="cl-cal-detail-row"><span class="dl">Calories</span><span class="dv">' + nutData.cals + ' cal</span></div>';
+          if (nutData.meals && nutData.meals.length > 0) {
+            html += '<div style="margin-top:4px;font-size:0.78rem;">';
+            nutData.meals.forEach(function(name) {
+              html += '<div style="padding:2px 0;color:var(--text);">' + name + '</div>';
+            });
+            html += '</div>';
+          }
+        }
       } else {
-        const statusLabel = data.type === 'scheduled' ? '📅 Planned' : '✅ Logged';
+        const statusLabel = data.type === 'scheduled' ? 'Planned' : 'Logged';
         html += '<div class="cl-cal-detail-row"><span class="dl">Status</span><span class="dv">' + statusLabel + '</span></div>';
         html += '<div class="cl-cal-detail-row"><span class="dl">Meals</span><span class="dv">' + data.count + ' meal' + (data.count > 1 ? 's' : '') + '</span></div>';
         if (data.cals) html += '<div class="cl-cal-detail-row"><span class="dl">Calories</span><span class="dv">' + data.cals + ' cal</span></div>';
         if (data.meals && data.meals.length > 0) {
           html += '<div style="margin-top:6px;font-size:0.78rem;">';
           data.meals.forEach(function(name) {
-            html += '<div style="padding:2px 0;color:var(--text);">• ' + name + '</div>';
+            html += '<div style="padding:2px 0;color:var(--text);">' + name + '</div>';
           });
           html += '</div>';
         }
