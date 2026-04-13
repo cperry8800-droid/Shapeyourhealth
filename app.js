@@ -342,6 +342,316 @@ const trainers = [
     ],
     tags: ["Weight Loss", "Strength", "Fat Loss"]
   },
+  {
+    id: 12, name: "Mia Vasquez", specialty: "Yoga & Strength Fusion",
+    category: "fullbody", price: 34.99, rating: 4.9, subscribers: 1870, experience: "8 yrs",
+    credential: "NASM-CPT", credentialFull: "NASM Certified Personal Trainer",
+    specialtyType: "Functional Fitness Trainer",
+    bio: "NASM-certified yoga strength coach blending vinyasa flow with resistance training. Build flexibility and power in every session.",
+    color: "#EC4899",
+    workouts: [
+      { name: "Yoga Strength Flow", type: "Strength", duration: "45 min", difficulty: "Intermediate", location: "At Home", price: 29.99, description: "Power yoga meets bodyweight strength. Build lean muscle while improving flexibility.", sampleDays: [
+        { day: "Day 1 — Upper Body Flow", exercises: ["Sun Salutation A — 5 rounds", "Chaturanga Push-Up Hold — 4x8", "Crow Pose Practice — 3x20s", "Warrior III to Half Moon — 3x5/side", "Dolphin Push-Ups — 3x10"] },
+        { day: "Day 2 — Lower Body Flow", exercises: ["Chair Pose Pulses — 3x20", "Warrior II Squat Hold — 3x45s/side", "Single-Leg Deadlift to Warrior III — 3x8/side", "Bridge Pose Lifts — 3x15", "Tree Pose Balance — 60s/side"] },
+        { day: "Day 3 — Full Body Power", exercises: ["Sun Salutation B — 5 rounds", "Plank to Side Plank Flow — 3x6/side", "Yogi Squat to Stand — 3x12", "Boat Pose Hold — 4x30s", "Pigeon Pose — 90s/side"] }
+      ] },
+      { name: "Flexibility & Power", type: "Mobility", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Improve range of motion while building foundational strength through yoga-based movements.", sampleDays: [
+        { day: "Day 1 — Hip Openers", exercises: ["Low Lunge Hold — 60s/side", "Lizard Pose — 60s/side", "Happy Baby — 90s", "Frog Pose — 2min", "Seated Forward Fold — 90s"] },
+        { day: "Day 2 — Spine & Shoulders", exercises: ["Cat-Cow Flow — 3x10", "Thread the Needle — 60s/side", "Eagle Arms — 45s/side", "Puppy Pose — 90s", "Supine Twist — 60s/side"] },
+        { day: "Day 3 — Full Flexibility", exercises: ["World's Greatest Stretch — 5/side", "Standing Forward Fold — 90s", "Pigeon to Mermaid — 60s/side", "Camel Pose — 3x20s", "Savasana — 3min"] }
+      ] },
+      { name: "Warrior Sculpt", type: "HIIT", duration: "40 min", difficulty: "Advanced", location: "At Home", price: 32.99, description: "High-intensity yoga sculpt combining warrior sequences with plyometric bursts.", sampleDays: [
+        { day: "Day 1 — Fire Flow", exercises: ["Sun Salutation A Jumps — 8 rounds", "Chair Pose Jump Squats — 4x12", "Chaturanga Burpees — 3x8", "Warrior I to Lunge Jump — 3x8/side", "Plank Hold — 60s"] },
+        { day: "Day 2 — Power Sculpt", exercises: ["Crescent Lunge Pulses — 3x15/side", "Side Plank Crunches — 3x10/side", "Goddess Squat Pulses — 4x20", "Handstand Kick-Ups — 3x5", "Boat Pose Bicycle — 3x20"] },
+        { day: "Day 3 — Endurance Burn", exercises: ["Flow Sequence — 10min continuous", "Warrior III Hold — 45s/side", "Crow to Chaturanga — 3x5", "Standing Split Squats — 3x10/side", "Corpse Pose Recovery — 3min"] }
+      ] },
+      { name: "Morning Vinyasa", type: "Bodyweight", duration: "20 min", difficulty: "All Levels", location: "At Home", price: 19.99, description: "Gentle morning vinyasa to wake up your body and set intention for the day.", sampleDays: [
+        { day: "Day 1 — Energize", exercises: ["Seated Meditation — 2min", "Sun Salutation A — 5 rounds", "Warrior I & II Flow — 3 rounds/side", "Tree Pose — 60s/side", "Savasana — 2min"] },
+        { day: "Day 2 — Open", exercises: ["Cat-Cow — 10 breaths", "Low Lunge Twist — 45s/side", "Half Splits — 60s/side", "Cobra to Down Dog — 5 rounds", "Child's Pose — 90s"] },
+        { day: "Day 3 — Balance", exercises: ["Standing Forward Fold — 60s", "Warrior III — 30s/side", "Half Moon — 30s/side", "Camel Pose — 3x15s", "Legs Up Wall — 3min"] }
+      ] },
+    ],
+    tags: ["Yoga", "Flexibility", "Strength"]
+  },
+  {
+    id: 13, name: "Tyrone Mitchell", specialty: "Boxing & Combat Fitness",
+    category: "hiit", price: 44.99, rating: 4.7, subscribers: 1340, experience: "14 yrs",
+    credential: "ISSA-CPT", credentialFull: "ISSA Certified Personal Trainer",
+    specialtyType: "Combat Fitness Coach",
+    bio: "Former amateur boxer turned fitness coach. ISSA-certified with 14 years building knockout conditioning programs.",
+    color: "#EF4444",
+    workouts: [
+      { name: "Boxing Fundamentals", type: "HIIT", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Learn proper boxing form while getting an incredible cardio workout.", sampleDays: [
+        { day: "Day 1 — Jab & Cross", exercises: ["Shadow Boxing Warm-Up — 3min", "Jab Drill — 3x2min rounds", "Cross Drill — 3x2min rounds", "Jab-Cross Combo — 4x2min rounds", "Jump Rope — 3x1min"] },
+        { day: "Day 2 — Defense & Footwork", exercises: ["Footwork Drill — 3x2min", "Slip & Roll Practice — 3x1min", "Defensive Shadow Boxing — 4x2min", "Speed Bag Simulation — 3x1min", "Core Finisher — 3x30s planks"] },
+        { day: "Day 3 — Combinations", exercises: ["Jab-Cross-Hook — 4x2min rounds", "Body Shot Practice — 3x2min", "Uppercut Drill — 3x1min", "3-Punch Combo Shadow Boxing — 4x2min", "Burpees — 3x10"] }
+      ] },
+      { name: "Fight Night Conditioning", type: "HIIT", duration: "45 min", difficulty: "Advanced", location: "Gym", price: 34.99, description: "Pro-level conditioning combining heavy bag work, plyometrics, and strength circuits.", sampleDays: [
+        { day: "Day 1 — Bag Work", exercises: ["Heavy Bag Rounds — 6x3min", "Speed Bag — 3x2min", "Double-End Bag — 3x2min", "Battle Ropes — 4x30s", "Medicine Ball Slams — 3x15"] },
+        { day: "Day 2 — Power & Speed", exercises: ["Explosive Push-Ups — 4x8", "Box Jumps — 4x10", "Kettlebell Swings — 4x15", "Sprint Intervals — 6x30s", "Shadow Boxing Finisher — 3x2min"] },
+        { day: "Day 3 — Endurance Round", exercises: ["Heavy Bag — 8x3min rounds", "Jump Rope — 5x2min", "Burpee to Sprawl — 4x10", "Mountain Climbers — 4x30s", "Plank Hold — 3x60s"] }
+      ] },
+      { name: "Shadowbox Shred", type: "Cardio", duration: "25 min", difficulty: "Intermediate", location: "At Home", price: 24.99, description: "No equipment shadow boxing workout that burns fat and builds coordination.", sampleDays: [
+        { day: "Day 1 — Speed Rounds", exercises: ["Speed Jab Drill — 4x1min", "Combo Flurries — 3x2min", "Defensive Slip Drill — 3x1min", "High Knees — 3x30s", "Cool-Down Shadow Box — 2min"] },
+        { day: "Day 2 — Power Rounds", exercises: ["Power Cross Drill — 4x1min", "Hook & Uppercut Combos — 4x2min", "Body Hook Practice — 3x1min", "Squat to Uppercut — 3x12", "Plank Shoulder Taps — 3x12"] },
+        { day: "Day 3 — Mixed Rounds", exercises: ["Full Combo Shadow Boxing — 6x2min", "Sprawl to Jab — 3x10", "Lateral Movement Drill — 3x1min", "Jumping Jacks — 3x45s", "Deep Breathing — 2min"] }
+      ] },
+      { name: "Heavy Bag HIIT", type: "HIIT", duration: "30 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Tabata-style heavy bag intervals for explosive power and cardio endurance.", sampleDays: [
+        { day: "Day 1 — Tabata Bag", exercises: ["Jab-Cross — 20s on/10s off x8", "Hook Combos — 20s on/10s off x8", "Uppercut Flurry — 20s on/10s off x8", "Rest 60s between sets", "Core Finisher — 3x30s"] },
+        { day: "Day 2 — Power Intervals", exercises: ["Power Cross — 30s on/15s off x6", "Body Shots — 30s on/15s off x6", "Full Combo — 30s on/15s off x6", "Jump Rope — 3x2min", "Stretch — 3min"] },
+        { day: "Day 3 — Championship Round", exercises: ["3-Min Rounds on Bag — x8", "30s Sprint Between Rounds", "Push-Ups — 10 between each round", "Final Burnout Round — 2min all out", "Cool-Down Stretch — 3min"] }
+      ] },
+    ],
+    tags: ["Boxing", "Combat", "HIIT"]
+  },
+  {
+    id: 14, name: "Hannah Price", specialty: "Pre & Postnatal Fitness",
+    category: "fullbody", price: 37.99, rating: 4.9, subscribers: 2240, experience: "10 yrs",
+    credential: "ACE-CPT", credentialFull: "ACE Certified Personal Trainer",
+    specialtyType: "Pre/Postnatal Fitness Specialist",
+    bio: "ACE-certified pre/postnatal specialist. Safe, effective workouts for every trimester and postpartum recovery.",
+    color: "#F472B6",
+    workouts: [
+      { name: "First Trimester Fit", type: "Bodyweight", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Safe, energizing workouts for the first trimester with modifications for nausea and fatigue.", sampleDays: [
+        { day: "Day 1 — Gentle Strength", exercises: ["Modified Squats — 3x12", "Wall Push-Ups — 3x10", "Seated Knee Lifts — 3x10/side", "Cat-Cow — 3x10", "Deep Breathing — 3min"] },
+        { day: "Day 2 — Light Cardio", exercises: ["Walking in Place — 5min", "Step-Touches — 3x2min", "Arm Circles — 2x1min", "Standing Marches — 3x1min", "Gentle Stretch — 5min"] },
+        { day: "Day 3 — Core & Pelvic Floor", exercises: ["Pelvic Tilts — 3x12", "Kegels — 3x10 (5s hold)", "Bird-Dog — 3x8/side", "Glute Bridges — 3x12", "Side-Lying Stretch — 60s/side"] }
+      ] },
+      { name: "Postpartum Recovery", type: "Bodyweight", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Gentle recovery program rebuilding core and pelvic floor strength after delivery.", sampleDays: [
+        { day: "Day 1 — Core Reconnect", exercises: ["Diaphragmatic Breathing — 3min", "Pelvic Floor Activation — 3x10", "Gentle Pelvic Tilts — 3x10", "Heel Slides — 3x8/side", "Glute Squeeze — 3x12"] },
+        { day: "Day 2 — Rebuild", exercises: ["Modified Glute Bridge — 3x10", "Wall Sit — 3x15s", "Seated Arm Raises — 3x10", "Bird-Dog — 3x6/side", "Kegels — 3x10 (hold 5s)"] },
+        { day: "Day 3 — Strengthen", exercises: ["Bodyweight Squat — 3x10", "Incline Push-Up — 3x8", "Standing Calf Raises — 3x15", "Side-Lying Leg Lift — 3x10/side", "Child's Pose — 90s"] }
+      ] },
+      { name: "Bump & Burn", type: "Cardio", duration: "35 min", difficulty: "Intermediate", location: "At Home", price: 29.99, description: "Second trimester-safe cardio and strength to maintain fitness during pregnancy.", sampleDays: [
+        { day: "Day 1 — Cardio Light", exercises: ["Marching in Place — 5min", "Modified Jumping Jacks — 3x20", "Step-Ups — 3x10/side", "Standing Knee Raises — 3x12/side", "Cool-Down Walk — 3min"] },
+        { day: "Day 2 — Strength", exercises: ["Sumo Squats — 3x12", "Wall Push-Ups — 3x12", "Banded Side Steps — 3x12/side", "Seated Rows (band) — 3x12", "Cat-Cow — 10 breaths"] },
+        { day: "Day 3 — Balance & Core", exercises: ["Bird-Dog — 3x8/side", "Modified Plank — 3x20s", "Single-Leg Stand — 30s/side", "Glute Bridge — 3x15", "Deep Breathing — 3min"] }
+      ] },
+      { name: "Mom Strong", type: "Strength", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 32.99, description: "Postnatal strength program for moms ready to progress beyond recovery basics.", sampleDays: [
+        { day: "Day 1 — Lower Body", exercises: ["Goblet Squats — 3x12", "Romanian Deadlift (light) — 3x10", "Lateral Band Walks — 3x12/side", "Step-Ups — 3x10/side", "Calf Raises — 3x15"] },
+        { day: "Day 2 — Upper Body", exercises: ["Dumbbell Press — 3x10", "Bent-Over Row — 3x12", "Shoulder Press — 3x10", "Tricep Dips — 3x10", "Bicep Curls — 3x12"] },
+        { day: "Day 3 — Full Body", exercises: ["Deadbug — 3x10/side", "Push-Ups — 3x10", "Squat to Press — 3x10", "Plank Hold — 3x30s", "Stretching — 5min"] }
+      ] },
+    ],
+    tags: ["Prenatal", "Postnatal", "Recovery"]
+  },
+  {
+    id: 15, name: "Kai Nakamura", specialty: "Calisthenics & Street Workout",
+    category: "strength", price: 39.99, rating: 4.8, subscribers: 1580, experience: "7 yrs",
+    credential: "NSCA-CPT", credentialFull: "NSCA Certified Personal Trainer",
+    specialtyType: "Calisthenics Coach",
+    bio: "NSCA-certified calisthenics athlete. Mastered the muscle-up, front lever, and planche — now teaching you how to do the same.",
+    color: "#0EA5E9",
+    workouts: [
+      { name: "Calisthenics Foundations", type: "Bodyweight", duration: "45 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Build the base strength needed for advanced calisthenics skills.", sampleDays: [
+        { day: "Day 1 — Push", exercises: ["Push-Ups — 4x15", "Diamond Push-Ups — 3x10", "Pike Push-Ups — 3x8", "Dips (chair) — 3x10", "Plank — 3x45s"] },
+        { day: "Day 2 — Pull", exercises: ["Australian Rows — 4x12", "Dead Hangs — 3x30s", "Negative Pull-Ups — 3x5", "Scapular Pull-Ups — 3x10", "Chin-Up Hold — 3x15s"] },
+        { day: "Day 3 — Legs & Core", exercises: ["Pistol Squat Progressions — 3x8/side", "Jump Squats — 3x12", "L-Sit Tucks — 4x15s", "Hollow Body Hold — 3x20s", "Hanging Knee Raises — 3x10"] }
+      ] },
+      { name: "Muscle-Up Mastery", type: "Strength", duration: "50 min", difficulty: "Advanced", location: "Gym", price: 34.99, description: "Progressive program to achieve your first muscle-up and beyond.", sampleDays: [
+        { day: "Day 1 — Explosive Pull", exercises: ["High Pull-Ups — 4x5", "Kipping Practice — 3x8", "Chest-to-Bar Pull-Ups — 3x5", "Muscle-Up Negatives — 3x3", "Band-Assisted Muscle-Ups — 3x5"] },
+        { day: "Day 2 — Transition Work", exercises: ["Straight Bar Dips — 4x8", "Russian Dips — 3x6", "Transition Drill (low bar) — 3x5", "False Grip Hangs — 3x20s", "Ring Support Hold — 3x20s"] },
+        { day: "Day 3 — Full Attempts", exercises: ["Warm-Up Pull-Ups — 2x5", "Muscle-Up Attempts — 10 singles", "High Pull-Up to Dip — 3x3", "Weighted Pull-Ups — 3x5", "Ring Rows — 3x12"] }
+      ] },
+      { name: "Front Lever Program", type: "Strength", duration: "40 min", difficulty: "Advanced", location: "Gym", price: 32.99, description: "Step-by-step front lever progression from tuck to full hold.", sampleDays: [
+        { day: "Day 1 — Tuck Progressions", exercises: ["Tuck Front Lever Hold — 5x10s", "Advanced Tuck FL — 3x8s", "Ice Cream Makers — 3x6", "Front Lever Raises (tuck) — 3x5", "Dragon Flags — 3x5"] },
+        { day: "Day 2 — Pulling Strength", exercises: ["Weighted Pull-Ups — 4x5", "Front Lever Rows (tuck) — 3x8", "Archer Rows — 3x5/side", "Inverted Rows — 3x12", "Hanging L-Sit — 3x15s"] },
+        { day: "Day 3 — Isometric Work", exercises: ["Single-Leg FL Hold — 4x8s/side", "Full FL Negatives — 3x5s", "Skin the Cat — 3x5", "Back Lever Hold — 3x10s", "Core Compression — 3x15"] }
+      ] },
+      { name: "Park Workout", type: "Bodyweight", duration: "35 min", difficulty: "Intermediate", location: "At Home", price: 24.99, description: "Complete pull bar and parallel bar workout you can do at any outdoor park.", sampleDays: [
+        { day: "Day 1 — Upper Push/Pull", exercises: ["Pull-Ups — 4x8", "Bar Dips — 4x10", "Chin-Ups — 3x8", "Push-Ups — 3x15", "L-Sit on Bars — 3x15s"] },
+        { day: "Day 2 — Skills & Play", exercises: ["Muscle-Up Practice — 5x2", "Handstand Against Wall — 3x30s", "Bar Swings — 3x8", "Frog Stand — 3x15s", "Pistol Squats — 3x6/side"] },
+        { day: "Day 3 — Conditioning", exercises: ["Burpee Pull-Ups — 4x6", "Sprint to Bar — 5 sets", "Dip to L-Sit — 3x8", "Hanging Windshield Wipers — 3x6", "Dead Hang — max hold x3"] }
+      ] },
+    ],
+    tags: ["Calisthenics", "Bodyweight", "Skills"]
+  },
+  {
+    id: 16, name: "Aaliyah Robinson", specialty: "Dance & Cardio Fitness",
+    category: "cardio", price: 32.99, rating: 4.8, subscribers: 3100, experience: "6 yrs",
+    credential: "ACE-CPT", credentialFull: "ACE Certified Personal Trainer",
+    specialtyType: "Dance Fitness Coach",
+    bio: "ACE-certified dance fitness instructor who makes cardio fun. High-energy choreography that burns calories without feeling like exercise.",
+    color: "#D946EF",
+    workouts: [
+      { name: "Dance Cardio Party", type: "Cardio", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Fun dance-based cardio set to upbeat music. No dance experience needed.", sampleDays: [
+        { day: "Day 1 — Warm-Up Grooves", exercises: ["Step-Touch Rhythm — 3min", "Grapevine Steps — 3x1min", "Body Roll Warm-Up — 2min", "Mambo Steps — 3x1min", "Hip Sway Cool-Down — 2min"] },
+        { day: "Day 2 — Latin Vibes", exercises: ["Salsa Steps — 4x1min", "Merengue March — 3x1min", "Cumbia Side Steps — 3x1min", "Bachata Sway — 3x1min", "Stretch & Breathe — 3min"] },
+        { day: "Day 3 — Full Routine", exercises: ["Warm-Up Choreography — 3min", "Verse 1 Routine — 4min", "Chorus Routine — 3min", "Bridge Freestyle — 2min", "Cool-Down & Stretch — 5min"] }
+      ] },
+      { name: "Hip Hop Burn", type: "HIIT", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Hip hop inspired moves combined with HIIT intervals for maximum calorie burn.", sampleDays: [
+        { day: "Day 1 — Bounce", exercises: ["Bounce Step Combos — 4x1min", "Pop & Lock Intervals — 3x45s", "Running Man — 3x1min", "Drop Squats — 3x12", "Freestyle Burnout — 2min"] },
+        { day: "Day 2 — Sweat", exercises: ["Isolation Warm-Up — 3min", "High-Energy Combo — 5min", "Twerk Squats — 3x15", "Body Roll Plank — 3x30s", "Dance Battle Freestyle — 3min"] },
+        { day: "Day 3 — Fire", exercises: ["Full Choreography — 8min", "Speed Drill — 4x30s", "Floor Work Core — 3min", "Standing Combo Finisher — 3min", "Stretch — 4min"] }
+      ] },
+      { name: "Barre Sculpt", type: "Bodyweight", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 29.99, description: "Ballet-inspired barre workout using a chair for balance. Sculpt and tone every muscle.", sampleDays: [
+        { day: "Day 1 — Lower Body", exercises: ["Plié Squats — 4x20", "Relevé Calf Raises — 3x20", "Arabesque Leg Lifts — 3x15/side", "Inner Thigh Pulses — 3x20/side", "Grand Plié Hold — 3x30s"] },
+        { day: "Day 2 — Upper & Core", exercises: ["Arm Circles (light weights) — 4x1min", "Barre Push-Ups — 3x12", "Standing Ab Curl — 3x15", "Plank Relevé — 3x20s", "Tricep Presses — 3x15"] },
+        { day: "Day 3 — Full Barre", exercises: ["Tendu & Degagé — 3x12/side", "Chair Pose Pulse — 3x20", "Attitude Lifts — 3x12/side", "Plié to Relevé — 3x15", "Standing Splits — 30s/side"] }
+      ] },
+      { name: "Afrobeats Sweat", type: "Cardio", duration: "30 min", difficulty: "All Levels", location: "At Home", price: 24.99, description: "High-energy Afrobeats dance workout celebrating movement and rhythm.", sampleDays: [
+        { day: "Day 1 — Groove", exercises: ["Afro Step Warm-Up — 3min", "Azonto Steps — 3x1min", "Shaku Shaku — 3x1min", "Leg Work Combo — 4min", "Cool-Down Sway — 3min"] },
+        { day: "Day 2 — Energy", exercises: ["Gwara Gwara — 3x1min", "Zanku Legwork — 3x1min", "Full Combo — 5min", "Freestyle Circle — 3min", "Stretch & Breathe — 3min"] },
+        { day: "Day 3 — Celebration", exercises: ["Warm-Up Flow — 3min", "Full Choreography — 10min", "Partner Mirror Drill — 3min", "Freestyle Finisher — 3min", "Recovery Stretch — 4min"] }
+      ] },
+    ],
+    tags: ["Dance", "Cardio", "Fun Fitness"]
+  },
+  {
+    id: 17, name: "Ryan Foster", specialty: "Olympic Lifting",
+    category: "strength", price: 54.99, rating: 4.7, subscribers: 720, experience: "13 yrs",
+    credential: "CSCS", credentialFull: "Certified Strength & Conditioning Specialist",
+    specialtyType: "Olympic Lifting Coach",
+    bio: "CSCS-certified Olympic weightlifting coach. National-level competitor teaching clean, jerk, and snatch technique to all levels.",
+    color: "#DC2626",
+    workouts: [
+      { name: "Oly Lifting Basics", type: "Strength", duration: "50 min", difficulty: "Beginner", location: "Gym", price: 34.99, description: "Learn proper Olympic lifting technique with progressive drills and light weight.", sampleDays: [
+        { day: "Day 1 — Clean Progression", exercises: ["Clean Pull Drill — 5x3", "Hang Power Clean — 5x3", "Front Squat — 4x5", "Clean Deadlift — 3x5", "Core Stability — 3x30s"] },
+        { day: "Day 2 — Snatch Progression", exercises: ["Snatch Grip Deadlift — 4x5", "Hang Power Snatch — 5x3", "Overhead Squat — 4x5", "Snatch Pull — 3x3", "Pressing Snatch Balance — 3x5"] },
+        { day: "Day 3 — Jerk & Accessory", exercises: ["Push Press — 4x5", "Split Jerk Practice — 5x2", "Behind Neck Jerk — 3x3", "Back Squat — 4x5", "Good Mornings — 3x8"] }
+      ] },
+      { name: "Clean & Jerk Program", type: "Powerlifting", duration: "60 min", difficulty: "Intermediate", location: "Gym", price: 39.99, description: "6-week specialization program to increase your clean & jerk PR.", sampleDays: [
+        { day: "Day 1 — Heavy Cleans", exercises: ["Power Clean — 5x2 at 80%", "Clean Pulls — 3x3 at 90%", "Front Squat — 4x3 at 85%", "RDL — 3x8", "Plank Hold — 3x45s"] },
+        { day: "Day 2 — Jerk Focus", exercises: ["Push Jerk — 5x2", "Split Jerk — 5x1 at 85%", "Push Press — 4x3", "Overhead Holds — 3x10s", "Ab Wheel — 3x8"] },
+        { day: "Day 3 — Full Lift", exercises: ["Clean & Jerk — 6x1 at 80-90%", "Clean Pull — 3x2", "Back Squat — 3x5", "Bulgarian Split Squat — 3x8/side", "Band Pull-Aparts — 3x15"] }
+      ] },
+      { name: "Snatch Development", type: "Powerlifting", duration: "55 min", difficulty: "Advanced", location: "Gym", price: 42.99, description: "Advanced snatch training for competitive lifters chasing PRs.", sampleDays: [
+        { day: "Day 1 — Speed Work", exercises: ["Power Snatch — 6x2 at 75%", "Hang Snatch — 4x2", "Snatch Pulls — 3x3 at 90%", "Overhead Squat — 3x3", "Hip Thrusts — 3x10"] },
+        { day: "Day 2 — Heavy Singles", exercises: ["Full Snatch — work to 90% single", "Snatch Deadlift — 3x3 at 95%", "Back Squat — 4x2 at 85%", "Snatch Grip RDL — 3x6", "Hanging Leg Raise — 3x10"] },
+        { day: "Day 3 — Complexes", exercises: ["Snatch Pull + Hang Snatch + OHS — 5 complexes", "Snatch Balance — 4x2", "Front Squat — 3x3", "Clean Grip Deadlift — 3x5", "Plank — 3x60s"] }
+      ] },
+      { name: "Barbell Conditioning", type: "HIIT", duration: "35 min", difficulty: "Intermediate", location: "Gym", price: 29.99, description: "Olympic lift-based conditioning circuits for explosive power and cardio.", sampleDays: [
+        { day: "Day 1 — Power Circuit", exercises: ["Hang Clean — 5x3 EMOM", "Push Press — 5x5 EMOM", "Front Squat — 5x3 EMOM", "Deadlift — 5x5 EMOM", "Rest 2min, repeat"] },
+        { day: "Day 2 — Barbell Complex", exercises: ["6 Deadlifts + 6 Hang Cleans + 6 Front Squats + 6 Push Press — 5 rounds", "2min rest between rounds", "Finisher: Max Burpees in 2min", "Cool-Down Stretch — 3min", "Foam Roll — 3min"] },
+        { day: "Day 3 — Tabata Barbell", exercises: ["Clean & Press — 20s on/10s off x8", "Deadlift — 20s on/10s off x8", "Front Squat — 20s on/10s off x8", "Row (barbell) — 20s on/10s off x8", "Rest & Stretch — 5min"] }
+      ] },
+    ],
+    tags: ["Olympic Lifting", "Weightlifting", "Strength"]
+  },
+  {
+    id: 18, name: "Zara Williams", specialty: "Senior Fitness & Active Aging",
+    category: "mobility", price: 29.99, rating: 4.9, subscribers: 1920, experience: "11 yrs",
+    credential: "ACE-CPT", credentialFull: "ACE Certified Personal Trainer",
+    specialtyType: "Senior Fitness Specialist",
+    bio: "ACE-certified senior fitness specialist. Keeping adults 55+ strong, balanced, and independent through safe, effective exercise.",
+    color: "#059669",
+    workouts: [
+      { name: "Balance & Stability", type: "Mobility", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 19.99, description: "Improve balance and reduce fall risk with gentle, progressive exercises.", sampleDays: [
+        { day: "Day 1 — Static Balance", exercises: ["Single-Leg Stand (chair support) — 3x15s/side", "Heel-Toe Walk — 3x20 steps", "Tandem Stand — 3x20s", "Weight Shifts — 3x10/side", "Seated Marches — 3x1min"] },
+        { day: "Day 2 — Dynamic Balance", exercises: ["Side Steps (chair nearby) — 3x10/side", "Backwards Walking — 3x10 steps", "Clock Reach — 3x6/side", "Step-Overs (low object) — 3x8", "Seated Leg Extensions — 3x10"] },
+        { day: "Day 3 — Coordination", exercises: ["Arm & Leg Opposite Raise — 3x8/side", "Marching with Arm Swings — 3x1min", "Heel-Toe Rocking — 3x12", "Standing Figure 8 — 3x6/side", "Deep Breathing — 3min"] }
+      ] },
+      { name: "Gentle Strength", type: "Strength", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Low-impact strength training to maintain muscle mass, bone density, and daily function.", sampleDays: [
+        { day: "Day 1 — Upper Body", exercises: ["Seated Dumbbell Press — 3x10", "Seated Row (band) — 3x12", "Bicep Curls — 3x10", "Tricep Extensions — 3x10", "Wall Push-Ups — 3x8"] },
+        { day: "Day 2 — Lower Body", exercises: ["Chair Squats — 3x10", "Seated Leg Press (band) — 3x12", "Standing Calf Raises (chair support) — 3x12", "Seated Knee Extensions — 3x10", "Ankle Circles — 2x10/side"] },
+        { day: "Day 3 — Full Body", exercises: ["Seated Overhead Press — 3x10", "Chair Stand-Ups — 3x8", "Seated Chest Press (band) — 3x10", "Standing Hip Abduction — 3x10/side", "Gentle Stretching — 5min"] }
+      ] },
+      { name: "Chair Yoga", type: "Mobility", duration: "20 min", difficulty: "All Levels", location: "At Home", price: 17.99, description: "Accessible yoga practice done entirely from a chair. Perfect for limited mobility.", sampleDays: [
+        { day: "Day 1 — Breathing & Stretch", exercises: ["Seated Deep Breathing — 3min", "Seated Cat-Cow — 3x8", "Seated Side Bend — 3x6/side", "Seated Twist — 30s/side", "Seated Forward Fold — 60s"] },
+        { day: "Day 2 — Strength Poses", exercises: ["Seated Warrior (modified) — 30s/side", "Seated Eagle Arms — 30s/side", "Chair Pose (hover) — 3x10s", "Seated Tree Pose — 30s/side", "Gentle Neck Rolls — 1min"] },
+        { day: "Day 3 — Flow", exercises: ["Seated Sun Salutation — 5 rounds", "Seated Figure 4 Stretch — 45s/side", "Seated Pigeon — 45s/side", "Seated Meditation — 3min", "Gratitude Breathing — 2min"] }
+      ] },
+      { name: "Walk & Tone", type: "Cardio", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 19.99, description: "Indoor walking workout with light toning intervals for cardiovascular health.", sampleDays: [
+        { day: "Day 1 — Easy Walk", exercises: ["March in Place — 5min", "Side Steps — 3x1min", "March with Arm Raises — 3x1min", "Step-Touch — 3x1min", "Cool-Down March — 3min"] },
+        { day: "Day 2 — Walk & Tone", exercises: ["Power March — 4min", "Bicep Curls while Marching — 3x12", "Side Steps with Overhead Press — 3x10", "Standing Leg Curls — 3x10/side", "Gentle March — 3min"] },
+        { day: "Day 3 — Endurance Walk", exercises: ["Warm-Up March — 3min", "Fast March — 5min", "Moderate March — 3min", "Fast March — 5min", "Cool-Down & Stretch — 5min"] }
+      ] },
+    ],
+    tags: ["Senior Fitness", "Balance", "Low Impact"]
+  },
+  {
+    id: 19, name: "Jake Morrison", specialty: "Obstacle Course & Functional",
+    category: "fullbody", price: 44.99, rating: 4.7, subscribers: 980, experience: "8 yrs",
+    credential: "CSCS", credentialFull: "Certified Strength & Conditioning Specialist",
+    specialtyType: "Obstacle Course Coach",
+    bio: "CSCS-certified Spartan Race champion. Training athletes to conquer obstacle courses and build real-world functional strength.",
+    color: "#B45309",
+    workouts: [
+      { name: "Spartan Prep", type: "HIIT", duration: "50 min", difficulty: "Advanced", location: "Gym", price: 37.99, description: "Complete obstacle course race preparation combining running, climbing, and functional strength.", sampleDays: [
+        { day: "Day 1 — Grip & Climb", exercises: ["Dead Hangs — 4x30s", "Farmer Carries — 4x40m", "Rope Climb Practice — 3 ascents", "Pull-Ups — 4x8", "Plate Pinch Hold — 3x30s"] },
+        { day: "Day 2 — Run & Carry", exercises: ["800m Run — 3 sets", "Sandbag Carry — 4x50m", "Bear Crawl — 3x30m", "Wall Ball — 3x15", "Sled Push — 4x30m"] },
+        { day: "Day 3 — Race Simulation", exercises: ["1-Mile Run Start", "Burpees — 30", "Rope Climb — 1 ascent", "Farmer Carry — 100m", "Sprint Finish — 400m"] }
+      ] },
+      { name: "Functional Athlete", type: "Strength", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 32.99, description: "Build real-world strength that transfers to sports, work, and daily life.", sampleDays: [
+        { day: "Day 1 — Push & Carry", exercises: ["Sled Push — 4x30m", "Overhead Press — 4x8", "Farmer Carries — 3x40m", "Push-Ups — 3x15", "Plank to Push-Up — 3x10"] },
+        { day: "Day 2 — Pull & Climb", exercises: ["Deadlifts — 4x6", "Pull-Ups — 4x8", "Rope Pulls (seated) — 3x5", "Cable Rows — 3x12", "Grip Crushers — 3x15"] },
+        { day: "Day 3 — Move & Crawl", exercises: ["Bear Crawl — 4x20m", "Lateral Shuffle — 3x30s", "Box Jumps — 3x10", "Turkish Get-Ups — 3x3/side", "Burpee Broad Jumps — 3x8"] }
+      ] },
+      { name: "Grip Strength Special", type: "Strength", duration: "30 min", difficulty: "Intermediate", location: "Gym", price: 24.99, description: "Dedicated grip and forearm training for obstacle course success.", sampleDays: [
+        { day: "Day 1 — Hang & Hold", exercises: ["Dead Hangs — 5x max hold", "Towel Pull-Ups — 3x5", "Plate Pinch — 3x30s", "Wrist Curls — 3x15", "Finger Extensions (band) — 3x20"] },
+        { day: "Day 2 — Carry & Crush", exercises: ["Farmer Carries — 4x40m", "Suitcase Carry — 3x30m/side", "Hand Gripper — 3x10/hand", "Barbell Hold — 3x20s", "Towel Hang — 3x15s"] },
+        { day: "Day 3 — Dynamic Grip", exercises: ["Rope Climb — 3 ascents", "Kettlebell Bottoms-Up Press — 3x6/side", "Fat Grip Pull-Ups — 3x5", "Ball Squeeze — 3x20", "Finger Curls — 3x15"] }
+      ] },
+      { name: "Mud Run Ready", type: "Cardio", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Prepare for your first mud run or obstacle race with this 6-week plan.", sampleDays: [
+        { day: "Day 1 — Cardio Base", exercises: ["Jog/Walk Intervals — 20min", "Burpees — 3x8", "Bear Crawl — 3x15m", "Mountain Climbers — 3x20", "Stretch — 5min"] },
+        { day: "Day 2 — Strength Prep", exercises: ["Bodyweight Squats — 4x15", "Push-Ups — 3x12", "Pull-Up Practice — 3x max", "Plank Hold — 3x45s", "Lunges — 3x10/side"] },
+        { day: "Day 3 — Simulation", exercises: ["Run 400m", "10 Burpees", "Run 400m", "20 Squats", "Run 400m + Sprint Finish"] }
+      ] },
+    ],
+    tags: ["Obstacle Course", "Functional", "Spartan"]
+  },
+  {
+    id: 20, name: "Sasha Petrov", specialty: "Kettlebell Training",
+    category: "strength", price: 39.99, rating: 4.8, subscribers: 1450, experience: "9 yrs",
+    credential: "NASM-CPT", credentialFull: "NASM Certified Personal Trainer",
+    specialtyType: "Kettlebell Specialist",
+    bio: "NASM-certified kettlebell specialist trained in Russian hardstyle technique. One bell is all you need to transform your body.",
+    color: "#7C3AED",
+    workouts: [
+      { name: "Kettlebell Fundamentals", type: "Strength", duration: "35 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Master the six foundational kettlebell movements with proper form.", sampleDays: [
+        { day: "Day 1 — Swing & Squat", exercises: ["Kettlebell Deadlift — 3x10", "Two-Hand Swing — 5x10", "Goblet Squat — 3x12", "Swing to Park — 3x5", "Halo — 3x6/direction"] },
+        { day: "Day 2 — Press & Row", exercises: ["KB Floor Press — 3x10/side", "KB Row — 3x10/side", "KB Overhead Press — 3x8/side", "KB Windmill — 3x5/side", "KB Carry — 3x30m/side"] },
+        { day: "Day 3 — Full Body Flow", exercises: ["Swing — 5x10", "Clean — 3x5/side", "Goblet Squat — 3x10", "Push Press — 3x6/side", "Turkish Get-Up — 3x2/side"] }
+      ] },
+      { name: "Simple & Sinister", type: "Strength", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 29.99, description: "Minimalist kettlebell program: swings and Turkish get-ups. Simple but brutally effective.", sampleDays: [
+        { day: "Day 1", exercises: ["One-Hand Swing — 10x10 (alternate every 10)", "Turkish Get-Up — 5x1/side", "Light Stretch — 3min", "Focus: Power on each swing", "Total time: ~25min"] },
+        { day: "Day 2", exercises: ["One-Hand Swing — 10x10 (alternate every 10)", "Turkish Get-Up — 5x1/side", "Goblet Squat — 3x5 (cooldown)", "Focus: Hinge timing", "Total time: ~25min"] },
+        { day: "Day 3", exercises: ["One-Hand Swing — 10x10 (alternate every 10)", "Turkish Get-Up — 5x1/side", "Halo — 3x5/direction (cooldown)", "Focus: Breathing rhythm", "Total time: ~25min"] }
+      ] },
+      { name: "KB Complex Conditioning", type: "HIIT", duration: "25 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Brutal kettlebell complexes that build strength and cardio simultaneously.", sampleDays: [
+        { day: "Day 1 — The Armor", exercises: ["Double Clean — 2 reps", "Double Press — 1 rep", "Double Front Squat — 3 reps", "Repeat for 30min EMOM", "Rest as needed"] },
+        { day: "Day 2 — Chain Complex", exercises: ["Swing x5 + Clean x5 + Press x5 + Squat x5 — per side", "4 rounds", "2min rest between rounds", "Finisher: 50 Swings for time", "Stretch — 3min"] },
+        { day: "Day 3 — Snatch Test", exercises: ["KB Snatch — 100 reps in 5min goal", "Alternate hands every 10 reps", "Rest as needed within 5min", "Cool-Down Swings — 3x10", "Full Body Stretch — 5min"] }
+      ] },
+      { name: "KB Flow", type: "Bodyweight", duration: "30 min", difficulty: "Intermediate", location: "At Home", price: 24.99, description: "Fluid kettlebell flows linking movements together for coordination and conditioning.", sampleDays: [
+        { day: "Day 1 — Basic Flow", exercises: ["Clean to Press to Squat — 3x5/side", "Swing to Catch to Squat — 3x8", "Halo to Squat — 3x6", "Deadlift to Row — 3x8", "Cool-Down — 3min"] },
+        { day: "Day 2 — Intermediate Flow", exercises: ["Clean to Squat to Press to Windmill — 3x3/side", "Snatch to Overhead Squat — 3x5/side", "Swing to High Pull — 3x8/side", "Turkish Get-Up Flow — 3x1/side", "Stretch — 3min"] },
+        { day: "Day 3 — Challenge Flow", exercises: ["10-Min Continuous Flow (your choice)", "Swing Ladder — 2,4,6,8,10,8,6,4,2", "Double KB Complex — 5 rounds", "Single-Arm Flow — 3x3/side", "Deep Stretch — 5min"] }
+      ] },
+    ],
+    tags: ["Kettlebell", "Strength", "Conditioning"]
+  },
+  {
+    id: 21, name: "Camille Dupont", specialty: "Pilates & Core Training",
+    category: "mobility", price: 36.99, rating: 4.8, subscribers: 2100, experience: "10 yrs",
+    credential: "NASM-CES", credentialFull: "NASM Corrective Exercise Specialist",
+    specialtyType: "Pilates & Core Specialist",
+    bio: "NASM corrective exercise specialist with classical Pilates training. Strengthen your core, fix your posture, move with control.",
+    color: "#06B6D4",
+    workouts: [
+      { name: "Classical Pilates", type: "Bodyweight", duration: "40 min", difficulty: "Intermediate", location: "At Home", price: 27.99, description: "Traditional Joseph Pilates mat sequence for core strength and spinal mobility.", sampleDays: [
+        { day: "Day 1 — Mat Fundamentals", exercises: ["The Hundred — 100 counts", "Roll-Up — 10 reps", "Single-Leg Circle — 8/side", "Rolling Like a Ball — 8 reps", "Single-Leg Stretch — 10/side"] },
+        { day: "Day 2 — Intermediate Series", exercises: ["Double-Leg Stretch — 10 reps", "Criss-Cross — 10/side", "Spine Stretch Forward — 8 reps", "Open-Leg Rocker — 8 reps", "Saw — 6/side"] },
+        { day: "Day 3 — Full Mat", exercises: ["Teaser — 3x5", "Swimming — 30s x3", "Leg Pull Front — 3x8", "Side Kick Series — 8/side", "Seal — 8 reps"] }
+      ] },
+      { name: "Core Rehab", type: "Mobility", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "Therapeutic core program for back pain relief and postural correction.", sampleDays: [
+        { day: "Day 1 — Activation", exercises: ["Pelvic Floor Engagement — 3x10", "Dead Bug — 3x8/side", "Pelvic Tilts — 3x12", "Glute Bridge — 3x12", "Diaphragmatic Breathing — 3min"] },
+        { day: "Day 2 — Stability", exercises: ["Bird-Dog — 3x8/side", "Modified Side Plank — 3x15s/side", "Supine March — 3x10/side", "Prone Back Extension — 3x8", "Child's Pose — 90s"] },
+        { day: "Day 3 — Integration", exercises: ["Plank on Forearms — 3x20s", "Side-Lying Leg Lift — 3x12/side", "Bridge March — 3x8/side", "Cat-Cow — 3x10", "Spine Stretch — 60s/side"] }
+      ] },
+      { name: "Posture Fix", type: "Mobility", duration: "20 min", difficulty: "All Levels", location: "At Home", price: 19.99, description: "Daily posture correction routine targeting desk workers and tech neck.", sampleDays: [
+        { day: "Day 1 — Upper Back", exercises: ["Chin Tucks — 3x12", "Wall Angels — 3x10", "Doorway Chest Stretch — 60s/side", "Thoracic Extension — 3x8", "Shoulder Blade Squeezes — 3x15"] },
+        { day: "Day 2 — Lower Back & Hips", exercises: ["Hip Flexor Stretch — 60s/side", "Cat-Cow — 3x10", "Glute Bridge — 3x12", "Pelvic Tilts — 3x10", "Hamstring Stretch — 60s/side"] },
+        { day: "Day 3 — Full Posture Reset", exercises: ["Full Body Foam Roll — 5min", "Wall Slide — 3x10", "Supine Spinal Twist — 60s/side", "Standing Posture Check — 2min", "Deep Breathing — 3min"] }
+      ] },
+      { name: "Power Pilates", type: "HIIT", duration: "35 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "High-intensity Pilates-inspired workout combining core endurance with athletic movements.", sampleDays: [
+        { day: "Day 1 — Core Fire", exercises: ["Hundred Sprint — 200 counts", "Teaser V-Up — 3x10", "Plank Pike Jump — 3x10", "Jackknife — 3x8", "Mountain Climber Twist — 3x12/side"] },
+        { day: "Day 2 — Athletic Pilates", exercises: ["Burpee to Pilates Roll — 3x8", "Single-Leg Teaser — 3x6/side", "Push-Up to Pike — 3x10", "Leg Pull Back — 3x8", "Standing Roll-Down to Plank — 3x6"] },
+        { day: "Day 3 — Endurance Mat", exercises: ["Full Classical Sequence — 20min non-stop", "Plank Series — 5min", "Side Series — 3min/side", "Stretch & Release — 5min", "Seated Meditation — 2min"] }
+      ] },
+    ],
+    tags: ["Pilates", "Core", "Posture"]
+  },
 ];
 
 const nutritionists = [
@@ -729,6 +1039,326 @@ const nutritionists = [
       ] },
     ],
     tags: ["Pro Sports", "Elite", "Performance"]
+  },
+  {
+    id: 113, name: "Olivia Tran", specialty: "Vegan & Plant-Based Nutrition",
+    category: "plantbased", price: 42.99, rating: 4.9, subscribers: 1820, experience: "8 yrs",
+    credential: "RDN", credentialFull: "Registered Dietitian Nutritionist",
+    specialtyType: "Plant-Based Nutritionist",
+    bio: "Registered Dietitian proving that plant-based eating fuels elite performance. No compromises on protein, no compromises on taste.",
+    color: "#22C55E",
+    services: ["Vegan meal plans", "Plant protein optimization", "B12 & micronutrient guidance", "Athlete vegan transitions"],
+    plans: [
+      { name: "High-Performance Vegan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "130g+ protein daily from plant sources to fuel muscle growth and recovery.", sampleDays: [
+        { day: "Day 1", calories: "2,280 cal", protein: "135g protein", breakfast: "Tofu scramble with spinach, nutritional yeast, and whole grain toast", lunch: "Tempeh and black bean power bowl with quinoa, avocado, and tahini", dinner: "Seitan stir-fry with broccoli, edamame, peanut sauce, and brown rice" },
+        { day: "Day 2", calories: "2,320 cal", protein: "138g protein", breakfast: "Protein smoothie with pea protein, banana, oats, and almond butter", lunch: "Lentil and chickpea curry with coconut rice and naan", dinner: "BBQ jackfruit tacos with black beans, slaw, and cashew crema" },
+        { day: "Day 3", calories: "2,250 cal", protein: "132g protein", breakfast: "Chickpea flour omelette with mushrooms, peppers, and vegan cheese", lunch: "Massive grain bowl with falafel, hummus, and roasted vegetables", dinner: "Red lentil pasta with marinara, beyond meat crumbles, and side salad" }
+      ] },
+      { name: "Vegan Transition Guide", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Gradual plant-based transition with familiar comfort foods made vegan.", sampleDays: [
+        { day: "Day 1", calories: "1,850 cal", protein: "95g protein", breakfast: "Overnight oats with almond milk, chia seeds, and mixed berries", lunch: "Veggie burger with sweet potato fries and a side salad", dinner: "Spaghetti with lentil bolognese and garlic bread" },
+        { day: "Day 2", calories: "1,780 cal", protein: "92g protein", breakfast: "Banana pancakes with maple syrup and fresh fruit", lunch: "Loaded burrito with rice, beans, guacamole, and salsa", dinner: "Coconut chickpea curry with jasmine rice" },
+        { day: "Day 3", calories: "1,900 cal", protein: "98g protein", breakfast: "Smoothie bowl with acai, granola, banana, and coconut flakes", lunch: "Asian noodle bowl with tofu, vegetables, and sesame dressing", dinner: "Stuffed bell peppers with quinoa, black beans, and vegan cheese" }
+      ] },
+      { name: "Budget Plant-Based", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 22.99, description: "Healthy vegan eating for under $50/week using staples like beans, rice, and seasonal produce.", sampleDays: [
+        { day: "Day 1", calories: "1,720 cal", protein: "85g protein", breakfast: "Oatmeal with peanut butter, banana, and cinnamon", lunch: "Rice and beans with salsa and frozen corn", dinner: "Pasta with canned tomato sauce, white beans, and frozen spinach" },
+        { day: "Day 2", calories: "1,680 cal", protein: "82g protein", breakfast: "Toast with peanut butter and sliced banana", lunch: "Lentil soup with bread and a side of carrot sticks", dinner: "Stir-fried tofu with frozen mixed vegetables and soy sauce over rice" },
+        { day: "Day 3", calories: "1,750 cal", protein: "88g protein", breakfast: "Smoothie with frozen fruit, oats, and soy milk", lunch: "Hummus wrap with shredded carrots, cucumber, and lettuce", dinner: "Black bean tacos with cabbage slaw and hot sauce" }
+      ] },
+      { name: "Vegan Athlete Fuel", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 44.99, description: "Periodized plant-based nutrition for competitive athletes with training-day cycling.", sampleDays: [
+        { day: "Day 1 — Training Day", calories: "2,850 cal", protein: "155g protein", breakfast: "Mass smoothie with pea protein, oats, banana, and almond butter", lunch: "Double tofu rice bowl with edamame, avocado, and teriyaki", dinner: "Seitan and pasta with cashew cream sauce and roasted vegetables" },
+        { day: "Day 2 — Rest Day", calories: "2,200 cal", protein: "125g protein", breakfast: "Protein pancakes with blueberries and maple syrup", lunch: "Large lentil salad with tahini dressing and seed mix", dinner: "Coconut curry with chickpeas, sweet potato, and brown rice" },
+        { day: "Day 3 — Competition", calories: "2,600 cal", protein: "140g protein", breakfast: "Oatmeal with protein powder, banana, and peanut butter", lunch: "Simple rice and tofu with vegetables (3 hours pre-event)", dinner: "Post-event recovery shake and a large vegan burrito bowl" }
+      ] },
+    ],
+    tags: ["Vegan", "Plant-Based", "Performance"]
+  },
+  {
+    id: 114, name: "James Rivera", specialty: "Keto & Low-Carb Nutrition",
+    category: "weightloss", price: 47.99, rating: 4.7, subscribers: 1340, experience: "7 yrs",
+    credential: "CNS", credentialFull: "Certified Nutrition Specialist",
+    specialtyType: "Low-Carb Specialist",
+    bio: "Certified Nutrition Specialist and former type 2 diabetic. Reversed his own condition through keto and now helps others do the same.",
+    color: "#F59E0B",
+    services: ["Ketogenic meal plans", "Blood sugar management", "Cyclical keto", "Metabolic health coaching"],
+    plans: [
+      { name: "Classic Keto Reset", type: "Low Carb", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Standard ketogenic diet plan keeping carbs under 30g/day for fat adaptation.", sampleDays: [
+        { day: "Day 1", calories: "1,820 cal", protein: "120g protein", breakfast: "3-egg omelette with cheese, spinach, and avocado", lunch: "Grilled chicken thighs with caesar salad (no croutons)", dinner: "Ribeye steak with garlic butter, asparagus, and cauliflower mash" },
+        { day: "Day 2", calories: "1,780 cal", protein: "125g protein", breakfast: "Bulletproof coffee with bacon and scrambled eggs", lunch: "Tuna salad lettuce wraps with cheese and olives", dinner: "Salmon with creamed spinach and a side of roasted broccoli" },
+        { day: "Day 3", calories: "1,850 cal", protein: "118g protein", breakfast: "Keto smoothie with MCT oil, cocoa, and almond butter", lunch: "Burger patties with cheese, tomato, and side salad", dinner: "Pork chops with green beans sauteed in butter and garlic" }
+      ] },
+      { name: "Cyclical Keto", type: "Flexible", duration: "10 weeks", difficulty: "Advanced", price: 42.99, description: "Strategic carb cycling — 5 days keto, 2 days high-carb refeed for athletes.", sampleDays: [
+        { day: "Day 1 — Keto Day", calories: "1,750 cal", protein: "130g protein", breakfast: "Eggs with avocado and smoked salmon", lunch: "Chicken and vegetable stir-fry with coconut oil", dinner: "Grilled steak with roasted vegetables and olive oil" },
+        { day: "Day 2 — Keto Day", calories: "1,780 cal", protein: "128g protein", breakfast: "Greek yogurt (full fat) with nuts and seeds", lunch: "Cobb salad with bacon, egg, cheese, and ranch", dinner: "Baked cod with lemon butter, asparagus, and a side salad" },
+        { day: "Day 3 — Refeed Day", calories: "2,400 cal", protein: "140g protein", breakfast: "Oatmeal with banana, honey, and berries", lunch: "Chicken and sweet potato bowl with rice and vegetables", dinner: "Pasta with lean ground turkey, marinara, and garlic bread" }
+      ] },
+      { name: "Lazy Keto Starter", type: "Low Carb", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Simple keto approach — just track carbs, not calories. Perfect for beginners.", sampleDays: [
+        { day: "Day 1", calories: "~1,800 cal", protein: "~115g protein", breakfast: "Bacon and eggs with butter", lunch: "Deli meat and cheese roll-ups with mustard", dinner: "Rotisserie chicken with steamed broccoli and butter" },
+        { day: "Day 2", calories: "~1,750 cal", protein: "~110g protein", breakfast: "Cream cheese pancakes with sugar-free syrup", lunch: "Chicken caesar salad (skip the croutons)", dinner: "Bunless burger with cheese, pickles, and a side salad" },
+        { day: "Day 3", calories: "~1,850 cal", protein: "~120g protein", breakfast: "Sausage and egg muffin (no bread)", lunch: "Tuna salad stuffed avocado", dinner: "Grilled pork chops with cauliflower mac and cheese" }
+      ] },
+      { name: "Keto for Athletes", type: "Performance", duration: "8 weeks", difficulty: "Advanced", price: 44.99, description: "Targeted keto for active individuals with pre/post workout carb timing.", sampleDays: [
+        { day: "Day 1 — Training Day", calories: "2,200 cal", protein: "155g protein", breakfast: "Egg and sausage bowl with avocado and cheese", lunch: "Pre-workout: small portion of berries with whey protein", dinner: "Post-workout: chicken thighs with sweet potato and steamed greens" },
+        { day: "Day 2 — Rest Day", calories: "1,750 cal", protein: "135g protein", breakfast: "Bulletproof coffee and a 3-egg omelette", lunch: "Steak salad with blue cheese and olive oil dressing", dinner: "Baked salmon with creamy garlic spinach" },
+        { day: "Day 3 — Training Day", calories: "2,150 cal", protein: "150g protein", breakfast: "Protein shake with MCT oil and almond butter", lunch: "Pre-workout: handful of berries with nuts", dinner: "Post-workout: grilled chicken with rice and roasted vegetables" }
+      ] },
+    ],
+    tags: ["Keto", "Low-Carb", "Weight Loss"]
+  },
+  {
+    id: 115, name: "Dr. Angela Foster", specialty: "Clinical & Medical Nutrition",
+    category: "clinical", price: 64.99, rating: 4.9, subscribers: 680, experience: "16 yrs",
+    credential: "RD", credentialFull: "Registered Dietitian",
+    specialtyType: "Clinical Nutritionist",
+    bio: "Board-certified Registered Dietitian with a doctorate in clinical nutrition. Specializes in medical nutrition therapy for chronic conditions.",
+    color: "#0891B2",
+    services: ["Diabetes nutrition", "Heart health plans", "IBS/IBD protocols", "Post-surgery nutrition"],
+    plans: [
+      { name: "Heart-Healthy Plan", type: "Anti-Inflammatory", duration: "12 weeks", difficulty: "Beginner", price: 39.99, description: "Mediterranean-inspired plan to lower cholesterol and support cardiovascular health.", sampleDays: [
+        { day: "Day 1", calories: "1,750 cal", protein: "95g protein", breakfast: "Steel-cut oats with walnuts, flaxseed, and fresh berries", lunch: "Grilled salmon salad with olive oil, lemon, and mixed greens", dinner: "Baked chicken breast with roasted vegetables and quinoa" },
+        { day: "Day 2", calories: "1,720 cal", protein: "92g protein", breakfast: "Whole grain toast with avocado, tomato, and a poached egg", lunch: "Lentil and vegetable soup with a side of whole grain bread", dinner: "Grilled fish with steamed broccoli, brown rice, and olive oil" },
+        { day: "Day 3", calories: "1,780 cal", protein: "98g protein", breakfast: "Greek yogurt parfait with granola, almonds, and honey", lunch: "Tuna and white bean salad with olive oil and fresh herbs", dinner: "Turkey meatballs with whole wheat pasta and marinara sauce" }
+      ] },
+      { name: "Blood Sugar Balance", type: "Low Carb", duration: "8 weeks", difficulty: "Intermediate", price: 42.99, description: "Glycemic-controlled meal plan for pre-diabetes and type 2 diabetes management.", sampleDays: [
+        { day: "Day 1", calories: "1,620 cal", protein: "110g protein", breakfast: "Veggie egg muffins with a small portion of berries", lunch: "Grilled chicken with non-starchy vegetables and olive oil", dinner: "Baked fish with cauliflower rice and steamed green beans" },
+        { day: "Day 2", calories: "1,580 cal", protein: "108g protein", breakfast: "Cottage cheese with seeds, cinnamon, and a few walnuts", lunch: "Turkey lettuce wraps with cucumber and a side of lentils", dinner: "Lean pork tenderloin with roasted Brussels sprouts and quinoa" },
+        { day: "Day 3", calories: "1,650 cal", protein: "115g protein", breakfast: "Protein smoothie with greens, almond butter, and low-sugar fruit", lunch: "Salmon with a large mixed salad and vinaigrette", dinner: "Chicken stir-fry with mixed vegetables over a small portion of rice" }
+      ] },
+      { name: "Gut Restoration Protocol", type: "Elimination", duration: "10 weeks", difficulty: "Intermediate", price: 49.99, description: "Structured elimination and reintroduction protocol for IBS and food sensitivities.", sampleDays: [
+        { day: "Day 1 — Elimination Phase", calories: "1,680 cal", protein: "105g protein", breakfast: "Rice porridge with cooked pear and a pinch of cinnamon", lunch: "Baked chicken with steamed zucchini and white rice", dinner: "Poached salmon with steamed carrots and mashed sweet potato" },
+        { day: "Day 2 — Elimination Phase", calories: "1,650 cal", protein: "102g protein", breakfast: "Smoothie with banana, rice milk, and sunflower seed butter", lunch: "Turkey patty with lettuce, cucumber, and olive oil", dinner: "Slow-cooked lamb with butternut squash and steamed spinach" },
+        { day: "Day 3 — Reintroduction Phase", calories: "1,720 cal", protein: "108g protein", breakfast: "Test food: small portion of dairy (e.g., plain yogurt)", lunch: "Simple grilled fish with rice and steamed vegetables", dinner: "Chicken soup with root vegetables and fresh herbs" }
+      ] },
+      { name: "Post-Surgery Recovery", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 34.99, description: "High-protein, nutrient-dense meals to support healing after surgery.", sampleDays: [
+        { day: "Day 1", calories: "1,850 cal", protein: "128g protein", breakfast: "Protein-enriched oatmeal with collagen peptides and berries", lunch: "Bone broth soup with soft-cooked chicken and vegetables", dinner: "Baked fish with mashed potatoes and steamed carrots" },
+        { day: "Day 2", calories: "1,780 cal", protein: "125g protein", breakfast: "Scrambled eggs with cheese and a protein shake", lunch: "Cottage cheese with soft fruit and a drizzle of honey", dinner: "Slow-cooked beef stew with root vegetables and bread" },
+        { day: "Day 3", calories: "1,900 cal", protein: "132g protein", breakfast: "Greek yogurt smoothie with banana, protein powder, and oats", lunch: "Chicken salad with soft bread and a cup of bone broth", dinner: "Salmon with creamed spinach and sweet potato mash" }
+      ] },
+    ],
+    tags: ["Clinical", "Medical Nutrition", "Chronic Disease"]
+  },
+  {
+    id: 116, name: "Tyler Washington", specialty: "Bodybuilding Nutrition",
+    category: "sports", price: 52.99, rating: 4.8, subscribers: 1560, experience: "10 yrs",
+    credential: "CNS", credentialFull: "Certified Nutrition Specialist",
+    specialtyType: "Bodybuilding Nutritionist",
+    bio: "Certified Nutrition Specialist and NPC competitor. 10 years prepping athletes for the stage with precise macro programming.",
+    color: "#8B5CF6",
+    services: ["Contest prep", "Reverse dieting", "Bulking protocols", "Peak week manipulation"],
+    plans: [
+      { name: "Contest Prep 12-Week", type: "Low Calorie", duration: "12 weeks", difficulty: "Advanced", price: 54.99, description: "Competition-grade cutting plan with progressive calorie reduction and refeed days.", sampleDays: [
+        { day: "Day 1 — Cutting", calories: "1,680 cal", protein: "200g protein", breakfast: "6 egg whites with 1 whole egg, oats, and blueberries", lunch: "Tilapia with jasmine rice and steamed asparagus", dinner: "Chicken breast with sweet potato and green beans" },
+        { day: "Day 2 — Cutting", calories: "1,650 cal", protein: "195g protein", breakfast: "Protein oatmeal with a scoop of whey and cinnamon", lunch: "93% lean ground turkey with brown rice and broccoli", dinner: "White fish with rice cakes and mixed green salad" },
+        { day: "Day 3 — Refeed", calories: "2,200 cal", protein: "180g protein", breakfast: "Pancakes with protein powder, syrup, and turkey sausage", lunch: "Chicken and pasta with low-fat marinara sauce", dinner: "Lean steak with baked potato and grilled vegetables" }
+      ] },
+      { name: "Clean Bulk Plan", type: "High Calorie", duration: "16 weeks", difficulty: "Intermediate", price: 44.99, description: "Structured caloric surplus for lean mass gain with minimal fat accumulation.", sampleDays: [
+        { day: "Day 1", calories: "3,200 cal", protein: "210g protein", breakfast: "5 whole eggs with oats, banana, and peanut butter", lunch: "Chicken thighs with white rice, olive oil, and steamed vegetables", dinner: "Ground beef pasta with cheese and a protein shake before bed" },
+        { day: "Day 2", calories: "3,150 cal", protein: "205g protein", breakfast: "Mass gainer shake with oats, banana, and whole milk", lunch: "Double chicken breast with sweet potato and avocado", dinner: "Salmon with rice, butter, and roasted broccoli" },
+        { day: "Day 3", calories: "3,300 cal", protein: "215g protein", breakfast: "French toast with eggs, syrup, and turkey bacon", lunch: "Steak and rice bowl with cheese, guacamole, and beans", dinner: "Chicken stir-fry with noodles and sesame oil + casein shake" }
+      ] },
+      { name: "Reverse Diet Protocol", type: "Flexible", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Strategically increase calories after a cut to restore metabolism without regaining fat.", sampleDays: [
+        { day: "Day 1 — Week 1", calories: "1,800 cal", protein: "175g protein", breakfast: "Egg whites with oats and a small banana", lunch: "Chicken breast with rice and vegetables", dinner: "White fish with sweet potato and a side salad" },
+        { day: "Day 2 — Week 4", calories: "2,100 cal", protein: "178g protein", breakfast: "Whole eggs with oats, peanut butter, and fruit", lunch: "Chicken and rice with slightly larger portions", dinner: "Lean beef with pasta and marinara" },
+        { day: "Day 3 — Week 8", calories: "2,400 cal", protein: "182g protein", breakfast: "Full breakfast with eggs, toast, fruit, and yogurt", lunch: "Double protein rice bowl with avocado", dinner: "Steak dinner with potatoes, vegetables, and dessert" }
+      ] },
+      { name: "Peak Week Guide", type: "Performance", duration: "1 week", difficulty: "Advanced", price: 29.99, description: "The final 7 days before a show — water, sodium, and carb manipulation for stage-ready conditioning.", sampleDays: [
+        { day: "Day 1 — Water Load", calories: "1,500 cal", protein: "200g protein", breakfast: "Egg whites with plain rice cakes (high water intake: 2 gallons)", lunch: "Plain chicken breast with white rice (no seasoning)", dinner: "Tilapia with asparagus (continue high water)" },
+        { day: "Day 2 — Carb Deplete", calories: "1,200 cal", protein: "210g protein", breakfast: "Egg whites only (minimal carbs begin)", lunch: "Chicken breast with green vegetables only", dinner: "White fish with cucumber and a small salad" },
+        { day: "Day 3 — Carb Load", calories: "2,800 cal", protein: "160g protein", breakfast: "Pancakes, rice cakes with jam (carb loading begins)", lunch: "Chicken with large portion of white rice and honey", dinner: "Sweet potato, rice, lean meat, and a rice crispy treat" }
+      ] },
+    ],
+    tags: ["Bodybuilding", "Contest Prep", "Macros"]
+  },
+  {
+    id: 117, name: "Nadia Kowalski", specialty: "Family & Kids Nutrition",
+    category: "general", price: 34.99, rating: 4.8, subscribers: 2100, experience: "9 yrs",
+    credential: "RDN", credentialFull: "Registered Dietitian Nutritionist",
+    specialtyType: "Family Nutritionist",
+    bio: "Registered Dietitian and mom of 3. Creates meal plans the whole family will actually eat — nutritious, quick, and kid-approved.",
+    color: "#F472B6",
+    services: ["Family meal plans", "Picky eater solutions", "School lunch ideas", "Batch cooking guides"],
+    plans: [
+      { name: "Family Meal Plan", type: "Whole Foods", duration: "8 weeks", difficulty: "Beginner", price: 29.99, description: "One meal plan that works for the whole family — adults and kids. No separate cooking.", sampleDays: [
+        { day: "Day 1", calories: "Adult: 1,850 cal", protein: "105g protein", breakfast: "Whole grain waffles with fresh fruit and yogurt dip", lunch: "Turkey and cheese pinwheels with carrot sticks and hummus", dinner: "Sheet pan chicken fajitas with rice and shredded cheese" },
+        { day: "Day 2", calories: "Adult: 1,780 cal", protein: "98g protein", breakfast: "Banana oat pancakes with a drizzle of maple syrup", lunch: "Mini meatball subs with a side of fruit salad", dinner: "One-pot pasta with hidden veggie marinara and parmesan" },
+        { day: "Day 3", calories: "Adult: 1,900 cal", protein: "110g protein", breakfast: "Smoothie cups with frozen fruit, yogurt, and honey", lunch: "Chicken and veggie quesadillas with guacamole and salsa", dinner: "Homemade pizza night with whole wheat crust and veggie toppings" }
+      ] },
+      { name: "Picky Eater Solutions", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 24.99, description: "Strategies and recipes to gradually expand your child's palate without battles.", sampleDays: [
+        { day: "Day 1", calories: "Age-adjusted", protein: "Age-adjusted", breakfast: "Dinosaur-shaped toast with peanut butter and banana slices", lunch: "Mac and cheese with hidden cauliflower puree", dinner: "Chicken nuggets (homemade, baked) with sweet potato fries" },
+        { day: "Day 2", calories: "Age-adjusted", protein: "Age-adjusted", breakfast: "Fruit and yogurt parfait with colorful layers", lunch: "Mini pizza bagels with a tiny side of raw veggies and ranch", dinner: "Spaghetti with meat sauce (blended veggies in sauce)" },
+        { day: "Day 3", calories: "Age-adjusted", protein: "Age-adjusted", breakfast: "Green monster smoothie (spinach hidden by banana and berries)", lunch: "Grilled cheese with tomato soup (pureed vegetables inside)", dinner: "Build-your-own taco bar with mild seasoning" }
+      ] },
+      { name: "30-Minute Family Dinners", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 22.99, description: "28 family dinner recipes — all ready in 30 minutes or less with common ingredients.", sampleDays: [
+        { day: "Day 1", calories: "Adult: 1,800 cal", protein: "102g protein", breakfast: "Overnight oats with fruit (prep night before)", lunch: "Leftover dinner repurposed as lunch wraps", dinner: "One-pan lemon herb chicken with roasted potatoes (25 min)" },
+        { day: "Day 2", calories: "Adult: 1,750 cal", protein: "98g protein", breakfast: "Eggs and toast with fruit (10 min)", lunch: "Sandwich bar with deli meat, cheese, and veggie sides", dinner: "15-minute shrimp stir-fry with rice and frozen vegetables" },
+        { day: "Day 3", calories: "Adult: 1,820 cal", protein: "105g protein", breakfast: "Smoothie with banana, peanut butter, and milk", lunch: "Chicken salad with crackers and cut fruit", dinner: "Turkey taco skillet with beans, cheese, and tortillas (20 min)" }
+      ] },
+      { name: "School Lunch Blueprint", type: "Meal Prep", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "20 school lunch ideas that are nutritious, nut-free friendly, and won't come back uneaten.", sampleDays: [
+        { day: "Day 1", calories: "Kid: ~500 cal", protein: "~20g protein", breakfast: "Quick oatmeal with fruit at home", lunch: "Bento box: turkey roll-ups, cheese cubes, grapes, crackers, yogurt tube", dinner: "Family dinner (see Family Meal Plan)" },
+        { day: "Day 2", calories: "Kid: ~480 cal", protein: "~18g protein", breakfast: "Toast with sunflower seed butter", lunch: "Thermos: chicken noodle soup + apple slices + cheese stick + cookie", dinner: "Family dinner (see Family Meal Plan)" },
+        { day: "Day 3", calories: "Kid: ~520 cal", protein: "~22g protein", breakfast: "Yogurt with granola", lunch: "Mini bagel sandwiches + veggie sticks with ranch + berries + granola bar", dinner: "Family dinner (see Family Meal Plan)" }
+      ] },
+    ],
+    tags: ["Family", "Kids", "Quick Meals"]
+  },
+  {
+    id: 118, name: "Chris Andersen", specialty: "Intermittent Fasting & Metabolic Health",
+    category: "weightloss", price: 44.99, rating: 4.7, subscribers: 1680, experience: "8 yrs",
+    credential: "CN", credentialFull: "Certified Nutritionist",
+    specialtyType: "Metabolic Health Coach",
+    bio: "Certified Nutritionist specializing in intermittent fasting protocols. Science-backed approaches to metabolic health and body composition.",
+    color: "#D97706",
+    services: ["IF protocols", "Metabolic testing", "Autophagy optimization", "Circadian nutrition"],
+    plans: [
+      { name: "16:8 Starter Plan", type: "Flexible", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Beginner-friendly 16:8 intermittent fasting with structured eating windows.", sampleDays: [
+        { day: "Day 1", calories: "1,850 cal", protein: "120g protein", breakfast: "Fasting (black coffee or tea allowed)", lunch: "12pm: Large chicken and avocado salad with olive oil dressing", dinner: "6pm: Grilled salmon with sweet potato and steamed broccoli. 8pm: Greek yogurt with berries" },
+        { day: "Day 2", calories: "1,820 cal", protein: "118g protein", breakfast: "Fasting (water, black coffee)", lunch: "12pm: Turkey and cheese wrap with a side of fruit and nuts", dinner: "7pm: Steak with roasted vegetables and quinoa. Snack: protein shake" },
+        { day: "Day 3", calories: "1,880 cal", protein: "125g protein", breakfast: "Fasting", lunch: "1pm: Tuna poke bowl with rice, avocado, and edamame", dinner: "6:30pm: Chicken stir-fry with noodles and vegetables. 8pm: cottage cheese with almonds" }
+      ] },
+      { name: "OMAD Protocol", type: "Low Calorie", duration: "4 weeks", difficulty: "Advanced", price: 34.99, description: "One Meal A Day approach for experienced fasters seeking maximum autophagy benefits.", sampleDays: [
+        { day: "Day 1", calories: "1,800 cal", protein: "130g protein", breakfast: "Fasting (water, electrolytes, black coffee)", lunch: "Fasting", dinner: "6pm: Large meal — steak, baked potato with butter, big salad, roasted vegetables, fruit, and a protein dessert" },
+        { day: "Day 2", calories: "1,850 cal", protein: "135g protein", breakfast: "Fasting", lunch: "Fasting", dinner: "5:30pm: Grilled chicken, rice, avocado, soup, bread, steamed vegetables, and Greek yogurt with berries" },
+        { day: "Day 3", calories: "1,780 cal", protein: "128g protein", breakfast: "Fasting", lunch: "Fasting", dinner: "6pm: Salmon, pasta, large salad with olive oil, roasted sweet potato, and a protein shake" }
+      ] },
+      { name: "5:2 Fasting Plan", type: "Flexible", duration: "8 weeks", difficulty: "Intermediate", price: 32.99, description: "Eat normally 5 days, restrict calories to 500-600 on 2 non-consecutive days.", sampleDays: [
+        { day: "Day 1 — Normal Day", calories: "2,000 cal", protein: "130g protein", breakfast: "Scrambled eggs with toast and fruit", lunch: "Chicken and rice bowl with vegetables", dinner: "Pasta with meat sauce, salad, and garlic bread" },
+        { day: "Day 2 — Fast Day", calories: "550 cal", protein: "45g protein", breakfast: "Black coffee", lunch: "Small salad with grilled chicken (200 cal)", dinner: "Steamed fish with vegetables (350 cal)" },
+        { day: "Day 3 — Normal Day", calories: "2,050 cal", protein: "135g protein", breakfast: "Protein smoothie with oats and banana", lunch: "Large burrito bowl with all the fixings", dinner: "Grilled steak with mashed potatoes and green beans" }
+      ] },
+      { name: "Circadian Rhythm Eating", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Align your eating schedule with your circadian rhythm for optimal metabolic health.", sampleDays: [
+        { day: "Day 1", calories: "1,900 cal", protein: "115g protein", breakfast: "7am: Large breakfast — eggs, oats, fruit, and nuts (biggest meal)", lunch: "12pm: Moderate lunch — chicken salad with whole grain bread", dinner: "5:30pm: Light dinner — soup with a small piece of fish and vegetables" },
+        { day: "Day 2", calories: "1,850 cal", protein: "112g protein", breakfast: "7am: Protein pancakes with berries and yogurt", lunch: "12pm: Turkey and veggie stir-fry with rice", dinner: "5pm: Small salmon fillet with a side salad and light dressing" },
+        { day: "Day 3", calories: "1,920 cal", protein: "118g protein", breakfast: "7:30am: Smoothie bowl with granola, eggs on the side", lunch: "12:30pm: Grilled chicken wrap with fruit", dinner: "5:30pm: Simple vegetable soup with a piece of bread and cheese" }
+      ] },
+    ],
+    tags: ["Intermittent Fasting", "Metabolic Health", "Weight Loss"]
+  },
+  {
+    id: 119, name: "Maria Santos", specialty: "Latin & Mediterranean Nutrition",
+    category: "general", price: 39.99, rating: 4.8, subscribers: 1450, experience: "11 yrs",
+    credential: "RD", credentialFull: "Registered Dietitian",
+    specialtyType: "Cultural Nutrition Specialist",
+    bio: "Registered Dietitian celebrating cultural food traditions. Healthy eating shouldn't mean giving up the flavors you grew up with.",
+    color: "#EF4444",
+    services: ["Cultural meal plans", "Mediterranean diet", "Latin cooking health swaps", "Anti-inflammatory cuisine"],
+    plans: [
+      { name: "Mediterranean Lifestyle", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Beginner", price: 32.99, description: "The gold standard of healthy eating — Mediterranean diet with fresh, flavorful meals.", sampleDays: [
+        { day: "Day 1", calories: "1,820 cal", protein: "95g protein", breakfast: "Greek yogurt with honey, walnuts, and fresh figs", lunch: "Grilled halloumi salad with olives, tomatoes, and olive oil", dinner: "Herb-crusted salmon with roasted vegetables and couscous" },
+        { day: "Day 2", calories: "1,780 cal", protein: "92g protein", breakfast: "Shakshuka with whole grain bread and fresh herbs", lunch: "Falafel bowl with hummus, tabbouleh, and pickled vegetables", dinner: "Lemon chicken with orzo, sun-dried tomatoes, and spinach" },
+        { day: "Day 3", calories: "1,850 cal", protein: "98g protein", breakfast: "Avocado toast with za'atar, tomato, and a poached egg", lunch: "Greek lentil soup with crusty bread and feta", dinner: "Grilled lamb chops with roasted eggplant and tzatziki" }
+      ] },
+      { name: "Healthy Latin Kitchen", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Traditional Latin flavors with health-conscious swaps — no sacrificing sabor.", sampleDays: [
+        { day: "Day 1", calories: "1,900 cal", protein: "110g protein", breakfast: "Huevos rancheros with black beans, salsa verde, and avocado", lunch: "Chicken and brown rice burrito bowl with pico de gallo", dinner: "Grilled fish tacos with cabbage slaw and lime crema" },
+        { day: "Day 2", calories: "1,850 cal", protein: "105g protein", breakfast: "Plantain and egg scramble with fresh salsa", lunch: "Caldo de pollo with vegetables and a corn tortilla", dinner: "Carne asada with grilled vegetables, beans, and cauliflower rice" },
+        { day: "Day 3", calories: "1,920 cal", protein: "108g protein", breakfast: "Chilaquiles with egg whites, green salsa, and queso fresco", lunch: "Cuban black bean soup with brown rice and lime", dinner: "Pollo a la plancha with tostones and a fresh salad" }
+      ] },
+      { name: "Anti-Inflammatory Fusion", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Combining Mediterranean and Latin anti-inflammatory ingredients for whole-body wellness.", sampleDays: [
+        { day: "Day 1", calories: "1,780 cal", protein: "100g protein", breakfast: "Turmeric smoothie with mango, ginger, and coconut milk", lunch: "Quinoa bowl with roasted chickpeas, avocado, and chimichurri", dinner: "Baked cod with olive oil, capers, tomatoes, and fresh herbs" },
+        { day: "Day 2", calories: "1,750 cal", protein: "98g protein", breakfast: "Chia pudding with passion fruit, coconut, and granola", lunch: "Mediterranean wrap with grilled vegetables and tahini", dinner: "Slow-cooked chicken with sofrito, beans, and brown rice" },
+        { day: "Day 3", calories: "1,800 cal", protein: "102g protein", breakfast: "Acai bowl with fresh fruit, hemp seeds, and honey", lunch: "Lentil soup with cumin, lime, and fresh cilantro", dinner: "Grilled shrimp with garlic, olive oil, and roasted sweet potatoes" }
+      ] },
+      { name: "Meal Prep Latino Style", type: "Meal Prep", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Sunday meal prep with Latin-inspired dishes that reheat perfectly all week.", sampleDays: [
+        { day: "Day 1", calories: "1,850 cal", protein: "108g protein", breakfast: "Prep: breakfast burritos (freeze for the week)", lunch: "Prep: chicken tinga with rice (portion into containers)", dinner: "Prep: turkey picadillo with cauliflower rice" },
+        { day: "Day 2", calories: "1,820 cal", protein: "105g protein", breakfast: "Frozen breakfast burrito (reheat)", lunch: "Chicken tinga bowl with fresh avocado", dinner: "Picadillo with a side of black beans" },
+        { day: "Day 3", calories: "1,880 cal", protein: "110g protein", breakfast: "Breakfast burrito with fresh salsa", lunch: "Leftover picadillo in lettuce wraps", dinner: "Fresh: quick shrimp and vegetable stir-fry with lime" }
+      ] },
+    ],
+    tags: ["Mediterranean", "Latin", "Cultural"]
+  },
+  {
+    id: 120, name: "Brandon Lee", specialty: "Sports Supplements & Optimization",
+    category: "sports", price: 49.99, rating: 4.7, subscribers: 1280, experience: "7 yrs",
+    credential: "CNS", credentialFull: "Certified Nutrition Specialist",
+    specialtyType: "Sports Supplement Specialist",
+    bio: "Certified Nutrition Specialist with a biochemistry background. Evidence-based supplement protocols — no bro science, just what works.",
+    color: "#7C3AED",
+    services: ["Supplement stacks", "Pre/post workout nutrition", "Recovery protocols", "Blood work analysis"],
+    plans: [
+      { name: "Evidence-Based Stack", type: "Performance", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Research-backed supplement and nutrition plan for athletic performance.", sampleDays: [
+        { day: "Day 1 — Training Day", calories: "2,400 cal", protein: "165g protein", breakfast: "Oats with whey protein, banana, and creatine (5g) in water", lunch: "Chicken and rice with vegetables and fish oil (2g EPA/DHA)", dinner: "Post-workout: whey shake + steak with sweet potato and greens. Before bed: casein shake + magnesium" },
+        { day: "Day 2 — Training Day", calories: "2,350 cal", protein: "160g protein", breakfast: "Eggs with toast, fruit, and vitamin D + K2", lunch: "Pre-workout: caffeine + citrulline + beta-alanine. Then salmon and quinoa bowl", dinner: "Post-workout: whey + dextrose. Then chicken stir-fry with rice and vegetables" },
+        { day: "Day 3 — Rest Day", calories: "2,100 cal", protein: "145g protein", breakfast: "Greek yogurt with granola + creatine (5g) + multivitamin", lunch: "Turkey and avocado sandwich with fruit and fish oil", dinner: "Light chicken salad with olive oil. Before bed: ZMA + casein" }
+      ] },
+      { name: "Natural Muscle Builder", type: "High Calorie", duration: "12 weeks", difficulty: "Intermediate", price: 44.99, description: "Supplement-enhanced bulking plan maximizing natural muscle growth potential.", sampleDays: [
+        { day: "Day 1", calories: "3,000 cal", protein: "185g protein", breakfast: "Mass shake: whey, oats, banana, peanut butter, creatine", lunch: "Large chicken and rice bowl with olive oil, plus HMB", dinner: "Steak with potatoes and vegetables. Before bed: casein + ashwagandha" },
+        { day: "Day 2", calories: "2,950 cal", protein: "180g protein", breakfast: "Eggs, toast, fruit + vitamin D + omega-3", lunch: "Pre: caffeine + citrulline. Post: whey + dextrose. Salmon pasta bowl", dinner: "Ground beef tacos with cheese and rice. Evening: ZMA" },
+        { day: "Day 3", calories: "3,100 cal", protein: "190g protein", breakfast: "Protein pancakes with syrup + creatine in coffee", lunch: "Double chicken burrito bowl with all the fixings", dinner: "Pork chops with mashed potatoes and gravy. Before bed: casein shake" }
+      ] },
+      { name: "Recovery & Longevity", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Beginner", price: 34.99, description: "Anti-inflammatory nutrition plus recovery supplements for active adults.", sampleDays: [
+        { day: "Day 1", calories: "1,900 cal", protein: "120g protein", breakfast: "Smoothie with collagen, tart cherry, turmeric, and berries", lunch: "Grilled salmon with quinoa and mixed greens + omega-3", dinner: "Chicken and vegetable soup with bone broth base. Evening: magnesium glycinate" },
+        { day: "Day 2", calories: "1,850 cal", protein: "118g protein", breakfast: "Greek yogurt with walnuts, flax, and vitamin D drops", lunch: "Turkey salad with olive oil and anti-inflammatory spices", dinner: "Baked cod with roasted vegetables and sweet potato. Evening: tart cherry juice" },
+        { day: "Day 3", calories: "1,920 cal", protein: "122g protein", breakfast: "Oatmeal with collagen peptides, berries, and cinnamon", lunch: "Lentil soup with turmeric and a side of whole grain bread", dinner: "Grass-fed beef with roasted root vegetables. Before bed: glycine + magnesium" }
+      ] },
+      { name: "Pre-Workout Nutrition Guide", type: "Performance", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Optimize your pre, intra, and post-workout nutrition for maximum performance.", sampleDays: [
+        { day: "Day 1 — Morning Training", calories: "2,200 cal", protein: "150g protein", breakfast: "2hrs pre: oats with banana and honey. 30min pre: caffeine + citrulline", lunch: "Post-workout: whey shake with dextrose. Then chicken rice bowl", dinner: "Salmon with sweet potato and steamed broccoli. Night: casein" },
+        { day: "Day 2 — Afternoon Training", calories: "2,250 cal", protein: "155g protein", breakfast: "Eggs with toast and fruit", lunch: "90min pre: chicken wrap with rice. 30min pre: caffeine + beta-alanine", dinner: "Post-workout: whey + banana. Then steak with potatoes and vegetables" },
+        { day: "Day 3 — Rest Day", calories: "2,000 cal", protein: "140g protein", breakfast: "Protein smoothie with oats and berries + creatine", lunch: "Turkey and avocado salad with olive oil dressing", dinner: "Light pasta with chicken and vegetables. No pre-workout needed" }
+      ] },
+    ],
+    tags: ["Supplements", "Performance", "Recovery"]
+  },
+  {
+    id: 121, name: "Emma Richardson", specialty: "Eating Disorder Recovery Nutrition",
+    category: "clinical", price: 59.99, rating: 4.9, subscribers: 580, experience: "12 yrs",
+    credential: "RDN", credentialFull: "Registered Dietitian Nutritionist",
+    specialtyType: "ED Recovery Nutritionist",
+    bio: "Registered Dietitian specializing in eating disorder recovery. Gentle, compassionate approach to rebuilding a healthy relationship with food.",
+    color: "#14B8A6",
+    services: ["Recovery meal support", "Intuitive eating", "Body image coaching", "Family-based treatment nutrition"],
+    plans: [
+      { name: "Gentle Nourishment", type: "Whole Foods", duration: "12 weeks", difficulty: "Beginner", price: 39.99, description: "Recovery-focused plan emphasizing adequacy, variety, and food neutrality.", sampleDays: [
+        { day: "Day 1", calories: "Adequate (not counted)", protein: "Adequate", breakfast: "Toast with peanut butter and banana — eat at a comfortable pace", lunch: "Sandwich with your choice of protein, a side of chips, and fruit", dinner: "Pasta with sauce, a side salad, and bread. Dessert if desired." },
+        { day: "Day 2", calories: "Adequate (not counted)", protein: "Adequate", breakfast: "Cereal with milk and berries — focus on satisfaction", lunch: "Soup and a half sandwich — practice listening to hunger cues", dinner: "Rice bowl with chicken and vegetables. Add what sounds good." },
+        { day: "Day 3", calories: "Adequate (not counted)", protein: "Adequate", breakfast: "Yogurt with granola and honey — no measuring required", lunch: "Leftovers from dinner — practice flexible eating", dinner: "Family-style meal — serve yourself what looks appealing" }
+      ] },
+      { name: "Intuitive Eating Journey", type: "Flexible", duration: "10 weeks", difficulty: "Beginner", price: 34.99, description: "Learn to trust your body's hunger and fullness signals through structured guidance.", sampleDays: [
+        { day: "Day 1", calories: "Body-guided", protein: "Adequate", breakfast: "Check in: How hungry am I? Choose what sounds satisfying", lunch: "Practice: eat without distractions, notice taste and texture", dinner: "Challenge: include a previously avoided food in a comforting setting" },
+        { day: "Day 2", calories: "Body-guided", protein: "Adequate", breakfast: "Morning check-in with hunger scale (1-10)", lunch: "Mindful eating exercise — eat slowly, savor each bite", dinner: "Flexibility practice: order something new at a restaurant or try a new recipe" },
+        { day: "Day 3", calories: "Body-guided", protein: "Adequate", breakfast: "Gentle morning — eat what your body is asking for", lunch: "Social eating practice — enjoy a meal with a friend", dinner: "Satisfaction check: did the meal feel satisfying? Journaling exercise" }
+      ] },
+      { name: "Mechanical Eating Plan", type: "Whole Foods", duration: "8 weeks", difficulty: "Beginner", price: 36.99, description: "Structured eating times and portions for those who've lost hunger/fullness cues.", sampleDays: [
+        { day: "Day 1", calories: "Structured adequacy", protein: "Included at each meal", breakfast: "8am: grain + protein + fruit (e.g., oatmeal with eggs and berries)", lunch: "12pm: protein + starch + vegetable + fat (e.g., chicken rice bowl)", dinner: "6pm: protein + starch + vegetable + dessert (e.g., pasta with salad and ice cream)" },
+        { day: "Day 2", calories: "Structured adequacy", protein: "Included at each meal", breakfast: "8am: toast with peanut butter, yogurt, and juice", lunch: "12pm: turkey sandwich, chips, apple, and a cookie", dinner: "6pm: stir-fry with rice, a roll, and fruit for dessert" },
+        { day: "Day 3", calories: "Structured adequacy", protein: "Included at each meal", breakfast: "8am: smoothie with protein + a muffin", lunch: "12pm: soup, bread, cheese, and crackers", dinner: "6pm: grilled chicken, mashed potatoes, green beans, and pudding" }
+      ] },
+      { name: "Food Freedom Guide", type: "Flexible", duration: "16 weeks", difficulty: "Intermediate", price: 44.99, description: "Long-term guide to making peace with food, ditching diet culture, and eating joyfully.", sampleDays: [
+        { day: "Day 1", calories: "Not tracked", protein: "Not tracked", breakfast: "Eat what you want for breakfast — journal how it felt", lunch: "Food challenge: eat a fear food in a safe environment", dinner: "Cook something that brings you joy — focus on the experience" },
+        { day: "Day 2", calories: "Not tracked", protein: "Not tracked", breakfast: "Morning affirmation + nourishing breakfast of choice", lunch: "Social meal with no food rules — practice presence", dinner: "Try a new recipe — focus on creativity, not nutrition labels" },
+        { day: "Day 3", calories: "Not tracked", protein: "Not tracked", breakfast: "Body scan meditation + breakfast that sounds good", lunch: "Gratitude meal — eat something you're grateful to enjoy", dinner: "Family or social dinner — practice being present with others" }
+      ] },
+    ],
+    tags: ["ED Recovery", "Intuitive Eating", "Compassionate"]
+  },
+  {
+    id: 122, name: "Daniel Park", specialty: "Asian-Inspired Nutrition",
+    category: "general", price: 37.99, rating: 4.7, subscribers: 1180, experience: "6 yrs",
+    credential: "CN", credentialFull: "Certified Nutritionist",
+    specialtyType: "Cultural Nutrition Coach",
+    bio: "Certified Nutritionist blending traditional Asian dietary wisdom with modern sports nutrition. Rice is not the enemy.",
+    color: "#F97316",
+    services: ["Asian meal plans", "Rice-based diets", "Fermented food guidance", "Traditional food medicine"],
+    plans: [
+      { name: "Japanese Longevity Diet", type: "Whole Foods", duration: "8 weeks", difficulty: "Beginner", price: 32.99, description: "Inspired by Okinawan centenarians — balanced, plant-forward, and portion-conscious.", sampleDays: [
+        { day: "Day 1", calories: "1,750 cal", protein: "88g protein", breakfast: "Miso soup with tofu, steamed rice, and pickled vegetables", lunch: "Grilled mackerel with soba noodles and steamed edamame", dinner: "Vegetable tempura with rice, miso soup, and ginger tea" },
+        { day: "Day 2", calories: "1,720 cal", protein: "92g protein", breakfast: "Tamago (rolled omelette) with rice and natto", lunch: "Ramen with pork chashu, soft egg, and vegetables", dinner: "Grilled salmon with daikon, steamed rice, and seaweed salad" },
+        { day: "Day 3", calories: "1,780 cal", protein: "95g protein", breakfast: "Rice porridge with ginger, scallions, and a soft egg", lunch: "Chirashi bowl with mixed sashimi and pickled ginger", dinner: "Sukiyaki-style beef and vegetables with udon noodles" }
+      ] },
+      { name: "Korean Power Meals", type: "High Protein", duration: "6 weeks", difficulty: "Intermediate", price: 29.99, description: "Korean-inspired high-protein meals with fermented foods for gut health.", sampleDays: [
+        { day: "Day 1", calories: "2,050 cal", protein: "135g protein", breakfast: "Bibimbap with beef, egg, and assorted vegetables", lunch: "Korean fried chicken (air-fried) with pickled radish and rice", dinner: "Doenjang jjigae (soybean paste stew) with tofu and rice" },
+        { day: "Day 2", calories: "2,100 cal", protein: "138g protein", breakfast: "Protein congee with chicken and scallions", lunch: "Japchae with beef, vegetables, and a side of kimchi", dinner: "Grilled galbi with lettuce wraps, ssamjang, and rice" },
+        { day: "Day 3", calories: "2,000 cal", protein: "130g protein", breakfast: "Korean egg roll with rice and kimchi", lunch: "Tuna kimbap rolls with miso soup and pickled vegetables", dinner: "Spicy tofu stew with pork, vegetables, and steamed rice" }
+      ] },
+      { name: "Chinese Wellness Meals", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Traditional Chinese dietary therapy principles adapted for modern wellness.", sampleDays: [
+        { day: "Day 1", calories: "1,780 cal", protein: "98g protein", breakfast: "Congee with goji berries, dates, and a soft-boiled egg", lunch: "Steamed fish with ginger and scallions over jasmine rice", dinner: "Stir-fried bok choy with tofu in garlic sauce and rice" },
+        { day: "Day 2", calories: "1,750 cal", protein: "95g protein", breakfast: "Soy milk with steamed buns and pickled vegetables", lunch: "Wonton soup with bok choy and a side of brown rice", dinner: "Red-braised chicken with lotus root and steamed vegetables" },
+        { day: "Day 3", calories: "1,800 cal", protein: "100g protein", breakfast: "Scallion pancake with egg and black vinegar dipping sauce", lunch: "Mapo tofu with ground pork and steamed rice", dinner: "Herbal chicken soup with Chinese yam and wolfberries" }
+      ] },
+      { name: "Asian Meal Prep", type: "Meal Prep", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Batch-cook Asian staples on Sunday for delicious meals all week.", sampleDays: [
+        { day: "Day 1", calories: "1,850 cal", protein: "105g protein", breakfast: "Prep: rice cooker batch + marinated proteins + sauce jars", lunch: "Teriyaki chicken rice bowl with steamed vegetables", dinner: "Stir-fry with pre-cut vegetables and pre-marinated beef" },
+        { day: "Day 2", calories: "1,820 cal", protein: "102g protein", breakfast: "Quick miso soup with leftover rice and an egg", lunch: "Korean-style beef and rice with kimchi from the fridge", dinner: "Fried rice with leftover proteins and vegetables" },
+        { day: "Day 3", calories: "1,880 cal", protein: "108g protein", breakfast: "Congee from batch (reheat and top with scallions)", lunch: "Curry from batch with fresh rice", dinner: "Fresh: quick ramen with prepped toppings from the week" }
+      ] },
+    ],
+    tags: ["Asian", "Cultural", "Whole Foods"]
   },
 ];
 
