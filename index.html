@@ -72,14 +72,29 @@
     }
     .loader-triangles svg {
       height: 48px; width: auto;
-      filter: brightness(0) invert(1);
+      overflow: visible;
+    }
+    .loader-triangles svg polygon {
       animation: trianglePulse 2s ease-in-out infinite;
     }
-    .loader-lightning {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
+    .s-beam {
+      stroke: #2DD4BF;
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 20 80;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 2px #2DD4BF) drop-shadow(0 0 5px #2DD4BF);
+    }
+    .s-beam-1 {
+      animation: beamFlow 2s linear infinite;
+    }
+    .s-beam-2 {
+      animation: beamFlow 2s linear infinite;
+      animation-delay: 1s;
+    }
+    @keyframes beamFlow {
+      0% { stroke-dashoffset: 100; }
+      100% { stroke-dashoffset: 0; }
     }
     @keyframes trianglePulse {
       0%, 100% { opacity: 0.15; }
@@ -280,8 +295,11 @@
           <polygon points="5,113 5,43 55,78" fill="#fff"/>
           <!-- Right triangle pointing left (upper) -->
           <polygon points="90,-3 90,67 40,32" fill="#fff"/>
+          <!-- S-edge beams: right tri bottom hypotenuse -->
+          <line x1="90" y1="67" x2="40" y2="32" class="s-beam s-beam-1" />
+          <!-- S-edge beams: left tri top hypotenuse -->
+          <line x1="5" y1="43" x2="55" y2="78" class="s-beam s-beam-2" />
         </svg>
-        <canvas class="loader-lightning" id="lightningCanvas"></canvas>
       </div>
       <div class="loader-track">
         <div class="loader-fill" id="loaderFill"></div>
@@ -298,10 +316,7 @@
   </div>
 
   <div class="intro-content" id="introContent">
-    <div class="intro-logo-wrap" style="position:relative;display:inline-block;">
-      <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
-      <canvas class="loader-lightning" id="introLightningCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
-    </div>
+    <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
     <p class="intro-tagline" id="introTagline">Join the Community</p>
     <a href="home.html" class="enter-btn" id="enterBtn" onclick="enterSite(event)">
       <span>Enter</span>
@@ -380,162 +395,7 @@
 
     draw();
 
-    // ===== Lightning S-Curve Effect (reusable) =====
-    // S-curve follows the inner edges of both triangles
-    // Right tri hypotenuse: (87,2)->(35,37) in viewBox 90x110
-    // Left tri hypotenuse: (55,73)->(3,108)
-    // The S traces: along right tri edge -> crossing gap -> down left tri edge
-    function getSPath() {
-      return [
-        { x: 0.82, y: 0.04 },
-        { x: 0.78, y: 0.14 },
-        { x: 0.68, y: 0.24 },
-        { x: 0.52, y: 0.33 },
-        { x: 0.45, y: 0.42 },
-        { x: 0.50, y: 0.52 },
-        { x: 0.55, y: 0.62 },
-        { x: 0.42, y: 0.72 },
-        { x: 0.28, y: 0.82 },
-        { x: 0.15, y: 0.90 },
-        { x: 0.06, y: 0.97 },
-      ];
-    }
-
-    function interpPath(points, t) {
-      const idx = t * (points.length - 1);
-      const i = Math.floor(idx);
-      const f = idx - i;
-      const a = points[Math.min(i, points.length - 1)];
-      const b = points[Math.min(i + 1, points.length - 1)];
-      return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f };
-    }
-
-    function createLightningEngine(canvasId, containerId, sPathFn) {
-      const lc = document.getElementById(canvasId);
-      if (!lc) return { stop: () => {} };
-      const lctx = lc.getContext('2d');
-      const container = typeof containerId === 'string'
-        ? document.getElementById(containerId) || document.querySelector(containerId)
-        : containerId;
-      let lW, lH, active = true;
-
-      function resize() {
-        const rect = container.getBoundingClientRect();
-        lW = lc.width = rect.width;
-        lH = lc.height = rect.height;
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      function genBolt(points, segments, jitter) {
-        const bolt = [];
-        for (let i = 0; i <= segments; i++) {
-          const t = i / segments;
-          const p = interpPath(points, t);
-          const jx = (i === 0 || i === segments) ? 0 : (Math.random() - 0.5) * jitter;
-          const jy = (i === 0 || i === segments) ? 0 : (Math.random() - 0.5) * jitter * 0.5;
-          bolt.push({ x: p.x * lW + jx, y: p.y * lH + jy });
-        }
-        return bolt;
-      }
-
-      let bolts = [], sparks = [], nextBolt = 0;
-
-      function spawnBolt() {
-        const s = sPathFn();
-        bolts.push({ pts: genBolt(s, 18, 8), life: 1.0, decay: 0.035, width: 1.8 });
-        if (Math.random() > 0.3) {
-          bolts.push({ pts: genBolt(s, 22, 12), life: 0.7, decay: 0.05, width: 0.8 });
-        }
-        for (let i = 0; i < 6; i++) {
-          const t = Math.random();
-          const p = interpPath(s, t);
-          const angle = Math.random() * Math.PI * 2;
-          const speed = Math.random() * 1.5 + 0.5;
-          sparks.push({
-            x: p.x * lW, y: p.y * lH,
-            vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-            life: 1.0, decay: 0.04 + Math.random() * 0.03,
-            size: Math.random() * 1.5 + 0.5
-          });
-        }
-      }
-
-      function frame() {
-        if (!active) return;
-        lctx.clearRect(0, 0, lW, lH);
-        const now = performance.now();
-        if (now > nextBolt) { spawnBolt(); nextBolt = now + 400 + Math.random() * 800; }
-
-        for (let b = bolts.length - 1; b >= 0; b--) {
-          const bolt = bolts[b];
-          bolt.life -= bolt.decay;
-          if (bolt.life <= 0) { bolts.splice(b, 1); continue; }
-          lctx.save();
-          lctx.globalAlpha = bolt.life * 0.9;
-          lctx.strokeStyle = `rgba(45,212,191,${bolt.life})`;
-          lctx.lineWidth = bolt.width;
-          lctx.shadowColor = '#2DD4BF'; lctx.shadowBlur = 8;
-          lctx.beginPath(); lctx.moveTo(bolt.pts[0].x, bolt.pts[0].y);
-          for (let i = 1; i < bolt.pts.length; i++) lctx.lineTo(bolt.pts[i].x, bolt.pts[i].y);
-          lctx.stroke();
-          lctx.globalAlpha = bolt.life * 0.5;
-          lctx.strokeStyle = '#fff'; lctx.lineWidth = bolt.width * 0.4; lctx.shadowBlur = 4;
-          lctx.beginPath(); lctx.moveTo(bolt.pts[0].x, bolt.pts[0].y);
-          for (let i = 1; i < bolt.pts.length; i++) lctx.lineTo(bolt.pts[i].x, bolt.pts[i].y);
-          lctx.stroke();
-          lctx.restore();
-        }
-
-        for (let s = sparks.length - 1; s >= 0; s--) {
-          const sp = sparks[s];
-          sp.life -= sp.decay;
-          if (sp.life <= 0) { sparks.splice(s, 1); continue; }
-          sp.x += sp.vx; sp.y += sp.vy; sp.vx *= 0.96; sp.vy *= 0.96;
-          lctx.save();
-          lctx.globalAlpha = sp.life * 0.8;
-          lctx.fillStyle = '#2DD4BF'; lctx.shadowColor = '#2DD4BF'; lctx.shadowBlur = 4;
-          lctx.beginPath(); lctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2); lctx.fill();
-          lctx.restore();
-        }
-        requestAnimationFrame(frame);
-      }
-      frame();
-      return { stop: () => { active = false; } };
-    }
-
-    // Start loader lightning
-    const loaderLightning = createLightningEngine('lightningCanvas', '.loader-triangles', getSPath);
-
-    // S-path for the full intro logo (triangles are in the top ~45% of the logo image)
-    function getIntroSPath() {
-      return [
-        { x: 0.66, y: 0.02 },
-        { x: 0.63, y: 0.06 },
-        { x: 0.57, y: 0.11 },
-        { x: 0.50, y: 0.15 },
-        { x: 0.47, y: 0.19 },
-        { x: 0.49, y: 0.23 },
-        { x: 0.52, y: 0.28 },
-        { x: 0.47, y: 0.32 },
-        { x: 0.41, y: 0.37 },
-        { x: 0.36, y: 0.40 },
-        { x: 0.33, y: 0.43 },
-      ];
-    }
-
-    // When loader finishes, stop loader lightning and start intro lightning
-    const loaderObs = new MutationObserver(() => {
-      if (document.getElementById('loaderOverlay').classList.contains('done')) {
-        loaderLightning.stop();
-        loaderObs.disconnect();
-        // Start intro logo lightning after reveal animation
-        setTimeout(() => {
-          window._introLightning = createLightningEngine('introLightningCanvas', '.intro-logo-wrap', getIntroSPath);
-        }, 800);
-      }
-    });
-    loaderObs.observe(document.getElementById('loaderOverlay'), { attributes: true });
+    // No canvas-based beam needed — S-beam is pure SVG/CSS above
 
     // ===== Loading Sequence =====
     (function runLoader() {
@@ -587,9 +447,6 @@
     // ===== Dissolve Transition =====
     function enterSite(e) {
       e.preventDefault();
-
-      // Stop intro lightning
-      if (window._introLightning) window._introLightning.stop();
 
       // 1. Spawn dissolve particles
       spawnDissolveParticles();
