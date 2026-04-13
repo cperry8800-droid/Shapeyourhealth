@@ -519,6 +519,120 @@
     .tp-stats-row { flex-wrap: wrap; gap: 20px; }
     .tp-gallery-grid { grid-template-columns: repeat(2, 1fr); }
   }
+
+  /* ===== Calendar Day Popup Modal ===== */
+  .td-cal-popup-overlay {
+    position: fixed; inset: 0; z-index: 9990;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .td-cal-popup-overlay.active { opacity: 1; pointer-events: auto; }
+  .td-cal-popup {
+    background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+    width: 360px; max-width: 92vw; padding: 24px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5); position: relative;
+  }
+  .td-cal-popup-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none; color: var(--text-muted);
+    font-size: 1.2rem; cursor: pointer; line-height: 1;
+    transition: color 0.2s; font-family: inherit;
+  }
+  .td-cal-popup-close:hover { color: var(--text); }
+  .td-cal-detail-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+  .td-cal-detail-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.88rem; border-bottom: 1px solid #2a2a2a; }
+  .td-cal-detail-row:last-child { border-bottom: none; }
+  .td-cal-detail-row .dl { color: var(--text-muted); }
+  .td-cal-detail-row .dv { font-weight: 500; }
+
+  /* ===== Trainer Home Calendar (td-cal-) ===== */
+  .td-cal-section { margin-bottom: 32px; }
+  .td-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .td-cal-header h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+  .td-cal-nav { display: flex; gap: 6px; }
+  .td-cal-nav button {
+    width: 28px; height: 28px; border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; font-family: inherit; transition: all 0.2s;
+  }
+  .td-cal-nav button:hover { border-color: var(--text); color: var(--text); }
+  .td-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .td-cal-head {
+    text-align: center; font-size: 0.68rem; font-weight: 500;
+    color: var(--text-muted); text-transform: uppercase; padding: 8px 0; letter-spacing: 0.06em;
+  }
+  .td-cal-day {
+    min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 0.82rem; background: var(--bg-alt); border-radius: 6px; position: relative;
+    transition: all 0.2s; cursor: default; border: 1px solid transparent; padding: 4px 2px; gap: 3px;
+  }
+  .td-cal-day.empty { background: transparent; }
+  .td-cal-day.has-session { cursor: pointer; }
+  .td-cal-day.has-session:hover { border-color: var(--accent); }
+  .td-cal-day.is-today { border-color: var(--accent) !important; }
+  .td-cal-day-num { font-weight: 600; font-size: 0.78rem; line-height: 1; }
+  .td-cal-day-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .td-cal-day-dot.session { background: var(--accent); }
+  .td-cal-day-dot.checkin { background: #10B981; }
+  .td-cal-day-info { font-size: 0.56rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align: center; padding: 0 2px; }
+  .td-cal-day-count { font-size: 0.6rem; color: var(--accent); font-weight: 600; }
+  .td-cal-legend { display: flex; gap: 14px; margin-bottom: 10px; font-size: 0.68rem; color: var(--text-muted); }
+  .td-cal-legend span { display: flex; align-items: center; gap: 4px; }
+  @media (max-width: 768px) {
+    .td-cal-day { min-height: 40px; font-size: 0.7rem; }
+    .td-cal-day-num { font-size: 0.66rem; }
+    .td-cal-day-info { font-size: 0.48rem; }
+    .td-cal-day-dot { width: 5px; height: 5px; }
+    .td-cal-header h3 { font-size: 0.85rem; }
+  }
+
+  /* ===== Plan Sales Section (td-sales-) ===== */
+  .td-sales-section { margin-bottom: 32px; }
+  .td-sales-toggle {
+    display: flex; gap: 4px; margin-bottom: 20px;
+    background: var(--bg-alt); padding: 4px; border-radius: 8px; width: fit-content;
+  }
+  .td-sales-toggle-btn {
+    padding: 7px 14px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; border: none; background: transparent;
+    color: var(--text-muted); cursor: pointer; font-family: inherit;
+    border-radius: 5px; transition: all 0.2s; white-space: nowrap;
+  }
+  .td-sales-toggle-btn.active { background: var(--accent); color: #fff; }
+  .td-sales-toggle-btn:hover:not(.active) { color: var(--text); }
+  .td-sales-chart { margin-bottom: 20px; }
+  .td-sales-goal-row {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 16px; background: var(--bg-alt); border-radius: 8px; margin-bottom: 12px;
+  }
+  .td-sales-goal-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+  .td-sales-goal-type-btn {
+    padding: 6px 14px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; font-family: inherit; transition: all 0.2s; border-radius: 4px;
+  }
+  .td-sales-goal-type-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .td-sales-goal-input {
+    padding: 7px 12px; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 0.85rem; width: 120px;
+    border-radius: 4px; outline: none; transition: border-color 0.2s;
+  }
+  .td-sales-goal-input:focus { border-color: var(--accent); }
+  .td-sales-goal-save {
+    padding: 7px 16px; background: var(--accent); border: none; color: #fff;
+    font-family: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+    border-radius: 4px; transition: opacity 0.2s;
+  }
+  .td-sales-goal-save:hover { opacity: 0.85; }
+  .td-sales-goal-progress { margin-top: 8px; }
+  .td-sales-goal-progress-bar {
+    height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 6px;
+  }
+  .td-sales-goal-progress-fill {
+    height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s;
+  }
+  .td-sales-goal-progress-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -616,14 +730,37 @@
         </div>
       </div>
 
-      <!-- Recent Plan Sales -->
-      <div class="td-section">
+      <!-- Monthly Calendar -->
+      <div class="td-section td-cal-section">
+        <div class="td-section-header" style="margin-bottom:0;">
+          <h2>Session Calendar</h2>
+        </div>
+        <div id="tdCalContainer" style="margin-top:16px;"></div>
+      </div>
+
+      <!-- Plan Sales Section -->
+      <div class="td-section td-sales-section">
         <div class="td-section-header">
-          <h2>Recent Plan Sales</h2>
+          <h2>Plan Sales</h2>
         </div>
-        <div class="td-sales-list" id="salesList">
-          <!-- Populated by JS -->
+        <div class="td-sales-toggle">
+          <button class="td-sales-toggle-btn active" onclick="tdSalesToggle('daily',this)">Daily</button>
+          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('weekly',this)">Weekly</button>
+          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('monthly',this)">Monthly</button>
+          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('quarterly',this)">Quarterly</button>
+          <button class="td-sales-toggle-btn" onclick="tdSalesToggle('annual',this)">Annual</button>
         </div>
+        <div class="td-sales-chart" id="tdSalesChart"></div>
+        <div class="td-sales-goal-row">
+          <span class="td-sales-goal-label">Set Goal:</span>
+          <button class="td-sales-goal-type-btn active" id="tdGoalTypeMonthly" onclick="tdSetGoalType('monthly')">Monthly</button>
+          <button class="td-sales-goal-type-btn" id="tdGoalTypeAnnual" onclick="tdSetGoalType('annual')">Annual</button>
+          <input type="number" class="td-sales-goal-input" id="tdGoalInput" placeholder="$ amount">
+          <button class="td-sales-goal-save" onclick="tdSaveGoal()">Save</button>
+        </div>
+        <div class="td-sales-goal-progress" id="tdGoalProgress" style="display:none;"></div>
+        <!-- Legacy sales list (hidden, kept for JS compatibility) -->
+        <div style="display:none;" id="salesList"></div>
       </div>
     </div>
 
@@ -2459,6 +2596,264 @@
     _saveProfileData();
     if (typeof showToast === 'function') showToast('Pricing saved!');
   }
+  </script>
+
+  <!-- Calendar Day Popup Modal -->
+  <div class="td-cal-popup-overlay" id="tdCalPopupOverlay" onclick="if(event.target===this)tdCloseCalPopup()">
+    <div class="td-cal-popup">
+      <button class="td-cal-popup-close" onclick="tdCloseCalPopup()">&times;</button>
+      <div id="tdCalPopupBody"></div>
+    </div>
+  </div>
+
+  <!-- ===== Home Calendar + Plan Sales JS ===== -->
+  <script>
+  (function() {
+    // ===== Trainer Session Calendar =====
+    var _tdCalToday = new Date();
+    var _tdCalMonth = _tdCalToday.getMonth();
+    var _tdCalYear = _tdCalToday.getFullYear();
+
+    // Build session data from clients' recentWorkouts (use as scheduled sessions)
+    // We'll generate sample scheduled sessions for the current month
+    function _tdGetSessionData(month, year) {
+      var data = {};
+      var today = new Date();
+      // Use client workout history as past sessions, generate future slots
+      var allClients = typeof clients !== 'undefined' ? clients : [];
+      allClients.forEach(function(c) {
+        if (!c.recentWorkouts) return;
+        c.recentWorkouts.forEach(function(w) {
+          var d = new Date(w.date + 'T00:00:00');
+          if (d.getMonth() === month && d.getFullYear() === year) {
+            var day = d.getDate();
+            if (!data[day]) data[day] = [];
+            data[day].push({ client: c.name, workout: w.name, type: w.date >= today.toISOString().split('T')[0] ? 'scheduled' : 'completed' });
+          }
+        });
+      });
+      // Add some upcoming scheduled sessions if current month
+      if (month === today.getMonth() && year === today.getFullYear()) {
+        var upcoming = [
+          { daysAhead: 1, client: 'Jake Roberts', workout: '5x5 Foundation' },
+          { daysAhead: 2, client: 'Sarah Kim', workout: 'Full Body Burn' },
+          { daysAhead: 3, client: 'Lisa Johnson', workout: 'Upper Body Blast' },
+          { daysAhead: 4, client: 'Priya Patel', workout: 'Core Crusher' },
+          { daysAhead: 5, client: 'Marcus Lee', workout: 'Leg Day Legends' },
+          { daysAhead: 7, client: 'Jake Roberts', workout: 'Leg Day Legends' },
+          { daysAhead: 9, client: 'Sarah Kim', workout: 'HIIT Burn' },
+        ];
+        upcoming.forEach(function(u) {
+          var d2 = new Date(today);
+          d2.setDate(d2.getDate() + u.daysAhead);
+          if (d2.getMonth() === month && d2.getFullYear() === year) {
+            var day = d2.getDate();
+            if (!data[day]) data[day] = [];
+            data[day].push({ client: u.client, workout: u.workout, type: 'scheduled' });
+          }
+        });
+      }
+      return data;
+    }
+
+    window._tdCalData = {};
+
+    function tdBuildCal(month, year) {
+      var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      var today = new Date();
+      var firstDay = new Date(year, month, 1).getDay();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var sessionData = _tdGetSessionData(month, year);
+
+      // Store for popup use
+      var calKey = year + '_' + month;
+      window._tdCalData[calKey] = sessionData;
+
+      var cells = '';
+      ['S','M','T','W','T','F','S'].forEach(function(d) { cells += '<div class="td-cal-head">' + d + '</div>'; });
+      for (var i = 0; i < firstDay; i++) cells += '<div class="td-cal-day empty"></div>';
+
+      for (var d = 1; d <= daysInMonth; d++) {
+        var isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        var sessions = sessionData[d] || [];
+        var hasAny = sessions.length > 0;
+        var dot = '', preview = '';
+        if (hasAny) {
+          var scheduled = sessions.filter(function(s) { return s.type === 'scheduled'; });
+          var completed = sessions.filter(function(s) { return s.type === 'completed'; });
+          var dots = '';
+          if (scheduled.length) dots += '<div class="td-cal-day-dot session"></div>';
+          if (completed.length) dots += '<div class="td-cal-day-dot checkin"></div>';
+          dot = '<div style="display:flex;gap:3px;align-items:center;">' + dots + '</div>';
+          preview = '<div class="td-cal-day-count">' + sessions.length + (sessions.length === 1 ? ' session' : ' sessions') + '</div>';
+        }
+        var clickAttr = hasAny ? ' onclick="tdCalDayClick(this,' + year + ',' + month + ',' + d + ')" style="cursor:pointer;"' : '';
+        cells += '<div class="td-cal-day' + (isToday ? ' is-today' : '') + (hasAny ? ' has-session' : '') + '"' + clickAttr + '>'
+          + '<div class="td-cal-day-num">' + d + '</div>'
+          + dot + preview + '</div>';
+      }
+
+      return '<div class="td-cal-header"><h3>' + monthNames[month] + ' ' + year + '</h3>'
+        + '<div class="td-cal-nav">'
+        + '<button onclick="tdCalNav(-1)">&#8249;</button>'
+        + '<button onclick="tdCalNav(1)">&#8250;</button>'
+        + '</div></div>'
+        + '<div class="td-cal-legend">'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:2px;"></span>Scheduled</span>'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:2px;"></span>Completed</span>'
+        + '</div>'
+        + '<div class="td-cal-grid">' + cells + '</div>';
+    }
+
+    window.tdCalNav = function(dir) {
+      _tdCalMonth += dir;
+      if (_tdCalMonth > 11) { _tdCalMonth = 0; _tdCalYear++; }
+      if (_tdCalMonth < 0) { _tdCalMonth = 11; _tdCalYear--; }
+      var container = document.getElementById('tdCalContainer');
+      if (container) container.innerHTML = tdBuildCal(_tdCalMonth, _tdCalYear);
+    };
+
+    window.tdCalDayClick = function(el, year, month, day) {
+      var calKey = year + '_' + month;
+      var sessions = (window._tdCalData[calKey] && window._tdCalData[calKey][day]) ? window._tdCalData[calKey][day] : [];
+      var dateLabel = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+      var html = '<div class="td-cal-detail-title">' + dateLabel + '</div>';
+      if (sessions.length === 0) {
+        html += '<div style="font-size:0.78rem;color:var(--text-muted);">No sessions scheduled</div>';
+      } else {
+        sessions.forEach(function(s) {
+          var badge = s.type === 'scheduled'
+            ? '<span style="font-size:0.65rem;background:rgba(45,212,191,0.15);color:var(--accent);padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;">' + s.type + '</span>'
+            : '<span style="font-size:0.65rem;background:rgba(16,185,129,0.15);color:#10B981;padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;">' + s.type + '</span>';
+          html += '<div class="td-cal-detail-row"><span class="dl">' + s.client + '</span><span class="dv">' + s.workout + '</span></div>';
+        });
+      }
+      var body = document.getElementById('tdCalPopupBody');
+      var overlay = document.getElementById('tdCalPopupOverlay');
+      if (body) body.innerHTML = html;
+      if (overlay) overlay.classList.add('active');
+    };
+
+    window.tdCloseCalPopup = function() {
+      var overlay = document.getElementById('tdCalPopupOverlay');
+      if (overlay) overlay.classList.remove('active');
+    };
+
+    // ===== Plan Sales Chart =====
+    var _tdSalesPeriod = 'daily';
+
+    var _tdSalesData = {
+      daily: [
+        { label: 'Mon', value: 149 }, { label: 'Tue', value: 0 }, { label: 'Wed', value: 299 },
+        { label: 'Thu', value: 49 }, { label: 'Fri', value: 199 }, { label: 'Sat', value: 349 }, { label: 'Sun', value: 99 }
+      ],
+      weekly: [
+        { label: 'Wk 1', value: 1145 }, { label: 'Wk 2', value: 1820 }, { label: 'Wk 3', value: 980 },
+        { label: 'Wk 4', value: 1650 }, { label: 'Wk 5', value: 2100 }
+      ],
+      monthly: [
+        { label: 'Jan', value: 3200 }, { label: 'Feb', value: 4100 }, { label: 'Mar', value: 3750 },
+        { label: 'Apr', value: 5159 }, { label: 'May', value: 2400 }, { label: 'Jun', value: 3900 },
+        { label: 'Jul', value: 4500 }, { label: 'Aug', value: 2800 }, { label: 'Sep', value: 3300 },
+        { label: 'Oct', value: 4800 }, { label: 'Nov', value: 3600 }, { label: 'Dec', value: 5200 }
+      ],
+      quarterly: [
+        { label: 'Q1 2025', value: 8200 }, { label: 'Q2 2025', value: 11050 }, { label: 'Q3 2025', value: 9800 },
+        { label: 'Q4 2025', value: 13600 }, { label: 'Q1 2026', value: 11050 }, { label: 'Q2 2026', value: 5159 }
+      ],
+      annual: [
+        { label: '2022', value: 24000 }, { label: '2023', value: 31500 }, { label: '2024', value: 42650 },
+        { label: '2025', value: 52400 }, { label: '2026 YTD', value: 16209 }
+      ]
+    };
+
+    function tdGetPeriodTotal(period) {
+      var d = _tdSalesData[period] || [];
+      return d.reduce(function(s, r) { return s + r.value; }, 0);
+    }
+
+    function tdRenderSalesChart(period) {
+      var data = _tdSalesData[period] || [];
+      var maxVal = Math.max.apply(null, data.map(function(r) { return r.value; }));
+      var total = tdGetPeriodTotal(period);
+      var html = '<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">Total: <strong style="color:var(--text);">$' + total.toLocaleString() + '</strong></div>';
+      html += '<div class="progress-bar-chart">';
+      data.forEach(function(row) {
+        var pct = maxVal > 0 ? Math.round((row.value / maxVal) * 100) : 0;
+        html += '<div class="chart-row">'
+          + '<div class="chart-label" style="min-width:72px;font-size:0.72rem;">' + row.label + '</div>'
+          + '<div class="chart-bar-container">'
+          + '<div class="chart-bar" style="width:' + pct + '%;background:var(--accent);"></div>'
+          + '</div>'
+          + '<div class="chart-value" style="min-width:60px;text-align:right;">$' + row.value.toLocaleString() + '</div>'
+          + '</div>';
+      });
+      html += '</div>';
+      var el = document.getElementById('tdSalesChart');
+      if (el) el.innerHTML = html;
+      // Update goal progress if set
+      tdRenderGoalProgress(period);
+    }
+
+    window.tdSalesToggle = function(period, btn) {
+      _tdSalesPeriod = period;
+      document.querySelectorAll('.td-sales-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      tdRenderSalesChart(period);
+    };
+
+    // ===== Sales Goal =====
+    var _tdGoalType = 'monthly';
+
+    window.tdSetGoalType = function(type) {
+      _tdGoalType = type;
+      document.getElementById('tdGoalTypeMonthly').classList.toggle('active', type === 'monthly');
+      document.getElementById('tdGoalTypeAnnual').classList.toggle('active', type === 'annual');
+      tdRenderGoalProgress(_tdSalesPeriod);
+    };
+
+    window.tdSaveGoal = function() {
+      var val = parseFloat(document.getElementById('tdGoalInput').value);
+      if (!val || val <= 0) { if (typeof showToast === 'function') showToast('Enter a valid goal amount'); return; }
+      var key = _tdGoalType === 'annual' ? 'trainerSalesGoalAnnual' : 'trainerSalesGoalMonthly';
+      localStorage.setItem(key, val.toString());
+      if (typeof showToast === 'function') showToast('Goal saved!');
+      tdRenderGoalProgress(_tdSalesPeriod);
+    };
+
+    function tdRenderGoalProgress(period) {
+      var progressEl = document.getElementById('tdGoalProgress');
+      if (!progressEl) return;
+      var monthlyGoal = parseFloat(localStorage.getItem('trainerSalesGoalMonthly') || '0');
+      var annualGoal = parseFloat(localStorage.getItem('trainerSalesGoalAnnual') || '0');
+      var html = '';
+      if (monthlyGoal > 0) {
+        var monthTotal = tdGetPeriodTotal('monthly');
+        var current = _tdSalesData.monthly.slice(-1)[0].value; // current month
+        var pct = Math.min(Math.round((current / monthlyGoal) * 100), 100);
+        html += '<div style="margin-bottom:12px;">'
+          + '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">Monthly Goal: <strong style="color:var(--text);">$' + current.toLocaleString() + ' / $' + monthlyGoal.toLocaleString() + '</strong> (' + pct + '%)</div>'
+          + '<div class="td-sales-goal-progress-bar"><div class="td-sales-goal-progress-fill" style="width:' + pct + '%;background:' + (pct >= 100 ? '#10B981' : 'var(--accent)') + ';"></div></div>'
+          + '</div>';
+      }
+      if (annualGoal > 0) {
+        var ytdTotal = _tdSalesData.annual.slice(-1)[0].value;
+        var pct2 = Math.min(Math.round((ytdTotal / annualGoal) * 100), 100);
+        html += '<div>'
+          + '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">Annual Goal: <strong style="color:var(--text);">$' + ytdTotal.toLocaleString() + ' / $' + annualGoal.toLocaleString() + '</strong> (' + pct2 + '%)</div>'
+          + '<div class="td-sales-goal-progress-bar"><div class="td-sales-goal-progress-fill" style="width:' + pct2 + '%;background:' + (pct2 >= 100 ? '#10B981' : 'var(--accent)') + ';"></div></div>'
+          + '</div>';
+      }
+      progressEl.innerHTML = html;
+      progressEl.style.display = (monthlyGoal > 0 || annualGoal > 0) ? '' : 'none';
+    }
+
+    // Init
+    var container = document.getElementById('tdCalContainer');
+    if (container) container.innerHTML = tdBuildCal(_tdCalMonth, _tdCalYear);
+    tdRenderSalesChart('daily');
+    tdRenderGoalProgress('daily');
+  })();
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>

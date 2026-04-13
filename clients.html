@@ -305,12 +305,29 @@
     .cl-cal-day-dot.planned { background: #6C3AED; }
     .cl-cal-day-info { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 4px; }
 
-    /* Inline day detail panel */
-    .cl-cal-detail {
-      margin-top: 16px; padding: 18px 20px; background: var(--bg-alt); border-radius: 8px;
-      border-left: 3px solid var(--accent); display: none;
+    /* Inline day detail panel (hidden - replaced by modal) */
+    .cl-cal-detail { display: none !important; }
+
+    /* Calendar Day Popup Modal */
+    .cl-cal-popup-overlay {
+      position: fixed; inset: 0; z-index: 9990;
+      background: rgba(0,0,0,0.6);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
     }
-    .cl-cal-detail.active { display: block; }
+    .cl-cal-popup-overlay.active { opacity: 1; pointer-events: auto; }
+    .cl-cal-popup {
+      background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+      width: 360px; max-width: 92vw; padding: 24px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5); position: relative;
+    }
+    .cl-cal-popup-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 1.2rem; cursor: pointer; line-height: 1;
+      transition: color 0.2s; font-family: inherit;
+    }
+    .cl-cal-popup-close:hover { color: var(--text); }
     .cl-cal-detail-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
     .cl-cal-detail-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.88rem; }
     .cl-cal-detail-row .dl { color: var(--text-muted); }
@@ -2387,9 +2404,8 @@
 
       if (!data && !nutData) {
         const dateLabel = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-        detailEl.innerHTML = '<div class="cl-cal-detail-title">' + dateLabel + '</div>'
-          + '<div style="font-size:0.78rem;color:var(--text-muted);">' + (type === 'workout' ? 'No activity recorded' : 'No meals recorded') + '</div>';
-        detailEl.classList.add('active');
+        _clShowCalPopup('<div class="cl-cal-detail-title">' + dateLabel + '</div>'
+          + '<div style="font-size:0.78rem;color:var(--text-muted);">' + (type === 'workout' ? 'No activity recorded' : 'No meals recorded') + '</div>');
         return;
       }
 
@@ -2439,8 +2455,21 @@
         }
       }
 
-      detailEl.innerHTML = html;
-      detailEl.classList.add('active');
+      // Show popup modal instead of inline panel
+      _clShowCalPopup(html);
+    }
+
+    function _clShowCalPopup(html) {
+      var overlay = document.getElementById('clCalPopupOverlay');
+      var body = document.getElementById('clCalPopupBody');
+      if (!overlay || !body) return;
+      body.innerHTML = html;
+      overlay.classList.add('active');
+    }
+
+    function clCloseCalPopup() {
+      var overlay = document.getElementById('clCalPopupOverlay');
+      if (overlay) overlay.classList.remove('active');
     }
 
     // Pre-render calendars
@@ -3202,6 +3231,14 @@
     renderProgressChart();
     renderWeeklyCalChart();
   </script>
+
+  <!-- Calendar Day Popup Modal -->
+  <div class="cl-cal-popup-overlay" id="clCalPopupOverlay" onclick="if(event.target===this)clCloseCalPopup()">
+    <div class="cl-cal-popup">
+      <button class="cl-cal-popup-close" onclick="clCloseCalPopup()">&times;</button>
+      <div id="clCalPopupBody"></div>
+    </div>
+  </div>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>

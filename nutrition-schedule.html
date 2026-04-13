@@ -614,6 +614,77 @@
     .nd-profile-stats-row { flex-wrap: wrap; gap: 16px; }
     .nd-profile-gallery-grid { grid-template-columns: repeat(2, 1fr); }
   }
+
+  /* ===== Calendar Day Popup Modal (nd-cal-popup-) ===== */
+  .nd-cal-popup-overlay {
+    position: fixed; inset: 0; z-index: 9990;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .nd-cal-popup-overlay.active { opacity: 1; pointer-events: auto; }
+  .nd-cal-popup {
+    background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+    width: 340px; max-width: 92vw; padding: 24px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5); position: relative;
+  }
+  .nd-cal-popup-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none; color: var(--text-muted);
+    font-size: 1.2rem; cursor: pointer; line-height: 1;
+    transition: color 0.2s; font-family: inherit;
+  }
+  .nd-cal-popup-close:hover { color: var(--text); }
+  .nd-cal-detail-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+  .nd-cal-detail-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.85rem; border-bottom: 1px solid #2a2a2a; }
+  .nd-cal-detail-row:last-child { border-bottom: none; }
+  .nd-cal-detail-row .dl { color: var(--text-muted); }
+  .nd-cal-detail-row .dv { font-weight: 500; }
+
+  /* ===== Plan Sales Section (nd-sales-) ===== */
+  .nd-sales-section { margin-bottom: 32px; }
+  .nd-sales-toggle {
+    display: flex; gap: 4px; margin-bottom: 20px;
+    background: var(--bg-alt); padding: 4px; border-radius: 8px; width: fit-content;
+  }
+  .nd-sales-toggle-btn {
+    padding: 7px 14px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; border: none; background: transparent;
+    color: var(--text-muted); cursor: pointer; font-family: inherit;
+    border-radius: 5px; transition: all 0.2s; white-space: nowrap;
+  }
+  .nd-sales-toggle-btn.active { background: var(--accent); color: #fff; }
+  .nd-sales-toggle-btn:hover:not(.active) { color: var(--text); }
+  .nd-sales-chart { margin-bottom: 20px; }
+  .nd-sales-goal-row {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 16px; background: var(--bg-alt); border-radius: 8px; margin-bottom: 12px;
+  }
+  .nd-sales-goal-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+  .nd-sales-goal-type-btn {
+    padding: 6px 14px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; font-family: inherit; transition: all 0.2s; border-radius: 4px;
+  }
+  .nd-sales-goal-type-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .nd-sales-goal-input {
+    padding: 7px 12px; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 0.85rem; width: 120px;
+    border-radius: 4px; outline: none; transition: border-color 0.2s;
+  }
+  .nd-sales-goal-input:focus { border-color: var(--accent); }
+  .nd-sales-goal-save {
+    padding: 7px 16px; background: var(--accent); border: none; color: #fff;
+    font-family: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+    border-radius: 4px; transition: opacity 0.2s;
+  }
+  .nd-sales-goal-save:hover { opacity: 0.85; }
+  .nd-sales-goal-progress-bar {
+    height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 6px;
+  }
+  .nd-sales-goal-progress-fill {
+    height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s;
+  }
 </style>
 </head>
 <body>
@@ -737,13 +808,29 @@
           </div>
         </div>
 
-        <!-- Plan Sales -->
-        <div class="td-section">
+        <!-- Plan Sales Section -->
+        <div class="td-section nd-sales-section">
           <div class="td-section-header">
-            <h2>Recent Plan Sales</h2>
+            <h2>Plan Sales</h2>
           </div>
-          <div class="td-sales-list" id="ndSalesList">
+          <div class="nd-sales-toggle">
+            <button class="nd-sales-toggle-btn active" onclick="ndSalesToggle('daily',this)">Daily</button>
+            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('weekly',this)">Weekly</button>
+            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('monthly',this)">Monthly</button>
+            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('quarterly',this)">Quarterly</button>
+            <button class="nd-sales-toggle-btn" onclick="ndSalesToggle('annual',this)">Annual</button>
           </div>
+          <div class="nd-sales-chart" id="ndSalesChart"></div>
+          <div class="nd-sales-goal-row">
+            <span class="nd-sales-goal-label">Set Goal:</span>
+            <button class="nd-sales-goal-type-btn active" id="ndGoalTypeMonthly" onclick="ndSetGoalType('monthly')">Monthly</button>
+            <button class="nd-sales-goal-type-btn" id="ndGoalTypeAnnual" onclick="ndSetGoalType('annual')">Annual</button>
+            <input type="number" class="nd-sales-goal-input" id="ndGoalInput" placeholder="$ amount">
+            <button class="nd-sales-goal-save" onclick="ndSaveGoal()">Save</button>
+          </div>
+          <div class="nd-sales-goal-progress" id="ndGoalProgress" style="display:none;"></div>
+          <!-- Legacy element kept for JS compatibility -->
+          <div style="display:none;" id="ndSalesList"></div>
         </div>
       </div>
     </section>
@@ -1864,6 +1951,211 @@
 
     // Init - render the plans list on page load
     mpbRenderList();
+  })();
+  </script>
+
+  <!-- Calendar Day Popup Modal -->
+  <div class="nd-cal-popup-overlay" id="ndCalPopupOverlay" onclick="if(event.target===this)ndCloseCalPopup()">
+    <div class="nd-cal-popup">
+      <button class="nd-cal-popup-close" onclick="ndCloseCalPopup()">&times;</button>
+      <div id="ndCalPopupBody"></div>
+    </div>
+  </div>
+
+  <!-- ===== Calendar Popup + Plan Sales JS ===== -->
+  <script>
+  (function() {
+    // ===== Calendar popup helpers =====
+    window.ndCloseCalPopup = function() {
+      var overlay = document.getElementById('ndCalPopupOverlay');
+      if (overlay) overlay.classList.remove('active');
+    };
+
+    window.ndShowCalPopup = function(html) {
+      var body = document.getElementById('ndCalPopupBody');
+      var overlay = document.getElementById('ndCalPopupOverlay');
+      if (body) body.innerHTML = html;
+      if (overlay) overlay.classList.add('active');
+    };
+
+    // Patch nd-cal-day click: override _ndBuildCalendar and _ndBuildDashCalendar
+    // to add click handlers to days with data.
+    // We wait for DOM ready then patch the build functions.
+
+    function patchNdCalendars() {
+      // Override the dash calendar build function to add click support
+      var origDash = window._ndBuildDashCalendar;
+      if (typeof origDash === 'function') {
+        window._ndBuildDashCalendar = function(month, year) {
+          var html = origDash(month, year);
+          // Add onclick to has-meals days by rebuilding with click attrs
+          // Instead, store data and re-patch after render
+          return html;
+        };
+      }
+
+      // Override _ndBuildCalendar (client detail) similarly
+      var origClient = window._ndBuildCalendar;
+      if (typeof origClient === 'function') {
+        window._ndBuildCalendar = function(clientId, month, year) {
+          var html = origClient(clientId, month, year);
+          return html;
+        };
+      }
+    }
+
+    // Instead of patching the generators (hard to do after-the-fact),
+    // use event delegation on the grid containers.
+    document.addEventListener('click', function(e) {
+      var day = e.target.closest('.nd-cal-day');
+      if (!day || day.classList.contains('empty')) return;
+      // Only trigger popup if in dashboard cal container or client cal container
+      var container = day.closest('#ndDashCalContainer, #ndCalContainer');
+      if (!container) return;
+
+      var num = day.querySelector('.nd-cal-day-num');
+      var dot = day.querySelector('.nd-cal-day-dot');
+      var mealsEl = day.querySelector('.nd-cal-day-meals');
+      if (!num) return;
+
+      var dayNum = parseInt(num.textContent, 10);
+      // Get month/year from header
+      var headerEl = container.querySelector('.nd-month-header h4');
+      var dateLabel = (headerEl ? headerEl.textContent + ', Day ' : 'Day ') + dayNum;
+      // Try to get a full date
+      var monthHeader = headerEl ? headerEl.textContent : '';
+
+      var html = '<div class="nd-cal-detail-title">' + monthHeader + (monthHeader ? ' — ' : '') + 'Day ' + dayNum + '</div>';
+
+      if (!dot && !mealsEl) {
+        html += '<div style="font-size:0.78rem;color:var(--text-muted);">No meals recorded this day.</div>';
+      } else {
+        var dotClass = dot ? (dot.className.replace('nd-cal-day-dot','').trim()) : '';
+        var status = dotClass === 'on-plan' ? 'On Plan' : dotClass === 'off-plan' ? 'Off Plan' : 'Mixed';
+        var statusColor = dotClass === 'on-plan' ? '#10B981' : dotClass === 'off-plan' ? '#EF4444' : '#F59E0B';
+        var count = mealsEl ? mealsEl.textContent : '';
+        html += '<div class="nd-cal-detail-row"><span class="dl">Meals</span><span class="dv">' + count + '</span></div>';
+        html += '<div class="nd-cal-detail-row"><span class="dl">Status</span><span class="dv" style="color:' + statusColor + ';">' + status + '</span></div>';
+      }
+
+      ndShowCalPopup(html);
+    });
+
+    // Make has-meals days show pointer cursor
+    var styleEl = document.createElement('style');
+    styleEl.textContent = '.nd-cal-day.has-meals { cursor: pointer !important; } .nd-cal-day.has-meals:hover { background: rgba(45,212,191,0.08) !important; }';
+    document.head.appendChild(styleEl);
+
+    // ===== Plan Sales Chart =====
+    var _ndSalesPeriod = 'daily';
+
+    var _ndSalesData = {
+      daily: [
+        { label: 'Mon', value: 119 }, { label: 'Tue', value: 0 }, { label: 'Wed', value: 249 },
+        { label: 'Thu', value: 39 }, { label: 'Fri', value: 159 }, { label: 'Sat', value: 289 }, { label: 'Sun', value: 79 }
+      ],
+      weekly: [
+        { label: 'Wk 1', value: 930 }, { label: 'Wk 2', value: 1520 }, { label: 'Wk 3', value: 780 },
+        { label: 'Wk 4', value: 1310 }, { label: 'Wk 5', value: 1720 }
+      ],
+      monthly: [
+        { label: 'Jan', value: 2600 }, { label: 'Feb', value: 3400 }, { label: 'Mar', value: 3100 },
+        { label: 'Apr', value: 4320 }, { label: 'May', value: 1900 }, { label: 'Jun', value: 3200 },
+        { label: 'Jul', value: 3700 }, { label: 'Aug', value: 2300 }, { label: 'Sep', value: 2800 },
+        { label: 'Oct', value: 4000 }, { label: 'Nov', value: 3000 }, { label: 'Dec', value: 4400 }
+      ],
+      quarterly: [
+        { label: 'Q1 2025', value: 6700 }, { label: 'Q2 2025', value: 9200 }, { label: 'Q3 2025', value: 8000 },
+        { label: 'Q4 2025', value: 11200 }, { label: 'Q1 2026', value: 9100 }, { label: 'Q2 2026', value: 4320 }
+      ],
+      annual: [
+        { label: '2022', value: 19500 }, { label: '2023', value: 26400 }, { label: '2024', value: 35200 },
+        { label: '2025', value: 43800 }, { label: '2026 YTD', value: 13420 }
+      ]
+    };
+
+    function ndGetPeriodTotal(period) {
+      var d = _ndSalesData[period] || [];
+      return d.reduce(function(s, r) { return s + r.value; }, 0);
+    }
+
+    function ndRenderSalesChart(period) {
+      var data = _ndSalesData[period] || [];
+      var maxVal = Math.max.apply(null, data.map(function(r) { return r.value; }));
+      var total = ndGetPeriodTotal(period);
+      var html = '<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">Total: <strong style="color:var(--text);">$' + total.toLocaleString() + '</strong></div>';
+      html += '<div class="progress-bar-chart">';
+      data.forEach(function(row) {
+        var pct = maxVal > 0 ? Math.round((row.value / maxVal) * 100) : 0;
+        html += '<div class="chart-row">'
+          + '<div class="chart-label" style="min-width:72px;font-size:0.72rem;">' + row.label + '</div>'
+          + '<div class="chart-bar-container">'
+          + '<div class="chart-bar" style="width:' + pct + '%;background:var(--accent);"></div>'
+          + '</div>'
+          + '<div class="chart-value" style="min-width:60px;text-align:right;">$' + row.value.toLocaleString() + '</div>'
+          + '</div>';
+      });
+      html += '</div>';
+      var el = document.getElementById('ndSalesChart');
+      if (el) el.innerHTML = html;
+      ndRenderGoalProgress(period);
+    }
+
+    window.ndSalesToggle = function(period, btn) {
+      _ndSalesPeriod = period;
+      document.querySelectorAll('.nd-sales-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      ndRenderSalesChart(period);
+    };
+
+    // ===== Sales Goal =====
+    var _ndGoalType = 'monthly';
+
+    window.ndSetGoalType = function(type) {
+      _ndGoalType = type;
+      document.getElementById('ndGoalTypeMonthly').classList.toggle('active', type === 'monthly');
+      document.getElementById('ndGoalTypeAnnual').classList.toggle('active', type === 'annual');
+      ndRenderGoalProgress(_ndSalesPeriod);
+    };
+
+    window.ndSaveGoal = function() {
+      var val = parseFloat(document.getElementById('ndGoalInput').value);
+      if (!val || val <= 0) { if (typeof showToast === 'function') showToast('Enter a valid goal amount'); return; }
+      var key = _ndGoalType === 'annual' ? 'nutritionistSalesGoalAnnual' : 'nutritionistSalesGoalMonthly';
+      localStorage.setItem(key, val.toString());
+      if (typeof showToast === 'function') showToast('Goal saved!');
+      ndRenderGoalProgress(_ndSalesPeriod);
+    };
+
+    function ndRenderGoalProgress(period) {
+      var progressEl = document.getElementById('ndGoalProgress');
+      if (!progressEl) return;
+      var monthlyGoal = parseFloat(localStorage.getItem('nutritionistSalesGoalMonthly') || '0');
+      var annualGoal = parseFloat(localStorage.getItem('nutritionistSalesGoalAnnual') || '0');
+      var html = '';
+      if (monthlyGoal > 0) {
+        var current = _ndSalesData.monthly.slice(-1)[0].value;
+        var pct = Math.min(Math.round((current / monthlyGoal) * 100), 100);
+        html += '<div style="margin-bottom:12px;">'
+          + '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">Monthly Goal: <strong style="color:var(--text);">$' + current.toLocaleString() + ' / $' + monthlyGoal.toLocaleString() + '</strong> (' + pct + '%)</div>'
+          + '<div class="nd-sales-goal-progress-bar"><div class="nd-sales-goal-progress-fill" style="width:' + pct + '%;background:' + (pct >= 100 ? '#10B981' : 'var(--accent)') + ';"></div></div>'
+          + '</div>';
+      }
+      if (annualGoal > 0) {
+        var ytdTotal = _ndSalesData.annual.slice(-1)[0].value;
+        var pct2 = Math.min(Math.round((ytdTotal / annualGoal) * 100), 100);
+        html += '<div>'
+          + '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">Annual Goal: <strong style="color:var(--text);">$' + ytdTotal.toLocaleString() + ' / $' + annualGoal.toLocaleString() + '</strong> (' + pct2 + '%)</div>'
+          + '<div class="nd-sales-goal-progress-bar"><div class="nd-sales-goal-progress-fill" style="width:' + pct2 + '%;background:' + (pct2 >= 100 ? '#10B981' : 'var(--accent)') + ';"></div></div>'
+          + '</div>';
+      }
+      progressEl.innerHTML = html;
+      progressEl.style.display = (monthlyGoal > 0 || annualGoal > 0) ? '' : 'none';
+    }
+
+    // Init
+    ndRenderSalesChart('daily');
+    ndRenderGoalProgress('daily');
   })();
   </script>
 
