@@ -929,7 +929,14 @@
           } else {
             const mealCls = data.type === 'scheduled' ? 'planned' : 'logged';
             dot = '<div class="cl-cal-day-dot ' + mealCls + '"></div>';
-            preview = '<div class="cl-cal-day-info">' + data.label + '</div>';
+            // Show first meal name as preview, with count
+            let mealPreview = data.label;
+            if (data.meals && data.meals.length > 0) {
+              const firstName = data.meals[0];
+              mealPreview = firstName.length > 10 ? firstName.substring(0, 9) + '…' : firstName;
+              if (data.count > 1) mealPreview += ' +' + (data.count - 1);
+            }
+            preview = '<div class="cl-cal-day-info">' + mealPreview + '</div>';
           }
         }
         const clickAttr = ' onclick="clSelectDay(this,\'' + type + '\',' + year + ',' + month + ',' + d + ')"';
