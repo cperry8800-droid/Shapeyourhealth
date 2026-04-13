@@ -70,7 +70,7 @@
       display: flex; align-items: center; justify-content: center;
     }
     .loader-triangles svg {
-      height: 100px; width: auto;
+      height: 72px; width: auto;
       filter: brightness(0) invert(1);
       animation: trianglePulse 2s ease-in-out infinite;
     }
@@ -268,11 +268,11 @@
   <div class="loader-overlay" id="loaderOverlay">
     <div class="loader-box">
       <div class="loader-triangles">
-        <svg viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg">
-          <!-- Left triangle pointing right (larger) -->
-          <polygon points="0,85 0,15 55,50" fill="#fff"/>
-          <!-- Right triangle pointing left (smaller, higher, clear gap) -->
-          <polygon points="130,8 130,68 72,38" fill="#fff"/>
+        <svg viewBox="0 0 90 110" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left triangle pointing right (lower position) -->
+          <polygon points="3,108 3,38 55,73" fill="#fff"/>
+          <!-- Right triangle pointing left (upper position, overlapping horizontally to form S) -->
+          <polygon points="87,2 87,72 35,37" fill="#fff"/>
         </svg>
       </div>
       <div class="loader-track">
