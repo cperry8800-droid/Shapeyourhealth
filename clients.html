@@ -931,7 +931,7 @@
                 </div>
                 <div style="font-weight:500;margin-bottom:4px;">Lower Body</div>
                 <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Squats, RDL, Leg Press, Calf Raises</div>
-                <div class="wk-rating-badge" style="margin-top:8px;">Rating: Challenging</div>
+                <div class="wk-rating-badge" style="margin-top:8px;">Rating: Could Push More</div>
               </div>
 
               <div class="wk-day-card today" onclick="openWorkoutDetail(2)">
@@ -986,7 +986,6 @@
                   <button class="wk-rate-btn" data-rating="easy" onclick="selectRating(this)">Easy</button>
                   <button class="wk-rate-btn" data-rating="push" onclick="selectRating(this)">Could Push More</button>
                   <button class="wk-rate-btn" data-rating="perfect" onclick="selectRating(this)">Perfect</button>
-                  <button class="wk-rate-btn" data-rating="challenging" onclick="selectRating(this)">Challenging</button>
                   <button class="wk-rate-btn" data-rating="struggling" onclick="selectRating(this)">I'm Struggling</button>
                 </div>
                 <button onclick="completeWorkout()" class="btn btn-primary" style="width:100%;">Complete Workout</button>
@@ -1018,7 +1017,7 @@
                 <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
                   <span><strong style="color:var(--text);">48 min</strong> duration</span>
                   <span><strong style="color:var(--text);">22,100 lbs</strong> volume</span>
-                  <span style="color:#F59E0B;font-weight:500;">Challenging</span>
+                  <span style="color:#F59E0B;font-weight:500;">Could Push More</span>
                   <span style="color:#10B981;font-weight:500;">+30 Shape Score</span>
                 </div>
               </div>
@@ -1718,7 +1717,7 @@
           { name: 'Incline DB Press', sets: [{reps:12,weight:60,difficulty:'easy',done:true},{reps:10,weight:65,difficulty:'moderate',done:true},{reps:10,weight:65,difficulty:'moderate',done:true}]},
           { name: 'Tricep Dips', sets: [{reps:12,weight:0,difficulty:'easy',done:true},{reps:10,weight:0,difficulty:'moderate',done:true},{reps:10,weight:0,difficulty:'moderate',done:true}]}
         ]},
-      { day: 'Tuesday', title: 'Lower Body', completed: true, rating: 'challenging',
+      { day: 'Tuesday', title: 'Lower Body', completed: true, rating: 'push',
         exercises: [
           { name: 'Barbell Squat', sets: [{reps:8,weight:275,difficulty:'moderate',done:true},{reps:6,weight:295,difficulty:'hard',done:true},{reps:6,weight:295,difficulty:'hard',done:true},{reps:4,weight:315,difficulty:'hard',done:true}]},
           { name: 'Romanian Deadlift', sets: [{reps:10,weight:185,difficulty:'moderate',done:true},{reps:8,weight:205,difficulty:'moderate',done:true},{reps:8,weight:205,difficulty:'hard',done:true}]},
@@ -1867,7 +1866,7 @@
         if (badge) { badge.className = 'wk-badge wk-badge-done'; badge.textContent = 'Completed'; }
         var startBtn = cards[currentWorkoutIdx].querySelector('.btn');
         if (startBtn) startBtn.remove();
-        var ratingLabels = {easy:'Easy',push:'Could Push More',perfect:'Perfect',challenging:'Challenging',struggling:"I'm Struggling"};
+        var ratingLabels = {easy:'Easy',push:'Could Push More',perfect:'Perfect',struggling:"I'm Struggling"};
         var existing = cards[currentWorkoutIdx].querySelector('.wk-rating-badge');
         if (!existing) {
           var rb = document.createElement('div');
