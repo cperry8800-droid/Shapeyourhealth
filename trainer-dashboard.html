@@ -418,10 +418,74 @@
     .td-community-layout { grid-template-columns: 260px 1fr; }
     .td-community-activity { display: none; }
   }
+  /* Mobile Community Switcher Bar */
+  .td-comm-mobile-bar {
+    display: none; flex-shrink: 0;
+    border-bottom: 1px solid var(--border); background: var(--bg-card);
+  }
+  .td-comm-mobile-btn {
+    flex: 1; padding: 13px 8px; text-align: center; font-size: 0.72rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); background: none; border: none;
+    border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .td-comm-mobile-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
   @media (max-width: 768px) {
-    .td-community-layout { grid-template-columns: 1fr; min-height: auto; }
-    .td-community-sidebar { max-height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
-    .td-community-messages { max-height: 300px; }
+    /* Show mobile bar */
+    .td-comm-mobile-bar { display: flex; }
+
+    /* Full-height flex column layout */
+    .td-community-layout {
+      grid-template-columns: 1fr;
+      display: flex; flex-direction: column;
+      min-height: calc(100vh - 220px);
+      border-radius: 0;
+    }
+
+    /* Default state: show chat, hide sidebar + activity */
+    .td-community-sidebar { display: none; }
+    .td-community-activity { display: none; }
+    .td-community-chat { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+    /* People view: show sidebar, hide chat */
+    .td-community-layout.comm-view-people .td-community-sidebar {
+      display: flex; flex: 1; border-right: none; min-height: 0;
+    }
+    .td-community-layout.comm-view-people .td-community-chat { display: none; }
+
+    /* Chat panel inner layout */
+    .td-community-messages {
+      flex: 1; max-height: none; padding: 14px 12px;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .td-community-msg { max-width: 82%; }
+    .td-community-msg-body { padding: 10px 14px; }
+    .td-community-msg-text { font-size: 0.88rem; }
+
+    /* Channel tabs scroll */
+    .td-community-chat-tabs {
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; padding: 10px 12px; gap: 6px;
+    }
+    .td-community-chat-tabs::-webkit-scrollbar { display: none; }
+    .td-community-channel { white-space: nowrap; padding: 6px 14px; }
+
+    /* Input bar */
+    .td-community-input-area { padding: 10px 12px; gap: 8px; }
+    .td-community-input-area input {
+      font-size: 16px; padding: 10px 16px;
+    }
+    .td-community-send-btn { padding: 10px 18px; font-size: 0.78rem; }
+
+    /* People sidebar */
+    .td-community-list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .td-community-search { padding: 10px 12px; }
+    .td-community-search input { border-radius: 20px; font-size: 16px; padding: 10px 16px; }
+    .td-community-user { padding: 12px 14px; }
+    .td-community-user-avatar { width: 40px; height: 40px; font-size: 0.72rem; }
+    .td-community-user-name { font-size: 0.88rem; }
   }
 
   /* ===== Profile Tab Styles ===== */
@@ -1213,6 +1277,12 @@
     <!-- ========== TAB: COMMUNITY ========== -->
     <div class="td-tab-content" id="tab-community">
       <div class="td-community-layout" id="tdCommunityLayout">
+        <!-- Mobile switcher (hidden on desktop) -->
+        <div class="td-comm-mobile-bar">
+          <button class="td-comm-mobile-btn" onclick="tdCommMobileView('people',this)">&#128100; People</button>
+          <button class="td-comm-mobile-btn active" onclick="tdCommMobileView('chat',this)">&#128172; Chat</button>
+        </div>
+
         <!-- Left Sidebar: People -->
         <div class="td-community-sidebar">
           <div class="td-community-sidebar-header">
@@ -2772,6 +2842,14 @@
 
   let _tdCommCurrentTab = 'friends';
   let _tdCommCurrentChannel = 'trainer';
+
+  function tdCommMobileView(view, btn) {
+    document.querySelectorAll('.td-comm-mobile-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const layout = document.getElementById('tdCommunityLayout');
+    if (view === 'people') layout.classList.add('comm-view-people');
+    else layout.classList.remove('comm-view-people');
+  }
 
   function initCommunityTab() {
     tdCommRenderUsers();

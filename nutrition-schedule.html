@@ -529,10 +529,69 @@
     .nd-community-layout { grid-template-columns: 240px 1fr; }
     .nd-community-activity { display: none; }
   }
+  /* Mobile Community Switcher Bar */
+  .nd-comm-mobile-bar {
+    display: none; flex-shrink: 0;
+    border-bottom: 1px solid var(--border); background: var(--bg-card);
+  }
+  .nd-comm-mobile-btn {
+    flex: 1; padding: 13px 8px; text-align: center; font-size: 0.72rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); background: none; border: none;
+    border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .nd-comm-mobile-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
   @media (max-width: 768px) {
-    .nd-community-layout { grid-template-columns: 1fr; }
-    .nd-community-sidebar { max-height: 200px; border-right: none; border-bottom: 1px solid var(--border); }
-    .nd-community-messages { max-height: 300px; }
+    .nd-comm-mobile-bar { display: flex; }
+
+    .nd-community-layout {
+      grid-template-columns: 1fr;
+      display: flex; flex-direction: column;
+      min-height: calc(100vh - 220px);
+    }
+
+    /* Default: show chat, hide sidebar + activity */
+    .nd-community-sidebar { display: none; }
+    .nd-community-activity { display: none; }
+    .nd-community-chat { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+    /* People view */
+    .nd-community-layout.comm-view-people .nd-community-sidebar {
+      display: flex; flex: 1; border-right: none; min-height: 0;
+    }
+    .nd-community-layout.comm-view-people .nd-community-chat { display: none; }
+
+    /* Chat panel */
+    .nd-community-messages {
+      flex: 1; max-height: none; padding: 14px 12px;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .nd-community-msg { max-width: 82%; }
+    .nd-community-msg-body { padding: 10px 14px; }
+    .nd-community-msg-text { font-size: 0.88rem; }
+
+    /* Channel tabs */
+    .nd-community-chat-tabs {
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; padding: 10px 12px; gap: 6px;
+    }
+    .nd-community-chat-tabs::-webkit-scrollbar { display: none; }
+    .nd-community-channel { white-space: nowrap; padding: 6px 14px; }
+
+    /* Input bar */
+    .nd-community-input { padding: 10px 12px; gap: 8px; }
+    .nd-community-input input { font-size: 16px; padding: 10px 16px; }
+    .nd-community-input button { padding: 10px 18px; font-size: 0.78rem; }
+
+    /* People sidebar */
+    .nd-community-list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .nd-community-search { padding: 10px 12px; }
+    .nd-community-search input { border-radius: 20px; font-size: 16px; padding: 10px 16px; }
+    .nd-community-user { padding: 12px 14px; }
+    .nd-community-user-avatar { width: 40px; height: 40px; font-size: 0.72rem; }
+    .nd-community-user-name { font-size: 0.88rem; }
   }
 
   /* ===== Profile Tab ===== */
@@ -1178,6 +1237,12 @@
     <section class="section">
       <div class="container">
         <div class="nd-community-layout" id="ndCommunityLayout">
+          <!-- Mobile switcher (hidden on desktop) -->
+          <div class="nd-comm-mobile-bar">
+            <button class="nd-comm-mobile-btn" onclick="ndCommMobileView('people',this)">&#128100; People</button>
+            <button class="nd-comm-mobile-btn active" onclick="ndCommMobileView('chat',this)">&#128172; Chat</button>
+          </div>
+
           <!-- Left: People -->
           <div class="nd-community-sidebar">
             <div class="nd-community-sidebar-header">Community</div>
@@ -1627,6 +1692,14 @@
   }
 
   function ndCommFilterUsers() { ndCommRenderUsers(); }
+
+  function ndCommMobileView(view, btn) {
+    document.querySelectorAll('.nd-comm-mobile-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const layout = document.getElementById('ndCommunityLayout');
+    if (view === 'people') layout.classList.add('comm-view-people');
+    else layout.classList.remove('comm-view-people');
+  }
 
   function ndCommSwitchTab(tab, btn) {
     ndCommCurrentTab = tab;
