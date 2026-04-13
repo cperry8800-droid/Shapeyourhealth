@@ -719,6 +719,63 @@
   .widget-body { padding: 16px; overflow-x: auto; min-width: 0; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
+
+  /* ===== Widget Library Picker ===== */
+  .widget-lib-btn { background: var(--bg-card); border: 1px dashed var(--border); color: var(--text-muted); cursor: pointer; padding: 14px 22px; font-family: inherit; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; width: 100%; margin-top: 16px; }
+  .widget-lib-btn:hover { border-color: var(--accent); color: var(--accent); border-style: solid; }
+  .widget-lib-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+  .widget-lib-overlay.open { display: flex; }
+  .widget-lib-modal { background: var(--bg); border: 1px solid var(--border); max-width: 720px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; }
+  .widget-lib-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .widget-lib-head h2 { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+  .widget-lib-head p { font-size: 0.75rem; color: var(--text-muted); font-weight: 300; margin-top: 2px; }
+  .widget-lib-close { background: none; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; padding: 6px 10px; font-family: inherit; font-size: 0.8rem; line-height: 1; transition: all 0.2s; }
+  .widget-lib-close:hover { border-color: var(--accent); color: var(--accent); }
+  .widget-lib-grid { padding: 20px 24px; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .widget-lib-card { background: var(--bg-card); border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .widget-lib-card h3 { font-size: 0.85rem; font-weight: 600; }
+  .widget-lib-card p { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; line-height: 1.4; flex: 1; }
+  .widget-lib-toggle { background: var(--accent); color: #fff; border: none; padding: 8px 14px; font-family: inherit; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: background 0.2s; align-self: flex-start; }
+  .widget-lib-toggle:hover { background: var(--accent-dark); }
+  .widget-lib-toggle.added { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+  .widget-lib-toggle.added:hover { border-color: #EF4444; color: #EF4444; }
+  @media (max-width: 600px) { .widget-lib-grid { grid-template-columns: 1fr; } }
+
+  /* ===== Reusable widget-library content patterns ===== */
+  .wlib-kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+  .wlib-kpi { background: var(--bg-alt); padding: 12px; }
+  .wlib-kpi .lbl { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; }
+  .wlib-kpi .val { font-size: 1.15rem; font-weight: 700; }
+  .wlib-kpi .delta { font-size: 0.68rem; margin-top: 2px; }
+  .wlib-kpi .delta.up { color: #22C55E; }
+  .wlib-kpi .delta.down { color: #EF4444; }
+  .wlib-list-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.78rem; }
+  .wlib-list-row:last-child { border-bottom: none; }
+  .wlib-list-row .name { flex: 1; min-width: 0; font-weight: 500; }
+  .wlib-list-row .pill { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 999px; font-weight: 600; }
+  .wlib-list-row .pill.warn { background: rgba(245,158,11,0.15); color: #F59E0B; }
+  .wlib-list-row .pill.ok { background: rgba(34,197,94,0.15); color: #22C55E; }
+  .wlib-list-row .pill.danger { background: rgba(239,68,68,0.15); color: #EF4444; }
+  .wlib-list-row .pill.info { background: rgba(59,130,246,0.15); color: #3B82F6; }
+  .wlib-list-row .meta { color: var(--text-muted); font-size: 0.7rem; }
+  .wlib-section-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; margin-top: 14px; }
+  .wlib-section-label:first-child { margin-top: 0; }
+  .wlib-pipeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .wlib-pipeline-col { background: var(--bg-alt); padding: 10px 8px; }
+  .wlib-pipeline-col .stage { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px; }
+  .wlib-pipeline-col .count { font-size: 1.4rem; font-weight: 700; }
+  .wlib-heatmap { display: grid; grid-template-columns: 80px repeat(7, 1fr); gap: 3px; font-size: 0.62rem; }
+  .wlib-heatmap .hm-label { color: var(--text-muted); display: flex; align-items: center; padding-right: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wlib-heatmap .hm-cell { aspect-ratio: 1; background: var(--bg-alt); border-radius: 2px; }
+  .wlib-heatmap .hm-cell.ok { background: #22C55E; opacity: 0.8; }
+  .wlib-heatmap .hm-cell.mid { background: #F59E0B; opacity: 0.8; }
+  .wlib-heatmap .hm-cell.bad { background: #EF4444; opacity: 0.8; }
+  .wlib-chip-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .wlib-chip { background: var(--bg-alt); padding: 6px 10px; font-size: 0.7rem; border-radius: 14px; cursor: pointer; transition: background 0.2s; }
+  .wlib-chip:hover { background: var(--border); }
+  .wlib-review { background: var(--bg-alt); padding: 10px 12px; font-size: 0.74rem; margin-bottom: 6px; border-left: 2px solid #F59E0B; }
+  .wlib-review .stars { color: #F59E0B; font-size: 0.68rem; margin-bottom: 2px; }
+  .wlib-review .author { color: var(--text-muted); font-size: 0.66rem; margin-top: 4px; }
   @media (max-width: 600px) {
     .widget-grid { grid-template-columns: 1fr; gap: 12px; }
     .widget-expand-btn { display: none; }
@@ -746,7 +803,6 @@
           <a href="clients.html">Clients</a>
           <div class="nav-dropdown-menu">
             <a href="clients.html">Dashboard</a>
-            <a href="my-team.html">My Team</a>
           </div>
         </div>
         <div class="nav-dropdown">
@@ -890,7 +946,127 @@
           </div>
         </div>
 
+        <!-- ===== Library widgets (hidden by default, toggled via Widget Library) ===== -->
+
+        <!-- Widget: Today's Focus -->
+        <div class="widget" data-widget-id="td-today" draggable="true" data-lib="1"
+             data-lib-title="Today's Focus" data-lib-desc="Today's sessions timeline plus unread messages, check-ins, and pending actions." style="display:none;">
+          <div class="widget-header">
+            <span class="widget-title">Today's Focus</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="wlib-section-label">Today's Sessions</div>
+            <div class="wlib-list-row"><span class="pill info">9:00 AM</span><span class="name">Marcus Lee · Upper Body Strength</span></div>
+            <div class="wlib-list-row"><span class="pill info">11:00 AM</span><span class="name">Priya Singh · HIIT Conditioning</span></div>
+            <div class="wlib-list-row"><span class="pill info">2:00 PM</span><span class="name">Jordan Kim · Lower Body</span></div>
+            <div class="wlib-list-row"><span class="pill info">4:30 PM</span><span class="name">Sam Torres · Mobility &amp; Recovery</span></div>
+            <div class="wlib-section-label">Pending Actions</div>
+            <div class="wlib-list-row"><span class="pill warn">3</span><span class="name">Unread client messages</span></div>
+            <div class="wlib-list-row"><span class="pill warn">2</span><span class="name">Check-ins awaiting review</span></div>
+            <div class="wlib-list-row"><span class="pill danger">1</span><span class="name">Program renewal pending</span></div>
+          </div>
+        </div>
+
+        <!-- Widget: Business Health -->
+        <div class="widget" data-widget-id="td-business" draggable="true" data-lib="1"
+             data-lib-title="Business Health" data-lib-desc="Revenue, schedule utilization, and latest client reviews all in one KPI widget." style="display:none;">
+          <div class="widget-header">
+            <span class="widget-title">Business Health</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="wlib-kpi-grid">
+              <div class="wlib-kpi"><div class="lbl">MTD Revenue</div><div class="val">$8,420</div><div class="delta up">+12% vs last month</div></div>
+              <div class="wlib-kpi"><div class="lbl">Utilization</div><div class="val">84%</div><div class="delta up">+6% this week</div></div>
+              <div class="wlib-kpi"><div class="lbl">Active Clients</div><div class="val">24</div><div class="delta up">+2 this month</div></div>
+              <div class="wlib-kpi"><div class="lbl">Avg Rating</div><div class="val">4.9 ★</div><div class="delta">Last 30 days</div></div>
+            </div>
+            <div class="wlib-section-label">Recent Reviews</div>
+            <div class="wlib-review">
+              <div class="stars">★★★★★</div>
+              "Marcus pushed me to hit a PR I didn't think was possible. Programming is top-tier."
+              <div class="author">— Alex M., 2 days ago</div>
+            </div>
+            <div class="wlib-review">
+              <div class="stars">★★★★★</div>
+              "Great communication and accountability. My form has improved massively."
+              <div class="author">— Priya S., 5 days ago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Widget: Client Health -->
+        <div class="widget" data-widget-id="td-clienthealth" draggable="true" data-lib="1"
+             data-lib-title="Client Health" data-lib-desc="Churn risk, program completion rates, and top-performing clients — who needs attention and who's crushing it." style="display:none;">
+          <div class="widget-header">
+            <span class="widget-title">Client Health</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="wlib-section-label">Churn Risk · Needs Attention</div>
+            <div class="wlib-list-row"><span class="pill danger">14d</span><span class="name">Tyler Reed</span><span class="meta">No log-ins</span></div>
+            <div class="wlib-list-row"><span class="pill warn">8d</span><span class="name">Nina Patel</span><span class="meta">Skipped 3 sessions</span></div>
+            <div class="wlib-list-row"><span class="pill warn">7d</span><span class="name">Devon Hayes</span><span class="meta">No check-in</span></div>
+            <div class="wlib-section-label">Program Completion</div>
+            <div class="wlib-list-row"><span class="pill ok">98%</span><span class="name">12-Week Strength</span><span class="meta">8 clients</span></div>
+            <div class="wlib-list-row"><span class="pill ok">91%</span><span class="name">Fat Loss Kickstart</span><span class="meta">11 clients</span></div>
+            <div class="wlib-list-row"><span class="pill warn">72%</span><span class="name">Hypertrophy Block</span><span class="meta">5 clients</span></div>
+            <div class="wlib-section-label">Top Performers This Month</div>
+            <div class="wlib-list-row"><span class="pill ok">+18 lb</span><span class="name">Alex M.</span><span class="meta">Squat PR</span></div>
+            <div class="wlib-list-row"><span class="pill ok">-6.2 lb</span><span class="name">Priya S.</span><span class="meta">Body comp</span></div>
+          </div>
+        </div>
+
+        <!-- Widget: Lead Pipeline -->
+        <div class="widget" data-widget-id="td-pipeline" draggable="true" data-lib="1"
+             data-lib-title="Lead Pipeline" data-lib-desc="Prospective clients by stage — inquiry, consultation, trial, and signed." style="display:none;">
+          <div class="widget-header">
+            <span class="widget-title">Lead Pipeline</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="wlib-pipeline">
+              <div class="wlib-pipeline-col"><div class="stage">Inquiry</div><div class="count">7</div></div>
+              <div class="wlib-pipeline-col"><div class="stage">Consult</div><div class="count">4</div></div>
+              <div class="wlib-pipeline-col"><div class="stage">Trial</div><div class="count">2</div></div>
+              <div class="wlib-pipeline-col"><div class="stage">Signed</div><div class="count">3</div></div>
+            </div>
+            <div class="wlib-section-label">Recent Leads</div>
+            <div class="wlib-list-row"><span class="pill info">NEW</span><span class="name">Chris Morgan</span><span class="meta">Instagram</span></div>
+            <div class="wlib-list-row"><span class="pill warn">Trial</span><span class="name">Jamie Lin</span><span class="meta">Session 2 of 3</span></div>
+            <div class="wlib-list-row"><span class="pill ok">Signed</span><span class="name">Olivia Park</span><span class="meta">12-wk program</span></div>
+          </div>
+        </div>
+
+        <!-- Widget: Exercise Library Shortcuts -->
+        <div class="widget" data-widget-id="td-library" draggable="true" data-lib="1"
+             data-lib-title="Exercise Library" data-lib-desc="Quick access to your most-used exercises and program templates." style="display:none;">
+          <div class="widget-header">
+            <span class="widget-title">Exercise Library</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="wlib-section-label">Most-Used Exercises</div>
+            <div class="wlib-chip-list">
+              <div class="wlib-chip">Back Squat</div>
+              <div class="wlib-chip">Bench Press</div>
+              <div class="wlib-chip">Deadlift</div>
+              <div class="wlib-chip">Pull-Up</div>
+              <div class="wlib-chip">Romanian DL</div>
+              <div class="wlib-chip">Overhead Press</div>
+              <div class="wlib-chip">Goblet Squat</div>
+              <div class="wlib-chip">DB Row</div>
+            </div>
+            <div class="wlib-section-label">Program Templates</div>
+            <div class="wlib-list-row"><span class="name">12-Week Strength Builder</span><span class="meta">8 weeks avg</span></div>
+            <div class="wlib-list-row"><span class="name">Fat Loss Kickstart</span><span class="meta">6 weeks</span></div>
+            <div class="wlib-list-row"><span class="name">Hypertrophy Block</span><span class="meta">10 weeks</span></div>
+          </div>
+        </div>
+
       </div><!-- /tdWidgetGrid -->
+      <button class="widget-lib-btn" onclick="wlibOpen()">+ Add Widget from Library</button>
     </div>
 
     <!-- ========== TAB: CLIENTS ========== -->
@@ -4228,6 +4404,65 @@
     document.addEventListener('DOMContentLoaded', initDrag);
     setTimeout(initDrag, 300);
   })();
+  </script>
+
+  <!-- ===== Widget Library Modal ===== -->
+  <div class="widget-lib-overlay" id="widgetLibOverlay" onclick="if(event.target===this)wlibClose()">
+    <div class="widget-lib-modal">
+      <div class="widget-lib-head">
+        <div>
+          <h2 id="widgetLibTitle">Trainer Widget Library</h2>
+          <p>Add or remove widgets from your dashboard.</p>
+        </div>
+        <button class="widget-lib-close" onclick="wlibClose()">&times;</button>
+      </div>
+      <div class="widget-lib-grid" id="widgetLibGrid"></div>
+    </div>
+  </div>
+  <script>
+    var WLIB_KEY = 'shapeTrainerWidgetLib';
+    var WLIB_GRID_ID = 'tdWidgetGrid';
+    function wlibGetVisible() { try { return JSON.parse(localStorage.getItem(WLIB_KEY) || '[]'); } catch(e) { return []; } }
+    function wlibSetVisible(arr) { localStorage.setItem(WLIB_KEY, JSON.stringify(arr)); }
+    function wlibApply() {
+      var grid = document.getElementById(WLIB_GRID_ID);
+      if (!grid) return;
+      var visible = wlibGetVisible();
+      grid.querySelectorAll('[data-lib="1"]').forEach(function(w) {
+        w.style.display = visible.indexOf(w.dataset.widgetId) >= 0 ? '' : 'none';
+      });
+    }
+    function wlibOpen() {
+      var grid = document.getElementById(WLIB_GRID_ID);
+      if (!grid) return;
+      var visible = wlibGetVisible();
+      var lib = document.getElementById('widgetLibGrid');
+      lib.innerHTML = '';
+      grid.querySelectorAll('[data-lib="1"]').forEach(function(w) {
+        var id = w.dataset.widgetId;
+        var title = w.dataset.libTitle || 'Widget';
+        var desc = w.dataset.libDesc || '';
+        var added = visible.indexOf(id) >= 0;
+        var card = document.createElement('div');
+        card.className = 'widget-lib-card';
+        card.innerHTML = '<h3>' + title + '</h3><p>' + desc + '</p>'
+          + '<button class="widget-lib-toggle' + (added ? ' added' : '') + '">'
+          + (added ? 'Remove' : 'Add to Dashboard') + '</button>';
+        card.querySelector('button').onclick = function() { wlibToggle(id, this); };
+        lib.appendChild(card);
+      });
+      document.getElementById('widgetLibOverlay').classList.add('open');
+    }
+    function wlibClose() { document.getElementById('widgetLibOverlay').classList.remove('open'); }
+    function wlibToggle(id, btn) {
+      var visible = wlibGetVisible();
+      var idx = visible.indexOf(id);
+      if (idx >= 0) { visible.splice(idx, 1); btn.textContent = 'Add to Dashboard'; btn.classList.remove('added'); }
+      else { visible.push(id); btn.textContent = 'Remove'; btn.classList.add('added'); }
+      wlibSetVisible(visible);
+      wlibApply();
+    }
+    wlibApply();
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>

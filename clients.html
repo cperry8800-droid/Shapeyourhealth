@@ -810,6 +810,87 @@
   .widget-body { padding: 16px; overflow-x: auto; min-width: 0; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
+
+  /* ===== Widget Library Picker ===== */
+  .widget-lib-btn { background: var(--bg-card); border: 1px dashed var(--border); color: var(--text-muted); cursor: pointer; padding: 14px 22px; font-family: inherit; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; width: 100%; margin-top: 16px; }
+  .widget-lib-btn:hover { border-color: var(--accent); color: var(--accent); border-style: solid; }
+  .widget-lib-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+  .widget-lib-overlay.open { display: flex; }
+  .widget-lib-modal { background: var(--bg); border: 1px solid var(--border); max-width: 720px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; }
+  .widget-lib-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .widget-lib-head h2 { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+  .widget-lib-head p { font-size: 0.75rem; color: var(--text-muted); font-weight: 300; margin-top: 2px; }
+  .widget-lib-close { background: none; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; padding: 6px 10px; font-family: inherit; font-size: 0.8rem; line-height: 1; transition: all 0.2s; }
+  .widget-lib-close:hover { border-color: var(--accent); color: var(--accent); }
+  .widget-lib-grid { padding: 20px 24px; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .widget-lib-card { background: var(--bg-card); border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .widget-lib-card h3 { font-size: 0.85rem; font-weight: 600; }
+  .widget-lib-card p { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; line-height: 1.4; flex: 1; }
+  .widget-lib-toggle { background: var(--accent); color: #fff; border: none; padding: 8px 14px; font-family: inherit; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: background 0.2s; align-self: flex-start; }
+  .widget-lib-toggle:hover { background: var(--accent-dark); }
+  .widget-lib-toggle.added { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+  .widget-lib-toggle.added:hover { border-color: #EF4444; color: #EF4444; }
+  @media (max-width: 600px) { .widget-lib-grid { grid-template-columns: 1fr; } }
+
+  /* ===== Readiness Hub ===== */
+  .wlib-readiness-score { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .wlib-readiness-num { font-size: 2.4rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .wlib-readiness-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+  .wlib-readiness-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .wlib-readiness-stat { background: var(--bg-alt); padding: 10px; border-radius: 4px; }
+  .wlib-readiness-stat .lbl { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .wlib-readiness-stat .val { font-size: 0.95rem; font-weight: 600; }
+  .wlib-streaks { display: flex; gap: 6px; flex-wrap: wrap; }
+  .wlib-streak-chip { background: var(--bg-alt); padding: 6px 10px; font-size: 0.7rem; display: flex; align-items: center; gap: 6px; border-radius: 14px; }
+  .wlib-streak-chip strong { color: var(--accent); }
+
+  /* ===== Goals & Milestones ===== */
+  .wlib-goal-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .wlib-goal-row:last-child { border-bottom: none; }
+  .wlib-goal-info { flex: 1; min-width: 0; }
+  .wlib-goal-name { font-size: 0.82rem; font-weight: 500; }
+  .wlib-goal-bar { height: 4px; background: var(--bg-alt); margin-top: 6px; border-radius: 2px; overflow: hidden; }
+  .wlib-goal-bar-fill { height: 100%; background: var(--accent); transition: width 0.4s; }
+  .wlib-goal-pct { font-size: 0.72rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .wlib-pr-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .wlib-pr-row { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 6px 10px; background: var(--bg-alt); border-left: 2px solid #10B981; }
+  .wlib-pr-row .date { color: var(--text-muted); font-size: 0.7rem; }
+
+  /* ===== Body Log ===== */
+  .wlib-body-zones { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 14px; }
+  .wlib-body-zone { background: var(--bg-alt); padding: 8px 10px; font-size: 0.72rem; display: flex; justify-content: space-between; align-items: center; }
+  .wlib-body-zone .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .wlib-body-zone .dot.ok { background: #22C55E; }
+  .wlib-body-zone .dot.mid { background: #F59E0B; }
+  .wlib-body-zone .dot.bad { background: #EF4444; }
+  .wlib-supp-list { display: flex; flex-direction: column; gap: 6px; }
+  .wlib-supp-row { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; padding: 6px 0; }
+  .wlib-supp-row input[type="checkbox"] { accent-color: var(--accent); }
+
+  /* ===== Friends Leaderboard ===== */
+  .wlib-lb-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .wlib-lb-row:last-child { border-bottom: none; }
+  .wlib-lb-rank { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); min-width: 22px; }
+  .wlib-lb-row.me { background: rgba(45,212,191,0.06); margin: 0 -16px; padding: 10px 16px; }
+  .wlib-lb-row.me .wlib-lb-rank { color: var(--accent); }
+  .wlib-lb-name { flex: 1; font-size: 0.82rem; font-weight: 500; }
+  .wlib-lb-pts { font-size: 0.8rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  /* ===== Generic KPI / list patterns (trainer + nutritionist reuse-ready) ===== */
+  .wlib-kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+  .wlib-kpi { background: var(--bg-alt); padding: 12px; }
+  .wlib-kpi .lbl { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; }
+  .wlib-kpi .val { font-size: 1.15rem; font-weight: 700; }
+  .wlib-kpi .delta { font-size: 0.68rem; margin-top: 2px; }
+  .wlib-kpi .delta.up { color: #22C55E; }
+  .wlib-kpi .delta.down { color: #EF4444; }
+  .wlib-list-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.78rem; }
+  .wlib-list-row:last-child { border-bottom: none; }
+  .wlib-list-row .pill { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 999px; font-weight: 600; }
+  .wlib-list-row .pill.warn { background: rgba(245,158,11,0.15); color: #F59E0B; }
+  .wlib-list-row .pill.ok { background: rgba(34,197,94,0.15); color: #22C55E; }
+  .wlib-list-row .pill.danger { background: rgba(239,68,68,0.15); color: #EF4444; }
+  .wlib-list-row .meta { color: var(--text-muted); font-size: 0.7rem; }
   @media (max-width: 600px) {
     .widget-grid { grid-template-columns: 1fr; gap: 12px; }
     .widget-expand-btn { display: none; }
@@ -843,7 +924,6 @@
           <a href="clients.html">Clients</a>
           <div class="nav-dropdown-menu">
             <a href="clients.html">Dashboard</a>
-            <a href="my-team.html">My Team</a>
           </div>
         </div>
         <div class="nav-dropdown">
@@ -1104,7 +1184,122 @@
             </div>
           </div>
 
+          <!-- ===== Library widgets (hidden by default, toggled via Widget Library) ===== -->
+
+          <!-- Widget: Readiness Hub -->
+          <div class="widget" data-widget-id="cl-readiness" draggable="true" data-lib="1"
+               data-lib-title="Readiness Hub" data-lib-desc="Sleep, recovery, HRV, and daily habit streaks rolled into one readiness score." style="display:none;">
+            <div class="widget-header">
+              <span class="widget-title">Readiness Hub</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="wlib-readiness-score">
+                <div class="wlib-readiness-num">87</div>
+                <div>
+                  <div class="wlib-readiness-label">Readiness Score</div>
+                  <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Good to train hard today</div>
+                </div>
+              </div>
+              <div class="wlib-readiness-stats">
+                <div class="wlib-readiness-stat"><div class="lbl">Sleep</div><div class="val">7h 42m</div></div>
+                <div class="wlib-readiness-stat"><div class="lbl">HRV</div><div class="val">62ms</div></div>
+                <div class="wlib-readiness-stat"><div class="lbl">Soreness</div><div class="val">Low</div></div>
+              </div>
+              <div class="wlib-streaks">
+                <div class="wlib-streak-chip">💧 Water <strong>12d</strong></div>
+                <div class="wlib-streak-chip">🚶 Steps <strong>8d</strong></div>
+                <div class="wlib-streak-chip">😴 Sleep <strong>5d</strong></div>
+                <div class="wlib-streak-chip">🥗 Nutrition <strong>21d</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Goals & Milestones -->
+          <div class="widget" data-widget-id="cl-goals" draggable="true" data-lib="1"
+               data-lib-title="Goals &amp; Milestones" data-lib-desc="Weekly goals, recent personal records, and progress photos." style="display:none;">
+            <div class="widget-header">
+              <span class="widget-title">Goals &amp; Milestones</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Weekly Goals</div>
+              <div class="wlib-goal-row">
+                <div class="wlib-goal-info">
+                  <div class="wlib-goal-name">3 strength workouts</div>
+                  <div class="wlib-goal-bar"><div class="wlib-goal-bar-fill" style="width:67%;"></div></div>
+                </div>
+                <div class="wlib-goal-pct">2 / 3</div>
+              </div>
+              <div class="wlib-goal-row">
+                <div class="wlib-goal-info">
+                  <div class="wlib-goal-name">Hit protein target 6 days</div>
+                  <div class="wlib-goal-bar"><div class="wlib-goal-bar-fill" style="width:83%;"></div></div>
+                </div>
+                <div class="wlib-goal-pct">5 / 6</div>
+              </div>
+              <div class="wlib-goal-row">
+                <div class="wlib-goal-info">
+                  <div class="wlib-goal-name">10k steps 5 days</div>
+                  <div class="wlib-goal-bar"><div class="wlib-goal-bar-fill" style="width:100%;"></div></div>
+                </div>
+                <div class="wlib-goal-pct">5 / 5</div>
+              </div>
+              <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin:16px 0 6px;">Recent PRs</div>
+              <div class="wlib-pr-list">
+                <div class="wlib-pr-row"><span>Bench Press · 205 lb × 5</span><span class="date">Apr 10</span></div>
+                <div class="wlib-pr-row"><span>5K run · 24:08</span><span class="date">Apr 7</span></div>
+                <div class="wlib-pr-row"><span>Deadlift · 315 lb × 3</span><span class="date">Apr 3</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Body Log -->
+          <div class="widget" data-widget-id="cl-bodylog" draggable="true" data-lib="1"
+               data-lib-title="Body Log" data-lib-desc="Daily soreness tracking and supplement/medication checklist." style="display:none;">
+            <div class="widget-header">
+              <span class="widget-title">Body Log</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Soreness</div>
+              <div class="wlib-body-zones">
+                <div class="wlib-body-zone"><span>Quads</span><span class="dot mid"></span></div>
+                <div class="wlib-body-zone"><span>Hamstrings</span><span class="dot ok"></span></div>
+                <div class="wlib-body-zone"><span>Chest</span><span class="dot bad"></span></div>
+                <div class="wlib-body-zone"><span>Back</span><span class="dot ok"></span></div>
+                <div class="wlib-body-zone"><span>Shoulders</span><span class="dot ok"></span></div>
+                <div class="wlib-body-zone"><span>Calves</span><span class="dot mid"></span></div>
+              </div>
+              <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:6px;">Daily Supplements</div>
+              <div class="wlib-supp-list">
+                <label class="wlib-supp-row"><input type="checkbox" checked> Creatine · 5g</label>
+                <label class="wlib-supp-row"><input type="checkbox" checked> Omega-3 · 2g</label>
+                <label class="wlib-supp-row"><input type="checkbox"> Vitamin D · 2000 IU</label>
+                <label class="wlib-supp-row"><input type="checkbox"> Magnesium · 400mg</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Friends Leaderboard -->
+          <div class="widget" data-widget-id="cl-friends" draggable="true" data-lib="1"
+               data-lib-title="Friends Leaderboard" data-lib-desc="See how you compare to friends and gym-mates this week." style="display:none;">
+            <div class="widget-header">
+              <span class="widget-title">Friends Leaderboard</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">This Week · Shape Points</div>
+              <div class="wlib-lb-row"><div class="wlib-lb-rank">1</div><div class="wlib-lb-name">Alex M.</div><div class="wlib-lb-pts">2,140</div></div>
+              <div class="wlib-lb-row"><div class="wlib-lb-rank">2</div><div class="wlib-lb-name">Priya S.</div><div class="wlib-lb-pts">1,985</div></div>
+              <div class="wlib-lb-row me"><div class="wlib-lb-rank">3</div><div class="wlib-lb-name">You</div><div class="wlib-lb-pts">1,820</div></div>
+              <div class="wlib-lb-row"><div class="wlib-lb-rank">4</div><div class="wlib-lb-name">Jordan K.</div><div class="wlib-lb-pts">1,640</div></div>
+              <div class="wlib-lb-row"><div class="wlib-lb-rank">5</div><div class="wlib-lb-name">Sam T.</div><div class="wlib-lb-pts">1,420</div></div>
+            </div>
+          </div>
+
         </div><!-- /clWidgetGrid -->
+        <button class="widget-lib-btn" onclick="wlibOpen()">+ Add Widget from Library</button>
         </div>
       </div>
 
@@ -2783,6 +2978,66 @@
     // Pre-render calendars
     document.getElementById('workoutCalContainer').innerHTML = _clBuildCal(_clWorkoutMonth, _clWorkoutYear, 'workout');
     document.getElementById('mealCalContainer').innerHTML = _clBuildCal(_clMealMonth, _clMealYear, 'meal');
+  </script>
+
+  <!-- ===== Widget Library Modal (shared across dashboards) ===== -->
+  <div class="widget-lib-overlay" id="widgetLibOverlay" onclick="if(event.target===this)wlibClose()">
+    <div class="widget-lib-modal">
+      <div class="widget-lib-head">
+        <div>
+          <h2 id="widgetLibTitle">Widget Library</h2>
+          <p id="widgetLibSub">Add or remove widgets from your dashboard.</p>
+        </div>
+        <button class="widget-lib-close" onclick="wlibClose()">&times;</button>
+      </div>
+      <div class="widget-lib-grid" id="widgetLibGrid"></div>
+    </div>
+  </div>
+
+  <script>
+    var WLIB_KEY = 'shapeClientWidgetLib';
+    var WLIB_GRID_ID = 'clWidgetGrid';
+    function wlibGetVisible() { try { return JSON.parse(localStorage.getItem(WLIB_KEY) || '[]'); } catch(e) { return []; } }
+    function wlibSetVisible(arr) { localStorage.setItem(WLIB_KEY, JSON.stringify(arr)); }
+    function wlibApply() {
+      var grid = document.getElementById(WLIB_GRID_ID);
+      if (!grid) return;
+      var visible = wlibGetVisible();
+      grid.querySelectorAll('[data-lib="1"]').forEach(function(w) {
+        w.style.display = visible.indexOf(w.dataset.widgetId) >= 0 ? '' : 'none';
+      });
+    }
+    function wlibOpen() {
+      var grid = document.getElementById(WLIB_GRID_ID);
+      if (!grid) return;
+      var visible = wlibGetVisible();
+      var lib = document.getElementById('widgetLibGrid');
+      lib.innerHTML = '';
+      grid.querySelectorAll('[data-lib="1"]').forEach(function(w) {
+        var id = w.dataset.widgetId;
+        var title = w.dataset.libTitle || 'Widget';
+        var desc = w.dataset.libDesc || '';
+        var added = visible.indexOf(id) >= 0;
+        var card = document.createElement('div');
+        card.className = 'widget-lib-card';
+        card.innerHTML = '<h3>' + title + '</h3><p>' + desc + '</p>'
+          + '<button class="widget-lib-toggle' + (added ? ' added' : '') + '">'
+          + (added ? 'Remove' : 'Add to Dashboard') + '</button>';
+        card.querySelector('button').onclick = function() { wlibToggle(id, this); };
+        lib.appendChild(card);
+      });
+      document.getElementById('widgetLibOverlay').classList.add('open');
+    }
+    function wlibClose() { document.getElementById('widgetLibOverlay').classList.remove('open'); }
+    function wlibToggle(id, btn) {
+      var visible = wlibGetVisible();
+      var idx = visible.indexOf(id);
+      if (idx >= 0) { visible.splice(idx, 1); btn.textContent = 'Add to Dashboard'; btn.classList.remove('added'); }
+      else { visible.push(id); btn.textContent = 'Remove'; btn.classList.add('added'); }
+      wlibSetVisible(visible);
+      wlibApply();
+    }
+    wlibApply();
   </script>
   <!-- ===== My Team Tab JS ===== -->
   <script>
