@@ -750,8 +750,8 @@
 
   /* ===== Widget Drag-and-Drop ===== */
   .widget-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
-  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; aspect-ratio: 1; overflow: hidden; }
-  .widget.widget-full { grid-column: 1 / -1; aspect-ratio: auto; }
+  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; }
+  .widget.widget-full { grid-column: 1 / -1; }
   .widget.dragging { opacity: 0.4; }
   .widget.drag-over { border-top: 2px solid var(--accent); }
   .widget-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-alt); flex-shrink: 0; gap: 8px; }
@@ -761,10 +761,10 @@
   .widget-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
   .widget-drag-handle { font-size: 1.1rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 2px; }
   .widget-drag-handle:active { cursor: grabbing; }
-  .widget-body { padding: 16px; overflow-y: auto; flex: 1; }
+  .widget-body { padding: 16px; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
-  @media (max-width: 600px) { .widget-grid { grid-template-columns: 1fr; } .widget { aspect-ratio: auto; min-height: 260px; } }
+  @media (max-width: 600px) { .widget-grid { grid-template-columns: 1fr; } }
 
   </style>
   <link rel="manifest" href="manifest.json">
@@ -3503,18 +3503,24 @@
     }
 
     var _dragSrc = null;
+    var _dragFromHandle = false;
 
     function initDrag() {
       var grid = document.getElementById(gridId);
       if (!grid) return;
 
+      grid.addEventListener('mousedown', function(e) {
+        _dragFromHandle = !!e.target.closest('.widget-drag-handle');
+      });
+
       grid.addEventListener('dragstart', function(e) {
+        if (!_dragFromHandle) { e.preventDefault(); return; }
         var widget = e.target.closest('.widget');
-        var handle = e.target.closest('.widget-drag-handle');
-        if (!widget || !handle) { e.preventDefault(); return; }
+        if (!widget) { e.preventDefault(); return; }
         _dragSrc = widget;
         widget.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', widget.dataset.widgetId);
       });
 
       grid.addEventListener('dragend', function(e) {
@@ -3637,18 +3643,24 @@
     }
 
     var _dragSrc = null;
+    var _dragFromHandle = false;
 
     function initDrag() {
       var grid = document.getElementById(gridId);
       if (!grid) return;
 
+      grid.addEventListener('mousedown', function(e) {
+        _dragFromHandle = !!e.target.closest('.widget-drag-handle');
+      });
+
       grid.addEventListener('dragstart', function(e) {
+        if (!_dragFromHandle) { e.preventDefault(); return; }
         var widget = e.target.closest('.widget');
-        var handle = e.target.closest('.widget-drag-handle');
-        if (!widget || !handle) { e.preventDefault(); return; }
+        if (!widget) { e.preventDefault(); return; }
         _dragSrc = widget;
         widget.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', widget.dataset.widgetId);
       });
 
       grid.addEventListener('dragend', function(e) {
@@ -3771,18 +3783,24 @@
     }
 
     var _dragSrc = null;
+    var _dragFromHandle = false;
 
     function initDrag() {
       var grid = document.getElementById(gridId);
       if (!grid) return;
 
+      grid.addEventListener('mousedown', function(e) {
+        _dragFromHandle = !!e.target.closest('.widget-drag-handle');
+      });
+
       grid.addEventListener('dragstart', function(e) {
+        if (!_dragFromHandle) { e.preventDefault(); return; }
         var widget = e.target.closest('.widget');
-        var handle = e.target.closest('.widget-drag-handle');
-        if (!widget || !handle) { e.preventDefault(); return; }
+        if (!widget) { e.preventDefault(); return; }
         _dragSrc = widget;
         widget.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', widget.dataset.widgetId);
       });
 
       grid.addEventListener('dragend', function(e) {
