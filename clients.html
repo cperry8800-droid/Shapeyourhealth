@@ -43,21 +43,30 @@
     .streak-dot-circle.future { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
     .streak-dot-day { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 
-    /* ===== Dashboard Tabs ===== */
-    .dash-tabs {
-      display: flex; gap: 0; margin-bottom: 36px;
+    /* ===== Dashboard Tab Bar (below navbar) ===== */
+    .dash-tab-bar {
+      position: sticky; top: 72px; z-index: 900;
+      background: var(--bg-alt);
       border-bottom: 1px solid var(--border);
-      justify-content: center;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .dash-tab-bar::-webkit-scrollbar { display: none; }
+    .dash-tab-bar-inner {
+      display: flex; gap: 0;
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 24px;
     }
     .dash-tab {
-      padding: 14px 32px; font-size: 0.72rem; font-weight: 600;
-      color: var(--text-muted); cursor: pointer; border: none;
-      background: none; font-family: inherit; letter-spacing: 0.08em;
-      text-transform: uppercase;
+      padding: 14px 24px; font-size: 0.75rem; font-weight: 600;
+      color: var(--text); cursor: pointer; border: none;
+      background: transparent; font-family: inherit; letter-spacing: 0.08em;
+      text-transform: uppercase; white-space: nowrap;
       border-bottom: 2px solid transparent; transition: all 0.2s;
+      opacity: 0.5;
     }
-    .dash-tab:hover { color: var(--text); }
-    .dash-tab.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+    .dash-tab:hover { opacity: 0.8; }
+    .dash-tab.active { opacity: 1; border-bottom-color: var(--accent); }
     .dash-tab-content { display: none; }
     .dash-tab-content.active { display: block; }
 
@@ -360,7 +369,65 @@
     .dm-header-name { font-size: 0.9rem; font-weight: 600; }
     .dm-header-status { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
     @media (max-width: 1100px) { .community-layout { grid-template-columns: 280px 1fr; } .community-activity { display: none; } }
-    @media (max-width: 768px) { .community-layout { grid-template-columns: 1fr; } .community-sidebar { display: none; } .community-activity { display: none; } }
+    @media (max-width: 768px) {
+      .community-layout { grid-template-columns: 1fr; height: auto; min-height: 500px; }
+      .community-sidebar { display: none; }
+      .community-activity { display: none; }
+
+      /* Community mobile view switcher */
+      .community-mobile-switcher {
+        display: flex; border-bottom: 1px solid var(--border); background: var(--bg-card);
+      }
+      .community-mobile-tab {
+        flex: 1; padding: 12px 8px; text-align: center; font-size: 0.72rem;
+        font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+        color: var(--text-muted); background: none; border: none;
+        border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit;
+        transition: all 0.3s;
+      }
+      .community-mobile-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+      /* Mobile community views */
+      .community-layout.mobile-friends .community-sidebar,
+      .community-layout.mobile-discover .community-sidebar {
+        display: flex; flex: 1; border-right: none; min-height: 400px;
+      }
+      .community-layout.mobile-friends .community-chat,
+      .community-layout.mobile-discover .community-chat { display: none !important; }
+      .community-layout.mobile-friends .community-tabs,
+      .community-layout.mobile-discover .community-tabs { display: none; }
+      .community-list { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+      /* Mobile chat styling */
+      .chat-channel-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .chat-channel { white-space: nowrap; }
+      .chat-msg { max-width: 85%; }
+      .chat-msg-avatar { width: 24px; height: 24px; font-size: 0.45rem; }
+      .chat-msg-body { border-radius: 18px; border-top-left-radius: 4px; padding: 10px 14px; }
+      .chat-msg.own .chat-msg-body { border-radius: 18px; border-top-right-radius: 4px; }
+      .chat-input-area input { border-radius: 20px; padding: 10px 16px; font-size: 16px; }
+      .chat-send-btn { border-radius: 20px; padding: 10px 18px; font-size: 0.78rem; }
+
+      /* Mobile user list styling */
+      .community-user-avatar { width: 44px; height: 44px; font-size: 0.78rem; }
+      .community-user-name { font-size: 0.92rem; }
+      .community-search input { border-radius: 20px; padding: 10px 16px; font-size: 16px; }
+      .btn-follow { padding: 6px 16px; font-size: 0.72rem; border-radius: 20px; }
+      .btn-dm { padding: 6px 14px; font-size: 0.7rem; border-radius: 20px; }
+
+      /* DM header mobile */
+      .dm-header { padding: 10px 12px; gap: 10px; }
+      .dm-back-btn { padding: 6px 10px; font-size: 0.72rem; border-radius: 16px; }
+      .dm-header-avatar { width: 28px; height: 28px; font-size: 0.5rem; }
+
+      /* Dashboard tab bar mobile */
+      .dash-tab-bar { top: 56px; }
+      .dash-tab-bar-inner { padding: 0 12px; }
+      .dash-tab { padding: 12px 16px; font-size: 0.68rem; }
+    }
+    @media (max-width: 480px) {
+      .dash-tab { padding: 10px 12px; font-size: 0.65rem; letter-spacing: 0.06em; }
+    }
 
     /* Profile Snapshot Modal */
     .profile-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
@@ -522,10 +589,36 @@
       .reward-grid { grid-template-columns: 1fr !important; }
     }
 
-    /* ===== Tab responsiveness ===== */
+    /* ===== General responsive overrides ===== */
+    @media (max-width: 900px) {
+      .team-coaches-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 768px) {
-      .dash-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .dash-tab { padding: 14px 16px; white-space: nowrap; font-size: 0.68rem; }
+      /* Profile tab responsive */
+      .cp-avatar-row { padding: 0 24px; gap: 16px; }
+      .cp-avatar { width: 80px; height: 80px; font-size: 1.6rem; }
+      .cp-name-block h1 { font-size: 1.3rem; }
+      .cp-content { padding: 24px 24px 60px; }
+      .cp-completion { padding: 0 24px; }
+      .cp-field-grid { grid-template-columns: 1fr; }
+      .cp-stats-row { grid-template-columns: 1fr 1fr; }
+      .cp-badges-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+      .cp-macro-row { flex-direction: column; gap: 16px; }
+      .cp-photos-grid { grid-template-columns: 1fr 1fr; }
+
+      /* Shape Score responsive */
+      .redeem-card { flex-direction: column !important; align-items: flex-start !important; gap: 12px; }
+      .rewards-cat-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+      /* Team chat responsive */
+      .team-chat-container { height: 400px; }
+      .team-chat-input-area input { padding: 10px 12px; font-size: 0.82rem; }
+      .team-chat-input-area button { padding: 10px 16px; font-size: 0.75rem; }
+    }
+    @media (max-width: 600px) {
+      .cp-stats-row { grid-template-columns: 1fr; }
+      .cp-visibility-select { flex-direction: column; border: none; gap: 4px; }
+      .cp-visibility-option { border-right: none; border: 1px solid var(--border); }
     }
 
   </style>
@@ -583,28 +676,21 @@
     </div>
   </nav>
 
-  <!-- Page Hero -->
-  <section class="page-hero">
-    <div class="container">
-      <span class="tag">Client Dashboard</span>
-      <h1>Your <span class="gradient-text">progress</span></h1>
-      <p class="page-hero-sub">Track your sessions, follow your schedule, chat with your coaches, and earn your Shape Score with every workout you complete.</p>
+  <!-- Dashboard Tab Bar (sits below navbar) -->
+  <div class="dash-tab-bar" id="dashTabBar">
+    <div class="dash-tab-bar-inner">
+      <button class="dash-tab active" data-tab="home" onclick="switchDashTab('home', this)">Home</button>
+      <button class="dash-tab" data-tab="nutrition" onclick="switchDashTab('nutrition', this)">Nutrition</button>
+      <button class="dash-tab" data-tab="myteam" onclick="switchDashTab('myteam', this)">My Team</button>
+      <button class="dash-tab" data-tab="community" onclick="switchDashTab('community', this)">Community</button>
+      <button class="dash-tab" data-tab="profile" onclick="switchDashTab('profile', this)">Profile</button>
+      <button class="dash-tab" data-tab="shapescore" onclick="switchDashTab('shapescore', this)">Shape Score</button>
     </div>
-  </section>
+  </div>
 
   <!-- Dashboard -->
   <section class="section">
     <div class="container">
-
-      <!-- Tab Bar -->
-      <div class="dash-tabs">
-        <button class="dash-tab active" onclick="switchDashTab('home', this)">Home</button>
-        <button class="dash-tab" onclick="switchDashTab('nutrition', this)">Nutrition</button>
-        <button class="dash-tab" onclick="switchDashTab('myteam', this)">My Team</button>
-        <button class="dash-tab" onclick="switchDashTab('community', this)">Community</button>
-        <button class="dash-tab" onclick="switchDashTab('profile', this)">Profile</button>
-        <button class="dash-tab" onclick="switchDashTab('shapescore', this)">Shape Score</button>
-      </div>
 
       <!-- HOME TAB -->
       <div class="dash-tab-content active" id="tabHome">
@@ -890,6 +976,12 @@
 
       <!-- COMMUNITY TAB -->
       <div class="dash-tab-content" id="tabCommunity">
+        <!-- Mobile View Switcher (visible only on mobile) -->
+        <div class="community-mobile-switcher" id="communityMobileSwitcher" style="display:none;">
+          <button class="community-mobile-tab active" onclick="switchCommunityMobileView('chat', this)">Chat</button>
+          <button class="community-mobile-tab" onclick="switchCommunityMobileView('friends', this)">Friends</button>
+          <button class="community-mobile-tab" onclick="switchCommunityMobileView('discover', this)">Discover</button>
+        </div>
         <div class="community-layout" id="communityLayout">
           <div class="community-sidebar">
             <div class="community-sidebar-header"><h2>Community</h2></div>
@@ -1351,9 +1443,8 @@
       document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.dash-tab-content').forEach(c => c.classList.remove('active'));
       if (!btn) {
-        const btns = document.querySelectorAll('.dash-tab');
-        btns.forEach(b => { if (b.textContent.trim().toLowerCase().replace(/\s+/g,'') === tab.replace(/\s+/g,'')) btn = b; });
-        if (!btn) btn = btns[0];
+        btn = document.querySelector('.dash-tab[data-tab="' + tab + '"]');
+        if (!btn) btn = document.querySelector('.dash-tab');
       }
       btn.classList.add('active');
       document.getElementById(tabMap[tab]).classList.add('active');
@@ -1786,30 +1877,69 @@
         { from: 'them', text: "Have you done Tabata Inferno yet? I just finished it and I'm dead", time: "Today, 7:45 AM" },
         { from: 'you', text: "Not yet but I keep hearing about it! How long is it?", time: "Today, 8:00 AM" },
         { from: 'them', text: "30 min but feels like an hour. Aisha doesn't mess around", time: "Today, 8:02 AM" },
+        { from: 'you', text: "I'll try it tomorrow morning. Wish me luck", time: "Today, 8:10 AM" },
+        { from: 'them', text: "You'll need it! But seriously it's so good", time: "Today, 8:12 AM" },
       ],
       3: [
         { from: 'them', text: "Training for a half marathon. Damon's Sprint Intervals are getting me there", time: "2 days ago, 6:00 PM" },
         { from: 'you', text: "That's awesome! When's the race?", time: "2 days ago, 6:15 PM" },
         { from: 'them', text: "Next month. Nervous but excited", time: "2 days ago, 6:20 PM" },
+        { from: 'you', text: "You got this! How many miles are you at now?", time: "Yesterday, 10:00 AM" },
+        { from: 'them', text: "Did 10 miles last weekend. Legs were done after", time: "Yesterday, 10:30 AM" },
       ],
       4: [
         { from: 'them', text: "Just finished Living Room HIIT. No equipment and still destroyed me!", time: "Today, 6:30 AM" },
         { from: 'you', text: "Nina Brooks is the real deal. Do you do all her at-home stuff?", time: "Today, 6:45 AM" },
+        { from: 'them', text: "Every single program. Band & Bodyweight Burn is great too", time: "Today, 6:48 AM" },
+        { from: 'you', text: "I might switch to at-home workouts. The gym is far from me", time: "Today, 7:00 AM" },
+        { from: 'them', text: "Do it! You don't need a gym to get in shape", time: "Today, 7:05 AM" },
+      ],
+      5: [
+        { from: 'them', text: "If you're not doing mobility work you're missing out. Sophie Turner changed my life", time: "3 days ago, 4:00 PM" },
+        { from: 'you', text: "I keep skipping stretching honestly. Where do I start?", time: "3 days ago, 4:30 PM" },
+        { from: 'them', text: "Full Body Mobility Flow. 30 min, 3x a week. You'll feel like a new person", time: "3 days ago, 4:35 PM" },
+      ],
+      6: [
+        { from: 'them', text: "Hi! I'm new to Shape. Any trainer recommendations for beginners?", time: "Today, 11:00 AM" },
+        { from: 'you', text: "Welcome! Nina Brooks is great for at-home. Marcus Johnson for gym stuff", time: "Today, 11:05 AM" },
+        { from: 'them', text: "Thank you! I'll check them both out", time: "Today, 11:08 AM" },
+      ],
+      7: [
+        { from: 'them', text: "Hit a 500lb deadlift today. Marcus Johnson's programming is elite", time: "Yesterday, 5:00 PM" },
+        { from: 'you', text: "That's insane! How long have you been training?", time: "Yesterday, 5:15 PM" },
+        { from: 'them', text: "6 years. Competing in my first meet next month", time: "Yesterday, 5:20 PM" },
+      ],
+      8: [
+        { from: 'them', text: "Just did Metabolic Blast with Damon. Cardio has never been this fun", time: "Today, 9:00 AM" },
+        { from: 'you', text: "I need to try more cardio. I always skip it", time: "Today, 9:10 AM" },
+        { from: 'them', text: "Damon makes it enjoyable honestly. Give it a shot!", time: "Today, 9:15 AM" },
       ],
       9: [
         { from: 'them', text: "Just crushed Push Pull Legs today. Marcus really knows how to program", time: "Today, 7:00 AM" },
         { from: 'you', text: "Nice! How long have you been on that split?", time: "Today, 7:15 AM" },
         { from: 'them', text: "About 3 months now. Seeing serious gains honestly", time: "Today, 7:20 AM" },
+        { from: 'you', text: "I've been thinking about switching to PPL. Worth it?", time: "Today, 7:30 AM" },
+        { from: 'them', text: "100%. The volume is perfect and recovery is manageable. Plus meal prepping on Sundays keeps the nutrition dialed in", time: "Today, 7:35 AM" },
+        { from: 'you', text: "What do you usually prep?", time: "Today, 7:40 AM" },
+        { from: 'them', text: "Chicken, rice, roasted veggies. Simple but it works. I follow one of the Shape meal plans too", time: "Today, 7:45 AM" },
       ],
       11: [
         { from: 'them', text: "Hey! Did you see Nina dropped a new Core & Stretch routine?", time: "Today, 8:00 AM" },
         { from: 'you', text: "No I didn't! Is it good?", time: "Today, 8:10 AM" },
         { from: 'them', text: "So good. It's only 25 min and my core is on fire", time: "Today, 8:12 AM" },
+        { from: 'you', text: "Adding it to my plan for tomorrow. Thanks for the heads up!", time: "Today, 8:15 AM" },
+        { from: 'them', text: "Of course! Also have you been meal prepping? I found this great clean eating schedule on Shape", time: "Today, 8:20 AM" },
+        { from: 'you', text: "I've been slacking on that honestly. Which plan?", time: "Today, 8:25 AM" },
+        { from: 'them', text: "The Clean & Simple one. Super easy recipes and everything is under 30 min to make", time: "Today, 8:30 AM" },
       ],
       12: [
-        { from: 'them', text: "Yo just did a full calisthenics session at the park. Pull ups, dips, muscle ups", time: "2 days ago, 5:00 PM" },
+        { from: 'them', text: "Yo just did a full calisthenics session at the park. Pull ups, dips, muscle ups - the works", time: "2 days ago, 5:00 PM" },
         { from: 'you', text: "That's sick! How long did it take you to get muscle ups?", time: "2 days ago, 5:15 PM" },
         { from: 'them', text: "About 6 months of consistent training. Damon's bodyweight programs helped a lot", time: "2 days ago, 5:20 PM" },
+        { from: 'you', text: "I can barely do 10 pull ups right now. Any tips?", time: "2 days ago, 5:30 PM" },
+        { from: 'them', text: "Start with negatives and band-assisted reps. Volume is key. I do pull ups almost every day now", time: "2 days ago, 5:35 PM" },
+        { from: 'you', text: "Appreciate that. Going to start working on it", time: "2 days ago, 5:40 PM" },
+        { from: 'them', text: "Let's hit the park together sometime. Way more fun training with someone", time: "2 days ago, 5:45 PM" },
       ],
     };
 
@@ -1831,31 +1961,58 @@
     const chatChannels = {
       trainer: [
         { user: trainerChatUsers[0], text: "Just dropped a new 5x5 variation for intermediate lifters. Let me know what you all think", time: "9:10 AM" },
-        { user: trainerChatUsers[4], text: "Nice Marcus! I've been experimenting with bodyweight progressions for my at-home clients", time: "9:18 AM" },
-        { user: trainerChatUsers[1], text: "Anyone else noticing more clients asking for shorter sessions?", time: "9:25 AM" },
-        { user: trainerChatUsers[2], text: "Definitely. My Sprint Intervals are only 20 min", time: "9:30 AM" },
+        { user: trainerChatUsers[4], text: "Nice Marcus! I've been experimenting with bodyweight progressions for my at-home clients. Seeing great results", time: "9:18 AM" },
+        { user: trainerChatUsers[1], text: "Anyone else noticing more clients asking for shorter sessions? I'm building a 15-min HIIT series", time: "9:25 AM" },
+        { user: trainerChatUsers[2], text: "Definitely. Attention spans are shorter but intensity can stay high. My Sprint Intervals are only 20 min", time: "9:30 AM" },
+        { user: trainerChatUsers[3], text: "I keep mine at 30-40 min for functional training. Clients need warm-up and mobility time", time: "9:35 AM" },
+        { user: trainerChatUsers[0], text: "Good point Sophie. I never skip warm-ups even in short sessions. Safety first", time: "9:40 AM" },
+        { user: trainerChatUsers[4], text: "For at-home clients I always include a 5 min cool-down. They tend to skip it otherwise", time: "9:44 AM" },
+        { user: trainerChatUsers[1], text: "Love this community. Great to bounce ideas off each other", time: "9:50 AM" },
+        { user: trainerChatUsers[2], text: "Agreed! Anyone going to the Shape trainer summit next month?", time: "9:55 AM" },
+        { user: trainerChatUsers[3], text: "Wouldn't miss it! Looking forward to meeting everyone in person", time: "10:00 AM" },
       ],
       client: [
         { user: communityUsers[0], text: "Just finished a killer leg day. Marcus Johnson never disappoints!", time: "10:24 AM" },
         { user: communityUsers[1], text: "Anyone tried the new Tabata Inferno workout? It's insane", time: "10:31 AM" },
         { user: communityUsers[3], text: "I did it yesterday! Couldn't walk after lol", time: "10:33 AM" },
-        { user: null, text: "Has anyone tried Nina Brooks' at home programs?", time: "10:42 AM" },
-        { user: communityUsers[3], text: "Yes! Living Room HIIT is my go-to. No equipment needed", time: "10:44 AM" },
+        { user: communityUsers[0], text: "Worth it though. The burn is real", time: "10:35 AM" },
+        { user: null, text: "Has anyone tried Nina Brooks' at home programs? Thinking about switching", time: "10:42 AM" },
+        { user: communityUsers[3], text: "Yes! Living Room HIIT is my go-to. No equipment needed and it still destroys me", time: "10:44 AM" },
+        { user: communityUsers[2], text: "I'm doing Sprint Intervals with Damon today. Who's joining?", time: "10:50 AM" },
+        { user: communityUsers[1], text: "I might hop in later! Need to recover from yesterday first", time: "10:52 AM" },
+        { user: null, text: "Hit a new PR on deadlift today! This community keeps me going", time: "11:00 AM" },
+        { user: communityUsers[2], text: "Just signed up for a half marathon. Damon Clarke's programs are getting me there", time: "11:10 AM" },
+        { user: communityUsers[1], text: "You got this Carlos! We'll all be cheering you on", time: "11:13 AM" },
         { user: communityUsers[8], text: "PPL day 3 done. Push day was brutal but Marcus knows what he's doing", time: "11:20 AM" },
         { user: communityUsers[9], text: "Core & Stretch with Nina is no joke. My abs are shaking", time: "11:25 AM" },
         { user: communityUsers[10], text: "Park workout done. 100 pull ups, 200 dips. Calisthenics never gets old", time: "11:30 AM" },
+        { user: communityUsers[8], text: "Charlie you're a machine. I need to try outdoor training sometime", time: "11:38 AM" },
       ],
       nutritionist: [
-        { user: nutritionistChatUsers[0], text: "Just updated my High Protein Performance plan with new breakfast options", time: "8:00 AM" },
-        { user: nutritionistChatUsers[1], text: "I've been adding more plant-based protein sources to my vegan plans", time: "8:10 AM" },
-        { user: nutritionistChatUsers[2], text: "I created a no-prep plan and it's my best seller now", time: "8:18 AM" },
+        { user: nutritionistChatUsers[0], text: "Just updated my High Protein Performance plan with new breakfast options. Clients were asking for more variety", time: "8:00 AM" },
+        { user: nutritionistChatUsers[1], text: "Great idea Sarah! I've been adding more plant-based protein sources to my vegan plans too", time: "8:10 AM" },
+        { user: nutritionistChatUsers[2], text: "Anyone else dealing with clients who want results but won't meal prep? I created a no-prep plan and it's my best seller now", time: "8:18 AM" },
+        { user: nutritionistChatUsers[3], text: "That's smart Alex. I've been focusing on simple swaps instead of full overhauls. Less intimidating for beginners", time: "8:25 AM" },
+        { user: nutritionistChatUsers[0], text: "Totally agree James. Small changes stick better than drastic diet shifts", time: "8:30 AM" },
+        { user: nutritionistChatUsers[1], text: "Has anyone tried integrating macro tracking with the Shape nutrition schedule? My clients love the visual progress", time: "8:38 AM" },
+        { user: nutritionistChatUsers[2], text: "Yes! The nutrition schedule feature is a game changer. I build all my weekly plans around it", time: "8:42 AM" },
+        { user: nutritionistChatUsers[3], text: "Same here. Being able to share plans directly with clients through the platform saves so much time", time: "8:48 AM" },
+        { user: nutritionistChatUsers[0], text: "Love collaborating with you all. Having a nutritionist community makes such a difference", time: "8:55 AM" },
+        { user: nutritionistChatUsers[1], text: "Agreed! Looking forward to the next Shape nutritionist roundtable", time: "9:00 AM" },
       ],
       shape: [
         { user: trainerChatUsers[0], text: "Happy Monday Shape fam! Who's getting after it today?", time: "7:00 AM" },
         { user: communityUsers[0], text: "Leg day with Marcus's 5x5 program. Let's go!", time: "7:05 AM" },
-        { user: nutritionistChatUsers[0], text: "Don't forget to fuel up before your workout", time: "7:10 AM" },
-        { user: trainerChatUsers[4], text: "For my at-home crew - new Apartment-Friendly Strength workout just dropped", time: "7:20 AM" },
-        { user: null, text: "This platform changed how I train. Trainers, nutritionists, and members all in one place", time: "7:45 AM" },
+        { user: nutritionistChatUsers[0], text: "Don't forget to fuel up before your workout. Protein and carbs 60-90 min before lifting", time: "7:10 AM" },
+        { user: communityUsers[1], text: "Thanks Dr. Mitchell! I always forget to eat before morning sessions", time: "7:15 AM" },
+        { user: trainerChatUsers[4], text: "For my at-home crew - new Apartment-Friendly Strength workout just dropped. No equipment needed", time: "7:20 AM" },
+        { user: communityUsers[3], text: "Nina you're the best! Just what I needed for today", time: "7:25 AM" },
+        { user: nutritionistChatUsers[2], text: "Just published a new budget meal plan - $50/week with 150g+ protein daily. Check it out on my page", time: "7:30 AM" },
+        { user: communityUsers[2], text: "That's exactly what I've been looking for Alex. Subscribing now", time: "7:35 AM" },
+        { user: trainerChatUsers[1], text: "Love seeing the whole Shape community active this early. This is what it's all about", time: "7:40 AM" },
+        { user: null, text: "This platform changed how I train. Trainers, nutritionists, and members - all in one place", time: "7:45 AM" },
+        { user: nutritionistChatUsers[1], text: "We love hearing that! That's why we're all here", time: "7:50 AM" },
+        { user: trainerChatUsers[3], text: "Reminder: Shape trainer summit is next month. Clients are welcome to the open Q&A session!", time: "7:55 AM" },
       ],
     };
 
@@ -1864,6 +2021,10 @@
       { user: communityUsers[1], action: "started following", workout: null, trainer: "Nina Brooks", time: "3h ago" },
       { user: communityUsers[3], action: "completed", workout: "Living Room HIIT", trainer: "Nina Brooks", time: "4h ago" },
       { user: communityUsers[2], action: "purchased", workout: "Sprint Intervals", trainer: "Damon Clarke", time: "5h ago" },
+      { user: communityUsers[0], action: "completed", workout: "Upper Body Blast", trainer: "Marcus Johnson", time: "1d ago" },
+      { user: communityUsers[3], action: "completed", workout: "Band & Bodyweight Burn", trainer: "Nina Brooks", time: "1d ago" },
+      { user: communityUsers[1], action: "completed", workout: "20-Min Torch", trainer: "Aisha Patel", time: "1d ago" },
+      { user: communityUsers[2], action: "completed", workout: "Endurance Builder", trainer: "Damon Clarke", time: "2d ago" },
     ];
 
     let currentCommunityTab = 'friends';
@@ -2093,11 +2254,38 @@
       document.getElementById('profileModal').classList.remove('active');
     }
 
+    function switchCommunityMobileView(view, btn) {
+      document.querySelectorAll('.community-mobile-tab').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const layout = document.getElementById('communityLayout');
+      layout.classList.remove('mobile-friends', 'mobile-discover', 'mobile-dm');
+      if (view === 'friends') {
+        layout.classList.add('mobile-friends');
+        currentCommunityTab = 'friends';
+        renderUserList();
+      } else if (view === 'discover') {
+        layout.classList.add('mobile-discover');
+        currentCommunityTab = 'discover';
+        renderUserList();
+      }
+      // 'chat' view: default layout (no extra class needed)
+    }
+
+    // Show mobile switcher on small screens
+    function checkCommunityMobile() {
+      const switcher = document.getElementById('communityMobileSwitcher');
+      if (switcher) {
+        switcher.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+      }
+    }
+
     function initCommunity() {
       renderUserList();
       renderCommunityChat();
       renderActivity();
       renderFriendScores();
+      checkCommunityMobile();
+      window.addEventListener('resize', checkCommunityMobile);
     }
   </script>
 
