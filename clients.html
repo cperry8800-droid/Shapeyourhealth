@@ -131,6 +131,16 @@
       .water-count { min-width: auto; }
       .appointment-card { flex-wrap: wrap; gap: 12px; }
       .appointment-time { text-align: left; width: 100%; display: flex; gap: 8px; }
+      .cl-cal-grid { gap: 1px; }
+      .cl-cal-day { min-height: 36px; aspect-ratio: auto; font-size: 0.62rem; padding: 4px 0; }
+      .cl-cal-day-num { font-size: 0.62rem; margin-bottom: 1px; }
+      .cl-cal-day-dot { width: 5px; height: 5px; }
+      .cl-cal-day-info { font-size: 0.45rem; }
+      .cl-cal-head { font-size: 0.58rem; padding: 4px 0; }
+      .cl-cal-header h4 { font-size: 0.82rem; }
+      .cl-view-toggle { width: 100%; }
+      .cl-view-btn { flex: 1; text-align: center; }
+      .cl-cal-nav button { width: 26px; height: 26px; font-size: 0.7rem; }
     }
 
     /* ===== Monthly Calendar View ===== */
@@ -353,7 +363,7 @@
         <div class="schedule-section">
           <div class="schedule-header">
             <h2>Workout Schedule</h2>
-            <div style="display:flex;align-items:center;gap:16px;">
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
               <div class="cl-view-toggle">
                 <button class="cl-view-btn active" onclick="clSwitchWorkoutView('weekly', this)">Weekly</button>
                 <button class="cl-view-btn" onclick="clSwitchWorkoutView('monthly', this)">Monthly</button>
@@ -509,7 +519,7 @@
           <div class="meal-schedule-section">
             <div class="meal-schedule-header">
               <h2>Meal Schedule</h2>
-              <div style="display:flex;align-items:center;gap:16px;">
+              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                 <div class="cl-view-toggle">
                   <button class="cl-view-btn active" onclick="clSwitchMealView('weekly', this)">Weekly</button>
                   <button class="cl-view-btn" onclick="clSwitchMealView('monthly', this)">Monthly</button>
