@@ -77,31 +77,25 @@
     .loader-triangles svg polygon {
       animation: trianglePulse 2s ease-in-out infinite;
     }
-    .s-beam {
+    .s-beam-path {
       stroke: #2DD4BF;
       stroke-width: 3;
       fill: none;
-      stroke-dasharray: 60 40;
       stroke-linecap: round;
+      stroke-linejoin: round;
       filter: drop-shadow(0 0 2px #2DD4BF) drop-shadow(0 0 5px #2DD4BF);
+      stroke-dasharray: 40 82;
+      stroke-dashoffset: 122;
     }
-    .s-beam-1 {
-      animation: beamFlow 3s linear infinite;
+    .s-beam-upper {
+      animation: beamTrace 2.5s linear infinite;
     }
-    .s-beam-2 {
-      animation: beamFlow 3s linear infinite;
-      animation-delay: 1.5s;
+    .s-beam-lower {
+      animation: beamTrace 2.5s linear infinite;
+      animation-delay: 1.25s;
     }
-    .s-beam-3 {
-      animation: beamFlow 3s linear infinite;
-      animation-delay: 0.75s;
-    }
-    .s-beam-4 {
-      animation: beamFlow 3s linear infinite;
-      animation-delay: 2.25s;
-    }
-    @keyframes beamFlow {
-      0% { stroke-dashoffset: 100; }
+    @keyframes beamTrace {
+      0% { stroke-dashoffset: 162; }
       100% { stroke-dashoffset: 0; }
     }
     @keyframes trianglePulse {
@@ -320,11 +314,9 @@
           <polygon points="5,113 5,43 55,78" fill="#fff"/>
           <!-- Right triangle pointing left (upper) -->
           <polygon points="90,-3 90,67 40,32" fill="#fff"/>
-          <!-- All beams flow top to bottom -->
-          <line x1="90" y1="-3" x2="40" y2="32" class="s-beam s-beam-1" />
-          <line x1="40" y1="32" x2="90" y2="67" class="s-beam s-beam-3" />
-          <line x1="55" y1="78" x2="5" y2="43" class="s-beam s-beam-4" />
-          <line x1="55" y1="78" x2="5" y2="113" class="s-beam s-beam-2" />
+          <!-- S-beam paths: each traces one triangle's inner edges top-to-bottom -->
+          <path d="M90,-3 L40,32 L90,67" class="s-beam-path s-beam-upper" />
+          <path d="M5,43 L55,78 L5,113" class="s-beam-path s-beam-lower" />
         </svg>
       </div>
       <div class="loader-track">
@@ -345,10 +337,8 @@
     <div class="intro-logo-wrap">
       <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
       <svg class="intro-beam-svg" viewBox="0 0 95 110" xmlns="http://www.w3.org/2000/svg">
-        <line x1="90" y1="-3" x2="40" y2="32" class="s-beam s-beam-1" />
-        <line x1="40" y1="32" x2="90" y2="67" class="s-beam s-beam-3" />
-        <line x1="5" y1="43" x2="55" y2="78" class="s-beam s-beam-4" />
-        <line x1="5" y1="113" x2="55" y2="78" class="s-beam s-beam-2" />
+        <path d="M90,-3 L40,32 L90,67" class="s-beam-path s-beam-upper" />
+        <path d="M5,43 L55,78 L5,113" class="s-beam-path s-beam-lower" />
       </svg>
     </div>
     <p class="intro-tagline" id="introTagline">Join the Community</p>
