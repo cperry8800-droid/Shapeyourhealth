@@ -17,30 +17,31 @@
   .td-tab-bar {
     display: flex; align-items: center; gap: 0;
     border-bottom: 1px solid var(--border);
-    background: var(--bg-card);
+    background: var(--bg-alt);
     padding: 0 48px;
+    position: sticky; top: 72px; z-index: 100;
     overflow-x: auto; -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .td-tab-bar::-webkit-scrollbar { display: none; }
   .td-tab-btn {
     padding: 16px 24px; border: none; background: none;
-    font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--text-muted); cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text); cursor: pointer;
     border-bottom: 2px solid transparent;
     white-space: nowrap; transition: all 0.2s;
-    flex-shrink: 0;
+    flex-shrink: 0; opacity: 0.5;
   }
-  .td-tab-btn:hover { color: var(--text); }
-  .td-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .td-tab-btn:hover { opacity: 0.75; }
+  .td-tab-btn.active { opacity: 1; border-bottom: 2px solid var(--accent); }
 
   .td-tab-content { display: none; }
   .td-tab-content.active { display: block; }
 
   @media (max-width: 768px) {
-    .td-tab-bar { padding: 0 16px; gap: 0; }
-    .td-tab-btn { padding: 14px 16px; font-size: 0.68rem; }
+    .td-tab-bar { padding: 0 16px; gap: 0; top: 56px; }
+    .td-tab-btn { padding: 14px 16px; font-size: 0.7rem; }
   }
 
   /* ===== Messages Panel ===== */
@@ -581,12 +582,12 @@
 
   <!-- Tab Bar -->
   <div class="td-tab-bar" id="tdTabBar">
-    <button class="td-tab-btn active" data-tab="home" onclick="switchDashTab('home', this)">Home</button>
-    <button class="td-tab-btn" data-tab="clients" onclick="switchDashTab('clients', this)">Clients</button>
-    <button class="td-tab-btn" data-tab="programs" onclick="switchDashTab('programs', this)">Programs</button>
-    <button class="td-tab-btn" data-tab="messages" onclick="switchDashTab('messages', this)">Messages</button>
-    <button class="td-tab-btn" data-tab="community" onclick="switchDashTab('community', this)">Community</button>
-    <button class="td-tab-btn" data-tab="profile" onclick="switchDashTab('profile', this)">Profile</button>
+    <button class="td-tab-btn active" data-tab="home" onclick="switchTrainerTab('home', this)">Home</button>
+    <button class="td-tab-btn" data-tab="clients" onclick="switchTrainerTab('clients', this)">Clients</button>
+    <button class="td-tab-btn" data-tab="programs" onclick="switchTrainerTab('programs', this)">Programs</button>
+    <button class="td-tab-btn" data-tab="messages" onclick="switchTrainerTab('messages', this)">Messages</button>
+    <button class="td-tab-btn" data-tab="community" onclick="switchTrainerTab('community', this)">Community</button>
+    <button class="td-tab-btn" data-tab="profile" onclick="switchTrainerTab('profile', this)">Profile</button>
   </div>
 
   <!-- ========== TAB: HOME ========== -->
@@ -968,19 +969,157 @@
         </div>
       </div>
 
+      <!-- Intro Video -->
+      <div class="tp-section" id="sectionIntroVideo">
+        <div class="tp-section-header">
+          <h2>Intro Video</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionIntroVideo')">Edit</button>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); font-weight: 300; margin-bottom: 16px;">Record or upload a short video introducing yourself to potential clients. This is the first thing people see on your profile.</p>
+        <div id="introVideoDisplay">
+          <div id="introVideoPlayer" style="display:none;margin-bottom:16px;">
+            <video id="introVid" controls style="width:100%;max-height:400px;background:#000;border:1px solid var(--border);"></video>
+          </div>
+          <div id="introVideoPlaceholder" style="background:linear-gradient(135deg,#1a1a1a11,#1a1a1a06);border:1px solid var(--border);height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" onclick="document.getElementById('introVideoUpload').click()">
+            <div style="font-size:2rem;margin-bottom:8px;">&#9654;</div>
+            <div style="font-size:0.85rem;font-weight:500;color:var(--text-muted);">Upload Your Intro Video</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">MP4, MOV, or WebM — up to 2 minutes recommended</div>
+          </div>
+          <input type="file" id="introVideoUpload" accept="video/*" style="display:none" onchange="handleIntroVideoUpload(event)">
+        </div>
+        <div id="introVideoUrlRow" style="display:none;margin-top:12px;">
+          <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Or paste a YouTube/Vimeo URL</label>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <input class="tp-edit-input" id="introVideoUrl" placeholder="https://youtube.com/watch?v=..." style="margin-top:0;">
+            <button class="tp-save-btn" onclick="saveIntroVideoUrl()" style="padding:8px 16px;white-space:nowrap;">Embed</button>
+          </div>
+        </div>
+        <div id="introVideoEmbedDisplay" style="display:none;margin-top:12px;">
+          <iframe id="introVideoEmbed" style="width:100%;height:360px;border:1px solid var(--border);" allowfullscreen></iframe>
+        </div>
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="saveIntroVideo()">Save</button>
+          <button class="tp-cancel-btn" onclick="removeIntroVideo()">Remove Video</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionIntroVideo')">Cancel</button>
+        </div>
+      </div>
+
       <!-- Photos & Videos Gallery -->
       <div class="tp-section" id="sectionMedia">
         <div class="tp-section-header">
           <h2>Photos & Videos</h2>
           <button class="tp-edit-btn" onclick="toggleSection('sectionMedia')">Edit</button>
         </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); font-weight: 300; margin-bottom: 16px;">Upload photos and videos to showcase your training style, client results, workout demos, and more.</p>
         <div class="tp-gallery-grid" id="photoGallery">
           <div class="tp-gallery-item" style="cursor:pointer;" onclick="document.getElementById('photoUpload').click()">+ Upload Photo</div>
         </div>
         <input type="file" id="photoUpload" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)">
+        <div style="margin-top:16px;">
+          <div style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px;">Videos</div>
+          <div class="tp-gallery-grid" id="videoGallery">
+            <div class="tp-gallery-item" style="height:160px;cursor:pointer;background:linear-gradient(135deg,#1a1a1a11,#1a1a1a06);" onclick="addVideoUrl()">
+              <div style="text-align:center;">
+                <div style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:4px;">&#9654;</div>
+                <div>+ Add Video URL</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="tp-save-actions">
           <button class="tp-save-btn" onclick="saveMedia()">Save</button>
           <button class="tp-cancel-btn" onclick="cancelSection('sectionMedia')">Cancel</button>
+        </div>
+      </div>
+
+      <!-- 1-on-1 Consultation Scheduling -->
+      <div class="tp-section" id="sectionConsult">
+        <div class="tp-section-header">
+          <h2>1-on-1 Consultations</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionConsult')">Edit</button>
+        </div>
+        <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:20px;">Offer free or paid 1-on-1 consultations. Set your availability and let clients book directly from your profile.</p>
+        <div id="consultDisplay">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Session Length</div>
+              <div style="font-size:1.1rem;font-weight:600;" id="consultDurationDisplay">15 min</div>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Price</div>
+              <div style="font-size:1.1rem;font-weight:600;" id="consultPriceDisplay">Free</div>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Format</div>
+              <div style="font-size:1.1rem;font-weight:600;" id="consultFormatDisplay">Video</div>
+            </div>
+          </div>
+          <div style="margin-bottom:20px;">
+            <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px;">Your Availability</div>
+            <div id="availabilityDisplay" style="display:flex;flex-wrap:wrap;gap:8px;">
+              <span class="tp-tag" style="opacity:0.4;">No availability set</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="openBookingModal()" style="width:100%;">Book a 1-on-1 Consultation</button>
+        </div>
+        <div style="display:none;" id="consultEditFields">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Session Length</label>
+              <select class="tp-edit-input" id="consultDuration" style="margin-top:4px;">
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="45">45 minutes</option>
+                <option value="60">60 minutes</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Format</label>
+              <select class="tp-edit-input" id="consultFormat" style="margin-top:4px;">
+                <option value="Video">Video Call</option>
+                <option value="Phone">Phone Call</option>
+                <option value="Both">Video or Phone</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Price</label>
+              <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+                <label style="font-size:0.82rem;display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="consultPriceType" value="free" checked onchange="toggleConsultPrice()"> Free</label>
+                <label style="font-size:0.82rem;display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="consultPriceType" value="paid" onchange="toggleConsultPrice()"> Paid</label>
+                <input class="tp-edit-input" id="consultPriceInput" type="number" placeholder="25.00" style="width:100px;margin-top:0;display:none;">
+              </div>
+            </div>
+          </div>
+          <div style="margin-bottom:16px;">
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:8px;">Available Days</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;" id="availDays">
+              <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Mon" style="margin-right:4px;"> Mon</label>
+              <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Tue" style="margin-right:4px;"> Tue</label>
+              <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Wed" style="margin-right:4px;"> Wed</label>
+              <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Thu" style="margin-right:4px;"> Thu</label>
+              <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Fri" style="margin-right:4px;"> Fri</label>
+              <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Sat" style="margin-right:4px;"> Sat</label>
+              <label class="tp-tag" style="cursor:pointer;"><input type="checkbox" value="Sun" style="margin-right:4px;"> Sun</label>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Available From</label>
+              <input class="tp-edit-input" id="consultTimeFrom" type="time" value="09:00" style="margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Available Until</label>
+              <input class="tp-edit-input" id="consultTimeTo" type="time" value="17:00" style="margin-top:4px;">
+            </div>
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Consultation Description</label>
+            <textarea class="tp-edit-textarea" id="consultDesc" style="min-height:60px;margin-top:4px;" placeholder="What will the consultation cover? E.g. goal setting, program review, form check...">Free 15-minute intro call to discuss your fitness goals and find the right program for you.</textarea>
+          </div>
+        </div>
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="saveConsult()">Save</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionConsult')">Cancel</button>
         </div>
       </div>
 
@@ -1019,6 +1158,26 @@
         <div class="tp-save-actions">
           <button class="tp-save-btn" onclick="saveSocial()">Save</button>
           <button class="tp-cancel-btn" onclick="cancelSection('sectionSocial')">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Subscription Pricing -->
+      <div class="tp-section" id="sectionPricing">
+        <div class="tp-section-header">
+          <h2>Subscription Pricing</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionPricing')">Edit</button>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 28px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div class="tp-display-value" style="font-size: 1.4rem; font-weight: 700;" id="subPriceDisplay">$--<span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);">/mo</span></div>
+            <input class="tp-edit-input" id="subPriceInput" type="number" placeholder="49.99" style="display:none;width:120px;margin-top:0;">
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Set your own monthly subscription price</div>
+          </div>
+          <button class="btn btn-primary">Set</button>
+        </div>
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="savePricing()">Save</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionPricing')">Cancel</button>
         </div>
       </div>
     </div>
@@ -1122,7 +1281,7 @@
   // ===== Tab Switching with Lazy Init =====
   const _tdTabsInitialized = {};
 
-  function switchDashTab(tabName, btn) {
+  function switchTrainerTab(tabName, btn) {
     // Update tab buttons
     document.querySelectorAll('.td-tab-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
@@ -1171,19 +1330,23 @@
   _tdTabsInitialized['clients'] = true;
   _tdTabsInitialized['messages'] = true;
 
-  // ===== Programs Tab (reuse from trainer-profile.html logic) =====
-  // The pbToggleBuilder, pbSelectType, etc. are defined in trainer-profile's inline script.
-  // We provide stub implementations here for the dashboard context.
+  // ===== Programs Tab =====
   const PB_KEY = 'shapeTrainerPrograms';
+  const PB_CLIENT_KEY = 'shapeClientAssignedPlans';
 
   function _getPbPrograms() {
     try { return JSON.parse(localStorage.getItem(PB_KEY)) || []; } catch(e) { return []; }
   }
   function _savePbPrograms(data) { localStorage.setItem(PB_KEY, JSON.stringify(data)); }
+  function _getPbClientPlans() {
+    try { return JSON.parse(localStorage.getItem(PB_CLIENT_KEY)) || []; } catch(e) { return []; }
+  }
+  function _savePbClientPlans(data) { localStorage.setItem(PB_CLIENT_KEY, JSON.stringify(data)); }
 
   let _pbDayCount = 0;
   let _pbBuilderOpen = false;
   let _pbUploadedFiles = [];
+  let _pbEditId = null;
 
   function pbToggleBuilder() {
     _pbBuilderOpen = !_pbBuilderOpen;
@@ -1192,15 +1355,31 @@
     if (_pbBuilderOpen) {
       builder.classList.add('active');
       btn.textContent = 'Cancel';
+      _pbEditId = null;
       // Reset
       document.getElementById('pbStep1').style.display = '';
       document.getElementById('pbTemplateForm').classList.remove('active');
       document.getElementById('pbCustomForm').classList.remove('active');
       document.querySelectorAll('.pb-type-card').forEach(c => c.classList.remove('selected'));
+      pbResetForms();
     } else {
       builder.classList.remove('active');
       btn.textContent = '+ Create New Program';
+      _pbEditId = null;
     }
+  }
+
+  function pbResetForms() {
+    ['pbTplName','pbTplDesc','pbCustName','pbCustDesc'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    ['pbTplCategory','pbTplDifficulty','pbTplDuration','pbTplDays','pbTplClient','pbCustClient'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    document.getElementById('pbDaysContainer').innerHTML = '';
+    _pbUploadedFiles = [];
+    pbRenderFileList();
+    _pbDayCount = 0;
   }
 
   function pbSelectType(type) {
@@ -1210,6 +1389,7 @@
     if (type === 'template') {
       document.getElementById('pbTemplateForm').classList.add('active');
       document.getElementById('pbCustomForm').classList.remove('active');
+      if (_pbDayCount === 0) pbAddDay();
     } else {
       document.getElementById('pbCustomForm').classList.add('active');
       document.getElementById('pbTemplateForm').classList.remove('active');
@@ -1218,109 +1398,319 @@
 
   function pbAddDay() {
     _pbDayCount++;
+    const dayId = _pbDayCount;
     const container = document.getElementById('pbDaysContainer');
     const dayDiv = document.createElement('div');
     dayDiv.className = 'pb-day';
+    dayDiv.id = 'pbDay' + dayId;
     dayDiv.innerHTML = `
-      <div class="pb-day-header" onclick="this.querySelector('.pb-chevron').classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
-        <h4>Day ${_pbDayCount}</h4>
-        <span class="pb-chevron">&#9660;</span>
+      <div class="pb-day-header" onclick="pbToggleDay(${dayId})">
+        <h4>Day ${dayId} <input type="text" class="pb-input" style="display:inline;width:200px;margin-left:10px;" placeholder="e.g. Upper Body" onclick="event.stopPropagation()" id="pbDayName${dayId}"></h4>
+        <span class="pb-chevron open">&#9660;</span>
       </div>
-      <div class="pb-day-body">
+      <div class="pb-day-body open" id="pbDayBody${dayId}">
         <div class="pb-sub-section">
-          <h5>Exercises</h5>
-          <div class="pb-exercises-list">
-            <div class="pb-exercise-row">
-              <input class="pb-input" placeholder="Exercise name">
-              <input class="pb-input" placeholder="Sets">
-              <input class="pb-input" placeholder="Reps">
-              <input class="pb-input" placeholder="Rest">
-              <input class="pb-input" placeholder="Notes">
+          <h5>Warm-up</h5>
+          <div id="pbWarmup${dayId}">
+            <div class="pb-warmup-row">
+              <input type="text" class="pb-input" placeholder="Exercise / Activity">
+              <input type="text" class="pb-input" placeholder="Duration">
               <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
             </div>
           </div>
-          <div class="pb-actions-row">
-            <button class="btn btn-sm btn-outline" onclick="pbAddExercise(this)">+ Exercise</button>
+          <button class="btn btn-sm btn-outline" onclick="pbAddWarmup(${dayId})" style="margin-top:6px;font-size:0.7rem;">+ Warm-up</button>
+        </div>
+        <div class="pb-sub-section">
+          <h5>Exercises</h5>
+          <div class="pb-exercise-row" style="margin-bottom:4px;">
+            <span class="pb-label" style="margin-bottom:0;">Exercise</span>
+            <span class="pb-label" style="margin-bottom:0;">Sets</span>
+            <span class="pb-label" style="margin-bottom:0;">Reps</span>
+            <span class="pb-label" style="margin-bottom:0;">Rest</span>
+            <span class="pb-label" style="margin-bottom:0;">Weight / Notes</span>
+            <span></span>
           </div>
+          <div id="pbExercises${dayId}">
+            <div class="pb-exercise-row">
+              <input type="text" class="pb-input" placeholder="e.g. Bench Press">
+              <input type="text" class="pb-input" placeholder="4">
+              <input type="text" class="pb-input" placeholder="8-10">
+              <input type="text" class="pb-input" placeholder="90s">
+              <input type="text" class="pb-input" placeholder="135 lbs">
+              <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="pbAddExercise(${dayId})" style="margin-top:6px;font-size:0.7rem;">+ Exercise</button>
+        </div>
+        <div class="pb-sub-section">
+          <h5>Cool-down</h5>
+          <div id="pbCooldown${dayId}">
+            <div class="pb-warmup-row">
+              <input type="text" class="pb-input" placeholder="Exercise / Stretch">
+              <input type="text" class="pb-input" placeholder="Duration">
+              <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="pbAddCooldown(${dayId})" style="margin-top:6px;font-size:0.7rem;">+ Cool-down</button>
+        </div>
+        <div style="text-align:right;margin-top:12px;">
+          <button class="pb-remove-btn" onclick="document.getElementById('pbDay${dayId}').remove()" style="font-size:0.75rem;color:#EF4444;">Remove Day</button>
         </div>
       </div>
     `;
     container.appendChild(dayDiv);
   }
 
-  function pbAddExercise(btn) {
-    const list = btn.closest('.pb-day-body').querySelector('.pb-exercises-list');
+  function pbToggleDay(dayId) {
+    const body = document.getElementById('pbDayBody' + dayId);
+    const chevron = body.parentElement.querySelector('.pb-chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+
+  function pbAddExercise(dayId) {
+    const list = document.getElementById('pbExercises' + dayId);
     const row = document.createElement('div');
     row.className = 'pb-exercise-row';
     row.innerHTML = `
-      <input class="pb-input" placeholder="Exercise name">
-      <input class="pb-input" placeholder="Sets">
-      <input class="pb-input" placeholder="Reps">
-      <input class="pb-input" placeholder="Rest">
-      <input class="pb-input" placeholder="Notes">
+      <input type="text" class="pb-input" placeholder="e.g. Bench Press">
+      <input type="text" class="pb-input" placeholder="4">
+      <input type="text" class="pb-input" placeholder="8-10">
+      <input type="text" class="pb-input" placeholder="90s">
+      <input type="text" class="pb-input" placeholder="135 lbs">
       <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
     `;
     list.appendChild(row);
   }
 
+  function pbAddWarmup(dayId) {
+    const c = document.getElementById('pbWarmup' + dayId);
+    const row = document.createElement('div');
+    row.className = 'pb-warmup-row';
+    row.innerHTML = `
+      <input type="text" class="pb-input" placeholder="Exercise / Activity">
+      <input type="text" class="pb-input" placeholder="Duration">
+      <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+    `;
+    c.appendChild(row);
+  }
+
+  function pbAddCooldown(dayId) {
+    const c = document.getElementById('pbCooldown' + dayId);
+    const row = document.createElement('div');
+    row.className = 'pb-warmup-row';
+    row.innerHTML = `
+      <input type="text" class="pb-input" placeholder="Exercise / Stretch">
+      <input type="text" class="pb-input" placeholder="Duration">
+      <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+    `;
+    c.appendChild(row);
+  }
+
   function pbHandleFiles(files) {
     if (!files || files.length === 0) return;
-    const preview = document.getElementById('pbUploadedFiles');
+    Array.from(files).forEach(function(file) {
+      if (file.size > 10 * 1024 * 1024) { if (typeof showToast === 'function') showToast('File too large. Max 10MB.'); return; }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        _pbUploadedFiles.push({ name: file.name, type: file.type, size: file.size, data: ev.target.result });
+        pbRenderFileList();
+        if (typeof showToast === 'function') showToast(file.name + ' uploaded!');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function pbRenderFileList() {
+    const container = document.getElementById('pbUploadedFiles');
     const list = document.getElementById('pbFileList');
-    preview.style.display = '';
-    for (let f of files) {
-      _pbUploadedFiles.push(f);
-      const item = document.createElement('div');
-      item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-alt);border-radius:6px;margin-bottom:6px;';
-      item.innerHTML = `
-        <span style="font-size:0.82rem;flex:1;">${f.name}</span>
-        <span style="font-size:0.72rem;color:var(--text-muted);">${(f.size/1024).toFixed(0)} KB</span>
-        <button class="pb-remove-btn" onclick="this.parentElement.remove()" style="font-size:0.85rem;">&times;</button>
-      `;
-      list.appendChild(item);
-    }
-    if (typeof showToast === 'function') showToast('File uploaded!');
+    if (_pbUploadedFiles.length === 0) { container.style.display = 'none'; return; }
+    container.style.display = 'block';
+    list.innerHTML = _pbUploadedFiles.map(function(f, i) {
+      const sizeKB = (f.size / 1024).toFixed(1);
+      const isImage = f.type && f.type.startsWith('image/');
+      const icon = f.type === 'application/pdf' ? '&#128196;' : isImage ? '&#128247;' : '&#128196;';
+      return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:6px;">' +
+        (isImage ? '<img src="' + f.data + '" style="width:48px;height:48px;object-fit:cover;border:1px solid var(--border);">' : '<span style="font-size:1.6rem;">' + icon + '</span>') +
+        '<div style="flex:1;"><div style="font-size:0.88rem;font-weight:500;">' + f.name + '</div><div style="font-size:0.72rem;color:var(--text-muted);">' + sizeKB + ' KB</div></div>' +
+        '<button class="pb-remove-btn" onclick="pbRemoveFile(' + i + ')" style="font-size:1rem;">&times;</button></div>';
+    }).join('');
+  }
+
+  function pbRemoveFile(idx) {
+    _pbUploadedFiles.splice(idx, 1);
+    pbRenderFileList();
+  }
+
+  function collectTemplatePlan() {
+    const days = [];
+    document.querySelectorAll('#pbDaysContainer .pb-day').forEach(function(dayEl) {
+      const dayId = dayEl.id.replace('pbDay', '');
+      const nameInput = dayEl.querySelector('#pbDayName' + dayId);
+      const dayName = nameInput ? nameInput.value : '';
+      const warmup = [];
+      dayEl.querySelectorAll('#pbWarmup' + dayId + ' .pb-warmup-row').forEach(function(r) {
+        const inputs = r.querySelectorAll('.pb-input');
+        if (inputs[0].value) warmup.push({ exercise: inputs[0].value, duration: inputs[1].value });
+      });
+      const exercises = [];
+      dayEl.querySelectorAll('#pbExercises' + dayId + ' .pb-exercise-row').forEach(function(r) {
+        const inputs = r.querySelectorAll('.pb-input');
+        if (inputs[0].value) exercises.push({
+          name: inputs[0].value, sets: inputs[1].value, reps: inputs[2].value,
+          rest: inputs[3].value, notes: inputs[4].value
+        });
+      });
+      const cooldown = [];
+      dayEl.querySelectorAll('#pbCooldown' + dayId + ' .pb-warmup-row').forEach(function(r) {
+        const inputs = r.querySelectorAll('.pb-input');
+        if (inputs[0].value) cooldown.push({ exercise: inputs[0].value, duration: inputs[1].value });
+      });
+      days.push({ name: 'Day ' + dayId + (dayName ? ' - ' + dayName : ''), warmup: warmup, exercises: exercises, cooldown: cooldown });
+    });
+    return {
+      type: 'template',
+      name: document.getElementById('pbTplName').value,
+      category: document.getElementById('pbTplCategory').value,
+      difficulty: document.getElementById('pbTplDifficulty').value,
+      duration: document.getElementById('pbTplDuration').value,
+      daysPerWeek: document.getElementById('pbTplDays').value,
+      description: document.getElementById('pbTplDesc').value,
+      days: days,
+      client: document.getElementById('pbTplClient').value
+    };
+  }
+
+  function collectCustomPlan() {
+    return {
+      type: 'custom',
+      name: document.getElementById('pbCustName').value,
+      description: document.getElementById('pbCustDesc').value,
+      files: _pbUploadedFiles.map(function(f) { return { name: f.name, type: f.type, size: f.size, data: f.data }; }),
+      client: document.getElementById('pbCustClient').value
+    };
+  }
+
+  function pbCoreSave(plan) {
+    plan.id = _pbEditId || Date.now().toString();
+    plan.createdAt = plan.createdAt || new Date().toISOString();
+    plan.updatedAt = new Date().toISOString();
+    const programs = _getPbPrograms();
+    const existingIdx = programs.findIndex(function(p) { return p.id === plan.id; });
+    if (existingIdx >= 0) programs[existingIdx] = plan;
+    else programs.push(plan);
+    _savePbPrograms(programs);
+    return plan;
   }
 
   function pbSaveDraft(type) {
-    const name = type === 'template' ? document.getElementById('pbTplName').value : document.getElementById('pbCustName').value;
-    if (!name) { if (typeof showToast === 'function') showToast('Please enter a plan name'); return; }
-    const programs = _getPbPrograms();
-    programs.push({ name, type, status: 'draft', createdAt: new Date().toISOString() });
-    _savePbPrograms(programs);
+    const plan = type === 'template' ? collectTemplatePlan() : collectCustomPlan();
+    if (!plan.name) { if (typeof showToast === 'function') showToast('Please enter a program name.'); return; }
+    plan.status = 'Draft';
+    pbCoreSave(plan);
+    if (typeof showToast === 'function') showToast('Draft saved! You can continue editing anytime.');
     pbToggleBuilder();
     renderPbPlanList();
-    if (typeof showToast === 'function') showToast('Draft saved!');
   }
 
   function pbSavePlan(type) {
-    const name = type === 'template' ? document.getElementById('pbTplName').value : document.getElementById('pbCustName').value;
-    if (!name) { if (typeof showToast === 'function') showToast('Please enter a plan name'); return; }
-    const programs = _getPbPrograms();
-    programs.push({ name, type, status: 'published', createdAt: new Date().toISOString() });
-    _savePbPrograms(programs);
+    const plan = type === 'template' ? collectTemplatePlan() : collectCustomPlan();
+    if (!plan.name) { if (typeof showToast === 'function') showToast('Please enter a program name.'); return; }
+    if (!plan.client) { if (typeof showToast === 'function') showToast('Please assign a client first.'); return; }
+    plan.status = 'Published';
+    pbCoreSave(plan);
+    const clientPlans = _getPbClientPlans();
+    const cIdx = clientPlans.findIndex(function(p) { return p.id === plan.id; });
+    if (cIdx >= 0) clientPlans[cIdx] = plan;
+    else clientPlans.push(plan);
+    _savePbClientPlans(clientPlans);
+    if (typeof showToast === 'function') showToast('Program published and sent to ' + plan.client + '!');
     pbToggleBuilder();
     renderPbPlanList();
-    if (typeof showToast === 'function') showToast('Program published!');
   }
 
   function pbPublishToProfile(type) {
-    const name = type === 'template' ? document.getElementById('pbTplName').value : document.getElementById('pbCustName').value;
-    if (!name) { if (typeof showToast === 'function') showToast('Please enter a plan name'); return; }
-    const programs = _getPbPrograms();
-    programs.push({ name, type, status: 'profile', createdAt: new Date().toISOString() });
-    _savePbPrograms(programs);
+    const plan = type === 'template' ? collectTemplatePlan() : collectCustomPlan();
+    if (!plan.name) { if (typeof showToast === 'function') showToast('Please enter a program name.'); return; }
+    plan.status = 'On Profile';
+    pbCoreSave(plan);
+    if (typeof showToast === 'function') showToast('Program published to your profile!');
     pbToggleBuilder();
     renderPbPlanList();
-    if (typeof showToast === 'function') showToast('Published to profile!');
   }
 
-  function pbDeletePlan(index) {
+  function pbEditPlan(id) {
     const programs = _getPbPrograms();
-    programs.splice(index, 1);
+    const plan = programs.find(function(p) { return p.id === id; });
+    if (!plan) return;
+    _pbEditId = id;
+    pbResetForms();
+    const builder = document.getElementById('pbBuilder');
+    builder.classList.add('active');
+    _pbBuilderOpen = true;
+    document.getElementById('pbCreateBtn').textContent = 'Cancel';
+    document.getElementById('pbStep1').style.display = 'none';
+    if (plan.type === 'template') {
+      document.getElementById('pbTemplateForm').classList.add('active');
+      document.getElementById('pbCustomForm').classList.remove('active');
+      document.getElementById('pbTplName').value = plan.name || '';
+      document.getElementById('pbTplCategory').value = plan.category || '';
+      document.getElementById('pbTplDifficulty').value = plan.difficulty || '';
+      document.getElementById('pbTplDuration').value = plan.duration || '';
+      document.getElementById('pbTplDays').value = plan.daysPerWeek || '';
+      document.getElementById('pbTplDesc').value = plan.description || '';
+      document.getElementById('pbTplClient').value = plan.client || '';
+      (plan.days || []).forEach(function(day, idx) {
+        pbAddDay();
+        var dayId = idx + 1;
+        var dayName = (day.name || '').replace(/^Day \d+\s*-?\s*/, '');
+        var nameInput = document.getElementById('pbDayName' + dayId);
+        if (nameInput) nameInput.value = dayName;
+        (day.warmup || []).forEach(function(w, wi) {
+          if (wi > 0) pbAddWarmup(dayId);
+          var rows = document.querySelectorAll('#pbWarmup' + dayId + ' .pb-warmup-row');
+          var inputs = rows[wi].querySelectorAll('.pb-input');
+          inputs[0].value = w.exercise || '';
+          inputs[1].value = w.duration || '';
+        });
+        (day.exercises || []).forEach(function(ex, ei) {
+          if (ei > 0) pbAddExercise(dayId);
+          var rows = document.querySelectorAll('#pbExercises' + dayId + ' .pb-exercise-row');
+          var inputs = rows[ei].querySelectorAll('.pb-input');
+          inputs[0].value = ex.name || '';
+          inputs[1].value = ex.sets || '';
+          inputs[2].value = ex.reps || '';
+          inputs[3].value = ex.rest || '';
+          inputs[4].value = ex.notes || '';
+        });
+        (day.cooldown || []).forEach(function(c, ci) {
+          if (ci > 0) pbAddCooldown(dayId);
+          var rows = document.querySelectorAll('#pbCooldown' + dayId + ' .pb-warmup-row');
+          var inputs = rows[ci].querySelectorAll('.pb-input');
+          inputs[0].value = c.exercise || '';
+          inputs[1].value = c.duration || '';
+        });
+      });
+    } else {
+      document.getElementById('pbCustomForm').classList.add('active');
+      document.getElementById('pbTemplateForm').classList.remove('active');
+      document.getElementById('pbCustName').value = plan.name || '';
+      document.getElementById('pbCustDesc').value = plan.description || '';
+      document.getElementById('pbCustClient').value = plan.client || '';
+      _pbUploadedFiles = (plan.files || []).map(function(f) { return { name: f.name, type: f.type, size: f.size, data: f.data }; });
+      pbRenderFileList();
+    }
+    document.getElementById('pbBuilder').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function pbDeletePlan(id) {
+    if (!confirm('Delete this program?')) return;
+    var programs = _getPbPrograms().filter(function(p) { return p.id !== id; });
     _savePbPrograms(programs);
+    var clientPlans = _getPbClientPlans().filter(function(p) { return p.id !== id; });
+    _savePbClientPlans(clientPlans);
+    if (typeof showToast === 'function') showToast('Program deleted.');
     renderPbPlanList();
-    if (typeof showToast === 'function') showToast('Program deleted');
   }
 
   function renderPbPlanList() {
@@ -1330,23 +1720,19 @@
       list.innerHTML = '<div class="pb-empty">No programs yet. Create your first workout program above.</div>';
       return;
     }
-    list.innerHTML = programs.map((p, i) => {
-      const badge = p.status === 'draft' ? '<span class="pb-badge pb-badge-draft">Draft</span>' :
-                    p.status === 'profile' ? '<span class="pb-badge pb-badge-profile">On Profile</span>' :
-                    '<span class="pb-badge pb-badge-published">Published</span>';
-      const date = new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      return `
-        <div class="pb-plan-item">
-          <div class="pb-plan-item-info">
-            <h4>${p.name}</h4>
-            <span>${p.type === 'template' ? 'Template' : 'Custom'} &middot; ${date}</span>
-          </div>
-          <div class="pb-plan-item-actions">
-            ${badge}
-            <button class="btn btn-sm btn-outline" onclick="pbDeletePlan(${i})" style="font-size:0.68rem;padding:4px 10px;color:#EF4444;border-color:#EF4444;">Delete</button>
-          </div>
-        </div>
-      `;
+    list.innerHTML = programs.map(function(p) {
+      const badgeClass = p.status === 'Published' ? 'pb-badge-published' : p.status === 'On Profile' ? 'pb-badge-profile' : 'pb-badge-draft';
+      const statusLabel = p.status || 'Draft';
+      const clientStr = p.client ? ' &middot; Assigned to ' + p.client : '';
+      const typeLabel = p.type === 'template' ? 'Shape Template' : 'Uploaded Plan';
+      const meta = [typeLabel, p.category, p.difficulty, p.duration].filter(Boolean).join(' &middot; ');
+      return '<div class="pb-plan-item">' +
+        '<div class="pb-plan-item-info"><h4>' + p.name + '</h4><span>' + meta + clientStr + '</span></div>' +
+        '<span class="pb-badge ' + badgeClass + '">' + statusLabel + '</span>' +
+        '<div class="pb-plan-item-actions">' +
+        '<button class="btn btn-sm btn-outline" onclick="pbEditPlan(\'' + p.id + '\')">Edit</button>' +
+        '<button class="btn btn-sm btn-outline" onclick="pbDeletePlan(\'' + p.id + '\')" style="border-color:rgba(239,68,68,0.3);color:#EF4444;">Delete</button>' +
+        '</div></div>';
     }).join('');
   }
 
@@ -1436,7 +1822,7 @@
     const msgs = _tdCommChannels[_tdCommCurrentChannel] || [];
     const container = document.getElementById('tdCommMessages');
     container.innerHTML = msgs.map(m => `
-      <div class="td-community-msg">
+      <div class="td-community-msg${m.own ? ' own' : ''}">
         <div class="td-community-msg-avatar" style="background:${m.color};">${m.initials}</div>
         <div class="td-community-msg-body">
           <div class="td-community-msg-name">${m.name}</div>
@@ -1497,7 +1883,12 @@
     tags: ['Strength', 'Hypertrophy', 'Fat Loss', 'At Home'],
     certs: [],
     social: { ig: '', yt: '', tt: '', web: '' },
-    photos: []
+    photos: [],
+    videos: [],
+    subPrice: '',
+    introVideo: null,
+    introVideoUrl: '',
+    consult: { duration: '15', priceType: 'free', price: '', format: 'Video', days: [], timeFrom: '09:00', timeTo: '17:00', desc: 'Free 15-minute intro call to discuss your fitness goals and find the right program for you.' }
   };
 
   // Load saved profile data
@@ -1525,10 +1916,66 @@
     document.getElementById('bioText').textContent = _profileData.bio;
     document.getElementById('bioInput').value = _profileData.bio;
 
-    // Render tags
+    // Render tags and certs
     renderProfileTags();
-    // Render certs
     renderProfileCerts();
+
+    // Render photos and videos
+    if (_profileData.photos && _profileData.photos.length) renderPhotoGallery();
+    if (_profileData.videos && _profileData.videos.length) renderVideoGallery();
+
+    // Social links
+    if (_profileData.social) {
+      document.getElementById('inputIG').value = _profileData.social.ig || '';
+      document.getElementById('inputYT').value = _profileData.social.yt || '';
+      document.getElementById('inputTT').value = _profileData.social.tt || '';
+      document.getElementById('inputWeb').value = _profileData.social.web || '';
+      document.getElementById('socialIG').textContent = _profileData.social.ig || 'Instagram';
+      document.getElementById('socialYT').textContent = _profileData.social.yt || 'YouTube';
+      document.getElementById('socialTT').textContent = _profileData.social.tt || 'TikTok';
+      document.getElementById('socialWeb').textContent = _profileData.social.web || 'Website';
+    }
+
+    // Subscription pricing
+    if (_profileData.subPrice) {
+      document.getElementById('subPriceDisplay').innerHTML = '$' + _profileData.subPrice + '<span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">/mo</span>';
+      document.getElementById('subPriceInput').value = _profileData.subPrice;
+    }
+
+    // Intro video
+    if (_profileData.introVideo) {
+      document.getElementById('introVid').src = _profileData.introVideo;
+      document.getElementById('introVideoPlayer').style.display = 'block';
+      document.getElementById('introVideoPlaceholder').style.display = 'none';
+    } else if (_profileData.introVideoUrl) {
+      document.getElementById('introVideoEmbed').src = _profileData.introVideoUrl;
+      document.getElementById('introVideoEmbedDisplay').style.display = 'block';
+      document.getElementById('introVideoPlaceholder').style.display = 'none';
+    }
+
+    // Consultation
+    if (_profileData.consult) {
+      const c = _profileData.consult;
+      document.getElementById('consultDurationDisplay').textContent = (c.duration || '15') + ' min';
+      document.getElementById('consultPriceDisplay').textContent = c.priceType === 'paid' ? '$' + c.price : 'Free';
+      document.getElementById('consultFormatDisplay').textContent = c.format || 'Video';
+      document.getElementById('consultDuration').value = c.duration || '15';
+      document.getElementById('consultFormat').value = c.format || 'Video';
+      document.getElementById('consultDesc').value = c.desc || '';
+      document.getElementById('consultTimeFrom').value = c.timeFrom || '09:00';
+      document.getElementById('consultTimeTo').value = c.timeTo || '17:00';
+      if (c.priceType === 'paid') {
+        document.querySelector('input[name="consultPriceType"][value="paid"]').checked = true;
+        document.getElementById('consultPriceInput').style.display = 'block';
+        document.getElementById('consultPriceInput').value = c.price || '';
+      }
+      if (c.days && c.days.length) {
+        c.days.forEach(function(d) { var cb = document.querySelector('#availDays input[value="' + d + '"]'); if (cb) cb.checked = true; });
+        var availDisp = document.getElementById('availabilityDisplay');
+        availDisp.innerHTML = c.days.map(function(d) { return '<span class="tp-tag">' + d + '</span>'; }).join('') +
+          '<span style="font-size:0.82rem;color:var(--text-muted);margin-left:8px;">' + formatTime(c.timeFrom) + ' - ' + formatTime(c.timeTo) + '</span>';
+      }
+    }
   }
 
   function renderProfileTags() {
@@ -1553,8 +2000,25 @@
     const section = document.getElementById(sectionId);
     section.classList.toggle('editing');
     if (sectionId === 'sectionSocial') {
-      const fields = document.getElementById('socialEditFields');
-      fields.style.display = section.classList.contains('editing') ? '' : 'none';
+      document.getElementById('socialEditFields').style.display = section.classList.contains('editing') ? '' : 'none';
+    }
+    if (sectionId === 'sectionPricing') {
+      document.getElementById('subPriceInput').style.display = section.classList.contains('editing') ? 'block' : 'none';
+      document.getElementById('subPriceDisplay').style.display = section.classList.contains('editing') ? 'none' : 'block';
+    }
+    if (sectionId === 'sectionTags' && section.classList.contains('editing')) {
+      // Make tags removable
+      document.querySelectorAll('#tagsContainer .tp-tag').forEach(tag => {
+        tag.classList.add('removable');
+        tag.onclick = function() { removeTag(this.dataset.tag); };
+      });
+    }
+    if (sectionId === 'sectionIntroVideo') {
+      document.getElementById('introVideoUrlRow').style.display = section.classList.contains('editing') ? 'block' : 'none';
+    }
+    if (sectionId === 'sectionConsult') {
+      document.getElementById('consultEditFields').style.display = section.classList.contains('editing') ? 'block' : 'none';
+      document.getElementById('consultDisplay').style.display = section.classList.contains('editing') ? 'none' : 'block';
     }
   }
 
@@ -1562,6 +2026,17 @@
     document.getElementById(sectionId).classList.remove('editing');
     if (sectionId === 'sectionSocial') {
       document.getElementById('socialEditFields').style.display = 'none';
+    }
+    if (sectionId === 'sectionPricing') {
+      document.getElementById('subPriceInput').style.display = 'none';
+      document.getElementById('subPriceDisplay').style.display = 'block';
+    }
+    if (sectionId === 'sectionIntroVideo') {
+      document.getElementById('introVideoUrlRow').style.display = 'none';
+    }
+    if (sectionId === 'sectionConsult') {
+      document.getElementById('consultEditFields').style.display = 'none';
+      document.getElementById('consultDisplay').style.display = 'block';
     }
   }
 
@@ -1576,7 +2051,7 @@
   function addTag() {
     const input = document.getElementById('newTagInput');
     const val = input.value.trim();
-    if (!val) return;
+    if (!val || _profileData.tags.includes(val)) return;
     _profileData.tags.push(val);
     input.value = '';
     renderProfileTags();
@@ -1696,35 +2171,272 @@
       avatar.style.backgroundSize = 'cover';
       avatar.style.backgroundPosition = 'center';
       document.getElementById('tpInitials').style.display = 'none';
+      _profileData.avatar = e.target.result;
+      _saveProfileData();
     };
     reader.readAsDataURL(file);
     if (typeof showToast === 'function') showToast('Avatar uploaded!');
   }
 
-  function handlePhotoUpload(event) {
-    const files = event.target.files;
-    if (!files) return;
-    const gallery = document.getElementById('photoGallery');
-    for (let f of files) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const item = document.createElement('div');
-        item.className = 'tp-gallery-item';
-        item.style.backgroundImage = 'url(' + e.target.result + ')';
-        item.style.backgroundSize = 'cover';
-        item.style.backgroundPosition = 'center';
-        gallery.insertBefore(item, gallery.lastElementChild);
-      };
-      reader.readAsDataURL(f);
+  // Intro Video functions
+  function handleIntroVideoUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    document.getElementById('introVid').src = url;
+    document.getElementById('introVideoPlayer').style.display = 'block';
+    document.getElementById('introVideoPlaceholder').style.display = 'none';
+    document.getElementById('introVideoEmbedDisplay').style.display = 'none';
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      _profileData.introVideo = ev.target.result;
+      _profileData.introVideoUrl = '';
+      _saveProfileData();
+      if (typeof showToast === 'function') showToast('Intro video uploaded!');
+    };
+    if (file.size < 10 * 1024 * 1024) { reader.readAsDataURL(file); }
+    else { _profileData.introVideo = null; _profileData.introVideoUrl = ''; if (typeof showToast === 'function') showToast('Video too large to save locally.'); }
+  }
+
+  function saveIntroVideoUrl() {
+    const url = document.getElementById('introVideoUrl').value.trim();
+    if (!url) return;
+    let embedUrl = '';
+    if (url.includes('youtube.com/watch')) {
+      const vid = new URL(url).searchParams.get('v');
+      if (vid) embedUrl = 'https://www.youtube.com/embed/' + vid;
+    } else if (url.includes('youtu.be/')) {
+      embedUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1].split('?')[0];
+    } else if (url.includes('vimeo.com/')) {
+      const vid = url.split('vimeo.com/')[1].split('?')[0];
+      embedUrl = 'https://player.vimeo.com/video/' + vid;
+    } else {
+      embedUrl = url;
     }
+    if (embedUrl) {
+      document.getElementById('introVideoEmbed').src = embedUrl;
+      document.getElementById('introVideoEmbedDisplay').style.display = 'block';
+      document.getElementById('introVideoPlayer').style.display = 'none';
+      document.getElementById('introVideoPlaceholder').style.display = 'none';
+      _profileData.introVideoUrl = embedUrl;
+      _profileData.introVideo = null;
+      _saveProfileData();
+      if (typeof showToast === 'function') showToast('Video embedded!');
+    }
+  }
+
+  function removeIntroVideo() {
+    _profileData.introVideo = null;
+    _profileData.introVideoUrl = '';
+    document.getElementById('introVideoPlayer').style.display = 'none';
+    document.getElementById('introVideoEmbedDisplay').style.display = 'none';
+    document.getElementById('introVideoPlaceholder').style.display = 'flex';
+    document.getElementById('introVid').src = '';
+    document.getElementById('introVideoEmbed').src = '';
+    document.getElementById('introVideoUrl').value = '';
+    _saveProfileData();
+    if (typeof showToast === 'function') showToast('Intro video removed');
+  }
+
+  function saveIntroVideo() {
+    cancelSection('sectionIntroVideo');
+    _saveProfileData();
+    if (typeof showToast === 'function') showToast('Intro video saved!');
+  }
+
+  // Photos & Videos
+  function handlePhotoUpload(event) {
+    const files = Array.from(event.target.files);
+    if (!files.length) return;
+    files.forEach(function(file) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        _profileData.photos.push(ev.target.result);
+        renderPhotoGallery();
+        _saveProfileData();
+      };
+      if (file.size < 5 * 1024 * 1024) reader.readAsDataURL(file);
+      else if (typeof showToast === 'function') showToast('Photo too large (max 5MB)');
+    });
     if (typeof showToast === 'function') showToast('Photos uploaded!');
+  }
+
+  function renderPhotoGallery() {
+    const g = document.getElementById('photoGallery');
+    const isEditing = document.getElementById('sectionMedia').classList.contains('editing');
+    let html = _profileData.photos.map(function(p, i) {
+      return '<div class="tp-gallery-item" style="position:relative;overflow:hidden;">' +
+        '<img src="' + p + '" style="width:100%;height:100%;object-fit:cover;">' +
+        (isEditing ? '<button onclick="removePhoto(' + i + ')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;width:22px;height:22px;font-size:0.7rem;cursor:pointer;">&times;</button>' : '') +
+        '</div>';
+    }).join('');
+    html += '<div class="tp-gallery-item" style="cursor:pointer;" onclick="document.getElementById(\'photoUpload\').click()">+ Upload Photo</div>';
+    g.innerHTML = html;
+  }
+
+  function removePhoto(i) {
+    _profileData.photos.splice(i, 1);
+    renderPhotoGallery();
+    _saveProfileData();
+  }
+
+  function addVideoUrl() {
+    const url = prompt('Enter a YouTube or Vimeo URL:');
+    if (!url || !url.trim()) return;
+    let embedUrl = '';
+    if (url.includes('youtube.com/watch')) {
+      const vid = new URL(url).searchParams.get('v');
+      if (vid) embedUrl = 'https://www.youtube.com/embed/' + vid;
+    } else if (url.includes('youtu.be/')) {
+      embedUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1].split('?')[0];
+    } else if (url.includes('vimeo.com/')) {
+      const vid = url.split('vimeo.com/')[1].split('?')[0];
+      embedUrl = 'https://player.vimeo.com/video/' + vid;
+    } else {
+      embedUrl = url;
+    }
+    if (embedUrl) {
+      _profileData.videos.push(embedUrl);
+      renderVideoGallery();
+      _saveProfileData();
+      if (typeof showToast === 'function') showToast('Video added!');
+    }
+  }
+
+  function renderVideoGallery() {
+    const g = document.getElementById('videoGallery');
+    const isEditing = document.getElementById('sectionMedia').classList.contains('editing');
+    let html = _profileData.videos.map(function(v, i) {
+      return '<div class="tp-gallery-item" style="height:160px;position:relative;overflow:hidden;padding:0;">' +
+        '<iframe src="' + v + '" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>' +
+        (isEditing ? '<button onclick="removeVideo(' + i + ')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;width:22px;height:22px;font-size:0.7rem;cursor:pointer;z-index:2;">&times;</button>' : '') +
+        '</div>';
+    }).join('');
+    html += '<div class="tp-gallery-item" style="height:160px;cursor:pointer;background:linear-gradient(135deg,#1a1a1a11,#1a1a1a06);" onclick="addVideoUrl()"><div style="text-align:center;"><div style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:4px;">&#9654;</div><div>+ Add Video URL</div></div></div>';
+    g.innerHTML = html;
+  }
+
+  function removeVideo(i) {
+    _profileData.videos.splice(i, 1);
+    renderVideoGallery();
+    _saveProfileData();
   }
 
   function saveMedia() {
     cancelSection('sectionMedia');
+    renderPhotoGallery();
+    renderVideoGallery();
+    _saveProfileData();
     if (typeof showToast === 'function') showToast('Media saved!');
   }
 
+  // Consultation functions
+  function toggleConsultPrice() {
+    const paid = document.querySelector('input[name="consultPriceType"][value="paid"]').checked;
+    document.getElementById('consultPriceInput').style.display = paid ? 'block' : 'none';
+  }
+
+  function formatTime(t) {
+    if (!t) return '';
+    const parts = t.split(':');
+    const h = parseInt(parts[0]);
+    const m = parts[1];
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hr12 = h % 12 || 12;
+    return hr12 + ':' + m + ' ' + ampm;
+  }
+
+  function saveConsult() {
+    const dur = document.getElementById('consultDuration').value;
+    const priceType = document.querySelector('input[name="consultPriceType"]:checked').value;
+    const price = document.getElementById('consultPriceInput').value;
+    const format = document.getElementById('consultFormat').value;
+    const days = Array.from(document.querySelectorAll('#availDays input:checked')).map(function(cb) { return cb.value; });
+    const timeFrom = document.getElementById('consultTimeFrom').value;
+    const timeTo = document.getElementById('consultTimeTo').value;
+    const desc = document.getElementById('consultDesc').value;
+    _profileData.consult = { duration: dur, priceType: priceType, price: price, format: format, days: days, timeFrom: timeFrom, timeTo: timeTo, desc: desc };
+    // Update display
+    document.getElementById('consultDurationDisplay').textContent = dur + ' min';
+    document.getElementById('consultPriceDisplay').textContent = priceType === 'free' ? 'Free' : '$' + price;
+    document.getElementById('consultFormatDisplay').textContent = format;
+    var availDisp = document.getElementById('availabilityDisplay');
+    if (days.length === 0) {
+      availDisp.innerHTML = '<span class="tp-tag" style="opacity:0.4;">No availability set</span>';
+    } else {
+      availDisp.innerHTML = days.map(function(d) { return '<span class="tp-tag">' + d + '</span>'; }).join('') +
+        '<span style="font-size:0.82rem;color:var(--text-muted);margin-left:8px;">' + formatTime(timeFrom) + ' - ' + formatTime(timeTo) + '</span>';
+    }
+    cancelSection('sectionConsult');
+    _saveProfileData();
+    if (typeof showToast === 'function') showToast('Consultation settings saved!');
+  }
+
+  function generateTimeSlots(from, to, duration) {
+    let slots = '';
+    const fParts = from.split(':').map(Number);
+    const tParts = to.split(':').map(Number);
+    let current = fParts[0] * 60 + fParts[1];
+    const end = tParts[0] * 60 + tParts[1];
+    while (current + duration <= end) {
+      const h = Math.floor(current / 60);
+      const m = current % 60;
+      const label = formatTime(String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'));
+      slots += '<option value="' + h + ':' + String(m).padStart(2,'0') + '">' + label + '</option>';
+      current += duration;
+    }
+    return slots || '<option>No slots available</option>';
+  }
+
+  function openBookingModal() {
+    const c = _profileData.consult;
+    if (!c.days || c.days.length === 0) {
+      if (typeof showToast === 'function') showToast('No availability set yet');
+      return;
+    }
+    var existing = document.getElementById('bookingOverlay');
+    if (existing) existing.remove();
+    var overlay = document.createElement('div');
+    overlay.id = 'bookingOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;';
+    var priceLabel = c.priceType === 'free' ? 'Free' : '$' + c.price;
+    overlay.innerHTML = '<div style="background:var(--bg-card,#fff);border:1px solid var(--border);max-width:480px;width:90%;padding:32px;position:relative;">' +
+      '<button onclick="document.getElementById(\'bookingOverlay\').remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;color:var(--text-muted);cursor:pointer;">&times;</button>' +
+      '<h3 style="font-size:1.1rem;font-weight:600;margin-bottom:4px;">Book a 1-on-1 Consultation</h3>' +
+      '<p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;">' + c.duration + ' min &middot; ' + priceLabel + ' &middot; ' + (c.format || 'Video') + '</p>' +
+      '<div style="margin-bottom:16px;">' +
+      '<label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Select a Day</label>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px;" id="bookingDays">' +
+      c.days.map(function(d) { return '<button class="filter-btn" onclick="selectBookingDay(this)" data-day="' + d + '">' + d + '</button>'; }).join('') +
+      '</div></div>' +
+      '<div style="margin-bottom:16px;">' +
+      '<label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Select a Time</label>' +
+      '<select class="tp-edit-input" id="bookingTime" style="margin-top:0;">' + generateTimeSlots(c.timeFrom, c.timeTo, parseInt(c.duration)) + '</select></div>' +
+      '<div style="margin-bottom:16px;">' +
+      '<label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Your Name</label>' +
+      '<input class="tp-edit-input" id="bookingName" placeholder="Enter your name" style="margin-top:0;"></div>' +
+      '<div style="margin-bottom:20px;">' +
+      '<label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Message (optional)</label>' +
+      '<textarea class="tp-edit-textarea" id="bookingMsg" style="min-height:50px;margin-top:0;" placeholder="What would you like to discuss?"></textarea></div>' +
+      '<button class="btn btn-primary" style="width:100%;" onclick="confirmBooking()">Confirm Booking</button></div>';
+    document.body.appendChild(overlay);
+  }
+
+  function selectBookingDay(btn) {
+    document.querySelectorAll('#bookingDays .filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+
+  function confirmBooking() {
+    var dayBtn = document.querySelector('#bookingDays .filter-btn.active');
+    var name = document.getElementById('bookingName').value.trim();
+    if (!dayBtn) { if (typeof showToast === 'function') showToast('Please select a day'); return; }
+    if (!name) { if (typeof showToast === 'function') showToast('Please enter your name'); return; }
+    document.getElementById('bookingOverlay').remove();
+    if (typeof showToast === 'function') showToast('Consultation booked! ' + dayBtn.dataset.day + ' at ' + document.getElementById('bookingTime').value);
+  }
+
+  // Social links
   function saveSocial() {
     _profileData.social.ig = document.getElementById('inputIG').value;
     _profileData.social.yt = document.getElementById('inputYT').value;
@@ -1732,12 +2444,23 @@
     _profileData.social.web = document.getElementById('inputWeb').value;
     _saveProfileData();
     cancelSection('sectionSocial');
-    // Update display
     document.getElementById('socialIG').textContent = _profileData.social.ig || 'Instagram';
     document.getElementById('socialYT').textContent = _profileData.social.yt || 'YouTube';
     document.getElementById('socialTT').textContent = _profileData.social.tt || 'TikTok';
     document.getElementById('socialWeb').textContent = _profileData.social.web || 'Website';
     if (typeof showToast === 'function') showToast('Social links saved!');
+  }
+
+  // Subscription pricing
+  function savePricing() {
+    const val = document.getElementById('subPriceInput').value;
+    _profileData.subPrice = val;
+    _profileData.price = val;
+    document.getElementById('subPriceDisplay').innerHTML = val ? '$' + val + '<span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">/mo</span>' : '$--<span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">/mo</span>';
+    document.getElementById('statPrice').textContent = val ? '$' + val + '/mo' : '$--/mo';
+    cancelSection('sectionPricing');
+    _saveProfileData();
+    if (typeof showToast === 'function') showToast('Pricing saved!');
   }
   </script>
 
