@@ -200,9 +200,104 @@ function filterNdClients(filter, btn) {
 }
 
 // ===== Client Detail =====
+let _ndCalMonth = new Date().getMonth();
+let _ndCalYear = new Date().getFullYear();
+let _ndCurrentDetailId = null;
+
+function _ndBuildCalendar(clientId, month, year) {
+  const c = ndClients.find(cl => cl.id === clientId);
+  if (!c) return '';
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  const monthName = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  // Build meal map for this month from recentMeals
+  const mealMap = {};
+  c.recentMeals.forEach(m => {
+    const d = new Date(m.date + 'T00:00:00');
+    if (d.getMonth() === month && d.getFullYear() === year) {
+      const day = d.getDate();
+      if (!mealMap[day]) mealMap[day] = { count: 0, onPlan: 0, offPlan: 0 };
+      mealMap[day].count++;
+      if (m.onPlan) mealMap[day].onPlan++;
+      else mealMap[day].offPlan++;
+    }
+  });
+
+  // Also simulate some extra meal data for demo
+  for (let d = 1; d <= Math.min(daysInMonth, today.getDate()); d++) {
+    const checkDate = new Date(year, month, d);
+    if (checkDate > today) break;
+    if (!mealMap[d] && Math.random() > 0.3) {
+      const count = Math.floor(Math.random() * 3) + 1;
+      const onPlan = Math.floor(Math.random() * (count + 1));
+      mealMap[d] = { count, onPlan, offPlan: count - onPlan };
+    }
+  }
+
+  let cells = '';
+  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  days.forEach(d => { cells += '<div class="nd-cal-head">' + d + '</div>'; });
+
+  for (let i = 0; i < firstDay; i++) cells += '<div class="nd-cal-day empty"></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+    const meal = mealMap[d];
+    let dotClass = '';
+    if (meal) {
+      if (meal.offPlan === 0) dotClass = 'on-plan';
+      else if (meal.onPlan === 0) dotClass = 'off-plan';
+      else dotClass = 'mixed';
+    }
+    cells += '<div class="nd-cal-day' + (isToday ? ' today' : '') + (meal ? ' has-meals' : '') + '">'
+      + '<div class="nd-cal-day-num">' + d + '</div>'
+      + (meal ? '<div class="nd-cal-day-dot ' + dotClass + '"></div><div class="nd-cal-day-meals">' + meal.count + 'm</div>' : '')
+      + '</div>';
+  }
+
+  return '<div class="nd-month-header">'
+    + '<h4>' + monthName + '</h4>'
+    + '<div class="nd-month-nav">'
+    + '<button onclick="ndCalPrev()">&#8249;</button>'
+    + '<button onclick="ndCalNext()">&#8250;</button>'
+    + '</div></div>'
+    + '<div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.68rem;color:var(--text-muted);">'
+    + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>On Plan</span>'
+    + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:4px;"></span>Mixed</span>'
+    + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#EF4444;margin-right:4px;"></span>Off Plan</span>'
+    + '</div>'
+    + '<div class="nd-cal-grid">' + cells + '</div>';
+}
+
+function ndCalPrev() {
+  _ndCalMonth--;
+  if (_ndCalMonth < 0) { _ndCalMonth = 11; _ndCalYear--; }
+  document.getElementById('ndCalContainer').innerHTML = _ndBuildCalendar(_ndCurrentDetailId, _ndCalMonth, _ndCalYear);
+}
+
+function ndCalNext() {
+  _ndCalMonth++;
+  if (_ndCalMonth > 11) { _ndCalMonth = 0; _ndCalYear++; }
+  document.getElementById('ndCalContainer').innerHTML = _ndBuildCalendar(_ndCurrentDetailId, _ndCalMonth, _ndCalYear);
+}
+
+function ndSwitchMealView(view, btn) {
+  document.querySelectorAll('.nd-view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ndWeeklyView').style.display = view === 'weekly' ? '' : 'none';
+  document.getElementById('ndMonthlyView').style.display = view === 'monthly' ? '' : 'none';
+}
+
 function showNdClientDetail(id) {
   const c = ndClients.find(cl => cl.id === id);
   if (!c) return;
+
+  _ndCurrentDetailId = id;
+  _ndCalMonth = new Date().getMonth();
+  _ndCalYear = new Date().getFullYear();
 
   document.getElementById('ndClientDetailSection').style.display = '';
   document.getElementById('ndClientDetailName').textContent = c.name;
@@ -231,39 +326,52 @@ function showNdClientDetail(id) {
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
       <div>
-        <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:20px;">Weekly Adherence</h3>
-        <div class="progress-bar-chart">
-          ${c.progress.map(w => `
-            <div class="chart-row">
-              <div class="chart-label">${w.week}</div>
-              <div class="chart-bar-container">
-                <div class="chart-bar" style="width: ${(w.adherence / maxAdherence) * 100}%;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin:0;">Meal Schedule</h3>
+          <div class="nd-view-toggle">
+            <button class="nd-view-btn active" onclick="ndSwitchMealView('weekly', this)">Weekly</button>
+            <button class="nd-view-btn" onclick="ndSwitchMealView('monthly', this)">Monthly</button>
+          </div>
+        </div>
+        <div id="ndWeeklyView">
+          <div class="progress-bar-chart">
+            ${c.progress.map(w => `
+              <div class="chart-row">
+                <div class="chart-label">${w.week}</div>
+                <div class="chart-bar-container">
+                  <div class="chart-bar" style="width: ${(w.adherence / maxAdherence) * 100}%;"></div>
+                </div>
+                <div class="chart-value">${w.meals} meals &middot; ${w.adherence}%</div>
               </div>
-              <div class="chart-value">${w.meals} meals &middot; ${w.adherence}%</div>
-            </div>
-          `).join('')}
+            `).join('')}
+          </div>
+        </div>
+        <div id="ndMonthlyView" style="display:none;">
+          <div id="ndCalContainer">
+            ${_ndBuildCalendar(id, _ndCalMonth, _ndCalYear)}
+          </div>
         </div>
       </div>
 
       <div>
-        <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:20px;">Recent Meals</h3>
-        ${c.recentMeals.map(m => {
-          const d = new Date(m.date + 'T00:00:00');
-          const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-          return `
-            <div class="log-entry" style="cursor:default;">
-              <div class="log-entry-date">${dateStr}</div>
-              <div class="log-entry-info">
-                <h4>${m.name}</h4>
-                <div class="log-entry-meta">
+        <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:12px;">Recent Meals</h3>
+        <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;">
+          ${c.recentMeals.map(m => {
+            const d = new Date(m.date + 'T00:00:00');
+            const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            return `
+              <div class="nd-meal-row">
+                <div class="nd-meal-date">${dateStr}</div>
+                <div class="nd-meal-name">${m.name}</div>
+                <div class="nd-meal-meta">
                   <span>${m.calories} cal</span>
-                  <span>${m.type}</span>
-                  ${m.onPlan ? '<span style="color:#10B981;">&#10003; On Plan</span>' : '<span style="color:#EF4444;">&#10007; Off Plan</span>'}
+                  <span class="nd-meal-type">${m.type}</span>
+                  <span class="nd-meal-status ${m.onPlan ? 'on' : 'off'}">${m.onPlan ? '✓' : '✗'}</span>
                 </div>
               </div>
-            </div>
-          `;
-        }).join('')}
+            `;
+          }).join('')}
+        </div>
       </div>
     </div>
 

@@ -177,6 +177,95 @@
     cursor: pointer; border-radius: 4px; transition: all 0.2s; white-space: nowrap;
   }
   .nd-checkin-cancel-btn:hover { border-color: #EF4444; background: rgba(239,68,68,0.1); }
+
+  /* ===== Monthly Calendar View ===== */
+  .nd-view-toggle {
+    display: flex; gap: 6px; margin-bottom: 16px;
+  }
+  .nd-view-btn {
+    padding: 5px 14px; font-size: 0.72rem; font-weight: 500;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .nd-view-btn.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .nd-view-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
+  .nd-month-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .nd-month-header h4 {
+    font-size: 0.88rem; font-weight: 500; margin: 0;
+  }
+  .nd-month-nav {
+    display: flex; gap: 6px;
+  }
+  .nd-month-nav button {
+    width: 28px; height: 28px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); cursor: pointer;
+    font-size: 0.75rem; display: flex; align-items: center;
+    justify-content: center; transition: all 0.2s; font-family: inherit;
+  }
+  .nd-month-nav button:hover { border-color: var(--text); color: var(--text); }
+  .nd-cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;
+  }
+  .nd-cal-head {
+    text-align: center; font-size: 0.65rem; font-weight: 500;
+    color: var(--text-muted); text-transform: uppercase; padding: 6px 0;
+    letter-spacing: 0.06em;
+  }
+  .nd-cal-day {
+    aspect-ratio: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-size: 0.72rem;
+    background: var(--bg-alt); border-radius: 4px; position: relative;
+    transition: background 0.2s;
+  }
+  .nd-cal-day.empty { background: transparent; }
+  .nd-cal-day.today { border: 1px solid var(--accent); }
+  .nd-cal-day.has-meals { cursor: default; }
+  .nd-cal-day-num { font-weight: 500; margin-bottom: 2px; }
+  .nd-cal-day-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+  }
+  .nd-cal-day-dot.on-plan { background: #10B981; }
+  .nd-cal-day-dot.off-plan { background: #EF4444; }
+  .nd-cal-day-dot.mixed { background: #F59E0B; }
+  .nd-cal-day-meals {
+    font-size: 0.55rem; color: var(--text-muted); margin-top: 1px;
+  }
+
+  /* ===== Compact Meal Log ===== */
+  .nd-meal-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+  .nd-meal-row:last-child { border-bottom: none; }
+  .nd-meal-date {
+    font-size: 0.72rem; color: var(--text-muted); min-width: 52px;
+    font-weight: 400;
+  }
+  .nd-meal-name {
+    flex: 1; font-weight: 500; font-size: 0.82rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .nd-meal-meta {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.72rem; color: var(--text-muted);
+  }
+  .nd-meal-type {
+    padding: 2px 8px; background: var(--bg-alt); border-radius: 3px;
+    font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .nd-meal-status {
+    font-size: 0.72rem; font-weight: 500;
+  }
+  .nd-meal-status.on { color: #10B981; }
+  .nd-meal-status.off { color: #EF4444; }
 </style>
 </head>
 <body>
