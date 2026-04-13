@@ -479,3 +479,195 @@ renderTdMsgSidebar();
 
 // Re-render clients to add message buttons
 renderClients('all');
+
+// ===== Check-In Scheduling =====
+const TD_CHECKIN_KEY = 'shapeTrainerCheckIns';
+
+function getTdCheckIns() {
+  try { return JSON.parse(localStorage.getItem(TD_CHECKIN_KEY)) || []; } catch(e) { return []; }
+}
+function saveTdCheckIns(data) { localStorage.setItem(TD_CHECKIN_KEY, JSON.stringify(data)); }
+
+// Seed demo check-in data
+(function initTdCheckIns() {
+  const existing = getTdCheckIns();
+  if (existing.length > 0) return;
+  const demo = [
+    { clientId: 1, frequency: 'weekly', day: 'Monday', time: '10:00 AM', notes: 'Review weekly lifts and form', createdAt: _tdDate(14), active: true },
+    { clientId: 3, frequency: 'bi-weekly', day: 'Wednesday', time: '2:00 PM', notes: 'Check strength progress', createdAt: _tdDate(10), active: true },
+    { clientId: 4, frequency: 'monthly', day: 'Friday', time: '9:00 AM', notes: 'Monthly progress photos and measurements', createdAt: _tdDate(20), active: true },
+  ];
+  saveTdCheckIns(demo);
+})();
+
+let _tdCheckInClientId = null;
+
+function openTdCheckInModal(clientId) {
+  _tdCheckInClientId = clientId;
+  const c = clients.find(cl => cl.id === clientId);
+  if (!c) return;
+
+  document.getElementById('tdCheckInClientName').textContent = c.name;
+  // Reset selections
+  document.querySelectorAll('.td-checkin-freq-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.td-checkin-day-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tdCheckInTime').value = '10:00';
+  document.getElementById('tdCheckInNotes').value = '';
+  document.getElementById('tdCheckInModal').classList.add('active');
+}
+
+function closeTdCheckInModal() {
+  _tdCheckInClientId = null;
+  document.getElementById('tdCheckInModal').classList.remove('active');
+}
+
+function selectTdCheckInFreq(btn) {
+  document.querySelectorAll('.td-checkin-freq-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function selectTdCheckInDay(btn) {
+  document.querySelectorAll('.td-checkin-day-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function _formatTime12(time24) {
+  const [h, m] = time24.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+}
+
+function saveTdCheckIn() {
+  if (!_tdCheckInClientId) return;
+
+  const freqBtn = document.querySelector('.td-checkin-freq-btn.active');
+  const dayBtn = document.querySelector('.td-checkin-day-btn.active');
+  const timeInput = document.getElementById('tdCheckInTime').value;
+  const notes = document.getElementById('tdCheckInNotes').value.trim();
+
+  if (!freqBtn) { showToast('Please select a frequency'); return; }
+  if (!dayBtn) { showToast('Please select a day'); return; }
+  if (!timeInput) { showToast('Please select a time'); return; }
+
+  const checkIns = getTdCheckIns();
+  checkIns.push({
+    clientId: _tdCheckInClientId,
+    frequency: freqBtn.dataset.value,
+    day: dayBtn.dataset.value,
+    time: _formatTime12(timeInput),
+    notes: notes,
+    createdAt: new Date().toISOString().split('T')[0],
+    active: true
+  });
+  saveTdCheckIns(checkIns);
+  closeTdCheckInModal();
+  showToast('Check-in scheduled!');
+
+  // Refresh detail view if it's open for this client
+  const detailSection = document.getElementById('clientDetailSection');
+  if (detailSection.style.display !== 'none') {
+    const nameEl = document.getElementById('clientDetailName');
+    const c = clients.find(cl => cl.id === _tdCheckInClientId);
+    if (c && nameEl.textContent === c.name) {
+      showClientDetail(_tdCheckInClientId);
+    }
+  }
+}
+
+function cancelTdCheckIn(clientId, index) {
+  const checkIns = getTdCheckIns();
+  const clientCheckIns = checkIns.filter(ci => ci.clientId === clientId && ci.active);
+  if (index >= 0 && index < clientCheckIns.length) {
+    // Find the actual index in the full array
+    let count = 0;
+    for (let i = 0; i < checkIns.length; i++) {
+      if (checkIns[i].clientId === clientId && checkIns[i].active) {
+        if (count === index) {
+          checkIns[i].active = false;
+          break;
+        }
+        count++;
+      }
+    }
+    saveTdCheckIns(checkIns);
+    showToast('Check-in cancelled');
+    showClientDetail(clientId);
+  }
+}
+
+function _renderTdCheckInsSection(clientId) {
+  const checkIns = getTdCheckIns().filter(ci => ci.clientId === clientId && ci.active);
+  if (checkIns.length === 0) {
+    return `
+      <div style="margin-top:36px;padding-top:24px;border-top:1px solid var(--border);">
+        <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Upcoming Check-Ins</h3>
+        <p style="font-size:0.82rem;color:var(--text-muted);">No check-ins scheduled.
+          <a href="javascript:void(0)" onclick="openTdCheckInModal(${clientId})" style="color:var(--accent);text-decoration:underline;cursor:pointer;">Schedule one</a>
+        </p>
+      </div>
+    `;
+  }
+  const cards = checkIns.map((ci, idx) => {
+    const freqLabel = ci.frequency === 'bi-weekly' ? 'Bi-Weekly' : ci.frequency.charAt(0).toUpperCase() + ci.frequency.slice(1);
+    return `
+      <div class="td-checkin-card">
+        <div class="td-checkin-card-info">
+          <div class="td-ci-freq">${freqLabel} &mdash; ${ci.day}s at ${ci.time}</div>
+          <div class="td-ci-detail">Since ${new Date(ci.createdAt + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+          ${ci.notes ? `<div class="td-ci-notes">"${ci.notes}"</div>` : ''}
+        </div>
+        <button class="td-checkin-cancel-btn" onclick="cancelTdCheckIn(${clientId}, ${idx})">Cancel</button>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div style="margin-top:36px;padding-top:24px;border-top:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin:0;">Upcoming Check-Ins</h3>
+        <button class="btn btn-sm btn-outline" onclick="openTdCheckInModal(${clientId})" style="font-size:0.72rem;padding:6px 14px;">+ Add Check-In</button>
+      </div>
+      ${cards}
+    </div>
+  `;
+}
+
+// Monkey-patch showClientDetail to inject check-ins section
+const _origShowClientDetail = showClientDetail;
+showClientDetail = function(id) {
+  _origShowClientDetail(id);
+  // Append check-ins section to the detail content
+  const detailContent = document.getElementById('clientDetailContent');
+  if (detailContent) {
+    detailContent.insertAdjacentHTML('beforeend', _renderTdCheckInsSection(id));
+  }
+};
+
+// Monkey-patch renderClients again to also add "Schedule Check-In" button
+const _origRenderClientsWithMsg = renderClients;
+renderClients = function(filter) {
+  _origRenderClientsWithMsg(filter);
+  document.querySelectorAll('.td-client-row').forEach(row => {
+    const onclick = row.getAttribute('onclick');
+    const idMatch = onclick && onclick.match(/showClientDetail\((\d+)\)/);
+    if (idMatch) {
+      const id = idMatch[1];
+      // Find the actions div (already added by the message monkey-patch)
+      const existingActions = row.querySelector('div[style*="margin-left:auto"]');
+      if (existingActions) {
+        const checkInBtn = document.createElement('button');
+        checkInBtn.className = 'btn btn-sm btn-outline';
+        checkInBtn.style.cssText = 'font-size:0.72rem;padding:6px 14px;margin-left:6px;border-color:var(--accent);color:var(--accent);';
+        checkInBtn.textContent = 'Check-In';
+        checkInBtn.onclick = function(e) {
+          e.stopPropagation();
+          openTdCheckInModal(Number(id));
+        };
+        existingActions.appendChild(checkInBtn);
+      }
+    }
+  });
+};
+
+// Re-render to apply check-in buttons
+renderClients('all');

@@ -82,6 +82,115 @@
     .td-msg-sidebar { max-height: 200px; border-right: none; border-bottom: 1px solid var(--border); }
     .td-msg-chat-body { max-height: 250px; }
   }
+
+  /* Check-In Modal */
+  .td-checkin-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.65); display: flex;
+    align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .td-checkin-overlay.active { opacity: 1; pointer-events: auto; }
+
+  .td-checkin-modal {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; width: 460px; max-width: 92vw;
+    padding: 32px; font-family: inherit; box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+  }
+  .td-checkin-modal h3 {
+    font-size: 1.1rem; font-weight: 600; margin: 0 0 4px;
+  }
+  .td-checkin-modal .td-checkin-client-name {
+    font-size: 0.82rem; color: var(--accent); margin-bottom: 24px;
+  }
+  .td-checkin-label {
+    display: block; font-size: 0.72rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .td-checkin-group { margin-bottom: 20px; }
+
+  /* Frequency pills */
+  .td-checkin-freq-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .td-checkin-freq-btn {
+    padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border);
+    background: transparent; color: var(--text); font-family: inherit;
+    font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+  }
+  .td-checkin-freq-btn:hover { border-color: var(--accent); }
+  .td-checkin-freq-btn.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+
+  /* Day pills */
+  .td-checkin-day-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .td-checkin-day-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+    background: transparent; color: var(--text); font-family: inherit;
+    font-size: 0.72rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .td-checkin-day-btn:hover { border-color: var(--accent); }
+  .td-checkin-day-btn.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+
+  /* Time input */
+  .td-checkin-time {
+    padding: 10px 14px; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 0.85rem;
+    border-radius: 6px; outline: none; width: 160px;
+  }
+  .td-checkin-time:focus { border-color: var(--accent); }
+
+  /* Notes textarea */
+  .td-checkin-notes {
+    width: 100%; padding: 10px 14px; background: var(--bg);
+    border: 1px solid var(--border); color: var(--text); font-family: inherit;
+    font-size: 0.85rem; border-radius: 6px; outline: none;
+    resize: vertical; min-height: 60px;
+  }
+  .td-checkin-notes:focus { border-color: var(--accent); }
+
+  /* Modal actions */
+  .td-checkin-actions {
+    display: flex; gap: 10px; justify-content: flex-end; margin-top: 28px;
+  }
+  .td-checkin-actions .btn-cancel {
+    padding: 10px 20px; background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted); font-family: inherit; font-size: 0.82rem;
+    border-radius: 6px; cursor: pointer; transition: border-color 0.2s;
+  }
+  .td-checkin-actions .btn-cancel:hover { border-color: var(--text); }
+  .td-checkin-actions .btn-save {
+    padding: 10px 24px; background: var(--accent); border: none;
+    color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 600;
+    border-radius: 6px; cursor: pointer; transition: opacity 0.2s;
+  }
+  .td-checkin-actions .btn-save:hover { opacity: 0.85; }
+
+  /* Check-in cards in detail view */
+  .td-checkin-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 16px; background: var(--bg-alt); border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .td-checkin-card-info { flex: 1; }
+  .td-checkin-card-info .td-ci-freq {
+    font-size: 0.85rem; font-weight: 500; color: var(--text);
+  }
+  .td-checkin-card-info .td-ci-detail {
+    font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;
+  }
+  .td-checkin-card-info .td-ci-notes {
+    font-size: 0.72rem; color: var(--text-muted); font-style: italic; margin-top: 4px;
+  }
+  .td-checkin-cancel-btn {
+    padding: 6px 14px; background: transparent; border: 1px solid var(--border);
+    color: #EF4444; font-family: inherit; font-size: 0.72rem;
+    border-radius: 6px; cursor: pointer; transition: all 0.2s;
+  }
+  .td-checkin-cancel-btn:hover { border-color: #EF4444; background: rgba(239,68,68,0.1); }
 </style>
 </head>
 <body>
@@ -271,6 +380,51 @@
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
+
+  <!-- Check-In Modal -->
+  <div class="td-checkin-overlay" id="tdCheckInModal">
+    <div class="td-checkin-modal">
+      <h3>Schedule Check-In</h3>
+      <div class="td-checkin-client-name" id="tdCheckInClientName"></div>
+
+      <div class="td-checkin-group">
+        <label class="td-checkin-label">Frequency</label>
+        <div class="td-checkin-freq-btns" id="tdCheckInFreq">
+          <button class="td-checkin-freq-btn" data-value="weekly" onclick="selectTdCheckInFreq(this)">Weekly</button>
+          <button class="td-checkin-freq-btn" data-value="bi-weekly" onclick="selectTdCheckInFreq(this)">Bi-Weekly</button>
+          <button class="td-checkin-freq-btn" data-value="monthly" onclick="selectTdCheckInFreq(this)">Monthly</button>
+        </div>
+      </div>
+
+      <div class="td-checkin-group">
+        <label class="td-checkin-label">Day of Week</label>
+        <div class="td-checkin-day-btns" id="tdCheckInDay">
+          <button class="td-checkin-day-btn" data-value="Monday" onclick="selectTdCheckInDay(this)">Mon</button>
+          <button class="td-checkin-day-btn" data-value="Tuesday" onclick="selectTdCheckInDay(this)">Tue</button>
+          <button class="td-checkin-day-btn" data-value="Wednesday" onclick="selectTdCheckInDay(this)">Wed</button>
+          <button class="td-checkin-day-btn" data-value="Thursday" onclick="selectTdCheckInDay(this)">Thu</button>
+          <button class="td-checkin-day-btn" data-value="Friday" onclick="selectTdCheckInDay(this)">Fri</button>
+          <button class="td-checkin-day-btn" data-value="Saturday" onclick="selectTdCheckInDay(this)">Sat</button>
+          <button class="td-checkin-day-btn" data-value="Sunday" onclick="selectTdCheckInDay(this)">Sun</button>
+        </div>
+      </div>
+
+      <div class="td-checkin-group">
+        <label class="td-checkin-label">Time</label>
+        <input type="time" class="td-checkin-time" id="tdCheckInTime" value="10:00">
+      </div>
+
+      <div class="td-checkin-group">
+        <label class="td-checkin-label">Notes (optional)</label>
+        <textarea class="td-checkin-notes" id="tdCheckInNotes" placeholder="E.g. discuss nutrition plan, review progress photos..."></textarea>
+      </div>
+
+      <div class="td-checkin-actions">
+        <button class="btn-cancel" onclick="closeTdCheckInModal()">Cancel</button>
+        <button class="btn-save" onclick="saveTdCheckIn()">Schedule Check-In</button>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
   <script src="trainer-dashboard.js"></script>
