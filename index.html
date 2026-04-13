@@ -779,10 +779,10 @@
 
     // ========== MASTER ENVELOPE ==========
     master.gain.setValueAtTime(0, now);
-    master.gain.linearRampToValueAtTime(0.15 * intensity, now + 0.5);
-    master.gain.linearRampToValueAtTime(0.25 * intensity, now + t * 0.3);
-    master.gain.linearRampToValueAtTime(0.3 * intensity, now + t * 0.5);
-    master.gain.linearRampToValueAtTime(0.25 * intensity, now + t * 0.85);
+    master.gain.linearRampToValueAtTime(0.3 * intensity, now + 0.5);
+    master.gain.linearRampToValueAtTime(0.5 * intensity, now + t * 0.3);
+    master.gain.linearRampToValueAtTime(0.6 * intensity, now + t * 0.5);
+    master.gain.linearRampToValueAtTime(0.5 * intensity, now + t * 0.85);
     master.gain.linearRampToValueAtTime(0.001, now + t);
 
     ambientNodes = { master };
