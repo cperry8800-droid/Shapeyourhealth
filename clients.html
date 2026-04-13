@@ -227,6 +227,50 @@
     .macro-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
     .macro-bar { height: 4px; background: var(--border); margin-top: 12px; position: relative; }
     .macro-bar-fill { height: 100%; position: absolute; left: 0; top: 0; transition: width 0.6s; }
+
+    /* Mobile compact macro summary bar */
+    .macro-compact { display: none; }
+    @media (max-width: 768px) {
+      .macro-row { display: none; }
+      .macro-compact {
+        display: block; padding: 6px 0 2px;
+      }
+      .macro-compact-total {
+        display: flex; align-items: baseline; justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .macro-compact-cal {
+        font-size: 1.9rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1;
+      }
+      .macro-compact-cal span {
+        font-size: 0.7rem; color: var(--text-muted); font-weight: 500;
+        text-transform: uppercase; letter-spacing: 0.08em; margin-left: 6px;
+      }
+      .macro-compact-remaining {
+        font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;
+        letter-spacing: 0.08em; font-weight: 500;
+      }
+      .macro-compact-segbar {
+        display: flex; height: 10px; border-radius: 6px; overflow: hidden;
+        background: var(--border); margin-bottom: 12px;
+      }
+      .macro-compact-segbar div { height: 100%; transition: width 0.6s; }
+      .macro-compact-legend {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      }
+      .macro-compact-legend div {
+        display: flex; flex-direction: column; gap: 2px; align-items: flex-start;
+      }
+      .macro-compact-legend .dot {
+        width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+      }
+      .macro-compact-legend .lbl {
+        font-size: 0.68rem; font-weight: 500; text-transform: uppercase;
+        letter-spacing: 0.06em; color: var(--text-muted);
+        display: flex; align-items: center; gap: 6px;
+      }
+      .macro-compact-legend .val { font-size: 0.95rem; font-weight: 400; }
+    }
     .meal-schedule-section { margin-bottom: 40px; }
     .meal-schedule-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .meal-schedule-header h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; }
@@ -1139,7 +1183,7 @@
 
         <!-- Check-in Banner (dismissible) -->
         <div class="checkin-banner" id="checkinBanner">
-          <div class="checkin-banner-icon">&#9200;</div>
+          <div class="checkin-banner-icon"></div>
           <div class="checkin-banner-body">
             <div class="checkin-banner-title">Weekly check-in with Marcus</div>
             <div class="checkin-banner-meta">Thursday · 6:30 PM &middot; 20 min</div>
@@ -1727,6 +1771,22 @@
               <span class="widget-drag-handle">&#10783;</span>
             </div>
             <div class="widget-body">
+              <div class="macro-compact">
+                <div class="macro-compact-total">
+                  <div class="macro-compact-cal"><span id="mcCalories">1,150</span><span>of <span id="mcCalGoal">2,000</span> kcal</span></div>
+                  <div class="macro-compact-remaining"><span id="mcRemaining">850</span> left</div>
+                </div>
+                <div class="macro-compact-segbar">
+                  <div id="mcSegP" style="background:#6C3AED;width:31%"></div>
+                  <div id="mcSegC" style="background:#F59E0B;width:42%"></div>
+                  <div id="mcSegF" style="background:#EC4899;width:26%"></div>
+                </div>
+                <div class="macro-compact-legend">
+                  <div><span class="lbl"><span class="dot" style="background:#6C3AED"></span>Protein</span><span class="val"><span id="mcProtein">90</span>g</span></div>
+                  <div><span class="lbl"><span class="dot" style="background:#F59E0B"></span>Carbs</span><span class="val"><span id="mcCarbs">121</span>g</span></div>
+                  <div><span class="lbl"><span class="dot" style="background:#EC4899"></span>Fat</span><span class="val"><span id="mcFat">33</span>g</span></div>
+                </div>
+              </div>
               <div class="macro-row" id="macroRow">
                 <div class="macro-card">
                   <div class="macro-value" id="macroCalories">0</div>
