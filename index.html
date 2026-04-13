@@ -133,11 +133,28 @@
       color: rgba(255,255,255,0.15);
     }
 
+    .intro-logo-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
     .intro-logo {
       height: 140px; width: auto;
-      margin-bottom: 12px;
       filter: brightness(0) invert(1);
       opacity: 0;
+    }
+    .intro-beam-svg {
+      position: absolute;
+      top: 2%;
+      left: 28%;
+      width: 44%;
+      height: 48%;
+      overflow: visible;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .intro-beam-svg.show {
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .intro-logo.show {
       animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
@@ -316,7 +333,13 @@
   </div>
 
   <div class="intro-content" id="introContent">
-    <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
+    <div class="intro-logo-wrap">
+      <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
+      <svg class="intro-beam-svg" viewBox="0 0 95 110" xmlns="http://www.w3.org/2000/svg">
+        <line x1="90" y1="67" x2="40" y2="32" class="s-beam s-beam-1" />
+        <line x1="5" y1="43" x2="55" y2="78" class="s-beam s-beam-2" />
+      </svg>
+    </div>
     <p class="intro-tagline" id="introTagline">Join the Community</p>
     <a href="home.html" class="enter-btn" id="enterBtn" onclick="enterSite(event)">
       <span>Enter</span>
@@ -435,6 +458,7 @@
               document.getElementById('introLogo').classList.add('show');
               document.getElementById('introTagline').classList.add('show');
               document.getElementById('enterBtn').classList.add('show');
+              document.querySelector('.intro-beam-svg').classList.add('show');
             }, 300);
           }, 300);
         }
