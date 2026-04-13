@@ -502,12 +502,7 @@
       }, 200);
 
       // 4. Fade out engine sound
-      if (audioCtx && ambientNodes) {
-        const t = audioCtx.currentTime;
-        ambientNodes.master.gain.cancelScheduledValues(t);
-        ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
-        ambientNodes.master.gain.linearRampToValueAtTime(0, t + 1.4);
-      }
+      stopIntroSound();
 
       // 5. Navigate after dissolve completes (black overlay fully covering)
       setTimeout(() => {
@@ -570,7 +565,7 @@
 
 
   <script>
-  // ===== AUDIO ENGINE — ELECTRICAL BEAM =====
+  // ===== AUDIO ENGINE — ELECTRICAL BEAM (CONTINUOUS) =====
   let audioCtx = null;
   let ambientNodes = null;
 
@@ -581,13 +576,8 @@
 
   function playIntroEngineSound(opts = {}) {
     const ctx = ensureAudioCtx();
-    const {
-      intensity = 1.0,
-      duration = 14
-    } = opts;
-
+    const intensity = opts.intensity || 1.0;
     const now = ctx.currentTime;
-    const t = duration;
 
     // Master output
     const master = ctx.createGain();
@@ -612,104 +602,74 @@
     const hum1 = ctx.createOscillator();
     const hum1G = ctx.createGain();
     hum1.type = 'sawtooth';
-    hum1.frequency.setValueAtTime(60, now);
-    hum1.frequency.linearRampToValueAtTime(62, now + t * 0.5);
-    hum1.frequency.linearRampToValueAtTime(60, now + t);
-    hum1G.gain.setValueAtTime(0, now);
-    hum1G.gain.linearRampToValueAtTime(0.25 * intensity, now + 0.5);
-    hum1G.gain.linearRampToValueAtTime(0.3 * intensity, now + t * 0.5);
-    hum1G.gain.linearRampToValueAtTime(0.001, now + t);
+    hum1.frequency.value = 60;
+    hum1G.gain.value = 0.28 * intensity;
     const humLP = ctx.createBiquadFilter();
     humLP.type = 'lowpass'; humLP.frequency.value = 180; humLP.Q.value = 2;
     hum1.connect(humLP); humLP.connect(hum1G); hum1G.connect(master);
-    hum1.start(now); hum1.stop(now + t + 0.2);
+    hum1.start(now);
 
-    // Second harmonic — deeper
+    // Second harmonic
     const hum2 = ctx.createOscillator();
     const hum2G = ctx.createGain();
     hum2.type = 'sine';
-    hum2.frequency.setValueAtTime(120, now);
-    hum2G.gain.setValueAtTime(0, now);
-    hum2G.gain.linearRampToValueAtTime(0.15 * intensity, now + 0.5);
-    hum2G.gain.linearRampToValueAtTime(0.18 * intensity, now + t * 0.5);
-    hum2G.gain.linearRampToValueAtTime(0.001, now + t);
+    hum2.frequency.value = 120;
+    hum2G.gain.value = 0.16 * intensity;
     hum2.connect(hum2G); hum2G.connect(master);
-    hum2.start(now); hum2.stop(now + t + 0.2);
+    hum2.start(now);
 
     // Sub bass foundation
     const sub = ctx.createOscillator();
     const subG = ctx.createGain();
     sub.type = 'sine';
-    sub.frequency.setValueAtTime(40, now);
-    sub.frequency.linearRampToValueAtTime(45, now + t * 0.4);
-    sub.frequency.linearRampToValueAtTime(40, now + t);
-    subG.gain.setValueAtTime(0, now);
-    subG.gain.linearRampToValueAtTime(0.2 * intensity, now + 0.8);
-    subG.gain.linearRampToValueAtTime(0.25 * intensity, now + t * 0.5);
-    subG.gain.linearRampToValueAtTime(0.001, now + t);
+    sub.frequency.value = 40;
+    subG.gain.value = 0.22 * intensity;
     sub.connect(subG); subG.connect(master);
-    sub.start(now); sub.stop(now + t + 0.2);
+    sub.start(now);
 
-    // ========== LAYER 2: CRACKLING ARC NOISE ==========
-    const noiseLen = ctx.sampleRate * Math.ceil(t + 1);
+    // ========== LAYER 2: LOOPING CRACKLE NOISE ==========
+    const noiseLen = ctx.sampleRate * 4;
     const noiseBuf = ctx.createBuffer(2, noiseLen, ctx.sampleRate);
     for (let ch = 0; ch < 2; ch++) {
       const d = noiseBuf.getChannelData(ch);
       for (let i = 0; i < noiseLen; i++) {
-        // Sparse crackle — mostly silent with sharp spikes
         d[i] = Math.random() < 0.02 ? (Math.random() * 2 - 1) * 0.8 : (Math.random() * 2 - 1) * 0.02;
       }
     }
 
-    // Subtle low crackle
     const crackle = ctx.createBufferSource();
     crackle.buffer = noiseBuf;
+    crackle.loop = true;
     const crackleLP = ctx.createBiquadFilter();
     crackleLP.type = 'lowpass';
-    crackleLP.frequency.setValueAtTime(400, now);
-    crackleLP.frequency.linearRampToValueAtTime(600, now + t * 0.3);
-    crackleLP.frequency.linearRampToValueAtTime(400, now + t);
+    crackleLP.frequency.value = 500;
     crackleLP.Q.value = 1;
     const crackleG = ctx.createGain();
-    crackleG.gain.setValueAtTime(0, now);
-    crackleG.gain.linearRampToValueAtTime(0.1 * intensity, now + 0.4);
-    crackleG.gain.linearRampToValueAtTime(0.15 * intensity, now + t * 0.4);
-    crackleG.gain.linearRampToValueAtTime(0.001, now + t);
+    crackleG.gain.value = 0.12 * intensity;
     crackle.connect(crackleLP); crackleLP.connect(crackleG); crackleG.connect(master);
-    crackle.start(now); crackle.stop(now + t + 0.2);
+    crackle.start(now);
 
     // ========== LAYER 3: LOW RESONANT BUZZ ==========
     const buzz1 = ctx.createOscillator();
     const buzz1G = ctx.createGain();
     buzz1.type = 'square';
-    buzz1.frequency.setValueAtTime(90, now);
-    buzz1.frequency.linearRampToValueAtTime(95, now + t * 0.3);
-    buzz1.frequency.linearRampToValueAtTime(88, now + t * 0.7);
-    buzz1.frequency.linearRampToValueAtTime(90, now + t);
-    buzz1G.gain.setValueAtTime(0, now);
-    buzz1G.gain.linearRampToValueAtTime(0.04 * intensity, now + 1.0);
-    buzz1G.gain.linearRampToValueAtTime(0.06 * intensity, now + t * 0.5);
-    buzz1G.gain.linearRampToValueAtTime(0.001, now + t);
+    buzz1.frequency.value = 90;
+    buzz1G.gain.value = 0.05 * intensity;
     const buzzLP = ctx.createBiquadFilter();
     buzzLP.type = 'lowpass'; buzzLP.frequency.value = 250; buzzLP.Q.value = 2;
     buzz1.connect(buzzLP); buzzLP.connect(buzz1G); buzz1G.connect(master);
-    buzz1.start(now); buzz1.stop(now + t + 0.2);
+    buzz1.start(now);
 
     // ========== LAYER 4: LFOs FOR MOVEMENT ==========
-    // Slow throb on master
     const surgeLFO = ctx.createOscillator();
     const surgeG = ctx.createGain();
     surgeLFO.type = 'sine';
     surgeLFO.frequency.value = 0.2;
-    surgeG.gain.setValueAtTime(0, now);
-    surgeG.gain.linearRampToValueAtTime(0.03 * intensity, now + 0.5);
-    surgeG.gain.linearRampToValueAtTime(0.05 * intensity, now + t * 0.5);
-    surgeG.gain.linearRampToValueAtTime(0.001, now + t);
+    surgeG.gain.value = 0.04 * intensity;
     surgeLFO.connect(surgeG);
     surgeG.connect(master.gain);
-    surgeLFO.start(now); surgeLFO.stop(now + t + 0.2);
+    surgeLFO.start(now);
 
-    // Hum frequency drift
     const driftLFO = ctx.createOscillator();
     const driftG = ctx.createGain();
     driftLFO.type = 'sine';
@@ -718,17 +678,34 @@
     driftLFO.connect(driftG);
     driftG.connect(hum1.frequency);
     driftG.connect(buzz1.frequency);
-    driftLFO.start(now); driftLFO.stop(now + t + 0.2);
+    driftLFO.start(now);
 
-    // ========== MASTER ENVELOPE ==========
+    // ========== FADE IN ==========
     master.gain.setValueAtTime(0, now);
-    master.gain.linearRampToValueAtTime(0.3 * intensity, now + 0.5);
-    master.gain.linearRampToValueAtTime(0.5 * intensity, now + t * 0.3);
-    master.gain.linearRampToValueAtTime(0.6 * intensity, now + t * 0.5);
-    master.gain.linearRampToValueAtTime(0.5 * intensity, now + t * 0.85);
-    master.gain.linearRampToValueAtTime(0.001, now + t);
+    master.gain.linearRampToValueAtTime(0.6 * intensity, now + 1.5);
 
-    ambientNodes = { master };
+    // Store all nodes so we can stop them on Enter
+    ambientNodes = {
+      master,
+      oscillators: [hum1, hum2, sub, buzz1, surgeLFO, driftLFO],
+      sources: [crackle]
+    };
+  }
+
+  function stopIntroSound() {
+    if (!ambientNodes || !audioCtx) return;
+    const t = audioCtx.currentTime;
+    ambientNodes.master.gain.cancelScheduledValues(t);
+    ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
+    ambientNodes.master.gain.linearRampToValueAtTime(0, t + 1.4);
+    // Stop all nodes after fade
+    setTimeout(() => {
+      if (ambientNodes) {
+        ambientNodes.oscillators.forEach(o => { try { o.stop(); } catch(e) {} });
+        ambientNodes.sources.forEach(s => { try { s.stop(); } catch(e) {} });
+        ambientNodes = null;
+      }
+    }, 1600);
   }
 
   // Start engine sound on first interaction
