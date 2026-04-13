@@ -178,7 +178,7 @@
     .dash-tab-content.active { display: block; padding-top: 80px; }
 
     /* ===== Nutrition Tab Styles ===== */
-    .nutrition-dashboard { max-width: 1000px; margin: 0 auto; }
+    .nutrition-dashboard { width: 100%; }
     .macro-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
     .macro-card { background: var(--bg-card); border: 1px solid var(--border); padding: 24px; text-align: center; }
     .macro-value { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
@@ -750,7 +750,7 @@
 
   /* ===== Widget Drag-and-Drop ===== */
   .widget-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; grid-auto-flow: dense; }
-  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; }
+  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
   .widget.widget-full { grid-column: 1 / -1; }
   .widget.dragging { opacity: 0.25; }
   .widget.drag-over { border-top: 2px solid var(--accent); }
@@ -764,7 +764,7 @@
   .widget-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
   .widget-drag-handle { font-size: 1.1rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 2px; }
   .widget-drag-handle:active { cursor: grabbing; }
-  .widget-body { padding: 16px; }
+  .widget-body { padding: 16px; overflow-x: auto; min-width: 0; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
   @media (max-width: 600px) {
@@ -1365,16 +1365,16 @@
             </div>
           </div>
 
-          <!-- Widget: Meal Schedule -->
+          <!-- Widget: Nutrition Calendar -->
           <div class="widget" data-widget-id="cl-nu-mealschedule" draggable="true">
             <div class="widget-header">
-              <span class="widget-title">Meal Schedule</span>
+              <span class="widget-title">Nutrition Calendar</span>
               <span class="widget-drag-handle">&#10783;</span>
             </div>
             <div class="widget-body">
               <div class="meal-schedule-section" style="margin-bottom:0;">
                 <div class="meal-schedule-header">
-                  <h2>Meal Schedule</h2>
+                  <h2>Nutrition Calendar</h2>
                   <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                     <div class="cl-view-toggle">
                       <button class="cl-view-btn active" onclick="clSwitchMealView('weekly', this)">Weekly</button>

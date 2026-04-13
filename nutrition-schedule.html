@@ -785,7 +785,7 @@
 
   /* ===== Widget Drag-and-Drop ===== */
   .widget-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; grid-auto-flow: dense; }
-  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; }
+  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
   .widget.widget-full { grid-column: 1 / -1; }
   .widget.dragging { opacity: 0.25; }
   .widget.drag-over { border-top: 2px solid var(--accent); }
@@ -799,7 +799,7 @@
   .widget-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
   .widget-drag-handle { font-size: 1.1rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 2px; }
   .widget-drag-handle:active { cursor: grabbing; }
-  .widget-body { padding: 16px; }
+  .widget-body { padding: 16px; overflow-x: auto; min-width: 0; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
   @media (max-width: 600px) {
