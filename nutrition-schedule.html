@@ -1269,6 +1269,26 @@
     // Nothing extra needed here since the IIFE runs immediately
   }
 
+  // Wrap openNdChat to switch to Messages tab first
+  const _origOpenNdChat = window.openNdChat;
+  if (typeof _origOpenNdChat === 'function') {
+    window.openNdChat = function(clientId) {
+      ndSwitchTab('messages', document.querySelector('[data-tab="messages"]'));
+      _origOpenNdChat(clientId);
+    };
+  }
+  // Also ensure the nutritionist-dashboard.js onload wraps after DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof openNdChat === 'function' && !window._ndChatWrapped) {
+      const orig = openNdChat;
+      window.openNdChat = function(clientId) {
+        ndSwitchTab('messages', document.querySelector('[data-tab="messages"]'));
+        orig(clientId);
+      };
+      window._ndChatWrapped = true;
+    }
+  });
+
   // ===== Community Tab =====
   const ndCommUsers = [
     { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training enthusiast" },
@@ -1525,6 +1545,327 @@
     };
     reader.readAsDataURL(file);
   }
+
+  // ===== Meal Plan Builder (IIFE) =====
+  (function(){
+    const PLANS_KEY = 'shapeNutritionistPlans';
+    const ASSIGNED_KEY = 'shapeClientAssignedMealPlans';
+    const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    const MEALS = ['Breakfast','Morning Snack','Lunch','Afternoon Snack','Dinner'];
+    let mpbEditId = null;
+
+    function mpbGetPlans(){ return JSON.parse(localStorage.getItem(PLANS_KEY)||'[]'); }
+    function mpbSavePlans(p){ localStorage.setItem(PLANS_KEY,JSON.stringify(p)); }
+    function mpbGetAssigned(){ return JSON.parse(localStorage.getItem(ASSIGNED_KEY)||'[]'); }
+    function mpbSaveAssigned(p){ localStorage.setItem(ASSIGNED_KEY,JSON.stringify(p)); }
+
+    function mpbToast(msg){
+      var t=document.getElementById('toast');
+      if(t){t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
+    }
+
+    window.mpbToggleBuilder=function(){
+      var el=document.getElementById('mpbBuilderArea');
+      el.classList.toggle('mpb-open');
+      if(!el.classList.contains('mpb-open')){mpbResetBuilder();}
+    };
+
+    window.mpbChoosePath=function(path){
+      document.querySelectorAll('.mpb-choice-btn').forEach(function(b){b.classList.remove('mpb-active');});
+      event.currentTarget.classList.add('mpb-active');
+      document.getElementById('mpbTemplateForm').classList.toggle('mpb-open',path==='template');
+      document.getElementById('mpbCustomForm').classList.toggle('mpb-open',path==='custom');
+      if(path==='template') mpbBuildDays();
+    };
+
+    function mpbBuildDays(data){
+      var c=document.getElementById('mpbDaysContainer');if(!c)return;c.innerHTML='';
+      DAYS.forEach(function(day,di){
+        var card=document.createElement('div');card.className='mpb-day-card';
+        var hdr=document.createElement('div');hdr.className='mpb-day-header';
+        hdr.innerHTML='<h4>'+day+'</h4><span>&#9660;</span>';
+        hdr.onclick=function(){card.classList.toggle('mpb-expanded');};
+        var body=document.createElement('div');body.className='mpb-day-body';
+        MEALS.forEach(function(meal,mi){
+          var existing=(data&&data[di]&&data[di][mi])||{};
+          var block=document.createElement('div');block.className='mpb-meal-block';
+          block.innerHTML='<h5>'+meal+'</h5>'+
+            '<div class="mpb-form-grid" style="grid-template-columns:1fr 1fr;margin-bottom:8px;">'+
+              '<div><label class="mpb-label">Meal Name</label><input type="text" class="mpb-input mpb-day-meal-name" data-d="'+di+'" data-m="'+mi+'" placeholder="e.g. Greek yogurt bowl" value="'+(existing.name||'')+'"></div>'+
+              '<div><label class="mpb-label">Calories</label><input type="number" class="mpb-input mpb-day-meal-cal" data-d="'+di+'" data-m="'+mi+'" placeholder="400" min="0" value="'+(existing.calories||'')+'"></div>'+
+            '</div>'+
+            '<div class="mpb-meal-grid">'+
+              '<div><label class="mpb-label">Protein (g)</label><input type="number" class="mpb-input mpb-day-meal-p" data-d="'+di+'" data-m="'+mi+'" placeholder="30" min="0" value="'+(existing.protein||'')+'"></div>'+
+              '<div><label class="mpb-label">Carbs (g)</label><input type="number" class="mpb-input mpb-day-meal-c" data-d="'+di+'" data-m="'+mi+'" placeholder="45" min="0" value="'+(existing.carbs||'')+'"></div>'+
+              '<div><label class="mpb-label">Fat (g)</label><input type="number" class="mpb-input mpb-day-meal-f" data-d="'+di+'" data-m="'+mi+'" placeholder="12" min="0" value="'+(existing.fat||'')+'"></div>'+
+            '</div>'+
+            '<div style="margin-top:8px;"><label class="mpb-label">Ingredients</label><textarea class="mpb-textarea mpb-day-meal-ing" data-d="'+di+'" data-m="'+mi+'" placeholder="List ingredients..." style="min-height:50px;">'+(existing.ingredients||'')+'</textarea></div>'+
+            '<div style="margin-top:8px;"><label class="mpb-label">Prep Instructions</label><textarea class="mpb-textarea mpb-day-meal-prep" data-d="'+di+'" data-m="'+mi+'" placeholder="How to prepare..." style="min-height:50px;">'+(existing.prep||'')+'</textarea></div>';
+          body.appendChild(block);
+        });
+        card.appendChild(hdr);card.appendChild(body);c.appendChild(card);
+      });
+    }
+    window.mpbBuildDays = mpbBuildDays;
+
+    window.mpbUpdateMacros=function(){
+      var p=parseInt(document.getElementById('mpbSliderP').value);
+      var c=parseInt(document.getElementById('mpbSliderC').value);
+      var f=parseInt(document.getElementById('mpbSliderF').value);
+      document.getElementById('mpbValP').textContent=p+'%';
+      document.getElementById('mpbValC').textContent=c+'%';
+      document.getElementById('mpbValF').textContent=f+'%';
+      var total=p+c+f;
+      var el=document.getElementById('mpbMacroTotal');
+      el.textContent='Total: '+total+'%';
+      el.classList.toggle('mpb-over',total!==100);
+    };
+
+    var mpbUploadedFiles=[];
+
+    window.mpbHandleFiles=function(files){
+      Array.from(files).forEach(function(file){
+        if(file.size>10*1024*1024){mpbToast('File too large. Max 10MB.');return;}
+        var reader=new FileReader();
+        reader.onload=function(ev){
+          mpbUploadedFiles.push({name:file.name,type:file.type,size:file.size,data:ev.target.result});
+          mpbRenderFileList();
+          mpbToast(file.name+' uploaded!');
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+
+    function mpbRenderFileList(){
+      var container=document.getElementById('mpbUploadedFiles');
+      var list=document.getElementById('mpbFileList');
+      if(!container||!list)return;
+      if(!mpbUploadedFiles.length){container.style.display='none';return;}
+      container.style.display='block';
+      list.innerHTML=mpbUploadedFiles.map(function(f,i){
+        var sizeKB=(f.size/1024).toFixed(1);
+        var isImage=f.type&&f.type.startsWith('image/');
+        var icon=f.type==='application/pdf'?'&#128196;':isImage?'&#128247;':'&#128196;';
+        return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:6px;border-radius:var(--radius);">'+
+          (isImage?'<img src="'+f.data+'" style="width:48px;height:48px;object-fit:cover;border:1px solid var(--border);">':'<span style="font-size:1.6rem;">'+icon+'</span>')+
+          '<div style="flex:1;"><div style="font-size:0.88rem;font-weight:500;">'+mpbEsc(f.name)+'</div><div style="font-size:0.72rem;color:var(--text-muted);">'+sizeKB+' KB</div></div>'+
+          '<button style="background:none;border:none;font-size:1rem;color:var(--text-muted);cursor:pointer;" onclick="mpbRemoveFile('+i+')">&times;</button></div>';
+      }).join('');
+    }
+
+    window.mpbRemoveFile=function(idx){
+      mpbUploadedFiles.splice(idx,1);
+      mpbRenderFileList();
+    };
+
+    function mpbCollectDays(){
+      var days=[];
+      for(var d=0;d<7;d++){
+        var meals=[];
+        for(var m=0;m<MEALS.length;m++){
+          var sel=function(cls){var el=document.querySelector('.'+cls+'[data-d="'+d+'"][data-m="'+m+'"]');return el?el.value:'';};
+          meals.push({
+            mealType:MEALS[m],
+            name:sel('mpb-day-meal-name'),
+            calories:sel('mpb-day-meal-cal'),
+            protein:sel('mpb-day-meal-p'),
+            carbs:sel('mpb-day-meal-c'),
+            fat:sel('mpb-day-meal-f'),
+            ingredients:sel('mpb-day-meal-ing'),
+            prep:sel('mpb-day-meal-prep')
+          });
+        }
+        days.push({day:DAYS[d],meals:meals});
+      }
+      return days;
+    }
+
+    function mpbCollectPlan(type){
+      var plan={id:mpbEditId||Date.now(),type:type,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+      if(type==='template'){
+        plan.name=document.getElementById('mpbTplName').value.trim();
+        if(!plan.name) return null;
+        plan.goal=document.getElementById('mpbTplGoal').value;
+        plan.dietType=document.getElementById('mpbTplDiet').value;
+        plan.duration=document.getElementById('mpbTplDuration').value;
+        plan.calories=document.getElementById('mpbTplCalories').value;
+        plan.description=document.getElementById('mpbTplDesc').value;
+        plan.macros={
+          protein:parseInt(document.getElementById('mpbSliderP').value),
+          carbs:parseInt(document.getElementById('mpbSliderC').value),
+          fat:parseInt(document.getElementById('mpbSliderF').value)
+        };
+        plan.days=mpbCollectDays();
+        plan.shoppingList=document.getElementById('mpbTplShoppingList').value;
+        plan.client=document.getElementById('mpbTplClient').value;
+      } else {
+        plan.name=document.getElementById('mpbCustName').value.trim();
+        if(!plan.name) return null;
+        plan.description=document.getElementById('mpbCustDesc').value;
+        plan.files=mpbUploadedFiles.map(function(f){return {name:f.name,type:f.type,size:f.size,data:f.data};});
+        plan.client=document.getElementById('mpbCustClient').value;
+      }
+      return plan;
+    }
+
+    function mpbCoreSave(plan){
+      var plans=mpbGetPlans();
+      var idx=plans.findIndex(function(p){return p.id===plan.id;});
+      if(idx>-1) plans[idx]=plan; else plans.push(plan);
+      mpbSavePlans(plans);
+    }
+
+    window.mpbSaveDraft=function(type){
+      var plan=mpbCollectPlan(type);
+      if(!plan){mpbToast('Please enter a plan name');return;}
+      plan.status='Draft';
+      mpbCoreSave(plan);
+      mpbToast('Draft saved! You can continue editing anytime.');
+      mpbResetBuilder();
+      document.getElementById('mpbBuilderArea').classList.remove('mpb-open');
+      mpbRenderList();
+    };
+
+    window.mpbSavePlan=function(type){
+      var plan=mpbCollectPlan(type);
+      if(!plan){mpbToast('Please enter a plan name');return;}
+      if(!plan.client){mpbToast('Please assign a client first.');return;}
+      plan.status='Published';
+      mpbCoreSave(plan);
+      var assigned=mpbGetAssigned();
+      var ai=assigned.findIndex(function(a){return a.id===plan.id;});
+      if(ai>-1) assigned[ai]=plan; else assigned.push(plan);
+      mpbSaveAssigned(assigned);
+      mpbToast('Meal plan published and sent to '+plan.client+'!');
+      mpbResetBuilder();
+      document.getElementById('mpbBuilderArea').classList.remove('mpb-open');
+      mpbRenderList();
+    };
+
+    window.mpbPublishToProfile=function(type){
+      var plan=mpbCollectPlan(type);
+      if(!plan){mpbToast('Please enter a plan name');return;}
+      plan.status='On Profile';
+      mpbCoreSave(plan);
+      mpbToast('Meal plan published to your profile!');
+      mpbResetBuilder();
+      document.getElementById('mpbBuilderArea').classList.remove('mpb-open');
+      mpbRenderList();
+    };
+
+    function mpbRenderList(){
+      var plans=mpbGetPlans();
+      var el=document.getElementById('mpbPlansList');
+      if(!el)return;
+      if(!plans.length){el.innerHTML='<p class="mpb-empty">No meal plans yet. Create your first one above.</p>';return;}
+      el.innerHTML='';
+      plans.forEach(function(p){
+        var item=document.createElement('div');item.className='mpb-plan-item';
+        var badgeCls=p.status==='Published'?'mpb-badge-published':p.status==='On Profile'?'mpb-badge-profile':'mpb-badge-draft';
+        item.innerHTML='<h4>'+mpbEsc(p.name)+'</h4>'+
+          '<span class="mpb-badge '+badgeCls+'">'+p.status+'</span>'+
+          '<span class="mpb-plan-client">'+(p.client||'Unassigned')+'</span>'+
+          '<div class="mpb-plan-actions">'+
+            '<button onclick="mpbEditPlan('+p.id+')">Edit</button>'+
+            '<button class="mpb-del" onclick="mpbDeletePlan('+p.id+')">Delete</button>'+
+          '</div>';
+        el.appendChild(item);
+      });
+    }
+    window.mpbRenderList = mpbRenderList;
+
+    function mpbEsc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+
+    window.mpbDeletePlan=function(id){
+      var plans=mpbGetPlans().filter(function(p){return p.id!==id;});
+      mpbSavePlans(plans);
+      var assigned=mpbGetAssigned().filter(function(p){return p.id!==id;});
+      mpbSaveAssigned(assigned);
+      mpbToast('Plan deleted');
+      mpbRenderList();
+    };
+
+    window.mpbEditPlan=function(id){
+      var plan=mpbGetPlans().find(function(p){return p.id===id;});
+      if(!plan) return;
+      mpbEditId=id;
+      ndSwitchTab('mealplans', document.querySelector('[data-tab="mealplans"]'));
+      document.getElementById('mpbBuilderArea').classList.add('mpb-open');
+      if(plan.type==='template'){
+        mpbChoosePathDirect('template');
+        document.getElementById('mpbTplName').value=plan.name||'';
+        document.getElementById('mpbTplGoal').value=plan.goal||'Weight Loss';
+        document.getElementById('mpbTplDiet').value=plan.dietType||'Standard';
+        document.getElementById('mpbTplDuration').value=plan.duration||'4';
+        document.getElementById('mpbTplCalories').value=plan.calories||'';
+        document.getElementById('mpbTplDesc').value=plan.description||'';
+        if(plan.macros){
+          document.getElementById('mpbSliderP').value=plan.macros.protein;
+          document.getElementById('mpbSliderC').value=plan.macros.carbs;
+          document.getElementById('mpbSliderF').value=plan.macros.fat;
+          mpbUpdateMacros();
+        }
+        var dayData=[];
+        if(plan.days){
+          plan.days.forEach(function(d){
+            var meals=[];
+            d.meals.forEach(function(m){
+              meals.push({name:m.name,calories:m.calories,protein:m.protein,carbs:m.carbs,fat:m.fat,ingredients:m.ingredients,prep:m.prep});
+            });
+            dayData.push(meals);
+          });
+        }
+        mpbBuildDays(dayData);
+        document.getElementById('mpbTplShoppingList').value=plan.shoppingList||'';
+        document.getElementById('mpbTplClient').value=plan.client||'';
+      } else {
+        mpbChoosePathDirect('custom');
+        document.getElementById('mpbCustName').value=plan.name||'';
+        document.getElementById('mpbCustDesc').value=plan.description||'';
+        mpbUploadedFiles=(plan.files||[]).map(function(f){return {name:f.name,type:f.type,size:f.size,data:f.data};});
+        mpbRenderFileList();
+        document.getElementById('mpbCustClient').value=plan.client||'';
+      }
+      document.getElementById('ndTabMealplans').scrollIntoView({behavior:'smooth'});
+    };
+
+    function mpbChoosePathDirect(path){
+      document.querySelectorAll('.mpb-choice-btn').forEach(function(b,i){
+        b.classList.toggle('mpb-active',(path==='template'&&i===0)||(path==='custom'&&i===1));
+      });
+      document.getElementById('mpbTemplateForm').classList.toggle('mpb-open',path==='template');
+      document.getElementById('mpbCustomForm').classList.toggle('mpb-open',path==='custom');
+      if(path==='template') mpbBuildDays();
+    }
+
+    function mpbResetBuilder(){
+      mpbEditId=null;
+      document.querySelectorAll('.mpb-choice-btn').forEach(function(b){b.classList.remove('mpb-active');});
+      var tf=document.getElementById('mpbTemplateForm');if(tf)tf.classList.remove('mpb-open');
+      var cf=document.getElementById('mpbCustomForm');if(cf)cf.classList.remove('mpb-open');
+      ['mpbTplName','mpbTplCalories','mpbTplDesc','mpbTplShoppingList'].forEach(function(id){
+        var el=document.getElementById(id);if(el)el.value='';
+      });
+      var g=document.getElementById('mpbTplGoal');if(g)g.selectedIndex=0;
+      var dt=document.getElementById('mpbTplDiet');if(dt)dt.selectedIndex=0;
+      var du=document.getElementById('mpbTplDuration');if(du)du.selectedIndex=0;
+      var sp=document.getElementById('mpbSliderP');if(sp)sp.value=40;
+      var sc=document.getElementById('mpbSliderC');if(sc)sc.value=35;
+      var sf=document.getElementById('mpbSliderF');if(sf)sf.value=25;
+      if(typeof window.mpbUpdateMacros==='function')window.mpbUpdateMacros();
+      var dc=document.getElementById('mpbDaysContainer');if(dc)dc.innerHTML='';
+      var tc=document.getElementById('mpbTplClient');if(tc)tc.selectedIndex=0;
+      ['mpbCustName','mpbCustDesc'].forEach(function(id){
+        var el=document.getElementById(id);if(el)el.value='';
+      });
+      mpbUploadedFiles=[];
+      mpbRenderFileList();
+      var cc=document.getElementById('mpbCustClient');if(cc)cc.selectedIndex=0;
+    }
+
+    // Init - render the plans list on page load
+    mpbRenderList();
+  })();
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
