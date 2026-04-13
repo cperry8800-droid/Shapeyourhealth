@@ -2832,9 +2832,24 @@
         var el = document.elementFromPoint(e.clientX, e.clientY);
         var target = el && el.closest('.widget:not(.dragging):not(.widget-drop-ghost)');
         if (target && target.parentNode === grid) {
+          var gridRect = grid.getBoundingClientRect();
           var rect = target.getBoundingClientRect();
-          var before = e.clientY < rect.top + rect.height / 2;
-          if (before) {
+          var gridMidX = gridRect.left + gridRect.width / 2;
+          var insertBefore;
+          if (target.classList.contains('widget-full') || _ghost.classList.contains('widget-full')) {
+            insertBefore = e.clientY < rect.top + rect.height / 2;
+          } else {
+            var cursorLeft = e.clientX < gridMidX;
+            var targetLeft = rect.left < gridMidX;
+            if (cursorLeft && !targetLeft) {
+              insertBefore = true;
+            } else if (!cursorLeft && targetLeft) {
+              insertBefore = false;
+            } else {
+              insertBefore = e.clientY < rect.top + rect.height / 2;
+            }
+          }
+          if (insertBefore) {
             if (_ghost.nextSibling !== target) grid.insertBefore(_ghost, target);
           } else {
             var after = target.nextSibling;

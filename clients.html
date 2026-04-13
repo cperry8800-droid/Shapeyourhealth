@@ -3655,9 +3655,29 @@
         var el = document.elementFromPoint(e.clientX, e.clientY);
         var target = el && el.closest('.widget:not(.dragging):not(.widget-drop-ghost)');
         if (target && target.parentNode === grid) {
+          var gridRect = grid.getBoundingClientRect();
           var rect = target.getBoundingClientRect();
-          var before = e.clientY < rect.top + rect.height / 2;
-          if (before) {
+          var gridMidX = gridRect.left + gridRect.width / 2;
+          var insertBefore;
+          // Full-width widgets (or ghost is full-width): pure Y-axis decision
+          if (target.classList.contains('widget-full') || _ghost.classList.contains('widget-full')) {
+            insertBefore = e.clientY < rect.top + rect.height / 2;
+          } else {
+            // Half-width: use cursor X relative to grid centre to decide column slot
+            var cursorLeft = e.clientX < gridMidX;
+            var targetLeft = rect.left < gridMidX;
+            if (cursorLeft && !targetLeft) {
+              // Cursor in left col, target in right col → place before target (left slot)
+              insertBefore = true;
+            } else if (!cursorLeft && targetLeft) {
+              // Cursor in right col, target in left col → place after target (right slot)
+              insertBefore = false;
+            } else {
+              // Same column → use Y midpoint
+              insertBefore = e.clientY < rect.top + rect.height / 2;
+            }
+          }
+          if (insertBefore) {
             if (_ghost.nextSibling !== target) grid.insertBefore(_ghost, target);
           } else {
             var after = target.nextSibling;
@@ -3822,9 +3842,29 @@
         var el = document.elementFromPoint(e.clientX, e.clientY);
         var target = el && el.closest('.widget:not(.dragging):not(.widget-drop-ghost)');
         if (target && target.parentNode === grid) {
+          var gridRect = grid.getBoundingClientRect();
           var rect = target.getBoundingClientRect();
-          var before = e.clientY < rect.top + rect.height / 2;
-          if (before) {
+          var gridMidX = gridRect.left + gridRect.width / 2;
+          var insertBefore;
+          // Full-width widgets (or ghost is full-width): pure Y-axis decision
+          if (target.classList.contains('widget-full') || _ghost.classList.contains('widget-full')) {
+            insertBefore = e.clientY < rect.top + rect.height / 2;
+          } else {
+            // Half-width: use cursor X relative to grid centre to decide column slot
+            var cursorLeft = e.clientX < gridMidX;
+            var targetLeft = rect.left < gridMidX;
+            if (cursorLeft && !targetLeft) {
+              // Cursor in left col, target in right col → place before target (left slot)
+              insertBefore = true;
+            } else if (!cursorLeft && targetLeft) {
+              // Cursor in right col, target in left col → place after target (right slot)
+              insertBefore = false;
+            } else {
+              // Same column → use Y midpoint
+              insertBefore = e.clientY < rect.top + rect.height / 2;
+            }
+          }
+          if (insertBefore) {
             if (_ghost.nextSibling !== target) grid.insertBefore(_ghost, target);
           } else {
             var after = target.nextSibling;
@@ -3989,9 +4029,29 @@
         var el = document.elementFromPoint(e.clientX, e.clientY);
         var target = el && el.closest('.widget:not(.dragging):not(.widget-drop-ghost)');
         if (target && target.parentNode === grid) {
+          var gridRect = grid.getBoundingClientRect();
           var rect = target.getBoundingClientRect();
-          var before = e.clientY < rect.top + rect.height / 2;
-          if (before) {
+          var gridMidX = gridRect.left + gridRect.width / 2;
+          var insertBefore;
+          // Full-width widgets (or ghost is full-width): pure Y-axis decision
+          if (target.classList.contains('widget-full') || _ghost.classList.contains('widget-full')) {
+            insertBefore = e.clientY < rect.top + rect.height / 2;
+          } else {
+            // Half-width: use cursor X relative to grid centre to decide column slot
+            var cursorLeft = e.clientX < gridMidX;
+            var targetLeft = rect.left < gridMidX;
+            if (cursorLeft && !targetLeft) {
+              // Cursor in left col, target in right col → place before target (left slot)
+              insertBefore = true;
+            } else if (!cursorLeft && targetLeft) {
+              // Cursor in right col, target in left col → place after target (right slot)
+              insertBefore = false;
+            } else {
+              // Same column → use Y midpoint
+              insertBefore = e.clientY < rect.top + rect.height / 2;
+            }
+          }
+          if (insertBefore) {
             if (_ghost.nextSibling !== target) grid.insertBefore(_ghost, target);
           } else {
             var after = target.nextSibling;
