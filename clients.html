@@ -323,15 +323,15 @@
       display: flex; align-items: center; justify-content: center; font-family: inherit; transition: all 0.2s;
     }
     .cl-cal-nav button:hover { border-color: var(--text); color: var(--text); }
-    .cl-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cl-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); grid-auto-rows: minmax(64px, 80px); gap: 4px; }
     .cl-cal-head {
       text-align: center; font-size: 0.75rem; font-weight: 500;
       color: var(--text-muted); text-transform: uppercase; padding: 8px 0; letter-spacing: 0.06em;
     }
     .cl-cal-day {
-      aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
       font-size: 0.85rem; background: var(--bg-alt); border-radius: 6px; position: relative; transition: all 0.2s;
-      cursor: pointer; min-height: 70px; -webkit-tap-highlight-color: transparent; border: 1px solid transparent;
+      cursor: pointer; -webkit-tap-highlight-color: transparent; border: 1px solid transparent;
       padding: 6px 4px;
     }
     .cl-cal-day:active:not(.empty) { background: var(--border); }
@@ -339,12 +339,13 @@
     .cl-cal-day.today { border-color: var(--text-muted); }
     .cl-cal-day.selected { border-color: var(--accent); background: rgba(108,58,237,0.08); }
     .cl-cal-day-num { font-weight: 600; font-size: 0.85rem; margin-bottom: 3px; }
-    .cl-cal-day-dot { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 2px; }
+    .cl-cal-day-dot { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 2px; flex-shrink: 0; }
     .cl-cal-day-dot.workout { background: #10B981; }
     .cl-cal-day-dot.scheduled { background: #6C3AED; }
     .cl-cal-day-dot.rest { background: var(--border); }
     .cl-cal-day-dot.logged { background: #10B981; }
     .cl-cal-day-dot.planned { background: #6C3AED; }
+    .cl-cal-day-dot.checkin { background: #8B5CF6; }
     .cl-cal-day-info { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 4px; }
 
     /* Inline day detail panel (hidden - replaced by modal) */
@@ -2454,6 +2455,47 @@
             }
           }
         });
+        // Overlay trainer check-in meetings (use clientId 1 as demo client)
+        (function() {
+          var checkIns = [];
+          try { checkIns = JSON.parse(localStorage.getItem('shapeTrainerCheckIns') || '[]'); } catch(e) {}
+          var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+          var ciData = {};
+          checkIns.filter(function(ci) { return ci.active; }).forEach(function(ci) {
+            var targetDow = dayNames.indexOf(ci.day);
+            if (targetDow === -1) return;
+            var daysInM = new Date(year, month + 1, 0).getDate();
+            var allD = [];
+            for (var dd = 1; dd <= daysInM; dd++) {
+              if (new Date(year, month, dd).getDay() === targetDow) allD.push(dd);
+            }
+            var dates = allD;
+            if (ci.frequency === 'monthly') dates = allD.slice(0, 1);
+            if (ci.frequency === 'bi-weekly') {
+              var refD = new Date((ci.createdAt || new Date().toISOString().split('T')[0]) + 'T00:00:00');
+              while (refD.getDay() !== targetDow) refD.setDate(refD.getDate() + 1);
+              dates = allD.filter(function(dd) {
+                var diff = Math.round((new Date(year, month, dd) - refD) / 86400000);
+                return diff >= 0 && diff % 14 === 0;
+              });
+            }
+            dates.forEach(function(dd) {
+              if (!ciData[dd]) ciData[dd] = [];
+              ciData[dd].push({ time: ci.time, notes: ci.notes });
+            });
+          });
+          window._clCheckInData = window._clCheckInData || {};
+          window._clCheckInData[year + '_' + month] = ciData;
+          Object.keys(ciData).forEach(function(dd) {
+            var d = parseInt(dd);
+            if (!dayData[d]) {
+              dayData[d] = { type: 'checkin', name: 'Check-In · ' + ciData[d][0].time, label: ciData[d].length + (ciData[d].length === 1 ? ' check-in' : ' check-ins'), checkIns: ciData[d] };
+            } else {
+              dayData[d].hasCheckIn = true;
+              dayData[d].checkIns = ciData[d];
+            }
+          });
+        }());
         // Also collect nutrition data for combined Home calendar
         if (typeof getMealLog === 'function') {
           const mealLog = getMealLog();
@@ -2541,21 +2583,25 @@
         let preview = '';
         const hasAny = data || nutData;
         if (type === 'workout') {
-          // Combined view: show teal dot for training, green dot for nutrition
+          // Combined view: teal=training, green=nutrition, purple=check-in
           let dots = '';
-          if (data) {
-            const cls = data.type === 'scheduled' ? 'scheduled' : 'workout';
+          if (data && data.type !== 'checkin') {
             dots += '<div class="cl-cal-day-dot" style="background:var(--accent);"></div>';
           }
           if (nutData) {
             dots += '<div class="cl-cal-day-dot" style="background:#10B981;"></div>';
           }
+          if (data && (data.type === 'checkin' || data.hasCheckIn)) {
+            dots += '<div class="cl-cal-day-dot checkin"></div>';
+          }
           if (dots) {
             dot = '<div class="cl-cal-day-dots">' + dots + '</div>';
           }
-          // Preview: show workout name if present, else nutrition summary
-          if (data) {
+          // Preview: workout name > check-in > nutrition summary
+          if (data && data.type !== 'checkin') {
             preview = '<div class="cl-cal-day-info">' + (data.name || data.label) + '</div>';
+          } else if (data && data.type === 'checkin') {
+            preview = '<div class="cl-cal-day-info">' + data.name + '</div>';
           } else if (nutData) {
             let mealPreview = nutData.count + ' meal' + (nutData.count > 1 ? 's' : '');
             preview = '<div class="cl-cal-day-info">' + mealPreview + '</div>';
@@ -2583,7 +2629,8 @@
       let legendHtml;
       if (type === 'workout') {
         legendHtml = '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:4px;"></span>Training</span>'
-          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Nutrition</span>';
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Nutrition</span>'
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8B5CF6;margin-right:4px;"></span>Check-In</span>';
       } else {
         legendHtml = '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Logged</span>'
           + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#6C3AED;margin-right:4px;"></span>Planned</span>';
@@ -2651,7 +2698,9 @@
       const detailId = type === 'workout' ? 'clWorkoutDetail' : 'clMealDetail';
       const detailEl = document.getElementById(detailId);
 
-      if (!data && !nutData) {
+      var ciCheckKey = year + '_' + month;
+      var ciCheckDay = (type === 'workout' && window._clCheckInData && window._clCheckInData[ciCheckKey]) ? window._clCheckInData[ciCheckKey][day] : null;
+      if (!data && !nutData && !ciCheckDay) {
         const dateLabel = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         _clShowCalPopup('<div class="cl-cal-detail-title">' + dateLabel + '</div>'
           + '<div style="font-size:0.78rem;color:var(--text-muted);">' + (type === 'workout' ? 'No activity recorded' : 'No meals recorded') + '</div>');
@@ -2663,7 +2712,7 @@
 
       if (type === 'workout') {
         // Show training section
-        if (data) {
+        if (data && data.type !== 'checkin') {
           html += '<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:6px;margin-top:8px;">Training</div>';
           const statusLabel = data.type === 'scheduled' ? 'Scheduled' : 'Completed';
           html += '<div class="cl-cal-detail-row"><span class="dl">Status</span><span class="dv">' + statusLabel + '</span></div>';
@@ -2689,6 +2738,16 @@
             });
             html += '</div>';
           }
+        }
+        // Show check-in section
+        var ciKey = year + '_' + month;
+        var ciDayData = (window._clCheckInData && window._clCheckInData[ciKey]) ? window._clCheckInData[ciKey][day] : null;
+        if (ciDayData && ciDayData.length) {
+          html += '<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#8B5CF6;margin-bottom:6px;margin-top:12px;">Check-In</div>';
+          ciDayData.forEach(function(ci) {
+            html += '<div class="cl-cal-detail-row"><span class="dl">Time</span><span class="dv">' + ci.time + '</span></div>';
+            if (ci.notes) html += '<div class="cl-cal-detail-row"><span class="dl">Notes</span><span class="dv">' + ci.notes + '</span></div>';
+          });
         }
       } else {
         const statusLabel = data.type === 'scheduled' ? 'Planned' : 'Logged';

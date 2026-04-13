@@ -488,6 +488,26 @@ function renderDashWeekly() {
   `).join('') + '</div>';
 }
 
+// Helper: get dates for a recurring nutritionist check-in in a given month
+function _ndGetCheckInDates(dayName, frequency, month, year, createdAt) {
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const targetDow = dayNames.indexOf(dayName);
+  if (targetDow === -1) return [];
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const allDates = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    if (new Date(year, month, d).getDay() === targetDow) allDates.push(d);
+  }
+  if (frequency === 'weekly') return allDates;
+  if (frequency === 'monthly') return allDates.slice(0, 1);
+  const refDate = new Date((createdAt || new Date().toISOString().split('T')[0]) + 'T00:00:00');
+  while (refDate.getDay() !== targetDow) refDate.setDate(refDate.getDate() + 1);
+  return allDates.filter(d => {
+    const diff = Math.round((new Date(year, month, d) - refDate) / 86400000);
+    return diff >= 0 && diff % 14 === 0;
+  });
+}
+
 function _ndBuildDashCalendar(month, year) {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -506,6 +526,28 @@ function _ndBuildDashCalendar(month, year) {
         if (m.onPlan) mealMap[day].onPlan++; else mealMap[day].offPlan++;
       }
     });
+  });
+
+  // Build check-in / consultation map for this month
+  const ciMap = {};
+  const ndCheckIns = getNdCheckIns().filter(ci => ci.active);
+  ndCheckIns.forEach(ci => {
+    const c = ndClients.find(cl => cl.id === ci.clientId);
+    const name = c ? c.name.split(' ')[0] : 'Client';
+    _ndGetCheckInDates(ci.day, ci.frequency, month, year, ci.createdAt).forEach(d => {
+      if (!ciMap[d]) ciMap[d] = [];
+      ciMap[d].push({ client: name, time: ci.time, label: 'Check-In' });
+    });
+  });
+  let ndConsults = [];
+  try { ndConsults = JSON.parse(localStorage.getItem('shapeConsultations') || '[]'); } catch(e) {}
+  ndConsults.filter(c => c.type === 'nutritionist').forEach(con => {
+    const d = new Date(con.date + 'T00:00:00');
+    if (d.getMonth() === month && d.getFullYear() === year) {
+      const day = d.getDate();
+      if (!ciMap[day]) ciMap[day] = [];
+      ciMap[day].push({ client: con.clientName || 'Client', time: con.time, label: 'Consult' });
+    }
   });
 
   // Simulate extra data for demo
@@ -531,15 +573,17 @@ function _ndBuildDashCalendar(month, year) {
   for (let d = 1; d <= daysInMonth; d++) {
     const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
     const meal = mealMap[d];
+    const ciItems = ciMap[d];
     let dotClass = '';
     if (meal) {
       if (meal.offPlan === 0) dotClass = 'on-plan';
       else if (meal.onPlan === 0) dotClass = 'off-plan';
       else dotClass = 'mixed';
     }
-    cells += '<div class="nd-cal-day' + (isToday ? ' today' : '') + (meal ? ' has-meals' : '') + '">'
+    cells += '<div class="nd-cal-day' + (isToday ? ' today' : '') + ((meal || ciItems) ? ' has-meals' : '') + '">'
       + '<div class="nd-cal-day-num">' + d + '</div>'
       + (meal ? '<div class="nd-cal-day-dot ' + dotClass + '"></div><div class="nd-cal-day-meals">' + meal.count + 'm</div>' : '')
+      + (ciItems ? '<div style="width:7px;height:7px;border-radius:50%;background:#8B5CF6;margin:1px auto 0;"></div>' : '')
       + '</div>';
   }
 
@@ -549,10 +593,11 @@ function _ndBuildDashCalendar(month, year) {
     + '<button onclick="ndDashCalPrev()">&#8249;</button>'
     + '<button onclick="ndDashCalNext()">&#8250;</button>'
     + '</div></div>'
-    + '<div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.68rem;color:var(--text-muted);">'
+    + '<div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.68rem;color:var(--text-muted);flex-wrap:wrap;">'
     + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>On Plan</span>'
     + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:4px;"></span>Mixed</span>'
     + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#EF4444;margin-right:4px;"></span>Off Plan</span>'
+    + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8B5CF6;margin-right:4px;"></span>Check-In</span>'
     + '</div>'
     + '<div class="nd-cal-grid">' + cells + '</div>';
 }

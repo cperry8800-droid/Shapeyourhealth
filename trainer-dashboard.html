@@ -639,6 +639,8 @@
   .td-cal-day-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
   .td-cal-day-dot.session { background: var(--accent); }
   .td-cal-day-dot.checkin { background: #10B981; }
+  .td-cal-day-dot.checkin-event { background: #8B5CF6; }
+  .td-cal-day-dot.consultation { background: #F59E0B; }
   .td-cal-day-info { font-size: 0.56rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align: center; padding: 0 2px; }
   .td-cal-day-count { font-size: 0.6rem; color: var(--accent); font-weight: 600; }
   .td-cal-legend { display: flex; gap: 14px; margin-bottom: 10px; font-size: 0.68rem; color: var(--text-muted); }
@@ -874,6 +876,19 @@
               <div class="td-sales-chart" id="tdSalesChart"></div>
               <!-- Legacy sales list (hidden, kept for JS compatibility) -->
               <div style="display:none;" id="salesList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Widget: Client Check-In Calendar -->
+        <div class="widget" data-widget-id="td-checkin-cal" draggable="true">
+          <div class="widget-header">
+            <span class="widget-title">Client Check-In Calendar</span>
+            <span class="widget-drag-handle">&#10783;</span>
+          </div>
+          <div class="widget-body">
+            <div class="td-section" style="margin-bottom:0;">
+              <div id="tdCheckInCalContainer"></div>
             </div>
           </div>
         </div>
@@ -3558,6 +3573,27 @@
     var _tdCalMonth = _tdCalToday.getMonth();
     var _tdCalYear = _tdCalToday.getFullYear();
 
+    // Helper: get dates for a recurring check-in in a given month
+    function _tdGetCheckInDates(dayName, frequency, month, year, createdAt) {
+      var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var targetDow = dayNames.indexOf(dayName);
+      if (targetDow === -1) return [];
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var allDates = [];
+      for (var d = 1; d <= daysInMonth; d++) {
+        if (new Date(year, month, d).getDay() === targetDow) allDates.push(d);
+      }
+      if (frequency === 'weekly') return allDates;
+      if (frequency === 'monthly') return allDates.slice(0, 1);
+      // bi-weekly: phase from createdAt
+      var refDate = new Date((createdAt || new Date().toISOString().split('T')[0]) + 'T00:00:00');
+      while (refDate.getDay() !== targetDow) refDate.setDate(refDate.getDate() + 1);
+      return allDates.filter(function(d) {
+        var diff = Math.round((new Date(year, month, d) - refDate) / 86400000);
+        return diff >= 0 && diff % 14 === 0;
+      });
+    }
+
     // Build session data from clients' recentWorkouts (use as scheduled sessions)
     // We'll generate sample scheduled sessions for the current month
     function _tdGetSessionData(month, year) {
@@ -3597,6 +3633,28 @@
           }
         });
       }
+      // Overlay recurring check-in meetings
+      var checkIns = [];
+      try { checkIns = JSON.parse(localStorage.getItem('shapeTrainerCheckIns') || '[]'); } catch(e) {}
+      checkIns.filter(function(ci) { return ci.active; }).forEach(function(ci) {
+        var c = allClients.find(function(cl) { return cl.id === ci.clientId; });
+        var name = c ? c.name.split(' ')[0] : 'Client';
+        _tdGetCheckInDates(ci.day, ci.frequency, month, year, ci.createdAt).forEach(function(d) {
+          if (!data[d]) data[d] = [];
+          data[d].push({ client: name, workout: 'Check-In · ' + ci.time, type: 'checkin-event', notes: ci.notes });
+        });
+      });
+      // Overlay one-time consultations
+      var consultations = [];
+      try { consultations = JSON.parse(localStorage.getItem('shapeConsultations') || '[]'); } catch(e) {}
+      consultations.filter(function(c) { return c.type === 'trainer'; }).forEach(function(con) {
+        var d = new Date(con.date + 'T00:00:00');
+        if (d.getMonth() === month && d.getFullYear() === year) {
+          var day = d.getDate();
+          if (!data[day]) data[day] = [];
+          data[day].push({ client: con.clientName || 'Client', workout: 'Consultation · ' + con.time, type: 'consultation', notes: con.topic || '' });
+        }
+      });
       return data;
     }
 
@@ -3625,11 +3683,20 @@
         if (hasAny) {
           var scheduled = sessions.filter(function(s) { return s.type === 'scheduled'; });
           var completed = sessions.filter(function(s) { return s.type === 'completed'; });
+          var checkInEvts = sessions.filter(function(s) { return s.type === 'checkin-event'; });
+          var consultEvts = sessions.filter(function(s) { return s.type === 'consultation'; });
           var dots = '';
           if (scheduled.length) dots += '<div class="td-cal-day-dot session"></div>';
           if (completed.length) dots += '<div class="td-cal-day-dot checkin"></div>';
+          if (checkInEvts.length) dots += '<div class="td-cal-day-dot checkin-event"></div>';
+          if (consultEvts.length) dots += '<div class="td-cal-day-dot consultation"></div>';
           dot = '<div style="display:flex;gap:3px;align-items:center;">' + dots + '</div>';
-          preview = '<div class="td-cal-day-count">' + sessions.length + (sessions.length === 1 ? ' session' : ' sessions') + '</div>';
+          var workoutCount = scheduled.length + completed.length;
+          var meetingCount = checkInEvts.length + consultEvts.length;
+          var parts = [];
+          if (workoutCount) parts.push(workoutCount + (workoutCount === 1 ? ' session' : ' sessions'));
+          if (meetingCount) parts.push(meetingCount + (meetingCount === 1 ? ' meeting' : ' meetings'));
+          preview = '<div class="td-cal-day-count">' + parts.join(', ') + '</div>';
         }
         var clickAttr = hasAny ? ' onclick="tdCalDayClick(this,' + year + ',' + month + ',' + d + ')" style="cursor:pointer;"' : '';
         cells += '<div class="td-cal-day' + (isToday ? ' is-today' : '') + (hasAny ? ' has-session' : '') + '"' + clickAttr + '>'
@@ -3645,6 +3712,8 @@
         + '<div class="td-cal-legend">'
         + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:2px;"></span>Scheduled</span>'
         + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:2px;"></span>Completed</span>'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8B5CF6;margin-right:2px;"></span>Check-In</span>'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:2px;"></span>Consult</span>'
         + '</div>'
         + '<div class="td-cal-grid">' + cells + '</div>';
     }
@@ -3665,11 +3734,19 @@
       if (sessions.length === 0) {
         html += '<div style="font-size:0.78rem;color:var(--text-muted);">No sessions scheduled</div>';
       } else {
+        var typeColors = { scheduled: 'var(--accent)', completed: '#10B981', 'checkin-event': '#8B5CF6', consultation: '#F59E0B' };
+        var typeLabels = { scheduled: 'Scheduled', completed: 'Completed', 'checkin-event': 'Check-In', consultation: 'Consultation' };
         sessions.forEach(function(s) {
-          var badge = s.type === 'scheduled'
-            ? '<span style="font-size:0.65rem;background:rgba(45,212,191,0.15);color:var(--accent);padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;">' + s.type + '</span>'
-            : '<span style="font-size:0.65rem;background:rgba(16,185,129,0.15);color:#10B981;padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;">' + s.type + '</span>';
-          html += '<div class="td-cal-detail-row"><span class="dl">' + s.client + '</span><span class="dv">' + s.workout + '</span></div>';
+          var color = typeColors[s.type] || 'var(--text-muted)';
+          var label = typeLabels[s.type] || s.type;
+          html += '<div style="padding:8px 0;border-bottom:1px solid var(--border);">'
+            + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+            + '<span style="font-size:0.82rem;font-weight:600;">' + s.client + '</span>'
+            + '<span style="font-size:0.65rem;padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;background:' + color + '22;color:' + color + ';">' + label + '</span>'
+            + '</div>'
+            + '<div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">' + s.workout + '</div>'
+            + (s.notes ? '<div style="font-size:0.72rem;color:var(--text);margin-top:3px;">' + s.notes + '</div>' : '')
+            + '</div>';
         });
       }
       var body = document.getElementById('tdCalPopupBody');
@@ -3792,9 +3869,109 @@
       progressEl.style.display = (monthlyGoal > 0 || annualGoal > 0) ? '' : 'none';
     }
 
+    // ===== Client Check-In Calendar =====
+    var _tdCIMonth = new Date().getMonth();
+    var _tdCIYear = new Date().getFullYear();
+    window._tdCIData = {};
+
+    function _tdCheckInCalBuild(month, year) {
+      var today = new Date();
+      var firstDay = new Date(year, month, 1).getDay();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var monthName = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      var allClients2 = typeof clients !== 'undefined' ? clients : [];
+      var ciData = {};
+
+      // Recurring check-ins
+      var checkIns2 = [];
+      try { checkIns2 = JSON.parse(localStorage.getItem('shapeTrainerCheckIns') || '[]'); } catch(e) {}
+      checkIns2.filter(function(ci) { return ci.active; }).forEach(function(ci) {
+        var c = allClients2.find(function(cl) { return cl.id === ci.clientId; });
+        var name = c ? c.name : 'Client';
+        _tdGetCheckInDates(ci.day, ci.frequency, month, year, ci.createdAt).forEach(function(d) {
+          if (!ciData[d]) ciData[d] = [];
+          ciData[d].push({ client: name, time: ci.time, notes: ci.notes, frequency: ci.frequency, isConsult: false });
+        });
+      });
+      // One-time consultations
+      var cons2 = [];
+      try { cons2 = JSON.parse(localStorage.getItem('shapeConsultations') || '[]'); } catch(e) {}
+      cons2.filter(function(c) { return c.type === 'trainer'; }).forEach(function(con) {
+        var d = new Date(con.date + 'T00:00:00');
+        if (d.getMonth() === month && d.getFullYear() === year) {
+          var day = d.getDate();
+          if (!ciData[day]) ciData[day] = [];
+          ciData[day].push({ client: con.clientName || 'Client', time: con.time, notes: con.topic || '', frequency: 'one-time', isConsult: true });
+        }
+      });
+      window._tdCIData[year + '_' + month] = ciData;
+
+      var cells = '';
+      ['S','M','T','W','T','F','S'].forEach(function(d) { cells += '<div class="td-cal-head">' + d + '</div>'; });
+      for (var i = 0; i < firstDay; i++) cells += '<div class="td-cal-day empty"></div>';
+      for (var d = 1; d <= daysInMonth; d++) {
+        var isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        var items = ciData[d] || [];
+        var hasAny = items.length > 0;
+        var dot = '', preview = '';
+        if (hasAny) {
+          var dots2 = '';
+          if (items.some(function(it) { return !it.isConsult; })) dots2 += '<div class="td-cal-day-dot checkin-event"></div>';
+          if (items.some(function(it) { return it.isConsult; })) dots2 += '<div class="td-cal-day-dot consultation"></div>';
+          dot = '<div style="display:flex;gap:3px;">' + dots2 + '</div>';
+          var first = items[0];
+          preview = '<div class="td-cal-day-count">' + first.client.split(' ')[0] + (items.length > 1 ? ' +' + (items.length - 1) : '') + '</div>';
+        }
+        var clickAttr = hasAny ? ' onclick="tdCICalClick(this,' + year + ',' + month + ',' + d + ')" style="cursor:pointer;"' : '';
+        cells += '<div class="td-cal-day' + (isToday ? ' is-today' : '') + (hasAny ? ' has-session' : '') + '"' + clickAttr + '>'
+          + '<div class="td-cal-day-num">' + d + '</div>' + dot + preview + '</div>';
+      }
+
+      return '<div class="td-cal-header"><h3>' + monthName + '</h3>'
+        + '<div class="td-cal-nav"><button onclick="tdCICalNav(-1)">&#8249;</button><button onclick="tdCICalNav(1)">&#8250;</button></div></div>'
+        + '<div class="td-cal-legend">'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8B5CF6;margin-right:2px;"></span>Check-In</span>'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:2px;"></span>Consultation</span>'
+        + '</div>'
+        + '<div class="td-cal-grid">' + cells + '</div>';
+    }
+
+    window.tdCICalNav = function(dir) {
+      _tdCIMonth += dir;
+      if (_tdCIMonth > 11) { _tdCIMonth = 0; _tdCIYear++; }
+      if (_tdCIMonth < 0) { _tdCIMonth = 11; _tdCIYear--; }
+      var el = document.getElementById('tdCheckInCalContainer');
+      if (el) el.innerHTML = _tdCheckInCalBuild(_tdCIMonth, _tdCIYear);
+    };
+
+    window.tdCICalClick = function(el, year, month, day) {
+      var key = year + '_' + month;
+      var items = (window._tdCIData[key] && window._tdCIData[key][day]) ? window._tdCIData[key][day] : [];
+      var dateLabel = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+      var html = '<div class="td-cal-detail-title">' + dateLabel + '</div>';
+      items.forEach(function(item) {
+        var typeLabel = item.isConsult ? 'Consultation' : ('Check-In · ' + item.frequency);
+        var color = item.isConsult ? '#F59E0B' : '#8B5CF6';
+        html += '<div style="padding:8px 0;border-bottom:1px solid var(--border);">'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+          + '<span style="font-size:0.85rem;font-weight:600;">' + item.client + '</span>'
+          + '<span style="font-size:0.75rem;color:' + color + ';font-weight:600;">' + item.time + '</span>'
+          + '</div>'
+          + '<div style="font-size:0.68rem;color:var(--text-muted);margin-top:2px;">' + typeLabel + '</div>'
+          + (item.notes ? '<div style="font-size:0.72rem;color:var(--text);margin-top:3px;">' + item.notes + '</div>' : '')
+          + '</div>';
+      });
+      var body = document.getElementById('tdCalPopupBody');
+      var overlay = document.getElementById('tdCalPopupOverlay');
+      if (body) body.innerHTML = html;
+      if (overlay) overlay.classList.add('active');
+    };
+
     // Init
     var container = document.getElementById('tdCalContainer');
     if (container) container.innerHTML = tdBuildCal(_tdCalMonth, _tdCalYear);
+    var ciContainer = document.getElementById('tdCheckInCalContainer');
+    if (ciContainer) ciContainer.innerHTML = _tdCheckInCalBuild(_tdCIMonth, _tdCIYear);
     tdRenderSalesChart('daily');
     tdRenderGoalProgress('daily');
   })();
