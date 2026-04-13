@@ -635,17 +635,23 @@
   .td-sales-goal-progress-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 
   /* ===== Widget Drag-and-Drop ===== */
-  .widget-grid { display: flex; flex-direction: column; gap: 16px; }
-  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; }
+  .widget-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+  .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; aspect-ratio: 1; overflow: hidden; }
+  .widget.widget-full { grid-column: 1 / -1; aspect-ratio: auto; }
   .widget.dragging { opacity: 0.4; }
   .widget.drag-over { border-top: 2px solid var(--accent); }
-  .widget-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg-alt); }
-  .widget-title { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
-  .widget-drag-handle { font-size: 1.2rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 4px; }
+  .widget-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-alt); flex-shrink: 0; gap: 8px; }
+  .widget-title { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); flex: 1; }
+  .widget-controls { display: flex; align-items: center; gap: 6px; }
+  .widget-expand-btn { background: none; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; font-size: 0.7rem; padding: 3px 7px; font-family: inherit; line-height: 1; transition: all 0.2s; border-radius: 2px; }
+  .widget-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .widget-drag-handle { font-size: 1.1rem; color: var(--text-muted); cursor: grab; user-select: none; line-height: 1; padding: 0 2px; }
   .widget-drag-handle:active { cursor: grabbing; }
-  .widget-body { padding: 20px; }
+  .widget-body { padding: 16px; overflow-y: auto; flex: 1; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
+  @media (max-width: 900px) { .widget-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .widget-grid { grid-template-columns: 1fr; } .widget { aspect-ratio: auto; min-height: 260px; } }
 </style>
 </head>
 <body>
@@ -3039,10 +3045,64 @@
   </script>
 
   <script>
-  // Widget drag-and-drop — trainer dashboard
+  // Widget system — trainer dashboard
   (function() {
     var STORAGE_KEY = 'shapeWidgetOrder_trainer';
+    var SIZE_KEY = 'shapeWidgetSize_trainer';
     var gridId = 'tdWidgetGrid';
+
+    function saveSizes() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var sizes = {};
+      grid.querySelectorAll('.widget').forEach(function(w) {
+        sizes[w.dataset.widgetId] = w.classList.contains('widget-full') ? 'full' : 'square';
+      });
+      localStorage.setItem(SIZE_KEY, JSON.stringify(sizes));
+    }
+
+    function restoreSizes() {
+      var saved = localStorage.getItem(SIZE_KEY);
+      if (!saved) return;
+      var sizes;
+      try { sizes = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      Object.keys(sizes).forEach(function(id) {
+        var w = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (!w) return;
+        if (sizes[id] === 'full') {
+          w.classList.add('widget-full');
+          var btn = w.querySelector('.widget-expand-btn');
+          if (btn) btn.textContent = '⊟ Collapse';
+        }
+      });
+    }
+
+    function injectExpandButtons() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      grid.querySelectorAll('.widget').forEach(function(w) {
+        var header = w.querySelector('.widget-header');
+        if (!header || header.querySelector('.widget-controls')) return;
+        var handle = header.querySelector('.widget-drag-handle');
+        var controls = document.createElement('div');
+        controls.className = 'widget-controls';
+        var btn = document.createElement('button');
+        btn.className = 'widget-expand-btn';
+        btn.textContent = '⊞ Expand';
+        btn.title = 'Toggle full width';
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          w.classList.toggle('widget-full');
+          btn.textContent = w.classList.contains('widget-full') ? '⊟ Collapse' : '⊞ Expand';
+          saveSizes();
+        });
+        controls.appendChild(btn);
+        if (handle) controls.appendChild(handle);
+        header.appendChild(controls);
+      });
+    }
 
     function saveOrder() {
       var grid = document.getElementById(gridId);
@@ -3108,11 +3168,13 @@
         _dragSrc = null;
       });
 
+      injectExpandButtons();
       restoreOrder();
+      restoreSizes();
     }
 
     document.addEventListener('DOMContentLoaded', initDrag);
-    setTimeout(initDrag, 500);
+    setTimeout(initDrag, 300);
   })();
   </script>
 
