@@ -361,7 +361,7 @@ img.card-avatar-inline { background: var(--border); }
   .footer-grid > .footer-col { min-width: 40%; }
   .footer-grid > .footer-col:first-child { position: static; order: -1; width: 100%; max-width: none; align-items: center; text-align: center; margin-bottom: 16px; }
 }
-.footer-desc { color: var(--text-muted); font-size: 0.88rem; margin-top: -2px; line-height: 1.7; font-weight: 300; }
+.footer-desc { color: var(--text-muted); font-size: 0.78rem; margin-top: 6px; line-height: 1.5; font-weight: 300; }
 .footer-col h4 {
   font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
   letter-spacing: 0.12em; margin-bottom: 24px; color: var(--text-muted);
