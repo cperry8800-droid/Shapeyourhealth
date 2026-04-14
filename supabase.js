@@ -166,6 +166,17 @@
     // Inject a top-of-page "sample dashboard" banner for logged-out visitors.
     showDemoBanner(role) {
       if (document.getElementById('shapeDemoBanner')) return;
+      // Push fixed navbar + page content down to clear the banner.
+      var offsetCss = document.getElementById('shapeDemoBannerOffset');
+      if (!offsetCss) {
+        offsetCss = document.createElement('style');
+        offsetCss.id = 'shapeDemoBannerOffset';
+        offsetCss.textContent =
+          'body.shape-has-demo-banner .navbar{top:48px !important;}' +
+          'body.shape-has-demo-banner{padding-top:48px;}';
+        document.head.appendChild(offsetCss);
+      }
+      document.body.classList.add('shape-has-demo-banner');
       var signupHref = role === 'trainer' ? 'signup-trainer.html'
         : role === 'nutritionist' ? 'signup-nutritionist.html'
         : 'signup-client.html';
@@ -176,7 +187,7 @@
         '<div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;' +
         'padding:14px 24px;background:#1A1A1A;color:#fff;font-size:0.82rem;font-weight:500;' +
         'letter-spacing:0.02em;border-bottom:1px solid rgba(255,255,255,0.1);' +
-        'position:sticky;top:0;z-index:9999;text-align:center;">' +
+        'position:fixed;top:0;left:0;right:0;z-index:10000;text-align:center;">' +
         '<span style="opacity:0.85;">Sample ' + label + ' dashboard — sign up to get your own.</span>' +
         '<span style="display:inline-flex;align-items:center;gap:18px;">' +
           '<a href="' + signupHref + '" style="color:#fff;text-decoration:underline;font-weight:600;">Sign up</a>' +
