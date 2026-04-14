@@ -53,8 +53,8 @@
       letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 10px;
     }
     .split-hero-mark {
-      display: block; height: 64px; width: auto;
-      margin: 0 auto 24px;
+      display: block; height: 72px; width: auto; margin: 0 auto 24px;
+      overflow: visible;
     }
     .split-hero-sub {
       font-size: clamp(1rem, 1.2vw, 1.15rem); color: var(--text-muted);
@@ -181,7 +181,10 @@
   <!-- Hero -->
   <section class="split-hero">
     <div class="container">
-      <img src="shape-triangles.png" alt="" class="split-hero-mark" aria-hidden="true">
+      <svg class="split-hero-mark" viewBox="0 0 95 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polygon points="5,113 5,43 55,78" fill="#2DD4BF"/>
+        <polygon points="90,-3 90,67 40,32" fill="#fff"/>
+      </svg>
       <h1>Welcome to <span class="hero-shape-logo"><img src="logo-text-trimmed.png" alt="Shape"></span></h1>
       <p class="split-hero-sub">Real trainers. Real nutritionists. One platform.</p>
 
