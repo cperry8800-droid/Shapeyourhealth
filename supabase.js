@@ -276,11 +276,14 @@
       if (roles.length < 2) return;
       if (document.getElementById('shapeRoleSwitcher')) return;
 
-      // Prefer the user-name span inside the nav-actions container. Fall back
-      // to any other logged-in element if that's not present.
+      // Prefer inserting before the Dashboard link in nav-actions — it gives
+      // a stable slot that matches the existing flex layout. Fall back to the
+      // user name span, then any logged-in element anywhere.
       var anchor =
+        document.querySelector('.nav-actions [data-shape-dashboard-link]') ||
         document.querySelector('.nav-actions .shape-nav-user-name') ||
         document.querySelector('.nav-actions .shape-auth-logged-in') ||
+        document.querySelector('[data-shape-dashboard-link]') ||
         document.querySelector('.shape-nav-user-name') ||
         document.querySelector('.shape-auth-logged-in');
       if (!anchor) return;
@@ -297,8 +300,8 @@
 
       var style = document.createElement('style');
       style.textContent =
-        '#shapeRoleSwitcher{position:relative;display:inline-flex;align-items:center;align-self:center;margin-right:8px;font-family:Inter,system-ui,sans-serif;line-height:1;}' +
-        '#shapeRoleSwitcher .srs-btn{display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:32px;line-height:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:var(--text,#fff);border-radius:999px;font-size:0.74rem;font-weight:500;cursor:pointer;font-family:inherit;vertical-align:middle;}' +
+        '#shapeRoleSwitcher{position:relative;display:inline-flex;align-items:center;align-self:center;font-family:Inter,system-ui,sans-serif;line-height:1;flex:0 0 auto;}' +
+        '#shapeRoleSwitcher .srs-btn{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;line-height:1.4;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:var(--text,#fff);border-radius:999px;font-size:0.72rem;font-weight:500;cursor:pointer;font-family:inherit;vertical-align:middle;white-space:nowrap;}' +
         '#shapeRoleSwitcher .srs-btn:hover{border-color:rgba(255,255,255,0.3);}' +
         '#shapeRoleSwitcher .srs-btn .srs-caret{opacity:0.5;font-size:0.6rem;}' +
         '#shapeRoleSwitcher .srs-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:#1A1A1A;border:1px solid rgba(255,255,255,0.1);border-radius:10px;min-width:180px;padding:6px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.5);}' +
