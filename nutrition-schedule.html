@@ -2983,19 +2983,49 @@
     var _ndHCalYear = today.getFullYear();
     var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
+    function _ndGetClientRoster() {
+      try {
+        if (typeof ndClients !== 'undefined' && Array.isArray(ndClients) && ndClients.length) {
+          return ndClients.map(function(c) { return c.name; }).filter(Boolean);
+        }
+      } catch(e) {}
+      return ['Sarah Kim','Marcus Lee','Priya Patel','Jake Roberts','Lisa Johnson','Tom Evans','Mia Chen','David Park','Rachel Green','Nina Alvarez','Ben Cooper','Ava Thompson','Noah Bennett','Zoe Walker','Ethan Hayes','Maya Singh','Leo Martinez','Olivia Brooks'];
+    }
+    function _ndTimeForIndex(i) {
+      var hours = [8, 9, 10, 11, 13, 14, 15, 16, 17];
+      var h = hours[i % hours.length];
+      var m = (i * 17) % 2 === 0 ? '00' : '30';
+      var suffix = h >= 12 ? 'PM' : 'AM';
+      var hh = h > 12 ? h - 12 : h;
+      return hh + ':' + m + ' ' + suffix;
+    }
+
     function _ndGetMealData(month, year) {
       var data = {};
       var t = new Date();
+      var roster = _ndGetClientRoster();
       // Sample client check-in / meal adherence data
       var sampleDays = [1,2,3,5,6,7,8,10,11,12,14,15,16,17,19,20,21,22,24,25,26,28,29,30];
       sampleDays.forEach(function(d) {
         var date = new Date(year, month, d);
         if (date.getMonth() !== month) return;
         var isPast = date <= t;
+        var count = isPast ? Math.floor(Math.random() * 8) + 10 : Math.floor(Math.random() * 6) + 12;
+        // Deterministically pick clients from the roster so re-renders are stable
+        var seed = (year * 100 + month * 10 + d) % roster.length;
+        var picks = [];
+        for (var i = 0; i < Math.min(count, roster.length); i++) {
+          picks.push({
+            name: roster[(seed + i * 3) % roster.length],
+            time: _ndTimeForIndex(d + i),
+            status: isPast ? (Math.random() > 0.2 ? 'Logged' : 'Missed') : 'Planned'
+          });
+        }
         data[d] = {
           type: isPast ? 'checkin' : 'planned',
-          count: isPast ? Math.floor(Math.random() * 8) + 10 : Math.floor(Math.random() * 6) + 12,
-          label: isPast ? 'clients logged' : 'clients planned'
+          count: picks.length,
+          label: isPast ? 'clients logged' : 'clients planned',
+          clients: picks
         };
       });
       return data;
@@ -3019,7 +3049,10 @@
         var dot = '', count = '';
         if (entry) {
           dot = '<div class="nd-home-cal-dot ' + entry.type + '"></div>';
-          count = '<div class="nd-home-cal-count">' + entry.count + ' clients</div>';
+          var firstName = (entry.clients && entry.clients[0]) ? entry.clients[0].name.split(' ')[0] : '';
+          var extra = entry.count > 1 ? ' +' + (entry.count - 1) : '';
+          count = '<div class="nd-home-cal-count">' + entry.count + ' clients</div>'
+            + (firstName ? '<div style="font-size:0.56rem;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;">' + firstName + extra + '</div>' : '');
         }
         var clickAttr = entry ? ' onclick="ndHomCalDayClick(' + year + ',' + month + ',' + d + ')"' : '';
         cells += '<div class="nd-home-cal-day' + (isToday ? ' is-today' : '') + (entry ? ' has-meal' : '') + '"' + clickAttr + '>'
@@ -3055,9 +3088,34 @@
       var body = document.getElementById('ndCalPopupBody');
       if (!overlay || !body) return;
       var mNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-      body.innerHTML = '<div class="nd-cal-detail-title">' + mNames[month] + ' ' + day + ', ' + year + '</div>'
-        + '<div class="nd-cal-detail-row"><span class="dl">Status</span><span class="dv">' + (entry.type === 'checkin' ? 'Logged' : 'Planned') + '</span></div>'
-        + '<div class="nd-cal-detail-row"><span class="dl">Clients</span><span class="dv">' + entry.count + ' ' + entry.label + '</span></div>';
+      var dowNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var dateObj = new Date(year, month, day);
+      var statusLabel = entry.type === 'checkin' ? 'Logged' : 'Planned';
+      var statusColor = entry.type === 'checkin' ? 'var(--accent, #2DD4BF)' : '#F59E0B';
+
+      var rowsHtml = '';
+      (entry.clients || []).forEach(function(ci) {
+        var initials = ci.name.split(' ').map(function(p){ return p[0]; }).slice(0,2).join('').toUpperCase();
+        var dotColor = ci.status === 'Logged' ? 'var(--accent, #2DD4BF)' : (ci.status === 'Missed' ? '#EF4444' : '#F59E0B');
+        rowsHtml += '<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,0.015);margin-bottom:6px;">'
+          + '<div style="width:32px;height:32px;border-radius:50%;background:rgba(45,212,191,0.15);color:var(--accent,#2DD4BF);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:600;flex-shrink:0;">' + initials + '</div>'
+          + '<div style="flex:1;min-width:0;">'
+          +   '<div style="font-size:0.85rem;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + ci.name + '</div>'
+          +   '<div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px;">' + ci.time + '</div>'
+          + '</div>'
+          + '<div style="display:flex;align-items:center;gap:6px;font-size:0.68rem;color:' + dotColor + ';font-weight:600;text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;">'
+          +   '<span style="width:6px;height:6px;border-radius:50%;background:' + dotColor + ';"></span>' + ci.status
+          + '</div>'
+          + '</div>';
+      });
+      if (!rowsHtml) rowsHtml = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:0.82rem;">No check-ins scheduled.</div>';
+
+      body.innerHTML = ''
+        + '<div class="nd-cal-detail-title" style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;">'
+        +   '<span>' + dowNames[dateObj.getDay()] + ', ' + mNames[month] + ' ' + day + '</span>'
+        +   '<span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:' + statusColor + ';font-weight:600;">' + statusLabel + ' · ' + entry.count + ' clients</span>'
+        + '</div>'
+        + '<div style="max-height:360px;overflow-y:auto;padding-right:4px;margin-top:12px;">' + rowsHtml + '</div>';
       overlay.classList.add('active');
     };
 
