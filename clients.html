@@ -769,7 +769,7 @@
       .dm-header-avatar { width: 28px; height: 28px; font-size: 0.5rem; }
 
       /* ===== Bottom tab bar on mobile ===== */
-      body { padding-bottom: 72px; }
+      body { padding-bottom: 76px; }
       .dash-tab-bar {
         position: fixed; bottom: 0; top: auto; left: 0; right: 0;
         z-index: 900;
@@ -781,19 +781,21 @@
       }
       .dash-tab-bar::-webkit-scrollbar { display: none; }
       .dash-tab-bar-inner {
-        padding: 0 8px; justify-content: flex-start;
+        padding: 0; justify-content: flex-start;
         gap: 0; flex-wrap: nowrap;
       }
       .dash-tab {
         flex: 0 0 auto; min-width: 0;
-        padding: 12px 16px; font-size: 0.72rem; font-weight: 600;
-        letter-spacing: 0.07em; opacity: 0.5;
-        white-space: nowrap; overflow: visible;
-        border-bottom: 2px solid transparent; position: relative;
+        display: flex !important; flex-direction: column; align-items: center;
+        padding: 8px 14px 6px; font-size: 0.58rem; font-weight: 600;
+        letter-spacing: 0.06em; opacity: 0.5; white-space: nowrap;
+        border-top: 2px solid transparent; border-bottom: none;
       }
-      .dash-tab::before { display: none; }
-      .dash-tab.active { opacity: 1; color: var(--accent); border-bottom-color: var(--accent); }
-      .dash-tab.active::after { display: none; }
+      .dash-tab::before {
+        content: attr(data-icon);
+        display: block; font-size: 1.05rem; line-height: 1; margin-bottom: 3px;
+      }
+      .dash-tab.active { opacity: 1; color: var(--accent); border-top-color: var(--accent); }
       .dash-tab-content.active { padding-top: 8px; padding-bottom: 16px; }
 
       /* ===== Full-screen chat on mobile ===== */
