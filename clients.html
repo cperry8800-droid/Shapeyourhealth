@@ -2496,6 +2496,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
+  <script src="exercise-videos.js"></script>
   <script src="progress.js"></script>
   <script src="nutrition-schedule.js"></script>
   <script>
@@ -2644,7 +2645,10 @@
         html += '<div class="wk-exercise-header" onclick="toggleExercise(' + ei + ')">';
         html += '<div><div class="wk-exercise-name">' + ex.name + '</div>';
         html += '<div class="wk-exercise-meta">' + ex.sets.length + ' sets &middot; ' + (ex.sets.filter(function(s){return s.done;}).length) + ' completed</div></div>';
+        html += '<div style="display:flex;gap:8px;align-items:center;">';
+        if (window.shapeExerciseVideos) html += window.shapeExerciseVideos.linkHtml(ex.name);
         html += '<button class="wk-remove-exercise" onclick="event.stopPropagation();removeExercise(' + ei + ')">Remove</button>';
+        html += '</div>';
         html += '</div>';
         html += '<div class="wk-exercise-body" id="wkExBody' + ei + '">';
         html += '<table class="wk-set-table">';

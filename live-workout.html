@@ -264,6 +264,7 @@
     <div class="lw-ex-card" id="lwExCard">
       <div class="lw-ex-name" id="lwExName">—</div>
       <div class="lw-ex-meta" id="lwExMeta">—</div>
+      <div id="lwExVideoSlot" style="margin-top:8px;"></div>
 
       <div class="lw-set-headers">
         <span>Set</span><span>Reps</span><span>Weight</span><span>Done</span>
@@ -381,6 +382,8 @@
 
       document.getElementById('lwExCount').textContent = 'Exercise ' + (currentEx+1) + ' / ' + total;
       document.getElementById('lwExName').textContent = ex.name;
+      var vslot = document.getElementById('lwExVideoSlot');
+      if (vslot) vslot.innerHTML = (window.shapeExerciseVideos ? window.shapeExerciseVideos.linkHtml(ex.name) : '');
       var doneSets = ex.sets.filter(function(s){return s.done;}).length;
       document.getElementById('lwExMeta').textContent = doneSets + ' of ' + ex.sets.length + ' sets complete';
 
@@ -505,6 +508,11 @@
     }
 
     render();
+  </script>
+  <script src="exercise-videos.js"></script>
+  <script>
+    // Re-render once the video library loads so the Watch demo link appears.
+    if (window.shapeExerciseVideos) render();
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
