@@ -514,16 +514,18 @@ function _ndBuildDashCalendar(month, year) {
   const today = new Date();
   const monthName = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-  // Aggregate all client meals for this month
+  // Aggregate all client meals for this month (also track which clients logged)
   const mealMap = {};
   ndClients.forEach(c => {
+    const first = (c.name || '').split(' ')[0];
     c.recentMeals.forEach(m => {
       const d = new Date(m.date + 'T00:00:00');
       if (d.getMonth() === month && d.getFullYear() === year) {
         const day = d.getDate();
-        if (!mealMap[day]) mealMap[day] = { count: 0, onPlan: 0, offPlan: 0 };
+        if (!mealMap[day]) mealMap[day] = { count: 0, onPlan: 0, offPlan: 0, clients: {} };
         mealMap[day].count++;
         if (m.onPlan) mealMap[day].onPlan++; else mealMap[day].offPlan++;
+        mealMap[day].clients[first] = (mealMap[day].clients[first] || 0) + 1;
       }
     });
   });
@@ -551,16 +553,22 @@ function _ndBuildDashCalendar(month, year) {
   });
 
   // Simulate extra data for demo
+  const demoNames = ndClients.map(c => (c.name || '').split(' ')[0]).filter(Boolean);
+  function pickDemoName(seed) { return demoNames.length ? demoNames[seed % demoNames.length] : 'Client'; }
   for (let d = 1; d <= Math.min(daysInMonth, today.getDate()); d++) {
     const checkDate = new Date(year, month, d);
     if (checkDate > today) break;
     if (!mealMap[d]) {
       const count = Math.floor(Math.random() * 8) + 5;
       const onPlan = Math.floor(count * (0.7 + Math.random() * 0.25));
-      mealMap[d] = { count, onPlan, offPlan: count - onPlan };
+      mealMap[d] = { count, onPlan, offPlan: count - onPlan, clients: {} };
+      const n1 = pickDemoName(d), n2 = pickDemoName(d + 3);
+      mealMap[d].clients[n1] = Math.ceil(count / 2);
+      if (n2 !== n1) mealMap[d].clients[n2] = count - mealMap[d].clients[n1];
     } else {
       mealMap[d].count += Math.floor(Math.random() * 6) + 3;
       mealMap[d].onPlan += Math.floor(Math.random() * 4) + 2;
+      if (!mealMap[d].clients) mealMap[d].clients = {};
     }
   }
 
@@ -590,9 +598,20 @@ function _ndBuildDashCalendar(month, year) {
         + '<span style="overflow:hidden;text-overflow:ellipsis;">' + label + '</span>'
         + '</div>';
     }
+    var mealPreview = '';
+    if (meal) {
+      var topNames = Object.keys(meal.clients || {}).sort(function(a,b){ return meal.clients[b] - meal.clients[a]; });
+      var nameLine = '';
+      if (topNames.length) {
+        nameLine = topNames[0];
+        if (topNames.length > 1) nameLine += ' +' + (topNames.length - 1);
+      }
+      mealPreview = '<div class="nd-cal-day-dot ' + dotClass + '"></div><div class="nd-cal-day-meals">' + meal.count + 'm</div>'
+        + (nameLine ? '<div style="font-size:0.56rem;color:var(--text-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;">' + nameLine + '</div>' : '');
+    }
     cells += '<div class="nd-cal-day' + (isToday ? ' today' : '') + ((meal || ciItems) ? ' has-meals' : '') + '">'
       + '<div class="nd-cal-day-num">' + d + '</div>'
-      + (meal ? '<div class="nd-cal-day-dot ' + dotClass + '"></div><div class="nd-cal-day-meals">' + meal.count + 'm</div>' : '')
+      + mealPreview
       + ciPreview
       + '</div>';
   }
