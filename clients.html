@@ -1997,6 +1997,16 @@
             </div>
           </div>
 
+          <!-- Grocery list generator -->
+          <div class="widget widget-full" id="groceryWidget" style="margin-top:24px;">
+            <div class="widget-header" style="display:flex;justify-content:space-between;align-items:center;">
+              <h2 style="margin:0;">Grocery list</h2>
+              <button class="btn btn-sm btn-outline" onclick="generateGroceryList()" style="font-size:0.75rem;">Regenerate from meal plan</button>
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin:8px 0 16px;">Pulled from this week's meal plan. Check items off as you shop — progress is saved on this device.</p>
+            <div id="groceryListContainer"></div>
+          </div>
+
         </div><!-- /clNutritionWidgetGrid -->
 
         </div>
@@ -2207,6 +2217,56 @@
             <div style="margin-bottom:24px;"><div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">Workout Plans</div><div id="assignedWorkoutPlans"><div style="color:var(--text-muted);font-size:0.88rem;font-weight:300;">No workout plans assigned yet.</div></div></div>
             <div><div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">Meal Plans</div><div id="assignedMealPlans"><div style="color:var(--text-muted);font-size:0.88rem;font-weight:300;">No meal plans assigned yet.</div></div></div>
           </div>
+          <div class="cp-card" id="section-billing">
+            <div class="cp-card-header"><h2>Billing &amp; Subscriptions</h2></div>
+            <p style="font-size:0.78rem;color:var(--text-muted);font-weight:300;margin:-4px 0 18px;">Demo billing center — manage your Shape subscriptions and payment method.</p>
+
+            <div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);">Active Subscriptions</div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+              <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="flex:1;min-width:180px;">
+                  <div style="font-weight:500;font-size:0.92rem;">Marcus Johnson — Personal Training</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Renews May 14, 2026 · $89.00/mo</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn btn-sm btn-outline" onclick="shapeBilling.manage('marcus')" style="font-size:0.72rem;">Manage</button>
+                  <button class="btn btn-sm btn-outline" onclick="shapeBilling.cancel('marcus')" style="font-size:0.72rem;">Cancel</button>
+                </div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="flex:1;min-width:180px;">
+                  <div style="font-weight:500;font-size:0.92rem;">Dr. Sarah Mitchell — Nutrition Coaching</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Renews May 6, 2026 · $49.00/mo</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn btn-sm btn-outline" onclick="shapeBilling.manage('sarah')" style="font-size:0.72rem;">Manage</button>
+                  <button class="btn btn-sm btn-outline" onclick="shapeBilling.cancel('sarah')" style="font-size:0.72rem;">Cancel</button>
+                </div>
+              </div>
+              <div style="font-size:0.82rem;color:var(--text-muted);text-align:right;padding:4px 4px 0;">Total: <strong style="color:var(--text);">$138.00/mo</strong></div>
+            </div>
+
+            <div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);">Payment Method</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:24px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:40px;height:28px;background:linear-gradient(135deg,#1a1f71,#0a0d4a);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;letter-spacing:0.05em;">VISA</div>
+                <div>
+                  <div style="font-size:0.85rem;">Visa ending in 4242</div>
+                  <div style="font-size:0.72rem;color:var(--text-muted);">Expires 08/28</div>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="shapeBilling.updateCard()" style="font-size:0.72rem;">Update</button>
+            </div>
+
+            <div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);">Invoice History</div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 4px;font-size:0.82rem;border-bottom:1px solid var(--border);"><span>Apr 14, 2026</span><span style="color:var(--text-muted);">Marcus Johnson PT</span><span>$89.00</span><a href="#" onclick="event.preventDefault();shapeBilling.invoice('INV-2026-0414-M')" style="color:var(--accent);font-size:0.75rem;">View</a></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 4px;font-size:0.82rem;border-bottom:1px solid var(--border);"><span>Apr 6, 2026</span><span style="color:var(--text-muted);">Dr. Sarah Mitchell</span><span>$49.00</span><a href="#" onclick="event.preventDefault();shapeBilling.invoice('INV-2026-0406-S')" style="color:var(--accent);font-size:0.75rem;">View</a></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 4px;font-size:0.82rem;border-bottom:1px solid var(--border);"><span>Mar 14, 2026</span><span style="color:var(--text-muted);">Marcus Johnson PT</span><span>$89.00</span><a href="#" onclick="event.preventDefault();shapeBilling.invoice('INV-2026-0314-M')" style="color:var(--accent);font-size:0.75rem;">View</a></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 4px;font-size:0.82rem;"><span>Mar 6, 2026</span><span style="color:var(--text-muted);">Dr. Sarah Mitchell</span><span>$49.00</span><a href="#" onclick="event.preventDefault();shapeBilling.invoice('INV-2026-0306-S')" style="color:var(--accent);font-size:0.75rem;">View</a></div>
+            </div>
+          </div>
+
           <div class="cp-card" id="section-social">
             <div class="cp-card-header"><h2>Social & Community</h2><button class="cp-edit-btn" onclick="toggleEdit('section-social')">Edit</button></div>
             <div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);">Social Accounts</div>
@@ -4819,6 +4879,131 @@
     document.addEventListener('DOMContentLoaded', initDrag);
     setTimeout(initDrag, 300);
   })();
+  </script>
+
+  <script>
+  // ===== Grocery list generator =====
+  (function(){
+    var GROCERY_KEY = 'shapeGroceryChecked_v1';
+    var MEAL_PLAN = [
+      { items: [
+        { name: 'Eggs', qty: '1 dozen', cat: 'Dairy & Eggs' },
+        { name: 'Oats', qty: '1 lb', cat: 'Pantry' },
+        { name: 'Blueberries', qty: '1 pint', cat: 'Produce' },
+        { name: 'Greek yogurt', qty: '32 oz', cat: 'Dairy & Eggs' },
+        { name: 'Almond butter', qty: '1 jar', cat: 'Pantry' },
+        { name: 'Chicken breast', qty: '2 lbs', cat: 'Protein' },
+        { name: 'Brown rice', qty: '2 lbs', cat: 'Pantry' },
+        { name: 'Broccoli', qty: '2 heads', cat: 'Produce' },
+        { name: 'Bell peppers', qty: '4', cat: 'Produce' },
+        { name: 'Olive oil', qty: '1 bottle', cat: 'Pantry' },
+        { name: 'Salmon', qty: '1.5 lbs', cat: 'Protein' },
+        { name: 'Sweet potatoes', qty: '4', cat: 'Produce' },
+        { name: 'Spinach', qty: '1 bag', cat: 'Produce' },
+        { name: 'Asparagus', qty: '1 bunch', cat: 'Produce' },
+        { name: 'Lemons', qty: '3', cat: 'Produce' },
+        { name: 'Bananas', qty: '6', cat: 'Produce' },
+        { name: 'Cottage cheese', qty: '2 tubs', cat: 'Dairy & Eggs' },
+        { name: 'Protein powder', qty: '1 tub', cat: 'Pantry' },
+        { name: 'Mixed nuts', qty: '1 bag', cat: 'Pantry' }
+      ]}
+    ];
+
+    function loadChecked() {
+      try { return JSON.parse(localStorage.getItem(GROCERY_KEY) || '{}'); } catch(e) { return {}; }
+    }
+    function saveChecked(obj) {
+      try { localStorage.setItem(GROCERY_KEY, JSON.stringify(obj)); } catch(e){}
+    }
+
+    window.toggleGroceryItem = function(key, el) {
+      var checked = loadChecked();
+      checked[key] = !checked[key];
+      saveChecked(checked);
+      el.classList.toggle('checked', checked[key]);
+      var box = el.querySelector('.grocery-check');
+      if (box) {
+        box.innerHTML = checked[key] ? '&#10003;' : '';
+        box.style.background = checked[key] ? 'var(--accent, #2DD4BF)' : 'transparent';
+      }
+      updateGroceryProgress();
+    };
+
+    function updateGroceryProgress() {
+      var total = document.querySelectorAll('.grocery-row').length;
+      var done = document.querySelectorAll('.grocery-row.checked').length;
+      var bar = document.getElementById('groceryProgressBar');
+      var txt = document.getElementById('groceryProgressText');
+      if (bar) bar.style.width = (total ? Math.round((done/total)*100) : 0) + '%';
+      if (txt) txt.textContent = done + ' of ' + total + ' items';
+    }
+
+    window.generateGroceryList = function() {
+      var checked = loadChecked();
+      var byCat = {};
+      MEAL_PLAN[0].items.forEach(function(it){
+        if (!byCat[it.cat]) byCat[it.cat] = {};
+        if (!byCat[it.cat][it.name]) byCat[it.cat][it.name] = it.qty;
+      });
+      var order = ['Produce', 'Protein', 'Dairy & Eggs', 'Pantry'];
+      var html = '<div style="margin-bottom:16px;">' +
+                 '<div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div id="groceryProgressBar" style="height:100%;background:var(--accent,#2DD4BF);width:0;transition:width .3s;"></div></div>' +
+                 '<div id="groceryProgressText" style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">0 of 0 items</div>' +
+                 '</div>';
+      order.forEach(function(cat){
+        if (!byCat[cat]) return;
+        html += '<div style="margin-bottom:20px;">';
+        html += '<h3 style="font-size:0.78rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-muted);margin:0 0 10px;">' + cat + '</h3>';
+        Object.keys(byCat[cat]).forEach(function(name){
+          var key = cat + '::' + name;
+          var isChecked = !!checked[key];
+          html += '<div class="grocery-row' + (isChecked ? ' checked' : '') + '" onclick="toggleGroceryItem(\'' + key.replace(/'/g, "\\'") + '\', this)" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);margin-bottom:6px;">';
+          html += '<div class="grocery-check" style="width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#000;background:' + (isChecked ? 'var(--accent,#2DD4BF)' : 'transparent') + ';flex-shrink:0;">' + (isChecked ? '&#10003;' : '') + '</div>';
+          html += '<div style="flex:1;min-width:0;">';
+          html += '<div style="font-size:0.88rem;">' + name + '</div>';
+          html += '<div style="font-size:0.72rem;color:var(--text-muted);">' + byCat[cat][name] + '</div>';
+          html += '</div></div>';
+        });
+        html += '</div>';
+      });
+      var container = document.getElementById('groceryListContainer');
+      if (container) container.innerHTML = html;
+      updateGroceryProgress();
+    };
+
+    var style = document.createElement('style');
+    style.textContent = '.grocery-row:hover { background: rgba(255,255,255,0.03); } .grocery-row.checked { opacity: 0.5; } .grocery-row.checked > div:last-child > div:first-child { text-decoration: line-through; }';
+    document.head.appendChild(style);
+
+    document.addEventListener('DOMContentLoaded', function(){
+      if (document.getElementById('groceryListContainer')) generateGroceryList();
+    });
+    setTimeout(function(){
+      if (document.getElementById('groceryListContainer') && !document.querySelector('.grocery-row')) generateGroceryList();
+    }, 500);
+  })();
+  </script>
+
+  <script>
+  // ===== Mocked billing / subscriptions =====
+  window.shapeBilling = {
+    manage: function(id) {
+      var names = { marcus: 'Marcus Johnson — Personal Training', sarah: 'Dr. Sarah Mitchell — Nutrition Coaching' };
+      alert('Manage subscription\n\n' + (names[id] || id) + '\n\nDemo only — in production this would open plan options, pause, and upgrade controls.');
+    },
+    cancel: function(id) {
+      var names = { marcus: 'Marcus Johnson — Personal Training', sarah: 'Dr. Sarah Mitchell — Nutrition Coaching' };
+      if (confirm('Cancel your subscription to ' + (names[id] || id) + '?\n\nYou\u2019ll keep access through the end of the current billing period. (Demo only — nothing will be charged or cancelled.)')) {
+        alert('Cancellation scheduled. (Demo)');
+      }
+    },
+    updateCard: function() {
+      alert('Update payment method\n\nDemo only — in production this would launch the Stripe card update flow.');
+    },
+    invoice: function(id) {
+      alert('Invoice ' + id + '\n\nDemo only — in production this would open a downloadable PDF receipt.');
+    }
+  };
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

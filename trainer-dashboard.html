@@ -1736,6 +1736,44 @@
         </div>
       </div>
 
+      <!-- Payouts & Earnings (mocked) -->
+      <div class="tp-section" id="sectionPayouts">
+        <div class="tp-section-header"><h2>Payouts &amp; Earnings</h2></div>
+        <p style="font-size:0.78rem;color:var(--text-muted);font-weight:300;margin:-4px 0 16px;">Demo earnings center — in production this would connect to your Stripe Express account.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;">
+          <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Current Balance</div>
+            <div style="font-size:1.35rem;font-weight:500;margin-top:6px;">$2,847.50</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Next Payout</div>
+            <div style="font-size:1.35rem;font-weight:500;margin-top:6px;">Apr 21, 2026</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">This Month</div>
+            <div style="font-size:1.35rem;font-weight:500;margin-top:6px;">$4,192.00</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Lifetime</div>
+            <div style="font-size:1.35rem;font-weight:500;margin-top:6px;">$38,420</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Connected Bank</div>
+            <div style="font-size:0.9rem;margin-top:4px;">Chase checking •••• 5678</div>
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="alert('Update bank account\\n\\nDemo only \u2014 would launch Stripe Express onboarding.')" style="font-size:0.72rem;">Update</button>
+        </div>
+        <div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);">Recent Payouts</div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div style="display:flex;justify-content:space-between;padding:10px 4px;font-size:0.82rem;border-bottom:1px solid var(--border);"><span>Apr 7, 2026</span><span style="color:var(--text-muted);">32 subscribers</span><span>$2,612.00</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 4px;font-size:0.82rem;border-bottom:1px solid var(--border);"><span>Mar 31, 2026</span><span style="color:var(--text-muted);">31 subscribers</span><span>$2,530.50</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 4px;font-size:0.82rem;border-bottom:1px solid var(--border);"><span>Mar 24, 2026</span><span style="color:var(--text-muted);">30 subscribers</span><span>$2,449.00</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 4px;font-size:0.82rem;"><span>Mar 17, 2026</span><span style="color:var(--text-muted);">30 subscribers</span><span>$2,449.00</span></div>
+        </div>
+      </div>
+
       <!-- Bio -->
       <div class="tp-section" id="sectionBio">
         <div class="tp-section-header">
