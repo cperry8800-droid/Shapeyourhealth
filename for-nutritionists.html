@@ -50,7 +50,30 @@
     .ft-quote-author { font-size: 0.92rem; font-weight: 500; }
     .ft-quote-role { font-size: 0.82rem; color: var(--text-muted); font-weight: 400; }
 
+    .rd-callout {
+      margin-top: 40px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .rd-callout-header h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 10px; letter-spacing: -0.02em; }
+    .rd-callout-header p { font-size: 0.86rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
+    .rd-callout-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .rd-callout-list li {
+      font-size: 0.86rem; color: var(--text-muted); font-weight: 300; line-height: 1.5;
+      padding-left: 16px; position: relative;
+    }
+    .rd-callout-list li::before {
+      content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 600;
+    }
+
     @media (max-width: 900px) {
+      .rd-callout { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+    }
       .ft-hero { padding: 100px 0 20px; }
       .ft-hero h1 { font-size: clamp(1.4rem, 5vw, 2rem); }
       .ft-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
@@ -211,10 +234,23 @@
           <h3>Paired with Trainers</h3>
           <p>Trainers on Shape regularly recommend nutritionists to their subscribers. Built-in referrals from professionals who already trust the platform.</p>
         </div>
-        <div class="ft-step">
-          <h3>Beyond Meal Plans — The Full Scope of an RD</h3>
-          <p>Registered Dietitians on Shape aren't limited to macros and meal prep. Shape supports the full breadth of RD practice: medical nutrition therapy for chronic conditions like diabetes, kidney disease, and GI disorders; eating disorder support and intuitive eating frameworks; sports nutrition and performance fueling; clinical assessments and nutrition diagnoses; and evidence-based counseling for clients navigating cancer, heart disease, or post-surgical recovery. If your license covers it, Shape gives you the tools to deliver it.</p>
+      </div>
+
+      <!-- RD full-scope callout -->
+      <div class="rd-callout">
+        <div class="rd-callout-header">
+          <span class="tag" style="margin-bottom:10px;display:inline-block;">Registered Dietitians</span>
+          <h3>Beyond meal plans — the full scope of an RD</h3>
+          <p>Shape supports the complete breadth of Registered Dietitian practice. If your license covers it, Shape gives you the tools to deliver it.</p>
         </div>
+        <ul class="rd-callout-list">
+          <li>Medical nutrition therapy for chronic conditions — diabetes, kidney disease, GI disorders</li>
+          <li>Eating disorder support and intuitive eating frameworks</li>
+          <li>Sports nutrition and performance fueling</li>
+          <li>Clinical nutrition assessments and nutrition diagnoses</li>
+          <li>Evidence-based counseling for cancer, heart disease, and post-surgical recovery</li>
+          <li>Prenatal, pediatric, and geriatric nutrition</li>
+        </ul>
       </div>
     </div>
   </section>
