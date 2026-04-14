@@ -303,13 +303,21 @@
   .pb-day-body { padding: 0 18px 18px; display: none; }
   .pb-day-body.open { display: block; }
   .pb-exercise-row {
-    display: grid; grid-template-columns: 2fr 0.7fr 0.7fr 0.7fr 1.5fr 40px;
+    display: grid; grid-template-columns: 2fr 0.7fr 0.7fr 0.7fr 1.5fr 60px;
     gap: 8px; margin-bottom: 8px; align-items: end;
   }
   .pb-exercise-row .pb-input { padding: 8px 10px; font-size: 0.78rem; }
+  .pb-row-actions { display: flex; align-items: center; gap: 2px; justify-content: flex-end; }
+  .pb-video-btn {
+    background: none; border: none; color: var(--text-muted); cursor: pointer;
+    font-size: 0.9rem; padding: 6px 4px; transition: color 0.2s;
+    line-height: 1;
+  }
+  .pb-video-btn:hover { color: var(--accent, #2DD4BF); }
+  .pb-video-btn.has-video { color: var(--accent, #2DD4BF); }
   .pb-remove-btn {
     background: none; border: none; color: var(--text-muted); cursor: pointer;
-    font-size: 1rem; padding: 8px; transition: color 0.2s;
+    font-size: 1rem; padding: 6px 4px; transition: color 0.2s;
   }
   .pb-remove-btn:hover { color: #EF4444; }
   .pb-sub-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
@@ -932,7 +940,7 @@
     .td-client-stats-mini { flex-wrap: wrap; gap: 8px; }
     .td-mini-stat { flex: 1 1 40%; min-width: 0; }
     .pb-row { grid-template-columns: 1fr; }
-    .pb-exercise-row { grid-template-columns: 1fr 50px 50px 50px 1fr 32px; gap: 4px; }
+    .pb-exercise-row { grid-template-columns: 1fr 50px 50px 50px 1fr 56px; gap: 4px; }
     .pb-assign-bar { flex-direction: column; align-items: stretch; }
   }
 </style>
@@ -1521,7 +1529,10 @@
                   <input type="text" class="pb-input" placeholder="8-10">
                   <input type="text" class="pb-input" placeholder="90s">
                   <input type="text" class="pb-input" placeholder="135 lbs">
-                  <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+                  <div class="pb-row-actions">
+                    <button type="button" class="pb-video-btn" title="Attach demo video" onclick="openTrainerVideoModal(this)">&#9654;</button>
+                    <button class="pb-remove-btn" onclick="this.closest('.pb-exercise-row').remove()">&times;</button>
+                  </div>
                 </div>
               </div>
               <button class="btn btn-sm btn-outline" onclick="wbAddExercise()" style="margin-top:6px;font-size:0.7rem;">+ Add Exercise</button>
@@ -2199,6 +2210,7 @@
 
   <script src="app.js"></script>
   <script src="trainer-dashboard.js"></script>
+  <script src="trainer-exercise-videos.js"></script>
 
   <script>
   // ===== Tab Switching with Lazy Init =====
@@ -2364,7 +2376,10 @@
               <input type="text" class="pb-input" placeholder="8-10">
               <input type="text" class="pb-input" placeholder="90s">
               <input type="text" class="pb-input" placeholder="135 lbs">
-              <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+              <div class="pb-row-actions">
+                <button type="button" class="pb-video-btn" title="Attach demo video" onclick="openTrainerVideoModal(this)">&#9654;</button>
+                <button class="pb-remove-btn" onclick="this.closest('.pb-exercise-row').remove()">&times;</button>
+              </div>
             </div>
           </div>
           <button class="btn btn-sm btn-outline" onclick="pbAddExercise(${dayId})" style="margin-top:6px;font-size:0.7rem;">+ Exercise</button>
@@ -2405,9 +2420,13 @@
       <input type="text" class="pb-input" placeholder="8-10">
       <input type="text" class="pb-input" placeholder="90s">
       <input type="text" class="pb-input" placeholder="135 lbs">
-      <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+      <div class="pb-row-actions">
+        <button type="button" class="pb-video-btn" title="Attach demo video" onclick="openTrainerVideoModal(this)">&#9654;</button>
+        <button class="pb-remove-btn" onclick="this.closest('.pb-exercise-row').remove()">&times;</button>
+      </div>
     `;
     list.appendChild(row);
+    if (window.shapeTrainerVideos) shapeTrainerVideos.refreshRowBadges();
   }
 
   function pbAddWarmup(dayId) {
@@ -2871,8 +2890,9 @@
     if (!list) return;
     var row = document.createElement('div');
     row.className = 'pb-exercise-row';
-    row.innerHTML = '<input type="text" class="pb-input" placeholder="e.g. Bench Press"><input type="text" class="pb-input" placeholder="4"><input type="text" class="pb-input" placeholder="8-10"><input type="text" class="pb-input" placeholder="90s"><input type="text" class="pb-input" placeholder="135 lbs"><button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+    row.innerHTML = '<input type="text" class="pb-input" placeholder="e.g. Bench Press"><input type="text" class="pb-input" placeholder="4"><input type="text" class="pb-input" placeholder="8-10"><input type="text" class="pb-input" placeholder="90s"><input type="text" class="pb-input" placeholder="135 lbs"><div class="pb-row-actions"><button type="button" class="pb-video-btn" title="Attach demo video" onclick="openTrainerVideoModal(this)">\u25B6</button><button class="pb-remove-btn" onclick="this.closest(\'.pb-exercise-row\').remove()">&times;</button></div>';
     list.appendChild(row);
+    if (window.shapeTrainerVideos) shapeTrainerVideos.refreshRowBadges();
   }
 
   function wbAddWarmup() {

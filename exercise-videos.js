@@ -117,9 +117,37 @@
       .trim();
   }
 
+  // Check the trainer-uploaded custom library first. Trainer uploads
+  // always win over the curated defaults so trainers can brand their
+  // own form demos. See trainer-exercise-videos.js for the writer.
+  function findTrainerVideo(name) {
+    try {
+      var db = JSON.parse(localStorage.getItem('shapeTrainerCustomVideos_v1') || '{}');
+      var key = norm(name);
+      if (!key) return null;
+      if (db[key]) return db[key];
+      var singular = key.replace(/s$/, '');
+      if (db[singular]) return db[singular];
+      var plural = key + 's';
+      if (db[plural]) return db[plural];
+    } catch (e) {}
+    return null;
+  }
+
   // Try a handful of lookup strategies to match an exercise name to
   // a library entry: exact, singular/plural, substring on either side.
   function findVideo(name) {
+    // Trainer-uploaded custom videos take priority.
+    var trainer = findTrainerVideo(name);
+    if (trainer) {
+      if (trainer.type === 'file') {
+        return { fileUrl: trainer.value, channel: 'Your trainer', source: 'trainer' };
+      }
+      if (trainer.type === 'youtube') {
+        return { id: trainer.value, channel: 'Your trainer', source: 'trainer' };
+      }
+    }
+
     var key = norm(name);
     if (!key) return null;
     if (EXERCISE_VIDEO_LIBRARY[key]) return EXERCISE_VIDEO_LIBRARY[key];
@@ -219,10 +247,17 @@
     }
 
     subEl.textContent = 'Demo — ' + (video.channel || 'YouTube');
-    bodyEl.innerHTML =
-      '<iframe src="https://www.youtube.com/embed/' + video.id +
-      '?autoplay=1&rel=0" title="' + (name || 'Exercise demo') +
-      '" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+    if (video.fileUrl) {
+      // Trainer-uploaded file — render a native <video> element.
+      bodyEl.innerHTML =
+        '<video src="' + video.fileUrl + '" controls autoplay playsinline ' +
+        'style="position:absolute;inset:0;width:100%;height:100%;background:#000;"></video>';
+    } else {
+      bodyEl.innerHTML =
+        '<iframe src="https://www.youtube.com/embed/' + video.id +
+        '?autoplay=1&rel=0" title="' + (name || 'Exercise demo') +
+        '" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+    }
     modal.classList.add('active');
   }
 
@@ -230,7 +265,7 @@
     var modal = document.getElementById('shapeExerciseVideoModal');
     if (!modal) return;
     modal.classList.remove('active');
-    // Clear iframe so the video stops.
+    // Clear iframe/video so playback actually stops.
     var body = document.getElementById('shapeEvBody');
     if (body) body.innerHTML = '';
   }

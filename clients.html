@@ -1999,11 +1999,26 @@
 
           <!-- Grocery list generator -->
           <div class="widget widget-full" id="groceryWidget" style="margin-top:24px;">
-            <div class="widget-header" style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="widget-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
               <h2 style="margin:0;">Grocery list</h2>
-              <button class="btn btn-sm btn-outline" onclick="generateGroceryList()" style="font-size:0.75rem;">Regenerate from meal plan</button>
+              <button class="btn btn-sm btn-outline" onclick="generateGroceryList()" style="font-size:0.75rem;">Reload from meal plan</button>
             </div>
-            <p style="font-size:0.8rem;color:var(--text-muted);margin:8px 0 16px;">Pulled from this week's meal plan. Check items off as you shop — progress is saved on this device.</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin:8px 0 16px;">Pulled from this week's meal plan. Add your own items below, check them off as you shop — saved on this device.</p>
+
+            <!-- Add custom item form -->
+            <form onsubmit="event.preventDefault(); addCustomGroceryItem();" style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin-bottom:18px;align-items:stretch;">
+              <input type="text" id="groceryItemName" placeholder="Item (e.g. Avocados)" required style="padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.82rem;font-family:inherit;">
+              <input type="text" id="groceryItemQty" placeholder="Qty" style="padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.82rem;font-family:inherit;">
+              <select id="groceryItemCat" style="padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.82rem;font-family:inherit;">
+                <option value="Produce">Produce</option>
+                <option value="Protein">Protein</option>
+                <option value="Dairy &amp; Eggs">Dairy &amp; Eggs</option>
+                <option value="Pantry">Pantry</option>
+                <option value="Other">Other</option>
+              </select>
+              <button type="submit" class="btn btn-sm btn-primary" style="font-size:0.75rem;white-space:nowrap;">+ Add</button>
+            </form>
+
             <div id="groceryListContainer"></div>
           </div>
 
@@ -4885,6 +4900,7 @@
   // ===== Grocery list generator =====
   (function(){
     var GROCERY_KEY = 'shapeGroceryChecked_v1';
+    var CUSTOM_KEY = 'shapeGroceryCustom_v1';
     var MEAL_PLAN = [
       { items: [
         { name: 'Eggs', qty: '1 dozen', cat: 'Dairy & Eggs' },
@@ -4915,6 +4931,35 @@
     function saveChecked(obj) {
       try { localStorage.setItem(GROCERY_KEY, JSON.stringify(obj)); } catch(e){}
     }
+    function loadCustom() {
+      try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); } catch(e) { return []; }
+    }
+    function saveCustom(arr) {
+      try { localStorage.setItem(CUSTOM_KEY, JSON.stringify(arr)); } catch(e){}
+    }
+
+    window.addCustomGroceryItem = function() {
+      var name = (document.getElementById('groceryItemName').value || '').trim();
+      var qty = (document.getElementById('groceryItemQty').value || '').trim();
+      var cat = document.getElementById('groceryItemCat').value || 'Other';
+      if (!name) return;
+      var custom = loadCustom();
+      custom.push({ name: name, qty: qty, cat: cat, id: 'c_' + Date.now() });
+      saveCustom(custom);
+      document.getElementById('groceryItemName').value = '';
+      document.getElementById('groceryItemQty').value = '';
+      generateGroceryList();
+    };
+
+    window.removeCustomGroceryItem = function(id) {
+      var custom = loadCustom().filter(function(i){ return i.id !== id; });
+      saveCustom(custom);
+      // Also clear any check state for this item
+      var checked = loadChecked();
+      Object.keys(checked).forEach(function(k){ if (k.indexOf('__' + id) >= 0) delete checked[k]; });
+      saveChecked(checked);
+      generateGroceryList();
+    };
 
     window.toggleGroceryItem = function(key, el) {
       var checked = loadChecked();
@@ -4938,31 +4983,53 @@
       if (txt) txt.textContent = done + ' of ' + total + ' items';
     }
 
+    function escapeHtml(s) {
+      return (s || '').replace(/[&<>"']/g, function(c){
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]);
+      });
+    }
+
     window.generateGroceryList = function() {
       var checked = loadChecked();
+      var custom = loadCustom();
+      // byCat: { category: [ {name, qty, key, customId?} ] }
       var byCat = {};
-      MEAL_PLAN[0].items.forEach(function(it){
-        if (!byCat[it.cat]) byCat[it.cat] = {};
-        if (!byCat[it.cat][it.name]) byCat[it.cat][it.name] = it.qty;
-      });
-      var order = ['Produce', 'Protein', 'Dairy & Eggs', 'Pantry'];
+      function pushItem(cat, name, qty, customId) {
+        if (!byCat[cat]) byCat[cat] = [];
+        // Dedupe by name within a category — plan items keep first qty.
+        for (var i = 0; i < byCat[cat].length; i++) {
+          if (byCat[cat][i].name.toLowerCase() === name.toLowerCase() && !customId) return;
+        }
+        var key = cat + '::' + name + (customId ? '__' + customId : '');
+        byCat[cat].push({ name: name, qty: qty, key: key, customId: customId || null });
+      }
+      MEAL_PLAN[0].items.forEach(function(it){ pushItem(it.cat, it.name, it.qty); });
+      custom.forEach(function(it){ pushItem(it.cat || 'Other', it.name, it.qty || '', it.id); });
+
+      var order = ['Produce', 'Protein', 'Dairy & Eggs', 'Pantry', 'Other'];
       var html = '<div style="margin-bottom:16px;">' +
                  '<div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div id="groceryProgressBar" style="height:100%;background:var(--accent,#2DD4BF);width:0;transition:width .3s;"></div></div>' +
                  '<div id="groceryProgressText" style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">0 of 0 items</div>' +
                  '</div>';
       order.forEach(function(cat){
-        if (!byCat[cat]) return;
+        if (!byCat[cat] || !byCat[cat].length) return;
         html += '<div style="margin-bottom:20px;">';
         html += '<h3 style="font-size:0.78rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-muted);margin:0 0 10px;">' + cat + '</h3>';
-        Object.keys(byCat[cat]).forEach(function(name){
-          var key = cat + '::' + name;
-          var isChecked = !!checked[key];
-          html += '<div class="grocery-row' + (isChecked ? ' checked' : '') + '" onclick="toggleGroceryItem(\'' + key.replace(/'/g, "\\'") + '\', this)" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);margin-bottom:6px;">';
+        byCat[cat].forEach(function(item){
+          var isChecked = !!checked[item.key];
+          var safeKey = item.key.replace(/'/g, "\\'");
+          html += '<div class="grocery-row' + (isChecked ? ' checked' : '') + '" onclick="toggleGroceryItem(\'' + safeKey + '\', this)" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);margin-bottom:6px;">';
           html += '<div class="grocery-check" style="width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#000;background:' + (isChecked ? 'var(--accent,#2DD4BF)' : 'transparent') + ';flex-shrink:0;">' + (isChecked ? '&#10003;' : '') + '</div>';
           html += '<div style="flex:1;min-width:0;">';
-          html += '<div style="font-size:0.88rem;">' + name + '</div>';
-          html += '<div style="font-size:0.72rem;color:var(--text-muted);">' + byCat[cat][name] + '</div>';
-          html += '</div></div>';
+          html += '<div style="font-size:0.88rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' + escapeHtml(item.name);
+          if (item.customId) html += '<span style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent,#2DD4BF);background:rgba(45,212,191,0.1);padding:2px 6px;border-radius:3px;">Custom</span>';
+          html += '</div>';
+          if (item.qty) html += '<div style="font-size:0.72rem;color:var(--text-muted);">' + escapeHtml(item.qty) + '</div>';
+          html += '</div>';
+          if (item.customId) {
+            html += '<button type="button" onclick="event.stopPropagation();removeCustomGroceryItem(\'' + item.customId + '\');" title="Remove" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:4px 8px;line-height:1;">&times;</button>';
+          }
+          html += '</div>';
         });
         html += '</div>';
       });
