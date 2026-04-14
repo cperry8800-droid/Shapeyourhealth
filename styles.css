@@ -603,7 +603,10 @@ img.card-avatar-inline { background: var(--border); }
   .nav-actions {
     display: none;
   }
-  .nav-toggle { display: block; position: fixed; top: 24px; right: 24px; z-index: 1060; }
+  .nav-toggle {
+    display: block; position: absolute; top: 50%; right: 16px;
+    transform: translateY(-50%); z-index: 1060;
+  }
   .nav-dropdown { position: static; flex-direction: column; align-items: center; }
   .nav-dropdown > a {
     display: flex; align-items: center; gap: 6px;
