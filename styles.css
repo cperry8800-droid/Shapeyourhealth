@@ -591,6 +591,19 @@ img.card-avatar-inline { background: var(--border); }
   .card-grid { grid-template-columns: 1fr; }
 }
 
+/* Logged-in dashboard pages on mobile: hide the marketing hero block
+   so the first widget sits right under the navbar. We detect a
+   dashboard by the presence of .dash-tab-bar. */
+@media (max-width: 768px) {
+  body.shape-logged-in:has(.dash-tab-bar) .page-hero {
+    display: none !important;
+  }
+  body.shape-logged-in:has(.dash-tab-bar) .page-hero + .section,
+  body.shape-logged-in:has(.dash-tab-bar) .page-hero + section {
+    padding-top: 88px !important;
+  }
+}
+
 @media (max-width: 768px) {
   .nav-links {
     position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
