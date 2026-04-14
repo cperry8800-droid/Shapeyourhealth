@@ -929,7 +929,11 @@
       }
       .shape-score-grid > div { min-width: 0; }
       .shape-score-grid .tier-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
-      .reward-grid { grid-template-columns: 1fr 1fr !important; }
+      .reward-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+      .reward-grid-wrap { max-height: none !important; overflow-y: visible !important; }
+      #tabShapescore .reward-card { padding: 14px !important; }
+      #tabShapescore .reward-card h4 { font-size: 0.82rem !important; line-height: 1.25 !important; }
+      #tabShapescore .reward-card p { font-size: 0.7rem !important; line-height: 1.35 !important; }
       /* Balance card — stack on mobile */
       #tabShapescore .shape-score-grid > div > div[style*="justify-content:space-between"] {
         flex-wrap: wrap; gap: 10px; padding: 20px !important;
@@ -1117,7 +1121,7 @@
       </a>
       <div class="nav-links" id="navLinks">
         <div class="nav-dropdown">
-          <a href="clients.html">Clients</a>
+          <a href="for-clients.html">Clients</a>
           <div class="nav-dropdown-menu">
             <a href="clients.html">Dashboard</a>
           </div>
@@ -2233,7 +2237,7 @@
           <a href="trainers.html">Trainer Marketplace</a>
           <a href="nutritionists.html">Nutritionists</a>        <a href="community.html">Community</a>
         <a href="pricing.html">Pricing</a>
-          <a href="clients.html">Clients</a>
+          <a href="for-clients.html">Clients</a>
           <a href="nutrition-schedule.html">Nutritionist Dashboard</a>
           <a href="trainer-dashboard.html">Trainer Dashboard</a>
           <a href="integrations.html">Integrations</a>

@@ -9,12 +9,41 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     @media (max-width: 768px) {
-      .shape-score-grid { grid-template-columns: 1fr !important; }
-      .shape-score-grid .tier-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .shape-score-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 28px !important;
+      }
+      .shape-score-grid > div { min-width: 0; }
+      .shape-score-grid .tier-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
+      /* Balance card — stack */
+      .shape-score-grid > div > div[style*="justify-content:space-between"] {
+        flex-wrap: wrap; gap: 10px; padding: 20px !important;
+      }
+      /* Status banner / friends rows — allow wrapping */
+      .shape-score-grid > div > div > div[style*="justify-content:space-between"] {
+        flex-wrap: wrap; row-gap: 4px;
+      }
+      .shape-score-grid div[style*="padding:16px 20px"] { padding: 12px 14px !important; }
+      .shape-score-grid [style*="rgba(205,127,50,0.08)"],
+      .shape-score-grid [style*="rgba(45,212,191,0.08)"] {
+        padding: 10px 14px !important;
+        flex-wrap: wrap; gap: 6px;
+      }
+      .shape-score-grid h2 { font-size: 1.15rem !important; padding: 0 4px; }
       .redeem-card { flex-direction: column !important; align-items: flex-start !important; gap: 12px; }
       .redeem-card > div:last-child { text-align: left !important; }
-      .rewards-cat-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .reward-grid { grid-template-columns: 1fr !important; }
+      .rewards-cat-tabs {
+        overflow-x: auto; -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; flex-wrap: nowrap; padding-bottom: 4px;
+      }
+      .rewards-cat-tabs::-webkit-scrollbar { display: none; }
+      .rewards-cat-btn { flex-shrink: 0; }
+      .reward-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+      .reward-grid-wrap { max-height: none !important; overflow-y: visible !important; }
+      .reward-item { padding: 14px !important; }
+      .page-hero { padding: 120px 0 20px !important; }
+      .page-hero h1 { font-size: 1.8rem !important; }
+      .page-hero-sub { font-size: 0.9rem !important; padding: 0 8px; }
     }
     .rewards-cat-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
     .rewards-cat-btn {
@@ -82,7 +111,7 @@
       </a>
       <div class="nav-links" id="navLinks">
         <div class="nav-dropdown">
-          <a href="clients.html">Clients</a>
+          <a href="for-clients.html">Clients</a>
           <div class="nav-dropdown-menu">
             <a href="clients.html">Dashboard</a>
           </div>
@@ -356,7 +385,7 @@
         <a href="for-trainers.html">Trainers</a>
           <a href="nutritionists.html">Nutritionists</a>        <a href="community.html">Community</a>
         <a href="pricing.html">Pricing</a>
-          <a href="clients.html">Clients</a>
+          <a href="for-clients.html">Clients</a>
           <a href="nutrition-schedule.html">Nutritionist Dashboard</a>
           <a href="trainer-dashboard.html">Trainer Dashboard</a>
           <a href="integrations.html">Integrations</a>
