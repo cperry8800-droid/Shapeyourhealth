@@ -591,24 +591,6 @@ img.card-avatar-inline { background: var(--border); }
   .card-grid { grid-template-columns: 1fr; }
 }
 
-/* Once logged in, collapse the sub-page hero block on mobile so
-   content starts closer to the top. Instead of display:none (which
-   breaks first-child spacing on some pages), we zero out the hero's
-   inner content but keep a small spacer to clear the fixed navbar. */
-@media (max-width: 768px) {
-  body.shape-logged-in .page-hero {
-    padding: 88px 0 0 !important;
-    min-height: 0 !important;
-  }
-  body.shape-logged-in .page-hero > *:not(:last-child),
-  body.shape-logged-in .page-hero .tag,
-  body.shape-logged-in .page-hero h1,
-  body.shape-logged-in .page-hero .page-hero-sub,
-  body.shape-logged-in .page-hero p {
-    display: none !important;
-  }
-}
-
 @media (max-width: 768px) {
   .nav-links {
     position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
