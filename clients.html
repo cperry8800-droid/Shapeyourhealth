@@ -772,8 +772,7 @@
       .dash-tab-bar {
         position: sticky; top: 86px; bottom: auto; left: auto; right: auto;
         z-index: 900;
-        background: rgba(10,10,10,0.95);
-        -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+        background: var(--bg-alt);
         border-top: none; border-bottom: 1px solid var(--border);
         overflow-x: auto; -webkit-overflow-scrolling: touch;
         scrollbar-width: none; padding-bottom: 0;
@@ -785,7 +784,6 @@
       }
       .dash-tab {
         flex: 0 0 auto; min-width: 0;
-        display: block;
         padding: 12px 16px; font-size: 0.72rem; font-weight: 600;
         letter-spacing: 0.07em; opacity: 0.5;
         white-space: nowrap; overflow: visible;
