@@ -719,7 +719,7 @@
             <span class="tp-tag" style="opacity:0.4;">No availability set</span>
           </div>
         </div>
-        <button class="btn btn-primary" onclick="openNBookingModal()" style="width:100%;">Book a 1-on-1 Consultation</button>
+        <button class="btn btn-primary" onclick="shapeOpenBooking('nutritionist')" style="width:100%;">Book a 1-on-1 Consultation</button>
       </div>
       <div style="display:none;" id="nConsultEditFields">
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
@@ -1935,5 +1935,25 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="booking.js"></script>
+  <script>
+    // Pass ?provider=<uuid>&name=<name> in the URL to book a real provider.
+    // Without a provider id we redirect to the marketplace to pick one.
+    function shapeOpenBooking(role) {
+      var params = new URLSearchParams(window.location.search);
+      var providerId = params.get('provider');
+      var providerName = params.get('name') || (role === 'trainer' ? 'this trainer' : 'this nutritionist');
+      if (!providerId) {
+        alert('Open this profile from the marketplace to book. (No provider id in URL.)');
+        window.location.href = role === 'trainer' ? 'trainers.html' : 'nutritionists.html';
+        return;
+      }
+      if (!window.shapeBook) { alert('Booking not loaded. Refresh the page.'); return; }
+      window.shapeBook.open({ providerId: providerId, providerRole: role, providerName: providerName });
+    }
+  </script>
 </body>
 </html>

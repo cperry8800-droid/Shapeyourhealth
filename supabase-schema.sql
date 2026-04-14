@@ -51,3 +51,54 @@ create policy "users update own profile"
   to authenticated
   using (auth.uid() = id)
   with check (auth.uid() = id);
+
+-- ===== sessions table =====
+-- Bookings between a client and a provider (trainer or nutritionist).
+create table if not exists public.sessions (
+  id uuid primary key default gen_random_uuid(),
+  client_id uuid not null references auth.users on delete cascade,
+  provider_id uuid not null references auth.users on delete cascade,
+  provider_role text not null check (provider_role in ('trainer','nutritionist')),
+  type text not null check (type in ('video','phone','inperson','message')),
+  scheduled_at timestamptz not null,
+  duration_min int not null default 30,
+  status text not null default 'requested'
+    check (status in ('requested','confirmed','declined','completed','cancelled')),
+  meeting_url text,
+  client_phone text,
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists sessions_client_idx on public.sessions (client_id, scheduled_at desc);
+create index if not exists sessions_provider_idx on public.sessions (provider_id, scheduled_at desc);
+
+drop trigger if exists sessions_touch_updated_at on public.sessions;
+create trigger sessions_touch_updated_at
+  before update on public.sessions
+  for each row execute function public.touch_updated_at();
+
+alter table public.sessions enable row level security;
+
+-- Client and provider can both read their own sessions.
+drop policy if exists "sessions readable by participants" on public.sessions;
+create policy "sessions readable by participants"
+  on public.sessions for select
+  to authenticated
+  using (auth.uid() = client_id or auth.uid() = provider_id);
+
+-- Clients create booking requests (they're the requester).
+drop policy if exists "clients insert session requests" on public.sessions;
+create policy "clients insert session requests"
+  on public.sessions for insert
+  to authenticated
+  with check (auth.uid() = client_id);
+
+-- Either side can update (provider accepts/declines, client cancels, etc.).
+drop policy if exists "participants update sessions" on public.sessions;
+create policy "participants update sessions"
+  on public.sessions for update
+  to authenticated
+  using (auth.uid() = client_id or auth.uid() = provider_id)
+  with check (auth.uid() = client_id or auth.uid() = provider_id);

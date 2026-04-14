@@ -144,6 +144,55 @@
       document.body.insertBefore(bar, document.body.firstChild);
     },
 
+    // ===== Sessions (bookings) =====
+
+    // Create a new session request. Called by a client from a provider's profile.
+    async requestSession(opts) {
+      var session = await shapeDb.getSession();
+      if (!session) return { error: { message: 'You must be logged in to book.' } };
+      var row = {
+        client_id: session.user.id,
+        provider_id: opts.providerId,
+        provider_role: opts.providerRole,
+        type: opts.type,
+        scheduled_at: opts.scheduledAt,
+        duration_min: opts.durationMin || 30,
+        notes: opts.notes || null,
+        client_phone: opts.type === 'phone' ? (opts.clientPhone || null) : null,
+        status: 'requested'
+      };
+      var res = await client.from('sessions').insert(row).select().single();
+      return res;
+    },
+
+    // List sessions where current user is a participant (client OR provider).
+    async listSessions(opts) {
+      opts = opts || {};
+      var session = await shapeDb.getSession();
+      if (!session) return { data: [], error: null };
+      var q = client.from('sessions').select('*');
+      if (opts.asClient) q = q.eq('client_id', session.user.id);
+      else if (opts.asProvider) q = q.eq('provider_id', session.user.id);
+      // If neither flag set, RLS still limits to participants.
+      if (opts.status) q = q.eq('status', opts.status);
+      if (opts.upcoming) q = q.gte('scheduled_at', new Date().toISOString());
+      q = q.order('scheduled_at', { ascending: opts.ascending !== false });
+      return await q;
+    },
+
+    async updateSession(id, patch) {
+      return await client.from('sessions').update(patch).eq('id', id).select().single();
+    },
+
+    // Accept a booking request → generate a Jitsi room URL for video sessions.
+    async acceptSession(id) {
+      var url = 'https://meet.jit.si/shape-' + id.replace(/-/g, '').slice(0, 16);
+      var s = await client.from('sessions').select('type').eq('id', id).single();
+      var patch = { status: 'confirmed' };
+      if (s.data && s.data.type === 'video') patch.meeting_url = url;
+      return await client.from('sessions').update(patch).eq('id', id).select().single();
+    },
+
     dashboardFor(role) {
       if (role === 'trainer') return 'trainer-dashboard.html';
       if (role === 'nutritionist') return 'nutrition-schedule.html';

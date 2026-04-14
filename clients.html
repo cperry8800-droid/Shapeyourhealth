@@ -1923,6 +1923,7 @@
 
       <!-- MY TEAM TAB -->
       <div class="dash-tab-content" id="tabMyteam">
+        <div id="shapeSessionsWidget" style="margin-bottom:20px;"></div>
         <div class="team-chat-single">
           <div class="team-coach-tabs" id="teamCoachTabs">
             <button class="team-coach-tab active" data-coach="trainer" onclick="switchTeamCoach('trainer')">
@@ -4736,6 +4737,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
+  <script src="sessions-widget.js"></script>
   <script>
     // Session guard — Phase 1. If not logged in as a client, bounce.
     (async function () {
