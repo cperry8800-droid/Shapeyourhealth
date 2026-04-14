@@ -81,10 +81,20 @@
     .nd-today-hero-cta { background: var(--accent); color: #fff; border: none; padding: 14px 26px; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; font-family: inherit; position: relative; }
 
     .nd-checkin-banner { display: flex; align-items: center; gap: 14px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); padding: 12px 16px; margin-bottom: 16px; }
+    .nd-checkin-banner.nd-checkin-banner-stack { display: block; padding: 12px 16px 8px; }
+    .nd-checkin-banner-head { display: flex; align-items: center; gap: 14px; }
     .nd-checkin-banner-icon { font-size: 1.2rem; color: #F59E0B; flex-shrink: 0; }
     .nd-checkin-banner-body { flex: 1; min-width: 0; }
     .nd-checkin-banner-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
     .nd-checkin-banner-sub { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
+    .nd-checkin-banner-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .nd-checkin-banner-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(245,158,11,0.18); cursor: pointer; transition: background 0.15s, border-color 0.15s; text-align: left; font-family: inherit; }
+    .nd-checkin-banner-row:hover { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.4); }
+    .nd-checkin-banner-row .avatar { width: 32px; height: 32px; font-size: 0.72rem; flex-shrink: 0; background: rgba(245,158,11,0.15); color: #F59E0B; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+    .nd-checkin-banner-row-info { flex: 1; min-width: 0; }
+    .nd-checkin-banner-row-name { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .nd-checkin-banner-row-issue { font-size: 0.7rem; color: #F59E0B; font-weight: 300; }
+    .nd-checkin-banner-row-arrow { color: #F59E0B; font-size: 1rem; flex-shrink: 0; opacity: 0.7; }
     .nd-checkin-banner-action { background: #F59E0B; color: #fff; border: none; padding: 8px 14px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; font-family: inherit; flex-shrink: 0; }
     .nd-checkin-banner-close { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; line-height: 1; cursor: pointer; padding: 4px 8px; flex-shrink: 0; }
   }
@@ -1052,14 +1062,16 @@
   <div class="nd-tab-content active" id="ndTabHome">
     <section class="section">
       <div class="container">
-        <div class="nd-checkin-banner" id="ndCheckinBanner">
-          <div class="nd-checkin-banner-icon"></div>
-          <div class="nd-checkin-banner-body">
-            <div class="nd-checkin-banner-title">4 clients need meal plan updates</div>
-            <div class="nd-checkin-banner-sub">Emma's weekly plan expires today · 3 new intake forms submitted</div>
+        <div class="nd-checkin-banner nd-checkin-banner-stack" id="ndCheckinBanner">
+          <div class="nd-checkin-banner-head">
+            <div class="nd-checkin-banner-icon"></div>
+            <div class="nd-checkin-banner-body">
+              <div class="nd-checkin-banner-title" id="ndCheckinBannerTitle">Clients need attention</div>
+              <div class="nd-checkin-banner-sub">Tap a client below to open their profile</div>
+            </div>
+            <button class="nd-checkin-banner-close" onclick="this.closest('.nd-checkin-banner').style.display='none'">×</button>
           </div>
-          <button class="nd-checkin-banner-action" onclick="ndSwitchTab('clients', document.querySelector('.nd-tab-btn[data-tab=clients]'))">Review</button>
-          <button class="nd-checkin-banner-close" onclick="this.parentElement.style.display='none'">×</button>
+          <div class="nd-checkin-banner-list" id="ndCheckinBannerList"></div>
         </div>
         <div class="nd-today-hero">
           <div class="nd-today-hero-label">Today · <span id="ndTodayDateLabel"></span></div>

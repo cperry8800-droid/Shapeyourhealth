@@ -973,3 +973,60 @@ showNdClientDetail = function(id) {
 // Init messages
 renderNdMsgSidebar();
 renderNdClients('all');
+
+// ===== Check-in Banner: flagged clients with specific issues =====
+function ndGetFlaggedClients() {
+  const today = new Date();
+  return ndClients.map(c => {
+    const lastDate = new Date(c.lastCheckin + 'T00:00:00');
+    const daysAgo = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+    let issue = null;
+    if (c.status === 'inactive' || daysAgo >= 7) {
+      issue = `Hasn't checked in in ${daysAgo} days`;
+    } else if (c.adherence < 70) {
+      issue = `Adherence dropped to ${c.adherence}%`;
+    } else if (c.checkinsThisMonth < 3) {
+      issue = `Only ${c.checkinsThisMonth} check-in${c.checkinsThisMonth === 1 ? '' : 's'} this month`;
+    }
+    return { client: c, issue, daysAgo };
+  }).filter(x => x.issue);
+}
+
+function ndOpenFlaggedClient(id) {
+  const btn = document.querySelector('.nd-tab-btn[data-tab=clients]');
+  if (typeof ndSwitchTab === 'function') ndSwitchTab('clients', btn);
+  setTimeout(() => {
+    if (typeof showNdClientDetail === 'function') showNdClientDetail(id);
+    const detail = document.getElementById('ndClientDetailSection');
+    if (detail && detail.scrollIntoView) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
+}
+
+function renderNdCheckinBanner() {
+  const list = document.getElementById('ndCheckinBannerList');
+  const title = document.getElementById('ndCheckinBannerTitle');
+  const banner = document.getElementById('ndCheckinBanner');
+  if (!list || !banner) return;
+  const flagged = ndGetFlaggedClients();
+  if (!flagged.length) {
+    banner.style.display = 'none';
+    return;
+  }
+  if (title) title.textContent = `${flagged.length} client${flagged.length === 1 ? '' : 's'} need${flagged.length === 1 ? 's' : ''} attention`;
+  list.innerHTML = flagged.map(f => {
+    const c = f.client;
+    const initials = c.name.split(' ').map(n => n[0]).join('');
+    return `
+      <button type="button" class="nd-checkin-banner-row" onclick="ndOpenFlaggedClient(${c.id})">
+        <div class="avatar">${initials}</div>
+        <div class="nd-checkin-banner-row-info">
+          <div class="nd-checkin-banner-row-name">${c.name}</div>
+          <div class="nd-checkin-banner-row-issue">${f.issue}</div>
+        </div>
+        <span class="nd-checkin-banner-row-arrow">›</span>
+      </button>
+    `;
+  }).join('');
+}
+
+renderNdCheckinBanner();

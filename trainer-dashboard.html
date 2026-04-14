@@ -88,10 +88,21 @@
 
     /* Check-in banner */
     .td-checkin-banner { display: flex; align-items: center; gap: 14px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); padding: 12px 16px; margin-bottom: 16px; }
+    .td-checkin-banner.td-checkin-banner-stack { display: block; padding: 12px 16px 8px; }
+    .td-checkin-banner-head { display: flex; align-items: center; gap: 14px; }
     .td-checkin-banner-icon { font-size: 1.2rem; color: #F59E0B; flex-shrink: 0; }
     .td-checkin-banner-body { flex: 1; min-width: 0; }
     .td-checkin-banner-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
+    .td-checkin-banner-sub { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
     .td-checkin-banner-meta { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
+    .td-checkin-banner-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .td-checkin-banner-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(245,158,11,0.18); cursor: pointer; transition: background 0.15s, border-color 0.15s; text-align: left; }
+    .td-checkin-banner-row:hover { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.4); }
+    .td-checkin-banner-row .avatar { width: 32px; height: 32px; font-size: 0.72rem; flex-shrink: 0; background: rgba(245,158,11,0.15); color: #F59E0B; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+    .td-checkin-banner-row-info { flex: 1; min-width: 0; }
+    .td-checkin-banner-row-name { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .td-checkin-banner-row-issue { font-size: 0.7rem; color: #F59E0B; font-weight: 300; }
+    .td-checkin-banner-row-arrow { color: #F59E0B; font-size: 1rem; flex-shrink: 0; opacity: 0.7; }
     .td-checkin-banner-action { background: #F59E0B; color: #fff; border: none; padding: 8px 14px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; font-family: inherit; flex-shrink: 0; }
     .td-checkin-banner-close { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; line-height: 1; cursor: pointer; padding: 4px 8px; flex-shrink: 0; }
   }
@@ -970,14 +981,16 @@
   <section class="section" style="padding-top:0;padding-bottom:48px;">
   <div class="container">
     <div class="td-tab-content active" id="tab-home">
-      <div class="td-checkin-banner" id="tdCheckinBanner">
-        <div class="td-checkin-banner-icon"></div>
-        <div class="td-checkin-banner-body">
-          <div class="td-checkin-banner-title">3 clients need attention</div>
-          <div class="td-checkin-banner-sub">Sarah missed 2 sessions · Mike hasn't logged weight in 8 days · Jake's check-in is due</div>
+      <div class="td-checkin-banner td-checkin-banner-stack" id="tdCheckinBanner">
+        <div class="td-checkin-banner-head">
+          <div class="td-checkin-banner-icon"></div>
+          <div class="td-checkin-banner-body">
+            <div class="td-checkin-banner-title" id="tdCheckinBannerTitle">Clients need attention</div>
+            <div class="td-checkin-banner-sub">Tap a client below to open their profile</div>
+          </div>
+          <button class="td-checkin-banner-close" onclick="this.closest('.td-checkin-banner').style.display='none'">×</button>
         </div>
-        <button class="td-checkin-banner-action" onclick="switchTrainerTab('clients', document.querySelector('.td-tab-btn[data-tab=clients]'))">Review</button>
-        <button class="td-checkin-banner-close" onclick="this.parentElement.style.display='none'">×</button>
+        <div class="td-checkin-banner-list" id="tdCheckinBannerList"></div>
       </div>
       <div class="td-today-hero">
         <div class="td-today-hero-label">Today · <span id="tdTodayDateLabel"></span></div>

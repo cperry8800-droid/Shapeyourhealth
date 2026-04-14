@@ -701,3 +701,60 @@ renderClients = function(filter) {
 
 // Re-render to apply check-in buttons
 renderClients('all');
+
+// ===== Check-in Banner: flagged clients with specific issues =====
+function tdGetFlaggedClients() {
+  const today = new Date();
+  return clients.map(c => {
+    const lastDate = new Date(c.lastWorkout + 'T00:00:00');
+    const daysAgo = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+    const issues = [];
+    if (c.status === 'inactive' || daysAgo >= 7) {
+      issues.push(`Hasn't worked out in ${daysAgo} days`);
+    } else if (c.workoutsThisMonth < 3) {
+      issues.push(`Only ${c.workoutsThisMonth} workout${c.workoutsThisMonth === 1 ? '' : 's'} this month`);
+    } else if (c.streak === 0 && c.workoutsThisMonth < 5) {
+      issues.push('Lost streak · low activity');
+    }
+    return { client: c, issue: issues[0], daysAgo };
+  }).filter(x => x.issue);
+}
+
+function tdOpenFlaggedClient(id) {
+  const btn = document.querySelector('.td-tab-btn[data-tab=clients]');
+  if (typeof switchTrainerTab === 'function') switchTrainerTab('clients', btn);
+  setTimeout(() => {
+    if (typeof showClientDetail === 'function') showClientDetail(id);
+    const detail = document.getElementById('clientDetailSection');
+    if (detail && detail.scrollIntoView) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
+}
+
+function renderTdCheckinBanner() {
+  const list = document.getElementById('tdCheckinBannerList');
+  const title = document.getElementById('tdCheckinBannerTitle');
+  const banner = document.getElementById('tdCheckinBanner');
+  if (!list || !banner) return;
+  const flagged = tdGetFlaggedClients();
+  if (!flagged.length) {
+    banner.style.display = 'none';
+    return;
+  }
+  if (title) title.textContent = `${flagged.length} client${flagged.length === 1 ? '' : 's'} need${flagged.length === 1 ? 's' : ''} attention`;
+  list.innerHTML = flagged.map(f => {
+    const c = f.client;
+    const initials = c.name.split(' ').map(n => n[0]).join('');
+    return `
+      <button type="button" class="td-checkin-banner-row" onclick="tdOpenFlaggedClient(${c.id})">
+        <div class="avatar">${initials}</div>
+        <div class="td-checkin-banner-row-info">
+          <div class="td-checkin-banner-row-name">${c.name}</div>
+          <div class="td-checkin-banner-row-issue">${f.issue}</div>
+        </div>
+        <span class="td-checkin-banner-row-arrow">›</span>
+      </button>
+    `;
+  }).join('');
+}
+
+renderTdCheckinBanner();
