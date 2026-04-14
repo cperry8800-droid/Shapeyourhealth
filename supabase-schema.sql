@@ -61,6 +61,41 @@ create policy "users update own profile"
   using (auth.uid() = id)
   with check (auth.uid() = id);
 
+-- Auto-create a profile row whenever a new auth.users row is inserted.
+-- The app passes { role } via raw_user_meta_data on signUp; we default to
+-- 'client' if it's missing, and we also seed the `roles` array with it.
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_role text;
+begin
+  v_role := coalesce(new.raw_user_meta_data->>'role', 'client');
+  if v_role not in ('client','trainer','nutritionist') then
+    v_role := 'client';
+  end if;
+
+  insert into public.profiles (id, role, roles, full_name)
+  values (
+    new.id,
+    v_role,
+    array[v_role],
+    coalesce(new.raw_user_meta_data->>'full_name', null)
+  )
+  on conflict (id) do nothing;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
 -- ===== sessions table =====
 -- Bookings between a client and a provider (trainer or nutritionist).
 create table if not exists public.sessions (
