@@ -256,10 +256,14 @@
         if (btn) { btn.disabled = false; btn.textContent = 'Log In'; }
         return;
       }
-      if (res.profile.role !== type) {
-        alert("This account is registered as a " + res.profile.role + ". Redirecting to the correct dashboard.");
+      var has = window.shapeDb.profileHasRole(res.profile, type);
+      if (!has) {
+        alert("This account doesn't have the " + type + " role. Redirecting to your dashboard.");
+        window.location.href = window.shapeDb.dashboardFor(res.profile.role);
+        return;
       }
-      window.location.href = window.shapeDb.dashboardFor(res.profile.role);
+      // User holds the requested role — route directly to that dashboard.
+      window.location.href = window.shapeDb.dashboardFor(type);
     }
   </script>
 

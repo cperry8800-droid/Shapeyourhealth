@@ -12,6 +12,15 @@ create table if not exists public.profiles (
   updated_at timestamptz not null default now()
 );
 
+-- Multi-role support (Option B): a user can hold client + trainer + nutritionist
+-- on one account. `role` stays as the "primary" / default role for routing;
+-- `roles` is the full set.
+alter table public.profiles add column if not exists roles text[] not null default '{}';
+
+-- Backfill: every existing row gets its role copied into the roles array.
+update public.profiles set roles = array[role]
+  where role is not null and (roles is null or array_length(roles, 1) is null);
+
 -- Keep updated_at fresh on any update.
 create or replace function public.touch_updated_at()
 returns trigger language plpgsql as $$

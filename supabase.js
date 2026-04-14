@@ -49,6 +49,7 @@
         var profileRes = await client.from('profiles').upsert({
           id: user.id,
           role: role,
+          roles: [role],
           full_name: fullName
         });
         if (profileRes.error) {
@@ -56,6 +57,35 @@
         }
       }
       return { data: signUpRes.data, user: user };
+    },
+
+    // Add an additional role to the logged-in user's profile.
+    // Used by the "Become a trainer / nutritionist" flow on existing accounts.
+    async addRole(newRole) {
+      if (!['client','trainer','nutritionist'].includes(newRole)) {
+        return { error: { message: 'Invalid role' } };
+      }
+      var session = await shapeDb.getSession();
+      if (!session) return { error: { message: 'Not logged in' } };
+      var profile = await shapeDb.getProfile(session.user.id);
+      if (!profile) return { error: { message: 'Profile not found' } };
+      var roles = Array.isArray(profile.roles) && profile.roles.length
+        ? profile.roles.slice()
+        : (profile.role ? [profile.role] : []);
+      if (roles.indexOf(newRole) === -1) roles.push(newRole);
+      var res = await client.from('profiles')
+        .update({ roles: roles })
+        .eq('id', session.user.id)
+        .select()
+        .single();
+      return res;
+    },
+
+    // True if the current profile has this role (array-aware, legacy-safe).
+    profileHasRole(profile, role) {
+      if (!profile) return false;
+      if (Array.isArray(profile.roles) && profile.roles.indexOf(role) !== -1) return true;
+      return profile.role === role;
     },
 
     // Sign in with email + password, returning the user's profile.
@@ -116,7 +146,8 @@
       if (!profile) {
         return { demo: true };
       }
-      if (expectedRole && profile.role !== expectedRole) {
+      if (expectedRole && !shapeDb.profileHasRole(profile, expectedRole)) {
+        // User doesn't hold this role → send them to their primary dashboard.
         window.location.href = shapeDb.dashboardFor(profile.role);
         return null;
       }
@@ -223,8 +254,75 @@
           document.querySelectorAll('[data-shape-dashboard-link]').forEach(function (el) {
             el.setAttribute('href', dash);
           });
+          shapeDb._injectRoleSwitcher(profile);
         }
       }
+    },
+
+    // Auto-inject a "You're viewing as…" switcher when the user holds 2+ roles.
+    _injectRoleSwitcher(profile) {
+      var roles = (profile && Array.isArray(profile.roles) && profile.roles.length)
+        ? profile.roles
+        : (profile && profile.role ? [profile.role] : []);
+      if (roles.length < 2) return;
+      if (document.getElementById('shapeRoleSwitcher')) return;
+
+      // Pick a sane anchor: first .shape-auth-logged-in element (usually the
+      // user-name span in the navbar). Falls back to body.
+      var anchor = document.querySelector('.shape-auth-logged-in');
+      if (!anchor) return;
+
+      var labels = { client: 'Client', trainer: 'Trainer', nutritionist: 'Nutritionist' };
+      var icons = { client: '👤', trainer: '🏋️', nutritionist: '🥗' };
+
+      // Best-guess current role from pathname.
+      var path = window.location.pathname.toLowerCase();
+      var current =
+        path.indexOf('trainer-dashboard') !== -1 ? 'trainer'
+        : path.indexOf('nutrition-schedule') !== -1 ? 'nutritionist'
+        : path.indexOf('clients') !== -1 ? 'client'
+        : profile.role;
+
+      var style = document.createElement('style');
+      style.textContent =
+        '#shapeRoleSwitcher{position:relative;display:inline-block;margin-right:8px;font-family:Inter,system-ui,sans-serif;}' +
+        '#shapeRoleSwitcher .srs-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:var(--text,#fff);border-radius:999px;font-size:0.74rem;font-weight:500;cursor:pointer;font-family:inherit;}' +
+        '#shapeRoleSwitcher .srs-btn:hover{border-color:rgba(255,255,255,0.3);}' +
+        '#shapeRoleSwitcher .srs-btn .srs-caret{opacity:0.5;font-size:0.6rem;}' +
+        '#shapeRoleSwitcher .srs-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:#1A1A1A;border:1px solid rgba(255,255,255,0.1);border-radius:10px;min-width:180px;padding:6px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.5);}' +
+        '#shapeRoleSwitcher.open .srs-menu{display:block;}' +
+        '#shapeRoleSwitcher .srs-menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--text,#fff);font-size:0.82rem;border-radius:6px;text-decoration:none;}' +
+        '#shapeRoleSwitcher .srs-menu a:hover{background:rgba(255,255,255,0.06);}' +
+        '#shapeRoleSwitcher .srs-menu a.active{background:rgba(255,255,255,0.08);font-weight:600;}' +
+        '#shapeRoleSwitcher .srs-menu a .srs-check{margin-left:auto;opacity:0.6;font-size:0.72rem;}';
+      document.head.appendChild(style);
+
+      var wrap = document.createElement('div');
+      wrap.id = 'shapeRoleSwitcher';
+      var menuHtml = '';
+      roles.forEach(function (r) {
+        var active = r === current ? ' active' : '';
+        var check = r === current ? '<span class="srs-check">✓</span>' : '';
+        menuHtml +=
+          '<a href="' + shapeDb.dashboardFor(r) + '" class="' + active.trim() + '">' +
+            '<span>' + (icons[r] || '•') + '</span><span>' + (labels[r] || r) + '</span>' + check +
+          '</a>';
+      });
+      wrap.innerHTML =
+        '<button class="srs-btn" type="button">' +
+          '<span>' + (icons[current] || '•') + '</span>' +
+          '<span>' + (labels[current] || current) + '</span>' +
+          '<span class="srs-caret">▼</span>' +
+        '</button>' +
+        '<div class="srs-menu">' + menuHtml + '</div>';
+
+      anchor.parentNode.insertBefore(wrap, anchor);
+      var btn = wrap.querySelector('.srs-btn');
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        wrap.classList.toggle('open');
+      });
+      document.addEventListener('click', function () { wrap.classList.remove('open'); });
     }
   };
 
