@@ -593,26 +593,17 @@ img.card-avatar-inline { background: var(--border); }
 
 /* Logged-in dashboard pages on mobile: hide the marketing hero block
    so the first widget sits right under the navbar. Dashboards are
-   detected by any of the three bottom tab-bar wrappers. */
+   marked with body.shape-dashboard. */
 @media (max-width: 768px) {
-  body.shape-logged-in:has(.dash-tab-bar) .page-hero,
-  body.shape-logged-in:has(.td-tab-bar) .page-hero,
-  body.shape-logged-in:has(.nd-tab-bar) .page-hero {
+  body.shape-dashboard.shape-logged-in .page-hero {
     display: none !important;
   }
-  body.shape-logged-in:has(.dash-tab-bar) .page-hero + .section,
-  body.shape-logged-in:has(.dash-tab-bar) .page-hero + section,
-  body.shape-logged-in:has(.td-tab-bar) .page-hero + .section,
-  body.shape-logged-in:has(.td-tab-bar) .page-hero + section,
-  body.shape-logged-in:has(.nd-tab-bar) .page-hero + .section,
-  body.shape-logged-in:has(.nd-tab-bar) .page-hero + section {
+  body.shape-dashboard.shape-logged-in .page-hero + .section,
+  body.shape-dashboard.shape-logged-in .page-hero + section {
     padding-top: 88px !important;
   }
-  /* Also pad the first tab-content child if it sits directly after
-     the hidden hero (trainer/nutri wrap their tab content in a
-     <section> that is itself the first element). */
-  body.shape-logged-in:has(.td-tab-bar) .td-tab-content.active,
-  body.shape-logged-in:has(.nd-tab-bar) .nd-tab-content.active {
+  body.shape-dashboard.shape-logged-in .td-tab-content.active,
+  body.shape-dashboard.shape-logged-in .nd-tab-content.active {
     padding-top: 88px !important;
   }
 }
