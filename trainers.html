@@ -317,6 +317,48 @@
   <script src="supabase.js"></script>
   <script src="booking.js"></script>
   <script src="real-providers.js"></script>
+  <script>
+    // Phase 1b — swap hardcoded `trainers` array for Supabase data.
+    // Initial render already happened above using the hardcoded array from
+    // app.js (fast first paint). Now we fetch fresh data from Supabase and
+    // replace the array contents in-place, then re-render. If the fetch
+    // fails for any reason, the hardcoded data stays visible — no breakage.
+    (async function () {
+      try {
+        if (!window.shapeDb || typeof shapeDb.listTrainers !== 'function') return;
+        var fresh = await shapeDb.listTrainers();
+        if (!Array.isArray(fresh) || fresh.length === 0) return;
+
+        // Mutate the const array in place (can't reassign, but can replace contents).
+        trainers.length = 0;
+        for (var i = 0; i < fresh.length; i++) trainers.push(fresh[i]);
+
+        // Re-render top / featured grids (same logic as the earlier inline script).
+        var topGrid = document.getElementById('topCoachesGrid');
+        var featuredGrid = document.getElementById('featuredCoachesGrid');
+        if (topGrid) {
+          var top = trainers.slice().sort(function (a, b) {
+            return (b.rating - a.rating) || (b.subscribers - a.subscribers);
+          }).slice(0, 3);
+          topGrid.innerHTML = top.map(createTrainerCard).join('');
+        }
+        if (featuredGrid) {
+          var featured = trainers.filter(function (t) { return t.featured; });
+          if (!featured.length) {
+            featured = trainers.slice().sort(function (a, b) {
+              return b.subscribers - a.subscribers;
+            }).slice(0, 2);
+          }
+          featuredGrid.innerHTML = featured.map(createTrainerCard).join('');
+        }
+
+        // Re-render the main filterable grid via the existing function.
+        if (typeof filterTrainers === 'function') filterTrainers();
+      } catch (e) {
+        console.warn('[shape] trainers supabase swap failed, using hardcoded data', e);
+      }
+    })();
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

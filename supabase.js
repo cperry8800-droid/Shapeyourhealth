@@ -252,6 +252,97 @@
       return await client.from('sessions').update(patch).eq('id', id).select().single();
     },
 
+    // ===== Marketplace reads (Phase 1b) =====
+    // These return data in the SAME SHAPE as the hardcoded arrays in app.js
+    // (camelCase field names, nested workouts/plans, etc.) so the existing
+    // render code in trainers.html / nutritionists.html / gyms.html can
+    // consume them as a drop-in replacement.
+
+    async listTrainers() {
+      var res = await client
+        .from('trainers')
+        .select('*, trainer_workouts(*, workout_sample_days(*))')
+        .order('sort_order', { ascending: true });
+      if (res.error) { console.warn('[shape] listTrainers error', res.error); return []; }
+      return (res.data || []).map(function (t) {
+        var workouts = (t.trainer_workouts || [])
+          .sort(function (a, b) { return a.sort_order - b.sort_order; })
+          .map(function (w) {
+            var days = (w.workout_sample_days || [])
+              .sort(function (a, b) { return a.sort_order - b.sort_order; })
+              .map(function (d) { return { day: d.day_label, exercises: d.exercises || [] }; });
+            return {
+              name: w.name, type: w.type, duration: w.duration,
+              difficulty: w.difficulty, location: w.location, price: w.price,
+              description: w.description, sampleDays: days
+            };
+          });
+        return {
+          id: t.id, name: t.name, specialty: t.specialty, category: t.category,
+          price: t.price, rating: t.rating, subscribers: t.subscribers,
+          experience: t.experience, credential: t.credential,
+          credentialFull: t.credential_full, specialtyType: t.specialty_type,
+          bio: t.bio, color: t.color, tags: t.tags || [],
+          trainerOfMonth: t.trainer_of_month, totmQuote: t.totm_quote,
+          featured: t.featured, workouts: workouts
+        };
+      });
+    },
+
+    async listNutritionists() {
+      var res = await client
+        .from('nutritionists')
+        .select('*, nutritionist_plans(*, plan_sample_days(*))')
+        .order('sort_order', { ascending: true });
+      if (res.error) { console.warn('[shape] listNutritionists error', res.error); return []; }
+      return (res.data || []).map(function (n) {
+        var plans = (n.nutritionist_plans || [])
+          .sort(function (a, b) { return a.sort_order - b.sort_order; })
+          .map(function (p) {
+            var days = (p.plan_sample_days || [])
+              .sort(function (a, b) { return a.sort_order - b.sort_order; })
+              .map(function (d) {
+                return {
+                  day: d.day_label, calories: d.calories, protein: d.protein,
+                  breakfast: d.breakfast, lunch: d.lunch, dinner: d.dinner
+                };
+              });
+            return {
+              name: p.name, type: p.type, duration: p.duration,
+              difficulty: p.difficulty, price: p.price,
+              description: p.description, sampleDays: days
+            };
+          });
+        return {
+          id: n.id, name: n.name, specialty: n.specialty, category: n.category,
+          price: n.price, rating: n.rating, subscribers: n.subscribers,
+          experience: n.experience, credential: n.credential,
+          credentialFull: n.credential_full, specialtyType: n.specialty_type,
+          bio: n.bio, color: n.color, tags: n.tags || [], services: n.services || [],
+          nutritionistOfMonth: n.nutritionist_of_month, notmQuote: n.notm_quote,
+          featured: n.featured, plans: plans
+        };
+      });
+    },
+
+    async listGyms() {
+      var res = await client
+        .from('gyms')
+        .select('*')
+        .order('sort_order', { ascending: true });
+      if (res.error) { console.warn('[shape] listGyms error', res.error); return []; }
+      return (res.data || []).map(function (g) {
+        return {
+          id: g.id, name: g.name, type: g.type, category: g.category,
+          location: g.location, rating: g.rating, members: g.members,
+          trainers: g.trainers, price: g.price, bio: g.bio, color: g.color,
+          amenities: g.amenities || [], classes: g.classes || [],
+          tags: g.tags || [], featured: g.featured,
+          gymOfMonth: g.gym_of_month, gotmQuote: g.gotm_quote
+        };
+      });
+    },
+
     dashboardFor(role) {
       if (role === 'trainer') return 'trainer-dashboard.html';
       if (role === 'nutritionist') return 'nutrition-schedule.html';

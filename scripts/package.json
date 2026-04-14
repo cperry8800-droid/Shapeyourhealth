@@ -1,0 +1,14 @@
+{
+  "name": "shape-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "One-off migration and seed scripts for Shape. Not part of the live site.",
+  "scripts": {
+    "seed": "node seed-marketplace.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5"
+  }
+}

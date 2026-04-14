@@ -333,6 +333,41 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
+  <script>
+    // Phase 1b — swap hardcoded `gyms` array for Supabase data.
+    (async function () {
+      try {
+        if (!window.shapeDb || typeof shapeDb.listGyms !== 'function') return;
+        var fresh = await shapeDb.listGyms();
+        if (!Array.isArray(fresh) || fresh.length === 0) return;
+
+        gyms.length = 0;
+        for (var i = 0; i < fresh.length; i++) gyms.push(fresh[i]);
+
+        var topGrid = document.getElementById('topGymsGrid');
+        var featuredGrid = document.getElementById('featuredGymsGrid');
+        if (topGrid) {
+          var top = gyms.slice().sort(function (a, b) {
+            return (b.rating - a.rating) || (b.members - a.members);
+          }).slice(0, 3);
+          topGrid.innerHTML = top.map(createGymCard).join('');
+        }
+        if (featuredGrid) {
+          var featured = gyms.filter(function (g) { return g.featured; });
+          if (!featured.length) {
+            featured = gyms.slice().sort(function (a, b) {
+              return b.members - a.members;
+            }).slice(0, 2);
+          }
+          featuredGrid.innerHTML = featured.map(createGymCard).join('');
+        }
+
+        if (typeof filterGyms === 'function') filterGyms();
+      } catch (e) {
+        console.warn('[shape] gyms supabase swap failed, using hardcoded data', e);
+      }
+    })();
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

@@ -307,6 +307,41 @@
   <script src="supabase.js"></script>
   <script src="booking.js"></script>
   <script src="real-providers.js"></script>
+  <script>
+    // Phase 1b — swap hardcoded `nutritionists` array for Supabase data.
+    (async function () {
+      try {
+        if (!window.shapeDb || typeof shapeDb.listNutritionists !== 'function') return;
+        var fresh = await shapeDb.listNutritionists();
+        if (!Array.isArray(fresh) || fresh.length === 0) return;
+
+        nutritionists.length = 0;
+        for (var i = 0; i < fresh.length; i++) nutritionists.push(fresh[i]);
+
+        var topGrid = document.getElementById('topNutritionistsGrid');
+        var featuredGrid = document.getElementById('featuredNutritionistsGrid');
+        if (topGrid) {
+          var top = nutritionists.slice().sort(function (a, b) {
+            return (b.rating - a.rating) || (b.subscribers - a.subscribers);
+          }).slice(0, 3);
+          topGrid.innerHTML = top.map(createNutritionistCard).join('');
+        }
+        if (featuredGrid) {
+          var featured = nutritionists.filter(function (n) { return n.featured; });
+          if (!featured.length) {
+            featured = nutritionists.slice().sort(function (a, b) {
+              return b.subscribers - a.subscribers;
+            }).slice(0, 2);
+          }
+          featuredGrid.innerHTML = featured.map(createNutritionistCard).join('');
+        }
+
+        if (typeof filterNutritionists === 'function') filterNutritionists();
+      } catch (e) {
+        console.warn('[shape] nutritionists supabase swap failed, using hardcoded data', e);
+      }
+    })();
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

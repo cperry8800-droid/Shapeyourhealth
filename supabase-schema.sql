@@ -111,3 +111,200 @@ create policy "participants update sessions"
   to authenticated
   using (auth.uid() = client_id or auth.uid() = provider_id)
   with check (auth.uid() = client_id or auth.uid() = provider_id);
+
+-- =====================================================================
+-- Phase 1 — Marketplace tables (trainers / nutritionists / gyms)
+-- These hold the data that currently lives as hardcoded arrays in app.js.
+-- Safe to run: tables are additive and default to public-read RLS so the
+-- static site can fetch them without a logged-in session. No existing
+-- tables or data are modified.
+-- =====================================================================
+
+-- ===== trainers =====
+create table if not exists public.trainers (
+  id bigint primary key,
+  name text not null,
+  specialty text,
+  category text,
+  price numeric(10,2),
+  rating numeric(3,2),
+  subscribers int,
+  experience text,
+  credential text,
+  credential_full text,
+  specialty_type text,
+  bio text,
+  color text,
+  tags text[] not null default '{}',
+  trainer_of_month boolean not null default false,
+  totm_quote text,
+  featured boolean not null default false,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.trainer_workouts (
+  id bigserial primary key,
+  trainer_id bigint not null references public.trainers(id) on delete cascade,
+  name text not null,
+  type text,
+  duration text,
+  difficulty text,
+  location text,
+  price numeric(10,2),
+  description text,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists trainer_workouts_trainer_idx
+  on public.trainer_workouts (trainer_id, sort_order);
+
+create table if not exists public.workout_sample_days (
+  id bigserial primary key,
+  workout_id bigint not null references public.trainer_workouts(id) on delete cascade,
+  day_label text,
+  exercises text[] not null default '{}',
+  sort_order int not null default 0
+);
+
+create index if not exists workout_sample_days_workout_idx
+  on public.workout_sample_days (workout_id, sort_order);
+
+-- ===== nutritionists =====
+create table if not exists public.nutritionists (
+  id bigint primary key,
+  name text not null,
+  specialty text,
+  category text,
+  price numeric(10,2),
+  rating numeric(3,2),
+  subscribers int,
+  experience text,
+  credential text,
+  credential_full text,
+  specialty_type text,
+  bio text,
+  color text,
+  tags text[] not null default '{}',
+  services text[] not null default '{}',
+  nutritionist_of_month boolean not null default false,
+  notm_quote text,
+  featured boolean not null default false,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.nutritionist_plans (
+  id bigserial primary key,
+  nutritionist_id bigint not null references public.nutritionists(id) on delete cascade,
+  name text not null,
+  type text,
+  duration text,
+  difficulty text,
+  price numeric(10,2),
+  description text,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists nutritionist_plans_nutritionist_idx
+  on public.nutritionist_plans (nutritionist_id, sort_order);
+
+create table if not exists public.plan_sample_days (
+  id bigserial primary key,
+  plan_id bigint not null references public.nutritionist_plans(id) on delete cascade,
+  day_label text,
+  calories text,
+  protein text,
+  breakfast text,
+  lunch text,
+  dinner text,
+  sort_order int not null default 0
+);
+
+create index if not exists plan_sample_days_plan_idx
+  on public.plan_sample_days (plan_id, sort_order);
+
+-- ===== gyms =====
+create table if not exists public.gyms (
+  id bigint primary key,
+  name text not null,
+  type text,
+  category text,
+  location text,
+  rating numeric(3,2),
+  members int,
+  trainers int,
+  price numeric(10,2),
+  bio text,
+  color text,
+  amenities text[] not null default '{}',
+  classes text[] not null default '{}',
+  tags text[] not null default '{}',
+  featured boolean not null default false,
+  gym_of_month boolean not null default false,
+  gotm_quote text,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- ===== updated_at triggers =====
+drop trigger if exists trainers_touch_updated_at on public.trainers;
+create trigger trainers_touch_updated_at
+  before update on public.trainers
+  for each row execute function public.touch_updated_at();
+
+drop trigger if exists nutritionists_touch_updated_at on public.nutritionists;
+create trigger nutritionists_touch_updated_at
+  before update on public.nutritionists
+  for each row execute function public.touch_updated_at();
+
+drop trigger if exists gyms_touch_updated_at on public.gyms;
+create trigger gyms_touch_updated_at
+  before update on public.gyms
+  for each row execute function public.touch_updated_at();
+
+-- ===== Row Level Security =====
+-- Public read so the marketplace pages work without a login.
+-- No public write policies — inserts/updates must go through a server
+-- context with the service_role key (the seed script, or future admin UI).
+
+alter table public.trainers enable row level security;
+alter table public.trainer_workouts enable row level security;
+alter table public.workout_sample_days enable row level security;
+alter table public.nutritionists enable row level security;
+alter table public.nutritionist_plans enable row level security;
+alter table public.plan_sample_days enable row level security;
+alter table public.gyms enable row level security;
+
+drop policy if exists "trainers public read" on public.trainers;
+create policy "trainers public read" on public.trainers
+  for select to anon, authenticated using (true);
+
+drop policy if exists "trainer_workouts public read" on public.trainer_workouts;
+create policy "trainer_workouts public read" on public.trainer_workouts
+  for select to anon, authenticated using (true);
+
+drop policy if exists "workout_sample_days public read" on public.workout_sample_days;
+create policy "workout_sample_days public read" on public.workout_sample_days
+  for select to anon, authenticated using (true);
+
+drop policy if exists "nutritionists public read" on public.nutritionists;
+create policy "nutritionists public read" on public.nutritionists
+  for select to anon, authenticated using (true);
+
+drop policy if exists "nutritionist_plans public read" on public.nutritionist_plans;
+create policy "nutritionist_plans public read" on public.nutritionist_plans
+  for select to anon, authenticated using (true);
+
+drop policy if exists "plan_sample_days public read" on public.plan_sample_days;
+create policy "plan_sample_days public read" on public.plan_sample_days
+  for select to anon, authenticated using (true);
+
+drop policy if exists "gyms public read" on public.gyms;
+create policy "gyms public read" on public.gyms
+  for select to anon, authenticated using (true);
