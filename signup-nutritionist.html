@@ -52,20 +52,24 @@
           <div class="form-row">
             <div class="form-group">
               <label>First Name</label>
-              <input type="text" placeholder="Sarah" required>
+              <input type="text" name="firstName" placeholder="Sarah" required>
             </div>
             <div class="form-group">
               <label>Last Name</label>
-              <input type="text" placeholder="Mitchell" required>
+              <input type="text" name="lastName" placeholder="Mitchell" required>
             </div>
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" placeholder="nutritionist@example.com" required>
+            <input type="email" name="email" placeholder="nutritionist@example.com" required>
           </div>
           <div class="form-group">
-            <label>Password</label>
-            <input type="password" placeholder="Min. 8 characters" required>
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="(555) 123-4567" required>
+          </div>
+          <div class="form-group">
+            <label>City, State / Country</label>
+            <input type="text" name="location" placeholder="San Diego, CA" required>
           </div>
           <button type="submit" class="btn-submit">Continue</button>
         </form>
@@ -73,30 +77,35 @@
         <form onsubmit="event.preventDefault(); goToStep(3);" id="step2" style="display:none;">
           <div class="form-group">
             <label>Specialty</label>
-            <select required>
+            <select name="specialty" required>
               <option value="">Select your specialty</option>
               <option>Sports Nutrition</option>
               <option>Weight Management</option>
               <option>Plant-Based Nutrition</option>
-              <option>Gut Health & Wellness</option>
-              <option>Prenatal & Postnatal</option>
-              <option>Meal Prep & Budget</option>
+              <option>Gut Health &amp; Wellness</option>
+              <option>Prenatal &amp; Postnatal</option>
+              <option>Meal Prep &amp; Budget</option>
               <option>Clinical Nutrition</option>
               <option>Other</option>
             </select>
           </div>
           <div class="form-group">
             <label>Credentials / Certifications</label>
-            <input type="text" placeholder="e.g. RD, CNS, PhD in Nutritional Science">
+            <input type="text" name="credentials" placeholder="e.g. RD, CNS, PhD in Nutritional Science" required>
           </div>
           <div class="form-group">
             <label>Years of experience</label>
-            <select required>
+            <select name="experience" required>
+              <option value="">Select...</option>
               <option>1-2 years</option>
               <option>3-5 years</option>
               <option>5-10 years</option>
               <option>10+ years</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label>Portfolio / Social media (optional)</label>
+            <input type="text" name="portfolio" placeholder="Instagram, website, or practice URL">
           </div>
           <button type="submit" class="btn-submit">Continue</button>
         </form>
@@ -106,19 +115,27 @@
             <label>Monthly subscription price</label>
             <div class="price-input">
               <span class="price-prefix">$</span>
-              <input type="number" placeholder="24.99" min="5" step="0.01">
+              <input type="number" name="price" placeholder="24.99" min="5" step="0.01" required>
               <span class="price-suffix">/ mo</span>
             </div>
           </div>
           <div class="form-group">
             <label>Services you'll offer</label>
             <div class="checkbox-group">
-              <label class="checkbox-option"><input type="checkbox" checked> <span>Custom meal plans</span></label>
-              <label class="checkbox-option"><input type="checkbox" checked> <span>Macro coaching</span></label>
-              <label class="checkbox-option"><input type="checkbox"> <span>Supplement guidance</span></label>
-              <label class="checkbox-option"><input type="checkbox"> <span>Grocery shopping lists</span></label>
-              <label class="checkbox-option"><input type="checkbox"> <span>Recipe library</span></label>
+              <label class="checkbox-option"><input type="checkbox" name="svc_mealplans" value="Custom meal plans" checked> <span>Custom meal plans</span></label>
+              <label class="checkbox-option"><input type="checkbox" name="svc_macros" value="Macro coaching" checked> <span>Macro coaching</span></label>
+              <label class="checkbox-option"><input type="checkbox" name="svc_supplements" value="Supplement guidance"> <span>Supplement guidance</span></label>
+              <label class="checkbox-option"><input type="checkbox" name="svc_grocery" value="Grocery shopping lists"> <span>Grocery shopping lists</span></label>
+              <label class="checkbox-option"><input type="checkbox" name="svc_recipes" value="Recipe library"> <span>Recipe library</span></label>
             </div>
+          </div>
+          <div class="form-group">
+            <label>Short bio</label>
+            <textarea name="bio" placeholder="Tell potential clients about your approach to nutrition..." rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Why do you want to join Shape?</label>
+            <textarea name="whyJoin" placeholder="What excites you about working with clients on Shape?" rows="3" required></textarea>
           </div>
           <div class="form-group terms">
             <label class="checkbox-option">
@@ -129,7 +146,22 @@
           <button type="submit" class="btn-submit">Submit Application</button>
         </form>
 
-        <p class="signup-footer-text">
+        <!-- Pending-approval success screen -->
+        <div id="applicationPending" style="display:none; text-align:center; padding:20px 0;">
+          <div style="font-size:3rem; color:#2DD4BF; margin-bottom:16px;">&#10003;</div>
+          <h2 style="margin-bottom:12px;">Application submitted</h2>
+          <p style="color:var(--text-muted, #888); margin-bottom:8px; font-size:0.95rem;">
+            Thanks for applying to coach on Shape, <span id="pendingName">there</span>.
+          </p>
+          <p style="color:var(--text-muted, #888); margin-bottom:24px; font-size:0.95rem;">
+            Your application is <strong style="color:#F59E0B;">pending review and approval</strong>.
+            Our team will review your credentials and reach out at
+            <strong id="pendingEmail"></strong> within 2&ndash;3 business days.
+          </p>
+          <a href="landing.html" class="btn-submit" style="display:inline-block; text-decoration:none;">Back to home</a>
+        </div>
+
+        <p class="signup-footer-text" id="backLink">
           <a href="landing.html">&#8592; Back to profile selection</a>
         </p>
       </div>
@@ -137,6 +169,9 @@
   </div>
 
   <script>
+    // ===== Application recipient — change this to the inbox you want applications sent to =====
+    var APPLICATION_RECIPIENT_EMAIL = 'info@shapeyourhealth.com';
+
     let currentStep = 1;
     function goToStep(step) {
       document.getElementById('step' + currentStep).style.display = 'none';
@@ -149,38 +184,76 @@
       const titles = ['Step 1 of 3 — Personal information', 'Step 2 of 3 — Professional background', 'Step 3 of 3 — Services & pricing'];
       document.querySelector('.signup-subtitle').textContent = titles[step - 1];
     }
-    async function completeSignup() {
-      var step1 = document.getElementById('step1');
-      var inputs = step1.querySelectorAll('input');
-      var firstName = inputs[0].value.trim();
-      var lastName = inputs[1].value.trim();
-      var email = inputs[2].value.trim();
-      var password = inputs[3].value;
 
-      if (!email || !password) { alert('Email and password are required.'); return; }
-      if (!window.shapeDb) { alert('Auth client not loaded. Please refresh.'); return; }
+    function gatherApplicationData() {
+      var data = {};
+      document.querySelectorAll('#step1 [name], #step2 [name], #step3 [name]').forEach(function (el) {
+        if (el.type === 'checkbox') {
+          if (el.checked) {
+            data.services = (data.services ? data.services + ', ' : '') + (el.value || el.name);
+          }
+        } else {
+          data[el.name] = (el.value || '').toString().trim();
+        }
+      });
+      return data;
+    }
+
+    async function completeSignup() {
+      var data = gatherApplicationData();
+      if (!data.email || !data.firstName || !data.lastName) {
+        alert('Please fill in all required fields.');
+        return;
+      }
 
       var btn = document.querySelector('#step3 .btn-submit');
-      if (btn) { btn.disabled = true; btn.textContent = 'Creating account...'; }
+      if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
 
-      var res = await window.shapeDb.signUp({
-        email: email,
-        password: password,
-        role: 'nutritionist',
-        fullName: (firstName + ' ' + lastName).trim()
+      var payload = new FormData();
+      payload.append('_subject', 'New Nutritionist Application — ' + data.firstName + ' ' + data.lastName);
+      payload.append('_template', 'table');
+      payload.append('_captcha', 'false');
+      payload.append('Role', 'Nutritionist');
+      payload.append('First Name', data.firstName);
+      payload.append('Last Name', data.lastName);
+      payload.append('Email', data.email);
+      payload.append('Phone', data.phone || '');
+      payload.append('Location', data.location || '');
+      payload.append('Specialty', data.specialty || '');
+      payload.append('Credentials', data.credentials || '');
+      payload.append('Years of Experience', data.experience || '');
+      payload.append('Portfolio', data.portfolio || '');
+      payload.append('Monthly Price', '$' + (data.price || ''));
+      payload.append('Services Offered', data.services || '');
+      payload.append('Bio', data.bio || '');
+      payload.append('Why Join Shape', data.whyJoin || '');
+      payload.append('Submitted At', new Date().toISOString());
+
+      try {
+        await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(APPLICATION_RECIPIENT_EMAIL), {
+          method: 'POST',
+          body: payload
+        });
+      } catch (err) {
+        console.warn('Application email relay failed:', err);
+      }
+
+      ['step1','step2','step3'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
       });
-      if (res.error) {
-        alert(res.error.message || 'Sign up failed.');
-        if (btn) { btn.disabled = false; btn.textContent = 'Submit Application'; }
-        return;
+      var backLink = document.getElementById('backLink');
+      if (backLink) backLink.style.display = 'none';
+      document.querySelector('.signup-subtitle').textContent = 'Pending review and approval';
+      document.querySelector('h1').textContent = 'Thanks for applying';
+      document.getElementById('pendingName').textContent = data.firstName || 'there';
+      document.getElementById('pendingEmail').textContent = data.email;
+      var stepInd = document.querySelector('.signup-step-indicator');
+      if (stepInd) {
+        stepInd.querySelectorAll('.step-dot').forEach(function(d){ d.classList.add('active'); });
+        stepInd.querySelectorAll('.step-line').forEach(function(l){ l.classList.add('active'); });
       }
-      var session = await window.shapeDb.getSession();
-      if (!session) {
-        alert('Check your email to confirm your account, then log in.');
-        window.location.href = 'login.html';
-        return;
-      }
-      window.location.href = 'nutrition-schedule.html';
+      document.getElementById('applicationPending').style.display = 'block';
     }
   </script>
 
