@@ -219,46 +219,66 @@
       window.scrollBy(0, SCROLL_SPEED * (1 - (vh - clientY) / SCROLL_EDGE));
     }
 
-    // Find what we're hovering.
-    state.ghost.style.display = 'none';
-    var el = document.elementFromPoint(clientX, clientY);
-    state.ghost.style.display = '';
-    if (!el) return;
-
-    var targetWidget = el.closest('.widget[data-widget-id]');
     var grid = state.grid;
+    var gridRect = grid.getBoundingClientRect();
+    var gridMidX = gridRect.left + gridRect.width / 2;
 
-    // If we're over a widget inside our grid, reposition the placeholder.
-    if (targetWidget && targetWidget !== state.widget && targetWidget !== state.placeholder && targetWidget.parentNode === grid) {
-      var rect = targetWidget.getBoundingClientRect();
-      var gridRect = grid.getBoundingClientRect();
-      var gridMidX = gridRect.left + gridRect.width / 2;
-      var isFullRow = targetWidget.classList.contains('widget-full') ||
-                      state.placeholder.classList.contains('widget-full');
-      var insertBefore;
-      if (isFullRow) {
-        insertBefore = clientY < rect.top + rect.height / 2;
-      } else {
+    // Collect sibling widgets (exclude the one being dragged + placeholder).
+    var siblings = [];
+    for (var i = 0; i < grid.children.length; i++) {
+      var c = grid.children[i];
+      if (c === state.widget || c === state.placeholder) continue;
+      if (!c.classList || !c.classList.contains('widget')) continue;
+      siblings.push(c);
+    }
+
+    if (!siblings.length) {
+      if (state.placeholder.parentNode !== grid) grid.appendChild(state.placeholder);
+      return;
+    }
+
+    // Find the sibling whose center is closest to the cursor. This lets
+    // the user drop into gaps or empty areas — placement follows the
+    // cursor regardless of whether it's directly over a widget.
+    var best = null;
+    var bestDist = Infinity;
+    for (var j = 0; j < siblings.length; j++) {
+      var r = siblings[j].getBoundingClientRect();
+      var cx = r.left + r.width / 2;
+      var cy = r.top + r.height / 2;
+      var dx = clientX - cx;
+      var dy = clientY - cy;
+      var d = dx * dx + dy * dy;
+      if (d < bestDist) { bestDist = d; best = siblings[j]; }
+    }
+    if (!best) return;
+
+    var rect = best.getBoundingClientRect();
+    var isFullRow = best.classList.contains('widget-full') ||
+                    state.placeholder.classList.contains('widget-full');
+    var insertBefore;
+    if (isFullRow) {
+      insertBefore = clientY < rect.top + rect.height / 2;
+    } else {
+      // Row-first: if cursor is clearly above/below this widget's row, use Y.
+      if (clientY < rect.top) insertBefore = true;
+      else if (clientY > rect.bottom) insertBefore = false;
+      else {
         var cursorLeft = clientX < gridMidX;
-        var targetLeft = rect.left < gridMidX;
+        var targetLeft = rect.left + rect.width / 2 < gridMidX;
         if (cursorLeft && !targetLeft) insertBefore = true;
         else if (!cursorLeft && targetLeft) insertBefore = false;
-        else insertBefore = clientY < rect.top + rect.height / 2;
+        else insertBefore = clientX < rect.left + rect.width / 2;
       }
-      if (insertBefore) {
-        if (targetWidget.previousSibling !== state.placeholder) {
-          grid.insertBefore(state.placeholder, targetWidget);
-        }
-      } else {
-        var next = targetWidget.nextSibling;
-        if (next !== state.placeholder) {
-          grid.insertBefore(state.placeholder, next);
-        }
+    }
+    if (insertBefore) {
+      if (best.previousSibling !== state.placeholder) {
+        grid.insertBefore(state.placeholder, best);
       }
-    } else if (el.closest && el.closest('#' + grid.id) && !targetWidget) {
-      // Hovering empty space at end of grid.
-      if (state.placeholder.nextSibling !== null) {
-        grid.appendChild(state.placeholder);
+    } else {
+      var next = best.nextSibling;
+      if (next !== state.placeholder) {
+        grid.insertBefore(state.placeholder, next);
       }
     }
   }
@@ -346,13 +366,10 @@
       return;
     }
 
-    // Mouse: start drag once we exceed the threshold.
+    // Mouse: start drag once we exceed the threshold. We allow starting
+    // from anywhere on the widget (header or body) — interactive targets
+    // are already filtered out in onPointerDown via isInteractive().
     if (Math.abs(dx) < DRAG_THRESHOLD_PX && Math.abs(dy) < DRAG_THRESHOLD_PX) return;
-    if (!pending.inHeader) {
-      // Mouse drags only from the header to avoid stealing clicks in widget bodies.
-      pending = null;
-      return;
-    }
     pending.started = true;
     startDrag(pending.grid, pending.widget, pending.startX, pending.startY);
     try { pending.widget.setPointerCapture(pending.pointerId); } catch (err) {}
@@ -363,7 +380,20 @@
   function onPointerUp() {
     if (pending && pending.timer) clearTimeout(pending.timer);
     pending = null;
-    if (state) endDrag(true);
+    if (state) {
+      // Swallow the click that follows pointerup so dropping on a
+      // button/link inside another widget doesn't trigger it.
+      var swallow = function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        document.removeEventListener('click', swallow, true);
+      };
+      document.addEventListener('click', swallow, true);
+      setTimeout(function () {
+        document.removeEventListener('click', swallow, true);
+      }, 50);
+      endDrag(true);
+    }
   }
   function onPointerCancel() {
     if (pending && pending.timer) clearTimeout(pending.timer);
