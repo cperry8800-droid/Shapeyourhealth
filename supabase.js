@@ -173,7 +173,13 @@
         offsetCss.id = 'shapeDemoBannerOffset';
         offsetCss.textContent =
           'body.shape-has-demo-banner .navbar{top:48px !important;}' +
-          'body.shape-has-demo-banner{padding-top:48px;}';
+          'body.shape-has-demo-banner{padding-top:48px;}' +
+          '@media(max-width:600px){' +
+            '#shapeDemoBanner>div{flex-wrap:nowrap !important;padding:10px 12px !important;font-size:0.72rem !important;gap:12px !important;}' +
+            '#shapeDemoBanner>div>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}' +
+            'body.shape-has-demo-banner .navbar{top:40px !important;}' +
+            'body.shape-has-demo-banner{padding-top:40px;}' +
+          '}';
         document.head.appendChild(offsetCss);
       }
       document.body.classList.add('shape-has-demo-banner');
