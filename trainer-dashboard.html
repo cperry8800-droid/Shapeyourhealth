@@ -4100,8 +4100,13 @@
           var meetingCount = checkInEvts.length + consultEvts.length;
           var parts = [];
           if (workoutCount) parts.push(workoutCount + (workoutCount === 1 ? ' session' : ' sessions'));
-          if (meetingCount) parts.push(meetingCount + (meetingCount === 1 ? ' meeting' : ' meetings'));
-          preview = '<div class="td-cal-day-count">' + parts.join(', ') + '</div>';
+          if (meetingCount) {
+            var firstMtg = checkInEvts[0] || consultEvts[0];
+            var mtgLabel = firstMtg.client + ' · ' + (firstMtg.workout.split('·')[1] || '').trim();
+            if (meetingCount > 1) mtgLabel += ' +' + (meetingCount - 1);
+            parts.push(mtgLabel);
+          }
+          preview = '<div class="td-cal-day-count">' + parts.join(' · ') + '</div>';
         }
         var clickAttr = hasAny ? ' onclick="tdCalDayClick(this,' + year + ',' + month + ',' + d + ')" style="cursor:pointer;"' : '';
         cells += '<div class="td-cal-day' + (isToday ? ' is-today' : '') + (hasAny ? ' has-session' : '') + '"' + clickAttr + '>'

@@ -2032,6 +2032,14 @@
               .grocery-add-form .gl-input[data-role="name"] { grid-column: 1 / -1; }
               .grocery-add-form .gl-add-btn { grid-column: 1 / -1; padding: 11px; }
             }
+            /* When collapsed to half-width, stack form fields so nothing overflows */
+            .grocery-widget:not(.widget-full) .grocery-add-form { grid-template-columns: 1fr 1fr; }
+            .grocery-widget:not(.widget-full) .grocery-add-form .gl-input[data-role="name"] { grid-column: 1 / -1; }
+            .grocery-widget:not(.widget-full) .grocery-add-form .gl-add-btn { grid-column: 1 / -1; padding: 11px; }
+            .grocery-widget:not(.widget-full) .grocery-progress-row { font-size: 0.7rem; }
+            .grocery-widget:not(.widget-full) .grocery-row { padding: 9px 10px; gap: 10px; }
+            .grocery-widget:not(.widget-full) .grocery-name { font-size: 0.82rem; }
+            .grocery-widget:not(.widget-full) .widget-header h2 { font-size: 0.95rem; }
             .grocery-cat { margin-bottom: 18px; }
             .grocery-cat:last-child { margin-bottom: 0; }
             .grocery-cat-head {
@@ -3166,44 +3174,53 @@
             }
           }
         });
-        // Overlay trainer check-in meetings (use clientId 1 as demo client)
+        // Overlay trainer + nutritionist check-in meetings (use clientId 1 as demo client)
         (function() {
-          var checkIns = [];
-          try { checkIns = JSON.parse(localStorage.getItem('shapeTrainerCheckIns') || '[]'); } catch(e) {}
           var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+          var sources = [
+            { key: 'shapeTrainerCheckIns', role: 'Trainer' },
+            { key: 'shapeNutritionistCheckIns', role: 'Nutritionist' }
+          ];
           var ciData = {};
-          checkIns.filter(function(ci) { return ci.active; }).forEach(function(ci) {
-            var targetDow = dayNames.indexOf(ci.day);
-            if (targetDow === -1) return;
-            var daysInM = new Date(year, month + 1, 0).getDate();
-            var allD = [];
-            for (var dd = 1; dd <= daysInM; dd++) {
-              if (new Date(year, month, dd).getDay() === targetDow) allD.push(dd);
-            }
-            var dates = allD;
-            if (ci.frequency === 'monthly') dates = allD.slice(0, 1);
-            if (ci.frequency === 'bi-weekly') {
-              var refD = new Date((ci.createdAt || new Date().toISOString().split('T')[0]) + 'T00:00:00');
-              while (refD.getDay() !== targetDow) refD.setDate(refD.getDate() + 1);
-              dates = allD.filter(function(dd) {
-                var diff = Math.round((new Date(year, month, dd) - refD) / 86400000);
-                return diff >= 0 && diff % 14 === 0;
+          sources.forEach(function(src) {
+            var checkIns = [];
+            try { checkIns = JSON.parse(localStorage.getItem(src.key) || '[]'); } catch(e) {}
+            checkIns.filter(function(ci) { return ci.active && (ci.clientId === undefined || ci.clientId === 1); }).forEach(function(ci) {
+              var targetDow = dayNames.indexOf(ci.day);
+              if (targetDow === -1) return;
+              var daysInM = new Date(year, month + 1, 0).getDate();
+              var allD = [];
+              for (var dd = 1; dd <= daysInM; dd++) {
+                if (new Date(year, month, dd).getDay() === targetDow) allD.push(dd);
+              }
+              var dates = allD;
+              if (ci.frequency === 'monthly') dates = allD.slice(0, 1);
+              if (ci.frequency === 'bi-weekly') {
+                var refD = new Date((ci.createdAt || new Date().toISOString().split('T')[0]) + 'T00:00:00');
+                while (refD.getDay() !== targetDow) refD.setDate(refD.getDate() + 1);
+                dates = allD.filter(function(dd) {
+                  var diff = Math.round((new Date(year, month, dd) - refD) / 86400000);
+                  return diff >= 0 && diff % 14 === 0;
+                });
+              }
+              dates.forEach(function(dd) {
+                if (!ciData[dd]) ciData[dd] = [];
+                ciData[dd].push({ role: src.role, time: ci.time, notes: ci.notes });
               });
-            }
-            dates.forEach(function(dd) {
-              if (!ciData[dd]) ciData[dd] = [];
-              ciData[dd].push({ time: ci.time, notes: ci.notes });
             });
           });
           window._clCheckInData = window._clCheckInData || {};
           window._clCheckInData[year + '_' + month] = ciData;
           Object.keys(ciData).forEach(function(dd) {
             var d = parseInt(dd);
+            var first = ciData[d][0];
+            var previewName = first.role + ' · ' + first.time;
             if (!dayData[d]) {
-              dayData[d] = { type: 'checkin', name: 'Check-In · ' + ciData[d][0].time, label: ciData[d].length + (ciData[d].length === 1 ? ' check-in' : ' check-ins'), checkIns: ciData[d] };
+              dayData[d] = { type: 'checkin', name: previewName, label: ciData[d].length + (ciData[d].length === 1 ? ' check-in' : ' check-ins'), checkIns: ciData[d] };
             } else {
               dayData[d].hasCheckIn = true;
               dayData[d].checkIns = ciData[d];
+              dayData[d].checkInPreview = previewName;
             }
           });
         }());
@@ -3310,7 +3327,9 @@
           }
           // Preview: workout name > check-in > nutrition summary
           if (data && data.type !== 'checkin') {
-            preview = '<div class="cl-cal-day-info">' + (data.name || data.label) + '</div>';
+            var pText = (data.name || data.label);
+            if (data.checkInPreview) pText += ' · ' + data.checkInPreview;
+            preview = '<div class="cl-cal-day-info">' + pText + '</div>';
           } else if (data && data.type === 'checkin') {
             preview = '<div class="cl-cal-day-info">' + data.name + '</div>';
           } else if (nutData) {
@@ -4475,7 +4494,7 @@
         controls.className = 'widget-controls';
         var btn = document.createElement('button');
         btn.className = 'widget-expand-btn';
-        btn.textContent = '⊞ Expand';
+        btn.textContent = w.classList.contains('widget-full') ? '⊟ Collapse' : '⊞ Expand';
         btn.title = 'Toggle full width';
         btn.addEventListener('click', function(e) {
           e.stopPropagation();
@@ -4669,7 +4688,7 @@
         controls.className = 'widget-controls';
         var btn = document.createElement('button');
         btn.className = 'widget-expand-btn';
-        btn.textContent = '⊞ Expand';
+        btn.textContent = w.classList.contains('widget-full') ? '⊟ Collapse' : '⊞ Expand';
         btn.title = 'Toggle full width';
         btn.addEventListener('click', function(e) {
           e.stopPropagation();
@@ -4863,7 +4882,7 @@
         controls.className = 'widget-controls';
         var btn = document.createElement('button');
         btn.className = 'widget-expand-btn';
-        btn.textContent = '⊞ Expand';
+        btn.textContent = w.classList.contains('widget-full') ? '⊟ Collapse' : '⊞ Expand';
         btn.title = 'Toggle full width';
         btn.addEventListener('click', function(e) {
           e.stopPropagation();

@@ -580,10 +580,20 @@ function _ndBuildDashCalendar(month, year) {
       else if (meal.onPlan === 0) dotClass = 'off-plan';
       else dotClass = 'mixed';
     }
+    var ciPreview = '';
+    if (ciItems && ciItems.length) {
+      var first = ciItems[0];
+      var label = first.client + ' · ' + first.time;
+      if (ciItems.length > 1) label += ' +' + (ciItems.length - 1);
+      ciPreview = '<div style="display:flex;align-items:center;gap:4px;margin-top:2px;font-size:0.58rem;color:#A78BFA;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;">'
+        + '<span style="width:5px;height:5px;border-radius:50%;background:#8B5CF6;flex-shrink:0;"></span>'
+        + '<span style="overflow:hidden;text-overflow:ellipsis;">' + label + '</span>'
+        + '</div>';
+    }
     cells += '<div class="nd-cal-day' + (isToday ? ' today' : '') + ((meal || ciItems) ? ' has-meals' : '') + '">'
       + '<div class="nd-cal-day-num">' + d + '</div>'
       + (meal ? '<div class="nd-cal-day-dot ' + dotClass + '"></div><div class="nd-cal-day-meals">' + meal.count + 'm</div>' : '')
-      + (ciItems ? '<div style="width:7px;height:7px;border-radius:50%;background:#8B5CF6;margin:1px auto 0;"></div>' : '')
+      + ciPreview
       + '</div>';
   }
 
