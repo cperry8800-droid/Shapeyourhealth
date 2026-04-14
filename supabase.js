@@ -196,8 +196,8 @@
         'position:fixed;top:0;left:0;right:0;z-index:10000;text-align:center;">' +
         '<span style="opacity:0.85;">Sample ' + label + ' dashboard — sign up to get your own.</span>' +
         '<span style="display:inline-flex;align-items:center;gap:18px;">' +
-          '<a href="' + signupHref + '" style="color:#fff;text-decoration:underline;font-weight:600;">Sign up</a>' +
-          '<a href="login.html" style="color:#fff;opacity:0.7;">Log in</a>' +
+          '<a href="' + signupHref + '" style="color:#fff;text-decoration:underline;font-weight:600;white-space:nowrap;">Sign up</a>' +
+          '<a href="login.html" style="color:#fff;opacity:0.7;white-space:nowrap;">Log in</a>' +
         '</span>' +
         '</div>';
       document.body.insertBefore(bar, document.body.firstChild);

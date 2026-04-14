@@ -39,32 +39,27 @@
 
   @media (max-width: 768px) {
     .nd-tab-bar {
-      position: fixed; top: auto; bottom: 0; left: 0; right: 0;
-      z-index: 1100;
-      background: rgba(10,10,10,0.92);
+      position: sticky; top: 86px; bottom: auto;
+      z-index: 900;
+      background: rgba(10,10,10,0.95);
       -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
-      border-top: 1px solid var(--border); border-bottom: none;
-      padding: 6px 4px env(safe-area-inset-bottom,0);
-      gap: 0; justify-content: space-around; overflow-x: visible;
+      border-top: none; border-bottom: 1px solid var(--border);
+      padding: 0; gap: 0; justify-content: flex-start;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
+    .nd-tab-bar::-webkit-scrollbar { display: none; }
     .nd-tab-btn {
-      flex: 1; min-width: 0;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      padding: 8px 1px; font-size: 0.52rem; font-weight: 600;
-      letter-spacing: 0.02em; opacity: 0.55;
-      border-bottom: none; position: relative;
-      white-space: nowrap; overflow: hidden;
+      flex: 0 0 auto; min-width: 0;
+      display: block;
+      padding: 10px 13px; font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.06em; opacity: 0.5;
+      white-space: nowrap; overflow: visible;
+      border-bottom: 2px solid transparent; position: relative;
     }
-    .nd-tab-btn::before {
-      content: attr(data-icon); font-size: 1.1rem; font-weight: 400;
-      letter-spacing: 0; line-height: 1; text-transform: none;
-    }
-    .nd-tab-btn.active { opacity: 1; color: var(--accent); border-bottom: none; }
-    .nd-tab-btn.active::after {
-      content: ''; position: absolute; top: 0; left: 30%; right: 30%;
-      height: 2px; background: var(--accent);
-    }
-    .nd-tab-content.active { padding-bottom: 90px; }
+    .nd-tab-btn::before { display: none; }
+    .nd-tab-btn.active { opacity: 1; color: var(--accent); border-bottom-color: var(--accent); }
+    .nd-tab-btn.active::after { display: none; }
+    .nd-tab-content.active { padding-bottom: 16px; }
 
     .nd-today-hero {
       background: linear-gradient(135deg, rgba(45,212,191,0.12) 0%, rgba(108,58,237,0.08) 100%);
