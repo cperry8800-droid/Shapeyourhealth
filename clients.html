@@ -764,6 +764,60 @@
       .dash-tab-content.active { padding-top: 8px; padding-bottom: 80px; }
       /* Page hero — reduce on mobile so dashboard feels closer */
       .page-hero { padding-top: 88px !important; }
+
+      /* ===== Full-screen iMessage-style chat on mobile =====
+         When logged in, the My Team and Community tabs take over the
+         entire viewport between navbar and bottom tab bar so chatting
+         feels like a native messaging app. */
+      body.shape-logged-in #tabMyteam.dash-tab-content.active,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active {
+        position: fixed;
+        top: 64px; left: 0; right: 0;
+        bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+        margin: 0; padding: 0 !important;
+        background: var(--bg);
+        z-index: 500;
+        display: flex !important;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      /* Hide non-chat content inside My Team so the chat is the whole
+         screen. Sessions widget still works on desktop. */
+      body.shape-logged-in #tabMyteam.dash-tab-content.active #shapeSessionsWidget {
+        display: none !important;
+      }
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-single,
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-container,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .community-layout,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .community-chat {
+        flex: 1 1 auto; min-height: 0; height: auto;
+        display: flex; flex-direction: column;
+        border: none; border-radius: 0;
+      }
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-messages,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-messages,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-channel-content {
+        flex: 1 1 auto; min-height: 0;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+        padding: 14px 12px;
+      }
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-input-area,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-input-area {
+        flex-shrink: 0;
+        padding: 10px 12px;
+        background: var(--bg-alt);
+        border-top: 1px solid var(--border);
+      }
+      /* Polished iMessage bubbles */
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-msg-body,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-msg-body {
+        border-radius: 20px; padding: 9px 14px;
+        max-width: 75vw; word-wrap: break-word;
+      }
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-msg.own .team-chat-msg-body,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-msg.own .chat-msg-body {
+        background: #2DD4BF; color: #0a0a0a;
+      }
     }
     @media (max-width: 480px) {
       .dash-tab { padding: 8px 1px; font-size: 0.52rem; letter-spacing: 0.02em; }
