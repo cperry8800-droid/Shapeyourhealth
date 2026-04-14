@@ -591,6 +591,53 @@ img.card-avatar-inline { background: var(--border); }
   .card-grid { grid-template-columns: 1fr; }
 }
 
+/* ==========================================================
+   Shape — dashboard mobile fixes
+   Consolidated overrides for grid collapses, card padding,
+   bottom-bar clearance, and tap-target sizing across all three
+   dashboards on small screens.
+   ========================================================== */
+@media (max-width: 768px) {
+  /* --- Bottom padding: ensure content clears the 62px fixed tab bar. */
+  body.shape-dashboard .dash-tab-content.active,
+  body.shape-dashboard .td-tab-content.active,
+  body.shape-dashboard .nd-tab-content.active {
+    padding-bottom: 110px !important;
+  }
+
+  /* --- Collapse multi-column grids to stack/2-col on mobile. */
+  body.shape-dashboard .cp-stats-row,
+  body.shape-dashboard .reward-grid,
+  body.shape-dashboard .progress-stats-row,
+  body.shape-dashboard .tp-gallery-grid,
+  body.shape-dashboard .mpb-meal-grid,
+  body.shape-dashboard .macro-row,
+  body.shape-dashboard .pb-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+  /* Reduce stat card internal padding so labels/values don't wrap weirdly. */
+  body.shape-dashboard .cp-stat-card,
+  body.shape-dashboard .progress-stat-card,
+  body.shape-dashboard .tp-stat {
+    padding: 14px 12px !important;
+  }
+
+  /* --- Very small phones: stack to 1 column. */
+}
+@media (max-width: 420px) {
+  body.shape-dashboard .cp-stats-row,
+  body.shape-dashboard .reward-grid,
+  body.shape-dashboard .progress-stats-row,
+  body.shape-dashboard .tp-gallery-grid,
+  body.shape-dashboard .mpb-meal-grid,
+  body.shape-dashboard .wlib-kpi-grid,
+  body.shape-dashboard .meal-day-grid,
+  body.shape-dashboard .nd-mealsched-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* Logged-in dashboard pages on mobile: hide the marketing hero block
    so the first widget sits right under the navbar. Dashboards are
    marked with body.shape-dashboard. */
