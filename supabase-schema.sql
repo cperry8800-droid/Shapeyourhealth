@@ -148,6 +148,58 @@ create policy "participants update sessions"
   with check (auth.uid() = client_id or auth.uid() = provider_id);
 
 -- =====================================================================
+-- Subscriptions — Stripe-backed recurring subs from clients to providers.
+-- Rows are written by the Stripe webhook (service_role), read by clients
+-- for their dashboard. RLS only grants SELECT to the row's client.
+-- =====================================================================
+create table if not exists public.subscriptions (
+  id uuid primary key default gen_random_uuid(),
+  client_id uuid not null references auth.users on delete cascade,
+  provider_id bigint not null,
+  provider_role text not null check (provider_role in ('trainer','nutritionist')),
+  stripe_customer_id text,
+  stripe_subscription_id text unique,
+  status text not null default 'pending'
+    check (status in ('pending','active','past_due','canceled','incomplete','trialing','unpaid')),
+  price_cents int,
+  current_period_end timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists subscriptions_client_idx
+  on public.subscriptions (client_id, status);
+create index if not exists subscriptions_provider_idx
+  on public.subscriptions (provider_id, provider_role, status);
+
+drop trigger if exists subscriptions_touch_updated_at on public.subscriptions;
+create trigger subscriptions_touch_updated_at
+  before update on public.subscriptions
+  for each row execute function public.touch_updated_at();
+
+alter table public.subscriptions enable row level security;
+
+-- Clients can read their own subscription rows.
+drop policy if exists "clients read own subscriptions" on public.subscriptions;
+create policy "clients read own subscriptions"
+  on public.subscriptions for select
+  to authenticated
+  using (auth.uid() = client_id);
+
+-- Providers can read subscriptions where they're the provider. We look up
+-- the provider row by matching auth.uid() against the (planned) owner_id
+-- column on trainers/nutritionists. Until that column exists, providers see
+-- nothing — the webhook writes via service_role and bypasses RLS anyway.
+-- (Add owner_id later and wire this up.)
+
+-- Cache Stripe product/price IDs on each provider row so we don't recreate
+-- them on every checkout. Filled in lazily by the first subscribe action.
+alter table public.trainers add column if not exists stripe_product_id text;
+alter table public.trainers add column if not exists stripe_price_id text;
+alter table public.nutritionists add column if not exists stripe_product_id text;
+alter table public.nutritionists add column if not exists stripe_price_id text;
+
+-- =====================================================================
 -- Phase 1 — Marketplace tables (trainers / nutritionists / gyms)
 -- These hold the data that currently lives as hardcoded arrays in app.js.
 -- Safe to run: tables are additive and default to public-read RLS so the
